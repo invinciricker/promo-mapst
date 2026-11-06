@@ -37,6 +37,13 @@
   --danger: #C4302B;
   --ok-ink: #007A66;      /* "turquoise" for text: real turquoise is too light on white */
   --warn-soft: #FFF0D6;  --warn-ink: #8A4E00;   /* « à vérifier » notes */
+  --line-strong: rgba(16, 53, 80, 0.16);       /* borders of the answer buttons (Réviser) */
+
+  /* Réviser: right answers (turquoise), wrong answers and lives (red) */
+  --good-soft: rgba(0, 230, 191, 0.16);  --good-panel: #DCF8F2;
+  --bad: #C4302B;  --on-bad: #FFFFFF;
+  --bad-soft: rgba(196, 48, 43, 0.09);   --bad-panel: #FDE9E8;
+  --heart: #E5484D;
 
   /* Header (top) and tab bar (bottom) */
   --appbar-1: #0D2E46;  --appbar-2: #103550;  --appbar-3: #15476C;
@@ -92,6 +99,12 @@
     --danger: #FF8178;
     --ok-ink: #3FF0CF;
     --warn-soft: rgba(240, 144, 0, 0.16);  --warn-ink: #FFC56B;
+    --line-strong: rgba(255, 255, 255, 0.14);
+
+    --good-soft: rgba(0, 230, 191, 0.14);  --good-panel: #0B302E;
+    --bad: #FF8178;  --on-bad: #2A0705;
+    --bad-soft: rgba(255, 129, 120, 0.14); --bad-panel: #351818;
+    --heart: #FF6369;
 
     --appbar-1: #061723;  --appbar-2: #0A2538;  --appbar-3: #0E3350;
     --tabbar-bg: rgba(12, 39, 59, 0.92);

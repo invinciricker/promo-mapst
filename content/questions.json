@@ -1,0 +1,278 @@
+[
+ {
+  "id": "anat-ex-01",
+  "theme": "anatomie-mouvement",
+  "lesson": 1,
+  "type": "qcm",
+  "question": "[EXEMPLE] Quels muscles font tourner le bras vers l’extérieur (rotation latérale de l’épaule) ?",
+  "choices": ["Infra-épineux", "Subscapulaire", "Petit rond", "Grand dorsal"],
+  "correct": [0, 2],
+  "hint": "",
+  "explanation": "L’infra-épineux et le petit rond (aidés du deltoïde postérieur) font la rotation latérale. Le subscapulaire et le grand dorsal font la rotation médiale.",
+  "source": "Récapitulatif des principaux mouvements (épaule)",
+  "status": "exemple"
+ },
+ {
+  "id": "anat-ex-02",
+  "theme": "anatomie-mouvement",
+  "lesson": 1,
+  "type": "saisie",
+  "question": "[EXEMPLE] Un os soumis à des contraintes régulières devient plus dense et plus résistant. Comment s’appelle cette loi ?",
+  "answers": ["loi de Wolff", "Wolff", "loi de Wolf", "Wolf"],
+  "hint": "Pense au loup… en allemand.",
+  "explanation": "C’est la loi de Wolff : l’os se remodèle selon les contraintes qu’il reçoit. Un joueur de tennis a un os plus dense du côté de son bras dominant.",
+  "source": "Anatomie du mouvement, chapitre 2 (le système osseux)",
+  "status": "exemple"
+ },
+ {
+  "id": "anat-ex-03",
+  "theme": "anatomie-mouvement",
+  "lesson": 1,
+  "type": "paires",
+  "question": "[EXEMPLE] Associe chaque rôle musculaire à sa définition.",
+  "pairs": [
+   ["Agoniste", "Moteur principal du mouvement"],
+   ["Antagoniste", "S’oppose au mouvement et le contrôle"],
+   ["Synergiste", "Aide le moteur principal"],
+   ["Fixateur", "Stabilise une articulation"]
+  ],
+  "hint": "",
+  "explanation": "Pendant une flexion du coude, le biceps est l’agoniste et le triceps l’antagoniste. Pendant un développé couché, la coiffe des rotateurs stabilise l’épaule.",
+  "source": "Anatomie du mouvement, chapitre 4 (le système musculaire)",
+  "status": "exemple"
+ },
+ {
+  "id": "fil-ex-01",
+  "theme": "filieres-energetiques",
+  "lesson": 1,
+  "type": "qcm",
+  "question": "[EXEMPLE] Un 400 m couru à fond dure environ 50 secondes. Quelle filière fournit la plus grande part de l’énergie pendant la majeure partie de la course ?",
+  "choices": ["Anaérobie alactique (ATP-PCr)", "Anaérobie lactique", "Aérobie", "Les trois, à parts égales"],
+  "correct": [1],
+  "hint": "",
+  "explanation": "L’ATP-PCr lance la course, puis la glycolyse anaérobie domine et l’aérobie monte en fin d’épreuve. Les trois filières travaillent toujours ensemble, mais une seule domine.",
+  "source": "Les filières énergétiques, chapitre 5 (étude de cas : le 400 m)",
+  "status": "exemple"
+ },
+ {
+  "id": "fil-ex-02",
+  "theme": "filieres-energetiques",
+  "lesson": 1,
+  "type": "qcm",
+  "question": "[EXEMPLE] Sur la filière anaérobie alactique, quelles affirmations sont vraies ?",
+  "choices": [
+   "Elle produit du lactate",
+   "Elle fonctionne sans oxygène",
+   "On l’entraîne avec des efforts de 5 à 10 s et 2 à 5 min de récupération",
+   "Sa capacité est très grande"
+  ],
+  "correct": [1, 2],
+  "hint": "",
+  "explanation": "Puissance maximale mais capacité très faible, sans oxygène et sans lactate. La récupération longue sert à reconstituer la phosphocréatine.",
+  "source": "Les filières énergétiques, chapitre 2",
+  "status": "exemple"
+ },
+ {
+  "id": "fil-ex-03",
+  "theme": "filieres-energetiques",
+  "lesson": 1,
+  "type": "saisie",
+  "question": "[EXEMPLE] Quelle molécule stockée dans le muscle reforme l’ATP en un instant, au début d’un effort explosif ?",
+  "answers": ["phosphocréatine", "PCr", "créatine phosphate", "phosphate de créatine"],
+  "hint": "Le cours la compare à une batterie de secours rangée dans le muscle.",
+  "explanation": "La phosphocréatine (PCr) cède son phosphate à l’ADP : ADP + PCr → ATP + créatine, grâce à la créatine kinase.",
+  "source": "Les filières énergétiques, chapitre 2",
+  "status": "exemple"
+ },
+ {
+  "id": "pub-ex-01",
+  "theme": "publics",
+  "lesson": 1,
+  "type": "qcm",
+  "question": "[EXEMPLE] Par forte chaleur, un enfant de 7 ans devient moins attentif, a mal à la tête et ne veut plus courir. Que fais-tu en premier ?",
+  "choices": [
+   "Tu l’encourages à finir la situation pour ne pas casser la séance",
+   "Tu arrêtes son effort, tu l’installes à l’ombre, tu lui donnes de l’eau et tu l’observes",
+   "Tu lui proposes la variante moins de l’exercice",
+   "Tu fais le point avec lui à la fin de la situation"
+  ],
+  "correct": [1],
+  "hint": "",
+  "explanation": "Les besoins physiologiques passent avant les objectifs de la séance : arrêter l’effort, hydrater, observer, alerter si besoin, et ne pas imposer la reprise.",
+  "source": "Les publics et leurs caractéristiques, chapitre 3 (Maslow, niveau 1)",
+  "status": "exemple"
+ },
+ {
+  "id": "pub-ex-02",
+  "theme": "publics",
+  "lesson": 1,
+  "type": "paires",
+  "question": "[EXEMPLE] Associe chaque besoin de la pyramide de Maslow à une réponse de l’éducateur.",
+  "pairs": [
+   ["Besoins physiologiques", "Prévoir des pauses pour boire"],
+   ["Sécurité", "Des règles claires et du matériel adapté"],
+   ["Appartenance", "Faire des équipes où personne n’est exclu"],
+   ["Estime", "Valoriser les progrès réels"]
+  ],
+  "hint": "",
+  "explanation": "Les 5 niveaux : physiologiques, sécurité, appartenance, estime, accomplissement de soi. C’est un modèle simplifié : plusieurs besoins peuvent être satisfaits en même temps.",
+  "source": "Les publics et leurs caractéristiques, chapitre 3",
+  "status": "exemple"
+ },
+ {
+  "id": "pub-ex-03",
+  "theme": "publics",
+  "lesson": 1,
+  "type": "saisie",
+  "question": "[EXEMPLE] Quelqu’un fait du sport parce que l’activité lui plaît pour elle-même (« j’aime courir »). On parle de motivation…",
+  "answers": ["intrinsèque", "motivation intrinsèque"],
+  "hint": "Un mot savant qui commence presque comme « intérieur ».",
+  "explanation": "Intrinsèque : le plaisir de l’activité elle-même. Extrinsèque : une récompense, une demande des parents, un résultat à obtenir.",
+  "source": "Les publics et leurs caractéristiques, chapitre 6",
+  "status": "exemple"
+ },
+ {
+  "id": "aec-ex-01",
+  "theme": "entretien-corporel",
+  "lesson": 1,
+  "type": "qcm",
+  "question": "[EXEMPLE] Pour l’OMS (1946), la santé, c’est…",
+  "choices": [
+   "l’absence de maladie ou d’infirmité",
+   "un état de complet bien-être physique, mental et social",
+   "un bon niveau de condition physique",
+   "l’équilibre entre activité physique et alimentation"
+  ],
+  "correct": [1],
+  "hint": "",
+  "explanation": "La définition de l’OMS va plus loin que l’absence de maladie : elle inclut le bien-être mental et social.",
+  "source": "Les activités d’entretien corporel",
+  "status": "exemple"
+ },
+ {
+  "id": "aec-ex-02",
+  "theme": "entretien-corporel",
+  "lesson": 1,
+  "type": "qcm",
+  "question": "[EXEMPLE] Lesquelles de ces situations comptent comme de la sédentarité ?",
+  "choices": [
+   "Regarder une série allongé sur le canapé",
+   "Travailler 7 heures assis à un bureau",
+   "Dormir 8 heures",
+   "Marcher 20 minutes pour aller au travail"
+  ],
+  "correct": [0, 1],
+  "hint": "",
+  "explanation": "La sédentarité, c’est le temps passé assis ou allongé quand on est éveillé, avec une dépense d’énergie proche du repos. Le sommeil n’en fait pas partie.",
+  "source": "Les activités d’entretien corporel",
+  "status": "exemple"
+ },
+ {
+  "id": "aec-ex-03",
+  "theme": "entretien-corporel",
+  "lesson": 1,
+  "type": "paires",
+  "question": "[EXEMPLE] Associe chaque activité à sa description.",
+  "pairs": [
+   ["Pilates", "8 principes, dont la concentration, la respiration et le centrage"],
+   ["HIIT", "Efforts courts et intenses, entrecoupés de récupération"],
+   ["Marche nordique", "Marche accélérée avec des bâtons"],
+   ["Gym ballon", "Un gros ballon pour travailler la proprioception"]
+  ],
+  "hint": "",
+  "explanation": "Le Pilates rééquilibre les muscles qui maintiennent la colonne. Le HIIT alterne efforts intenses et récupération. La gym ballon sollicite fortement l’équilibre et la sangle abdominale.",
+  "source": "Les activités d’entretien corporel",
+  "status": "exemple"
+ },
+ {
+  "id": "edu-ex-01",
+  "theme": "role-educateur",
+  "lesson": 1,
+  "type": "qcm",
+  "question": "[EXEMPLE] Un éducateur sportif rémunéré renouvelle sa carte professionnelle…",
+  "choices": ["tous les ans", "tous les 3 ans", "tous les 5 ans", "jamais : elle est valable à vie"],
+  "correct": [2],
+  "hint": "",
+  "explanation": "Tous les 5 ans, par une nouvelle déclaration, tant qu’il encadre contre rémunération. La carte porte un QR code qui renvoie vers ses qualifications à jour.",
+  "source": "Obligations des éducateurs et établissements sportifs",
+  "status": "exemple"
+ },
+ {
+  "id": "edu-ex-02",
+  "theme": "role-educateur",
+  "lesson": 1,
+  "type": "qcm",
+  "question": "[EXEMPLE] Qu’est-ce qu’un établissement d’activités physiques et sportives (EAPS) doit obligatoirement avoir ?",
+  "choices": [
+   "Un tableau d’organisation des secours, avec les numéros d’urgence",
+   "Une copie affichée des diplômes et cartes professionnelles des éducateurs rémunérés",
+   "La liste des pratiquants affichée à l’entrée",
+   "Une déclaration d’ouverture déposée en préfecture"
+  ],
+  "correct": [0, 1],
+  "hint": "",
+  "explanation": "Secours, affichage, assurance et déclaration des accidents graves sont obligatoires. La déclaration d’ouverture d’un EAPS, elle, a été supprimée en 2014.",
+  "source": "Obligations des éducateurs et établissements sportifs",
+  "status": "exemple"
+ },
+ {
+  "id": "edu-ex-03",
+  "theme": "role-educateur",
+  "lesson": 1,
+  "type": "saisie",
+  "question": "[EXEMPLE] Quel service de l’État vérifie la déclaration de l’éducateur et lui délivre sa carte professionnelle ? (sigle)",
+  "answers": ["SDJES", "service départemental à la jeunesse, à l’engagement et aux sports"],
+  "hint": "Cinq lettres. Le S de la fin, c’est pour « sports ».",
+  "explanation": "La SDJES (service départemental à la jeunesse, à l’engagement et aux sports) vérifie le diplôme, l’honorabilité et le certificat médical, puis délivre la carte.",
+  "source": "Obligations des éducateurs et établissements sportifs",
+  "status": "exemple"
+ },
+ {
+  "id": "fds-ex-01",
+  "theme": "fiche-de-seance",
+  "lesson": 1,
+  "type": "qcm",
+  "question": "[EXEMPLE] Sur ta fiche de séance, combien de temps doit durer l’échauffement ?",
+  "choices": ["5 à 10 minutes", "10 à 15 minutes", "15 à 30 minutes", "30 à 45 minutes"],
+  "correct": [2],
+  "hint": "",
+  "explanation": "15 minutes minimum, 30 maximum : en dessous, les articulations, les muscles et le cœur ne sont pas prêts. La séance entière dure de 45 à 120 minutes.",
+  "source": "Cours du 15 septembre 2026 (fiche de séance)",
+  "status": "exemple"
+ },
+ {
+  "id": "fds-ex-02",
+  "theme": "fiche-de-seance",
+  "lesson": 1,
+  "type": "qcm",
+  "question": "[EXEMPLE] Quels objectifs sont rédigés comme le demande la formation ?",
+  "choices": [
+   "Développer la passe à deux mains en mouvement",
+   "Découverte du dribble",
+   "Améliorer le tir en course",
+   "Le travail de la défense"
+  ],
+  "correct": [0, 2],
+  "hint": "",
+  "explanation": "Un objectif commence toujours par un verbe d’action : développer, découvrir, améliorer, favoriser… « Découverte du dribble » devient « Découvrir le dribble ».",
+  "source": "Cours du 15 septembre 2026 (fiche de séance)",
+  "status": "exemple"
+ },
+ {
+  "id": "fds-ex-03",
+  "theme": "fiche-de-seance",
+  "lesson": 1,
+  "type": "paires",
+  "question": "[EXEMPLE] Associe chaque élément de la fiche de séance à ce qu’il décrit.",
+  "pairs": [
+   ["Critère de réalisation", "Comment faire le geste (« comment je fais pour… »)"],
+   ["Critère de réussite", "Un résultat qu’on peut compter, ex. 3 passes réussies sur 10"],
+   ["Variante moins", "Simplifier l’exercice, ex. pompes sur les genoux"],
+   ["Variante plus", "Rendre l’exercice plus difficile"]
+  ],
+  "hint": "",
+  "explanation": "Pour chaque exercice, la fiche donne l’objectif, les critères de réalisation et de réussite, les variantes plus et moins, un schéma et la durée.",
+  "source": "Cours du 15 septembre 2026 (fiche de séance)",
+  "status": "exemple"
+ }
+]

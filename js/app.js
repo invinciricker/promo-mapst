@@ -3,7 +3,7 @@
 
    1. Registers the offline mode (core/offline.js and sw.js).
    2. Loads the content: content/planning.json, content/themes.json,
-      content/planning-themes.json.
+      content/planning-themes.json and content/questions.json.
    3. Shows the screen written in the address (#planning by default) and keeps the
       header, the tab bar and the clock up to date.
    ===================================================================================== */
@@ -16,11 +16,14 @@ import { longDate, capitalize, toISO } from "./core/dates.js";
 import { footerHTML } from "./core/texts.js";
 import { createPlanning } from "./planning/model.js";
 import { mountPlanning } from "./planning/planning.js";
+import { createReviserContent } from "./reviser/content.js";
+import { renderReviser, refreshReviser } from "./reviser/reviser.js";
+import { isPlaying } from "./reviser/player.js";
 import { renderSoon } from "./screens/soon.js";
 import { renderInfos } from "./screens/infos.js";
 
 /** Shown in Infos. Change it when you publish a new version. */
-export const APP_VERSION = "Phase 1 · 6 novembre 2026";
+export const APP_VERSION = "Phase 2 · 6 novembre 2026";
 
 const TITLES = { reviser: "Réviser", etudier: "Étudier", planning: "Planning", infos: "Infos" };
 
@@ -31,6 +34,8 @@ const app = {
   model: null,          // the planning, ready to use (planning/model.js)
   planningText: "",     // raw text of planning.json, to notice when it changes
   planning: null,       // the Planning tab once built
+  reviser: null,        // the questions of Réviser, ready to use (reviser/content.js)
+  questionsText: "",    // raw text of questions.json, to notice when it changes
   scroll: {},           // where each screen was scrolled to
   day: toISO(new Date()),
   hiddenAt: 0,
@@ -45,20 +50,47 @@ async function fetchText(path) {
   return response.text();
 }
 
+/** The questions of Réviser. A broken file gives an empty Réviser, never a broken app. */
+function useQuestions(text) {
+  let list = [];
+  try {
+    list = JSON.parse(text);
+  } catch (error) {
+    console.error("content/questions.json n’est pas un JSON valide :", error);
+  }
+  app.questionsText = text;
+  app.reviser = createReviserContent(app.themes, list);
+}
+
 async function loadContent() {
-  const [planningText, themes, links] = await Promise.all([
-    fetchText("content/planning.json"),
+  const [themes, links, questionsText, planningText] = await Promise.all([
     fetchText("content/themes.json").then(JSON.parse).catch(() => []),
     fetchText("content/planning-themes.json").then(JSON.parse).catch(() => []),
+    fetchText("content/questions.json").catch(() => "[]"),
+    fetchText("content/planning.json").catch((error) => { console.error(error); return null; }),
   ]);
   app.themes = Array.isArray(themes) ? themes : [];
   app.links = Array.isArray(links) ? links : [];
-  app.planningText = planningText;
-  app.model = createPlanning(JSON.parse(planningText), app.themes, app.links);
+  useQuestions(questionsText);
+  // If the planning can't load, the Planning tab says so, and Réviser still works.
+  if (planningText) {
+    app.planningText = planningText;
+    app.model = createPlanning(JSON.parse(planningText), app.themes, app.links);
+  }
 }
 
-/** Back on screen after a long time: is there a newer planning? */
+/** Back on screen after a long time: is there a newer planning, or new questions? */
 async function refreshContent() {
+  try {
+    const text = await fetchText("content/questions.json");
+    if (text !== app.questionsText && !isPlaying()) {
+      useQuestions(text);
+      refreshReviser(app.reviser);
+      showToast("Nouvelles questions disponibles");
+    }
+  } catch (error) {
+    /* offline: keep what we have */
+  }
   try {
     const text = await fetchText("content/planning.json");
     if (text === app.planningText) return;
@@ -109,8 +141,10 @@ function renderScreen(route, section) {
   if (route.screen === "planning") {
     if (!app.model) setHTML(section, loadErrorHTML());
     else if (!app.planning) app.planning = mountPlanning(section, app.model, { onTheme: openTheme });
-  } else if (route.screen === "reviser" || route.screen === "etudier") {
-    renderSoon(section, route.screen, app.themes, route.param);
+  } else if (route.screen === "reviser") {
+    renderReviser(section, app.reviser || createReviserContent(app.themes, []), route.param);
+  } else if (route.screen === "etudier") {
+    renderSoon(section, "etudier", app.themes, route.param);
   } else {
     renderInfos(section, app.model, APP_VERSION);
   }

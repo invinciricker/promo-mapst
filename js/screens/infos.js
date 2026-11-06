@@ -8,6 +8,8 @@ import { esc, icon, isInstalled, setHTML } from "../core/dom.js";
 import { parseISO, dayNumber, MONTHS } from "../core/dates.js";
 import { FOOTER } from "../core/texts.js";
 import { countEvents } from "../planning/personal.js";
+import { hasProgress, resetProgress } from "../reviser/progress.js";
+import { showToast } from "../core/toast.js";
 import { installStepsHTML, openInstallSheet } from "./install.js";
 
 const longFR = (iso) => {
@@ -73,11 +75,13 @@ export function renderInfos(container, model, version) {
           <p>Uniquement sur ce téléphone, dans l’appli :</p>
           <ul>
             <li>${icon("check")}<span>tes événements perso (« + ») : ${events ? `${events} pour l’instant` : "aucun pour l’instant"} ;</span></li>
+            <li>${icon("check")}<span>ta progression dans Réviser : XP, série, leçons faites, questions à revoir, et ton choix pour les sons ;</span></li>
             <li>${icon("check")}<span>la vue du planning que tu as choisie, et si tu as fermé l’aide à l’installation ;</span></li>
-            <li>${icon("check")}<span>une copie de l’appli et du planning, pour qu’elle marche sans internet.</span></li>
+            <li>${icon("check")}<span>une copie de l’appli, du planning et des questions, pour qu’elle marche sans internet.</span></li>
           </ul>
-          <p>Rien n’est envoyé ailleurs : pas de compte, pas de cookies, pas de statistiques, pas de publicité. Si tu supprimes l’appli, tes événements perso sont effacés aussi.</p>
+          <p>Rien n’est envoyé ailleurs : pas de compte, pas de cookies, pas de statistiques, pas de publicité. Si tu supprimes l’appli, tes événements perso et ta progression sont effacés aussi.</p>
         </div>
+        ${hasProgress() ? `<button type="button" class="btn btn--danger btn--block" data-reset-reviser>${icon("trash")}Effacer ma progression dans Réviser</button>` : ""}
       </section>
 
       <section class="section">
@@ -103,4 +107,24 @@ export function renderInfos(container, model, version) {
 
   const installButton = container.querySelector("[data-install]");
   if (installButton) installButton.addEventListener("click", openInstallSheet);
+
+  // Two taps to erase: the first one asks « Sûr ? », the second one erases.
+  const resetButton = container.querySelector("[data-reset-reviser]");
+  if (resetButton) {
+    resetButton.addEventListener("click", () => {
+      if (!resetButton.classList.contains("is-armed")) {
+        resetButton.classList.add("is-armed");
+        resetButton.lastChild.textContent = "Touche encore pour tout effacer";
+        setTimeout(() => {
+          if (!resetButton.isConnected) return;
+          resetButton.classList.remove("is-armed");
+          resetButton.lastChild.textContent = "Effacer ma progression dans Réviser";
+        }, 4000);
+        return;
+      }
+      resetProgress();
+      resetButton.remove();
+      showToast("Progression de Réviser effacée");
+    });
+  }
 }

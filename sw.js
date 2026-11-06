@@ -27,6 +27,7 @@ const APP_FILES = [
   "css/04-layout.css",
   "css/05-planning.css",
   "css/06-screens.css",
+  "css/07-reviser.css",
   "js/app.js",
   "js/core/dates.js",
   "js/core/dom.js",
@@ -48,6 +49,13 @@ const APP_FILES = [
   "js/planning/view-month.js",
   "js/planning/view-week.js",
   "js/planning/view-year.js",
+  "js/reviser/answer.js",
+  "js/reviser/confetti.js",
+  "js/reviser/content.js",
+  "js/reviser/player.js",
+  "js/reviser/progress.js",
+  "js/reviser/reviser.js",
+  "js/reviser/sound.js",
   "js/screens/infos.js",
   "js/screens/install.js",
   "js/screens/soon.js",
@@ -63,6 +71,7 @@ const CONTENT_FILES = [
   "content/planning.ics",
   "content/themes.json",
   "content/planning-themes.json",
+  "content/questions.json",
 ];
 
 const NETWORK_TIMEOUT = 4000;   // after 4 seconds without answer, use the saved copy
