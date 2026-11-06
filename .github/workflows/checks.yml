@@ -1,0 +1,29 @@
+# Automatic checks, run by GitHub on every pull request and on every push to main.
+#   - scripts/check_content.py      the questions and themes follow the rules (CLAUDE.md)
+#   - scripts/check_offline_list.py every file of the app is in sw.js (offline mode)
+# If one of them finds a problem, the pull request shows a red cross instead of a green
+# tick: click « Details » next to it to read the problem. Nothing is published until the
+# pull request is merged, so a red cross never breaks the app on the phones.
+# These checks only need Python, which GitHub's machines already have.
+name: Checks
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  checks:
+    name: Content and offline list
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v6
+      - name: Check the questions and themes
+        run: python3 scripts/check_content.py
+      - name: Check the offline list (sw.js)
+        if: ${{ !cancelled() }}
+        run: python3 scripts/check_offline_list.py
