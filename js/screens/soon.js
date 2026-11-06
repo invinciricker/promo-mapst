@@ -1,30 +1,14 @@
 /* =====================================================================================
-   soon.js: the Réviser and Étudier screens. Until their phase is built (Phase 2 and 3),
-   they show « Bientôt », what is coming, and the list of themes (content/themes.json).
-   When you come from a class of the planning (« Réviser ce thème »), its theme is
-   highlighted.
+   soon.js: the Étudier screen until Phase 3 is built. It shows « Bientôt », what is
+   coming, and the list of themes (content/themes.json). When you come from a class of
+   the planning (« Étudier ce thème »), its theme is highlighted.
+   (Réviser had the same screen until Phase 2: it is now js/reviser/.)
    ===================================================================================== */
 
 import { esc, icon, setHTML } from "../core/dom.js";
 import { footerHTML } from "../core/texts.js";
 
 const SCREENS = {
-  reviser: {
-    tone: "reviser",
-    title: "Réviser en jouant",
-    text: "De petites leçons de 8 à 10 questions, thème par thème, pour réviser tes cours en quelques minutes.",
-    art: `<svg class="hero__art" viewBox="0 0 120 120" aria-hidden="true">
-        <circle cx="70" cy="50" r="42" fill="#F09000"/>
-        <path d="M78 22 50 60h18l-6 32 29-40H73z" fill="#FFFFFF"/>
-      </svg>`,
-    features: [
-      ["tone-turquoise", "check", "QCM exigeants", "4 choix, parfois plusieurs bonnes réponses."],
-      ["tone-blue", "sparkles", "Réponses à taper", "Avec un indice qui aide sans tout dire."],
-      ["tone-lavande", "layers", "Associer", "Relie 4 paires qui vont ensemble."],
-      ["tone-orange", "reviser", "XP et série", "3 vies par leçon, une série de jours."],
-    ],
-    themesTitle: "Les thèmes à réviser",
-  },
   etudier: {
     tone: "etudier",
     title: "Apprendre en profondeur",
@@ -45,7 +29,7 @@ const SCREENS = {
 
 /**
  * @param container  the <section> of the screen
- * @param mode       "reviser" or "etudier"
+ * @param mode       "etudier"
  * @param themes     content of content/themes.json
  * @param focusId    id of a theme to highlight (or null)
  */
@@ -77,7 +61,7 @@ export function renderSoon(container, mode, themes, focusId = null) {
         <p class="hero__text">${esc(s.text)}</p>
       </section>
       ${focus ? `<div class="note-box" style="background:rgba(0,230,191,.14);color:var(--ok-ink)">${icon("sparkles")}
-        <p><b>« ${esc(focus.title)} »</b> sera ici dès que ${mode === "reviser" ? "les quiz" : "les fiches"} seront prêt${mode === "reviser" ? "s" : "es"}.</p></div>` : ""}
+        <p><b>« ${esc(focus.title)} »</b> sera ici dès que les fiches seront prêtes.</p></div>` : ""}
       <section class="section">
         <div class="section__head"><h2 class="section__title">Ce qui arrive</h2></div>
         <div class="features">${featureTiles}</div>

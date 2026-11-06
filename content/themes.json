@@ -1,8 +1,8 @@
 [
- {"id": "anatomie-mouvement", "title": "Anatomie et mouvement"},
- {"id": "filieres-energetiques", "title": "Filières énergétiques"},
- {"id": "publics", "title": "Les publics et leurs caractéristiques"},
- {"id": "entretien-corporel", "title": "Activités d’entretien corporel"},
- {"id": "role-educateur", "title": "Rôle et obligations de l’éducateur sportif"},
- {"id": "fiche-de-seance", "title": "La fiche de séance"}
+  {"id": "anatomie-mouvement", "title": "Anatomie et mouvement", "lessons": [{"n": 1, "title": "Os et articulations"}, {"n": 2, "title": "Muscles et contractions"}]},
+  {"id": "filieres-energetiques", "title": "Filières énergétiques", "lessons": [{"n": 1, "title": "L’ATP et les trois filières"}]},
+  {"id": "publics", "title": "Les publics et leurs caractéristiques", "lessons": [{"n": 1, "title": "Besoins, Maslow et motivation"}]},
+  {"id": "entretien-corporel", "title": "Activités d’entretien corporel", "lessons": [{"n": 1, "title": "Santé, définitions et activités"}]},
+  {"id": "role-educateur", "title": "Rôle et obligations de l’éducateur sportif", "lessons": [{"n": 1, "title": "Obligations et sanctions"}]},
+  {"id": "fiche-de-seance", "title": "La fiche de séance", "lessons": [{"n": 1, "title": "Construire sa fiche"}]}
 ]
