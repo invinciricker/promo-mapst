@@ -10,6 +10,13 @@ Three modes, one per tab in a bottom bar:
 
 I'm a beginner. Explain things in plain English, keep it short, and tell me exactly what to click.
 
+## Who does what
+- **Claude chat** (my claude.ai Project « BPJEPS MAPST », which holds the course files) plans each phase, writes everything in content/ and docs/, writes the phase specs in this file, and gives me the prompt for each Claude Code session. It never touches code, and it only pushes to branches named chat/….
+- **Claude Code** writes all the code: index.html, css/, js/, sw.js, the manifest, scripts/, tests/, .github/, vendor/ and README.md, and updates « État » below. It never edits content/ or docs/: if a question or a page looks wrong or breaks a rule, list it in the pull request instead.
+- **I** decide, test on my phone, check the questions in Relecture mode and merge.
+- Nothing reaches main except through a pull request that I merge.
+- How the work flows, and every decision so far: docs/PLAN.md. What content exists, where it comes from and what comes next: docs/CONTENT.md.
+
 ## Rules for the whole app
 - Everything the user sees is in French.
 - Plain HTML, CSS and JavaScript, no framework. No build step for the site: GitHub Pages serves the committed files as they are. Scripts may prepare files (data, downloaded libraries) as long as the result is committed.
@@ -70,6 +77,43 @@ Views
 - « Mes erreurs »: questions answered wrong come back sooner.
 - Progress is saved on the phone (synced to the account from Phase 4).
 
+### Phase 2 additions (6 Nov 2026, prepared by Claude chat, approved by me)
+**Start from the draft.** The branch chat/phase-2 holds a draft of Réviser that Claude chat wrote on 6 Nov, before the split above was agreed: js/reviser/, css/07-reviser.css, scripts/check_content.py, tests/test_reviser.py, and changes to index.html, js/app.js, js/screens/infos.js, js/screens/soon.js, sw.js and css/01-tokens.css. Its test passed 25/25 with the old sample questions. Review it as if a colleague wrote it: keep what's good, fix what isn't. From now on you own all of it.
+
+**Real questions, hidden until checked.**
+- content/questions.json now holds 70 real questions with status "brouillon": written by Claude chat from the course, not yet checked by me. The samples are gone.
+- Classmates only see questions with status "verifie". A lesson is shown once it has at least 5 of them; a theme with nothing to show says « Questions en préparation ».
+- Status "exemple" keeps working as before (none are left).
+
+**Relecture mode**, so I can check the questions on my phone:
+- A switch in Infos, « Mode relecture », off by default, with the line « Affiche les questions pas encore vérifiées. Elles peuvent contenir des erreurs. »
+- When it's on, "brouillon" questions appear in their lessons with an « À vérifier » badge, and every lesson is open.
+- After the feedback of a "brouillon" question, two buttons: « Juste » and « À corriger ». « À corriger » asks for an optional one-line note.
+- A « Rapport de relecture » screen, reached from Infos while the mode is on: how many questions are checked, the « À corriger » list with notes, « Copier le rapport », and « Effacer le rapport » (two taps).
+- The copied report is short plain text that I paste into Claude chat, for example:
+      Relecture Promo MAPST · 7 nov. 2026
+      À corriger (2) :
+      - anat-1-04 : la réponse C est aussi juste
+      - fil-1-07
+      Juste (18) : anat-1-01, anat-1-02, …
+- Verdicts are saved on the phone, keyed by question id plus a short fingerprint of its text, choices and answers: when Claude chat changes a question, its old verdict disappears.
+
+**Content without code.**
+- Adding or changing questions, lesson titles and, later, study pages must never require editing code or sw.js.
+- content/ files are fetched network-first, with the cached copy as the offline fallback.
+- Progress is keyed by question id. Ids never change; progress for an id that no longer exists is ignored.
+- Typography is the app's job: when showing content, put a no-break space before ? ! : ; » and after «, so a line never starts with punctuation. The data keeps plain spaces.
+
+**Lesson titles.** A theme in themes.json may have "lessons": [{ "n": 1, "title": "Os et articulations" }]. Show the title on the path and at the top of the lesson; without one, « Leçon N ».
+
+**Automatic checks.**
+- A GitHub Actions workflow runs scripts/check_content.py and scripts/check_offline_list.py on every pull request and every push to main. Tell me what a red cross on a pull request looks like and what to do about it.
+- check_content.py also checks that lesson numbers start at 1 without gaps, that a « Réponse à taper » hint never contains an accepted answer, and that lesson titles match existing lessons (a warning only).
+
+**Tests.** tests/test_reviser.py still assumes the old samples (3 questions per lesson, the samples note). Update it for the real content and the new rules (it must switch Relecture on to see "brouillon" questions), and run it before opening the pull request.
+
+**After Phase 2.** Tell me how to switch on Relecture, check lesson 1 of each theme and send the report to Claude chat.
+
 ## Étudier (Phase 3)
 - A library grouped by the same themes. Each page has a title, reading time, level (Essentiel or Approfondi), short sections, an « À retenir » box, a « Le savais-tu ? » fact, diagrams where they help, « Pour aller plus loin » links to related pages, and « Teste-toi », which starts the questions linked to the page.
 - A « Hors programme » badge marks pages that go beyond the course: discovery, not exam material.
@@ -88,11 +132,11 @@ Views
 - A « Supprimer mon compte » button that deletes the account and its data.
 
 ## Content formats
-I write the real content elsewhere in these exact formats, so keep them. If you need to change one, ask me first.
-- content/themes.json: a list of { "id", "title" } in display order.
-- content/questions.json: a list of questions with id, theme, lesson (number), type ("qcm", "saisie" or "paires"), question, hint, explanation, study (id of a study page, optional), source and status ("exemple" or "verifie"). A qcm also has choices (list) and correct (list of indexes); a saisie has answers (accepted answers, main one first); a paires has pairs (list of [left, right]).
+Claude chat writes the real content in these exact formats, so keep them. If you need to change one, ask me first.
+- content/themes.json: a list of { "id", "title" } in display order, with optional "lessons": a list of { "n", "title" } (lesson number and title).
+- content/questions.json: a list of questions with id, theme, lesson (number), type ("qcm", "saisie" or "paires"), question, hint, explanation, study (id of a study page, optional), source and status ("brouillon": written by Claude chat, not checked yet; "verifie": checked by me, visible to everyone; "exemple": sample). A qcm also has choices (list) and correct (list of indexes); a saisie has answers (accepted answers, main one first); a paires has pairs (list of [left, right]).
 - content/study/index.json: a list of pages with id, theme, title, minutes, level ("essentiel" or "approfondi"), offProgram (true or false), related (list of ids), source and status. Each page's text is content/study/<id>.md, in Markdown.
-- Sample content starts with « [EXEMPLE] » and has status "exemple": 3 questions per theme in Phase 2, 2 pages per theme in Phase 3.
+- Sample content starts with « [EXEMPLE] » and has status "exemple". Réviser has real questions since 6 Nov 2026. In Phase 3, Claude chat provides the real study pages; use 2 sample pages per theme only if they aren't there yet.
 
 ## Phases
 1. App shell (three tabs, design, offline install), Planning, and publishing on GitHub Pages. Réviser and Étudier show « Bientôt » until their phase.
