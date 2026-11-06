@@ -1,0 +1,5209 @@
+{
+ "format": 1,
+ "title": "Planning BPJEPS MAPST 2026-2027",
+ "season": {
+  "start": "2026-09-14",
+  "end": "2027-06-04"
+ },
+ "source": {
+  "planningDate": "2026-10-01",
+  "planningDateLabel": "1er octobre 2026",
+  "sources": [
+   "Planning MAPST de CAPA Sports, version du 1er oct. 2026",
+   "Calendrier BPJEPS MAPST session 1, 2026/2027 (CAPA Sports, déc. 2025) : dossiers, vacances scolaires"
+  ],
+  "corrections": "2026-11-04",
+  "exported": "2026-11-06"
+ },
+ "categories": [
+  {
+   "id": "cours",
+   "name": "Azur",
+   "label": "Cours",
+   "desc": "Cours CAPA, au CAL Nice ou ailleurs"
+  },
+  {
+   "id": "prepa",
+   "name": "Lavande",
+   "label": "Préparation",
+   "desc": "Préparation des épreuves et des rattrapages"
+  },
+  {
+   "id": "centre",
+   "name": "Olivier",
+   "label": "Centre de loisirs",
+   "desc": "Mercredis et périodes MSP au centre de loisirs, avec la Ville de Nice"
+  },
+  {
+   "id": "epreuve",
+   "name": "Bougainvillier",
+   "label": "Épreuve",
+   "desc": "Certifications, rattrapages et dossiers à rendre"
+  },
+  {
+   "id": "libre",
+   "name": "Galet",
+   "label": "Libre",
+   "desc": "Férié, pont, vacances, après-midi libre"
+  },
+  {
+   "id": "perso",
+   "name": "Citron",
+   "label": "Perso",
+   "desc": "Ce que tu ajoutes avec « + », gardé sur ce téléphone"
+  }
+ ],
+ "weeks": [
+  {
+   "monday": "2026-09-14",
+   "number": 1
+  },
+  {
+   "monday": "2026-09-21",
+   "number": 2
+  },
+  {
+   "monday": "2026-09-28",
+   "number": 3
+  },
+  {
+   "monday": "2026-10-05",
+   "number": 4
+  },
+  {
+   "monday": "2026-10-12",
+   "number": 5
+  },
+  {
+   "monday": "2026-10-19",
+   "number": 6
+  },
+  {
+   "monday": "2026-10-26",
+   "number": 7
+  },
+  {
+   "monday": "2026-11-02",
+   "number": 8
+  },
+  {
+   "monday": "2026-11-09",
+   "number": 9
+  },
+  {
+   "monday": "2026-11-16",
+   "number": 10
+  },
+  {
+   "monday": "2026-11-23",
+   "number": 11
+  },
+  {
+   "monday": "2026-11-30",
+   "number": 12
+  },
+  {
+   "monday": "2026-12-07",
+   "number": 13
+  },
+  {
+   "monday": "2026-12-14",
+   "number": 14
+  },
+  {
+   "monday": "2027-01-04",
+   "number": 15
+  },
+  {
+   "monday": "2027-01-11",
+   "number": 16
+  },
+  {
+   "monday": "2027-01-18",
+   "number": 17
+  },
+  {
+   "monday": "2027-01-25",
+   "number": 18
+  },
+  {
+   "monday": "2027-02-01",
+   "number": 19
+  },
+  {
+   "monday": "2027-02-08",
+   "number": 20
+  },
+  {
+   "monday": "2027-02-15",
+   "number": 21
+  },
+  {
+   "monday": "2027-02-22",
+   "number": 22
+  },
+  {
+   "monday": "2027-03-01",
+   "number": 23
+  },
+  {
+   "monday": "2027-03-08",
+   "number": 24
+  },
+  {
+   "monday": "2027-03-15",
+   "number": 25
+  },
+  {
+   "monday": "2027-03-22",
+   "number": 26
+  },
+  {
+   "monday": "2027-03-29",
+   "number": 27
+  },
+  {
+   "monday": "2027-04-05",
+   "number": 28
+  },
+  {
+   "monday": "2027-04-12",
+   "number": 29
+  },
+  {
+   "monday": "2027-04-19",
+   "number": 30
+  },
+  {
+   "monday": "2027-04-26",
+   "number": 31
+  },
+  {
+   "monday": "2027-05-03",
+   "number": 32
+  },
+  {
+   "monday": "2027-05-10",
+   "number": 33
+  },
+  {
+   "monday": "2027-05-17",
+   "number": 34
+  },
+  {
+   "monday": "2027-05-24",
+   "number": 35
+  },
+  {
+   "monday": "2027-05-31",
+   "number": 36
+  }
+ ],
+ "stages": [
+  {
+   "start": "2026-09-14",
+   "end": "2026-10-16",
+   "title": "Cours au CAL",
+   "text": "Fiche de séance et cycle, anatomie, réglementation, sécurité, citoyenneté. EPMSP le 1er octobre.",
+   "cat": "cours"
+  },
+  {
+   "start": "2026-10-19",
+   "end": "2026-10-30",
+   "title": "MSP 1 au centre",
+   "text": "Deux semaines au centre de loisirs, pendant les vacances de la Toussaint.",
+   "cat": "centre"
+  },
+  {
+   "start": "2026-11-02",
+   "end": "2026-11-20",
+   "title": "MSP 1 · Ville de Nice",
+   "text": "D’après le planning officiel : MSP 1 au centre de loisirs, avec la Ville de Nice.",
+   "cat": "centre"
+  },
+  {
+   "start": "2026-11-23",
+   "end": "2026-12-18",
+   "title": "Retour au CAL",
+   "text": "Environnement et APEN, analyse de séance et APEC, jeux sportifs, AJS.",
+   "cat": "cours"
+  },
+  {
+   "start": "2026-12-19",
+   "end": "2027-01-03",
+   "title": "Vacances de Noël",
+   "text": "Pas de formation. Reprise le lundi 4 janvier.",
+   "cat": "libre"
+  },
+  {
+   "start": "2027-01-04",
+   "end": "2027-01-22",
+   "title": "Pleine nature",
+   "text": "Espaces naturels et activités de pleine nature, au CAL.",
+   "cat": "cours"
+  },
+  {
+   "start": "2027-01-25",
+   "end": "2027-01-29",
+   "title": "Handicap & animation",
+   "text": "Lundi et mardi au Bureau Ville de Nice à Arénas, puis au CAL.",
+   "cat": "cours"
+  },
+  {
+   "start": "2027-02-01",
+   "end": "2027-03-05",
+   "title": "MSP 2 au centre",
+   "text": "Cinq semaines au centre de loisirs, vacances d'hiver comprises.",
+   "cat": "centre"
+  },
+  {
+   "start": "2027-03-08",
+   "end": "2027-04-02",
+   "title": "Projet & préparation des BC",
+   "text": "Projet d'animation, communication, création de structure. Dossier BC3 à rendre le 15 mars.",
+   "cat": "cours"
+  },
+  {
+   "start": "2027-04-05",
+   "end": "2027-04-30",
+   "title": "MSP 3 et certification BC3",
+   "text": "Au centre de loisirs : certification BC3 les 7 et 14 avril, puis sur place du 19 au 27.",
+   "cat": "centre"
+  },
+  {
+   "start": "2027-05-03",
+   "end": "2027-05-21",
+   "title": "Certifications",
+   "text": "Rattrapages BC3 le mercredi, BC1 et BC2 les 13 et 14 mai, emploi et CV.",
+   "cat": "epreuve"
+  },
+  {
+   "start": "2027-05-24",
+   "end": "2027-06-04",
+   "title": "Derniers rattrapages",
+   "text": "Préparation, puis rattrapages BC1 et BC2 les 3 et 4 juin. Fin de la formation.",
+   "cat": "cours"
+  }
+ ],
+ "keyDates": [
+  {
+   "date": "2026-10-01",
+   "title": "EPMSP",
+   "cat": "epreuve",
+   "kind": "epreuve"
+  },
+  {
+   "date": "2026-10-15",
+   "title": "Rattrapage EPMSP",
+   "cat": "epreuve",
+   "kind": "epreuve"
+  },
+  {
+   "date": "2026-11-11",
+   "title": "Armistice, férié",
+   "cat": "libre",
+   "kind": "conge"
+  },
+  {
+   "date": "2026-11-23",
+   "title": "Retour au CAL : environnement, puis APEN",
+   "cat": "cours",
+   "kind": "etape"
+  },
+  {
+   "date": "2026-12-19",
+   "title": "Vacances de Noël",
+   "cat": "libre",
+   "end": "2027-01-03",
+   "kind": "conge"
+  },
+  {
+   "date": "2027-01-25",
+   "title": "Intervention handicap à Arénas",
+   "cat": "cours",
+   "end": "2027-01-26",
+   "kind": "etape"
+  },
+  {
+   "date": "2027-02-01",
+   "title": "Début du MSP 2 (5 semaines)",
+   "cat": "centre",
+   "kind": "etape"
+  },
+  {
+   "date": "2027-03-15",
+   "title": "Dossier BC3 à rendre",
+   "cat": "epreuve",
+   "kind": "dossier",
+   "note": "D’après le calendrier de la formation (déc. 2025) : à confirmer avec CAPA."
+  },
+  {
+   "date": "2027-03-19",
+   "title": "Prérequis BC3",
+   "cat": "epreuve",
+   "kind": "dossier",
+   "note": "D’après le calendrier de la formation (déc. 2025) : à confirmer avec CAPA."
+  },
+  {
+   "date": "2027-03-29",
+   "title": "Lundi de Pâques, férié",
+   "cat": "libre",
+   "kind": "conge"
+  },
+  {
+   "date": "2027-04-07",
+   "title": "Certification BC3",
+   "cat": "epreuve",
+   "kind": "epreuve"
+  },
+  {
+   "date": "2027-04-14",
+   "title": "Certification BC3",
+   "cat": "epreuve",
+   "kind": "epreuve"
+  },
+  {
+   "date": "2027-04-19",
+   "title": "MSP 3 et certification BC3 sur place",
+   "cat": "epreuve",
+   "end": "2027-04-27",
+   "kind": "epreuve"
+  },
+  {
+   "date": "2027-04-20",
+   "title": "Dossier BC1-2 à rendre",
+   "cat": "epreuve",
+   "kind": "dossier",
+   "note": "D’après le calendrier de la formation (déc. 2025) : à confirmer avec CAPA."
+  },
+  {
+   "date": "2027-04-28",
+   "title": "Rattrapages BC3 (aussi les 5, 12 et 19 mai)",
+   "cat": "epreuve",
+   "kind": "epreuve"
+  },
+  {
+   "date": "2027-05-06",
+   "title": "Ascension et pont",
+   "cat": "libre",
+   "end": "2027-05-07",
+   "kind": "conge"
+  },
+  {
+   "date": "2027-05-13",
+   "title": "Certifications BC1 et BC2",
+   "cat": "epreuve",
+   "end": "2027-05-14",
+   "kind": "epreuve"
+  },
+  {
+   "date": "2027-05-17",
+   "title": "Lundi de Pentecôte, férié",
+   "cat": "libre",
+   "kind": "conge"
+  },
+  {
+   "date": "2027-06-03",
+   "title": "Rattrapages BC1 et BC2, fin de la formation",
+   "cat": "epreuve",
+   "end": "2027-06-04",
+   "kind": "epreuve"
+  }
+ ],
+ "breaks": [
+  {
+   "start": "2026-12-19",
+   "end": "2027-01-03",
+   "title": "Vacances de Noël"
+  }
+ ],
+ "schoolHolidays": [
+  {
+   "start": "2026-10-17",
+   "end": "2026-11-01",
+   "title": "Vacances de la Toussaint",
+   "zone": "B"
+  },
+  {
+   "start": "2026-12-19",
+   "end": "2027-01-03",
+   "title": "Vacances de Noël",
+   "zone": "B"
+  },
+  {
+   "start": "2027-02-20",
+   "end": "2027-03-07",
+   "title": "Vacances d'hiver",
+   "zone": "B"
+  },
+  {
+   "start": "2027-04-17",
+   "end": "2027-05-02",
+   "title": "Vacances de printemps",
+   "zone": "B"
+  }
+ ],
+ "publicHolidays": [
+  {
+   "date": "2026-11-11",
+   "title": "Armistice"
+  },
+  {
+   "date": "2026-12-25",
+   "title": "Noël"
+  },
+  {
+   "date": "2027-01-01",
+   "title": "Jour de l'an"
+  },
+  {
+   "date": "2027-03-29",
+   "title": "Lundi de Pâques"
+  },
+  {
+   "date": "2027-05-06",
+   "title": "Ascension"
+  },
+  {
+   "date": "2027-05-07",
+   "title": "Pont de l'Ascension"
+  },
+  {
+   "date": "2027-05-17",
+   "title": "Lundi de Pentecôte"
+  }
+ ],
+ "checks": [
+  {
+   "title": "Mercredi 11 novembre",
+   "text": "Le planning indique « MSP », mais c’est un jour férié (Armistice). Affiché comme férié.",
+   "date": "2026-11-11"
+  },
+  {
+   "title": "Semaine du 7 décembre",
+   "text": "Le planning écrit 07/11 → 11/11 par erreur. C'est bien du 7 au 11 décembre."
+  },
+  {
+   "title": "Dossiers BC1-2 et BC3",
+   "text": "Les dates de remise (15 mars, 20 avril) et les prérequis BC3 (19 mars) viennent du calendrier de la formation (déc. 2025), pas du planning de la semaine. À confirmer avec CAPA."
+  },
+  {
+   "title": "Lieux non précisés",
+   "text": "Du 30 nov. au 4 déc. (sauf mercredi), sûrement le CAL Nice. Les après-midi d'APEN des 24 et 26 nov. indiquent le centre de loisirs. Aussi : 2 avril matin, 18 mai après-midi, 20 et 21 mai."
+  }
+ ],
+ "days": {
+  "2026-09-14": {
+   "week": 1,
+   "slots": [
+    {
+     "half": "am",
+     "start": "09:30",
+     "end": "12:00",
+     "cat": "cours",
+     "short": "Accueil",
+     "title": "Accueil et présentation de la formation",
+     "planning": "Accueil + présentation formation",
+     "place": "CAL Nice",
+     "who": "Équipe CAPA"
+    },
+    {
+     "half": "pm",
+     "start": "13:00",
+     "end": "16:00",
+     "cat": "cours",
+     "short": "Administratif",
+     "title": "Démarches administratives",
+     "place": "CAL Nice",
+     "who": "Y.S. + P."
+    }
+   ]
+  },
+  "2026-09-15": {
+   "week": 1,
+   "slots": [
+    {
+     "half": "am",
+     "start": "09:00",
+     "end": "12:00",
+     "cat": "cours",
+     "short": "Fiche découverte",
+     "title": "Construire une fiche de découverte, d'initiation ou d'apprentissage",
+     "planning": "Construction d'1 fiche de découverte d'initiation ou d'apprentissage",
+     "place": "CAL Nice",
+     "who": "Y.S. + P."
+    },
+    {
+     "half": "pm",
+     "start": "13:00",
+     "end": "16:00",
+     "cat": "cours",
+     "short": "Fiche découverte",
+     "title": "Construire une fiche de découverte, d'initiation ou d'apprentissage",
+     "planning": "Construction d'1 fiche de découverte d'initiation ou d'apprentissage",
+     "place": "CAL Nice",
+     "who": "Y.S. + P."
+    }
+   ]
+  },
+  "2026-09-16": {
+   "week": 1,
+   "slots": [
+    {
+     "half": "am",
+     "start": "08:30",
+     "end": "12:30",
+     "cat": "centre",
+     "short": "Centre",
+     "title": "Mercredi au centre de loisirs",
+     "planning": "MSP",
+     "place": "Centre de loisirs",
+     "who": "Ville de Nice"
+    },
+    {
+     "half": "pm",
+     "start": "13:30",
+     "end": "17:00",
+     "cat": "centre",
+     "short": "Centre",
+     "title": "Mercredi au centre de loisirs",
+     "planning": "MSP",
+     "place": "Centre de loisirs",
+     "who": "Ville de Nice"
+    }
+   ]
+  },
+  "2026-09-17": {
+   "week": 1,
+   "slots": [
+    {
+     "half": "am",
+     "start": "09:00",
+     "end": "12:00",
+     "cat": "cours",
+     "short": "Fiche de séance",
+     "title": "Méthodologie de la fiche de séance",
+     "place": "CAL Nice",
+     "who": "Y.S. + P."
+    },
+    {
+     "half": "pm",
+     "start": "13:00",
+     "end": "16:00",
+     "cat": "cours",
+     "short": "Fiche de séance",
+     "title": "Méthodologie de la fiche de séance",
+     "place": "CAL Nice",
+     "who": "Y.S. + P."
+    }
+   ]
+  },
+  "2026-09-18": {
+   "week": 1,
+   "slots": [
+    {
+     "half": "am",
+     "start": "09:00",
+     "end": "12:00",
+     "cat": "cours",
+     "short": "Séance & cycle",
+     "title": "Méthodologie de la fiche de séance et du cycle",
+     "place": "CAL Nice",
+     "who": "Y.S. + P."
+    },
+    {
+     "half": "pm",
+     "start": "13:00",
+     "end": "16:00",
+     "cat": "libre",
+     "short": "Libre",
+     "title": "Après-midi libre",
+     "free": true
+    }
+   ]
+  },
+  "2026-09-21": {
+   "week": 2,
+   "slots": [
+    {
+     "half": "am",
+     "start": "09:00",
+     "end": "12:00",
+     "cat": "cours",
+     "short": "Fiche découverte",
+     "title": "Construire une fiche de découverte, d'initiation ou d'apprentissage",
+     "planning": "Construction d'1 fiche de découverte d'initiation ou d'apprentissage",
+     "place": "CAL Nice",
+     "who": "Y.S. + P."
+    },
+    {
+     "half": "pm",
+     "start": "13:00",
+     "end": "16:00",
+     "cat": "cours",
+     "short": "Séance & cycle",
+     "title": "Principes et méthodes pour élaborer une séance et un cycle de découverte, sensibilisation ou initiation",
+     "planning": "Principes et méthodes d'élaboration d'une séance et d'un cycle de séances, visant la découverte, la sensibilisation ou l'initiation à la pratique d'activités physique et sportive",
+     "place": "CAL Nice",
+     "who": "Y.S. + P."
+    }
+   ]
+  },
+  "2026-09-22": {
+   "week": 2,
+   "slots": [
+    {
+     "half": "am",
+     "start": "09:00",
+     "end": "12:00",
+     "cat": "cours",
+     "short": "Anatomie",
+     "title": "Bases d'anatomie et de physiologie de l'effort",
+     "place": "CAL Nice",
+     "who": "Y.S. + P."
+    },
+    {
+     "half": "pm",
+     "start": "13:00",
+     "end": "16:00",
+     "cat": "cours",
+     "short": "Séance & cycle",
+     "title": "Mise en pratique : élaborer une séance et un cycle de découverte, sensibilisation ou initiation",
+     "planning": "Mise en pratique des principes et méthodes d'élaboration d'une séance et d'un cycle de séances, visant la découverte, la sensibilisation ou l'initiation à la pratique d'activités physiques et sportives",
+     "place": "CAL Nice",
+     "who": "Y.S. + P."
+    }
+   ]
+  },
+  "2026-09-23": {
+   "week": 2,
+   "slots": [
+    {
+     "half": "am",
+     "start": "08:30",
+     "end": "12:30",
+     "cat": "centre",
+     "short": "Centre",
+     "title": "Mercredi au centre de loisirs",
+     "planning": "MSP",
+     "place": "Centre de loisirs",
+     "who": "Ville de Nice"
+    },
+    {
+     "half": "pm",
+     "start": "13:30",
+     "end": "17:00",
+     "cat": "centre",
+     "short": "Centre",
+     "title": "Mercredi au centre de loisirs",
+     "planning": "MSP",
+     "place": "Centre de loisirs",
+     "who": "Ville de Nice"
+    }
+   ]
+  },
+  "2026-09-24": {
+   "week": 2,
+   "slots": [
+    {
+     "half": "am",
+     "start": "09:00",
+     "end": "12:00",
+     "cat": "cours",
+     "short": "Citoyenneté",
+     "title": "Citoyenneté, devenir éducateur : posture, exemplarité, responsabilité, vivre ensemble",
+     "planning": "Citoyenneté, Devenir Educateur: Posture,exemplarité, responsabilité, Le Vivre Ensemble",
+     "place": "CAL Nice",
+     "who": "K.C."
+    },
+    {
+     "half": "pm",
+     "start": "13:00",
+     "end": "16:00",
+     "cat": "cours",
+     "short": "Réglementation",
+     "title": "Réglementation et législation du sport (mention)",
+     "planning": "Réglementation et législation du sport lié à la mention",
+     "place": "CAL Nice",
+     "who": "Y.S. + P."
+    }
+   ]
+  },
+  "2026-09-25": {
+   "week": 2,
+   "slots": [
+    {
+     "half": "am",
+     "start": "09:00",
+     "end": "12:00",
+     "cat": "cours",
+     "short": "Anatomie",
+     "title": "Bases d'anatomie et de physiologie de l'effort",
+     "place": "CAL Nice",
+     "who": "Y.S. + P."
+    },
+    {
+     "half": "pm",
+     "start": "13:00",
+     "end": "16:00",
+     "cat": "libre",
+     "short": "Libre",
+     "title": "Après-midi libre",
+     "free": true
+    }
+   ]
+  },
+  "2026-09-28": {
+   "week": 3,
+   "slots": [
+    {
+     "half": "am",
+     "start": "09:00",
+     "end": "12:00",
+     "cat": "cours",
+     "short": "Réglementation",
+     "title": "Réglementation et législation du sport (mention)",
+     "planning": "Réglementation et législation du sport lié à la mention",
+     "place": "CAL Nice",
+     "who": "Y.S. + P."
+    },
+    {
+     "half": "pm",
+     "start": "13:00",
+     "end": "16:00",
+     "cat": "prepa",
+     "short": "Prépa EPMSP",
+     "title": "Préparation de l'EPMSP",
+     "planning": "Préparation EPMSP",
+     "place": "CAL Nice",
+     "who": "Y.S. + P."
+    }
+   ]
+  },
+  "2026-09-29": {
+   "week": 3,
+   "slots": [
+    {
+     "half": "am",
+     "start": "09:00",
+     "end": "12:00",
+     "cat": "cours",
+     "short": "Techniques & sécurité",
+     "title": "Maîtrise des techniques et conduite professionnelle, règles de sécurité",
+     "planning": "Maîtrise des techniques de conduite professionnelles de la mention en applicant les règles de sécurité",
+     "place": "CAL Nice",
+     "who": "M.C."
+    },
+    {
+     "half": "pm",
+     "start": "13:00",
+     "end": "16:00",
+     "cat": "cours",
+     "short": "Sur le terrain",
+     "title": "Mise en application sur le terrain des cours du matin",
+     "place": "CAL Nice",
+     "who": "M.C."
+    }
+   ]
+  },
+  "2026-09-30": {
+   "week": 3,
+   "slots": [
+    {
+     "half": "am",
+     "start": "08:30",
+     "end": "12:30",
+     "cat": "centre",
+     "short": "Centre",
+     "title": "Mercredi au centre de loisirs",
+     "planning": "MSP",
+     "place": "Centre de loisirs",
+     "who": "Ville de Nice"
+    },
+    {
+     "half": "pm",
+     "start": "13:30",
+     "end": "17:00",
+     "cat": "centre",
+     "short": "Centre",
+     "title": "Mercredi au centre de loisirs",
+     "planning": "MSP",
+     "place": "Centre de loisirs",
+     "who": "Ville de Nice"
+    }
+   ]
+  },
+  "2026-10-01": {
+   "week": 3,
+   "slots": [
+    {
+     "half": "am",
+     "start": "09:00",
+     "end": "12:00",
+     "cat": "epreuve",
+     "short": "EPMSP",
+     "title": "EPMSP · épreuve de mise en situation professionnelle",
+     "planning": "EPMSP",
+     "place": "CAL Nice",
+     "who": "Y.S. + P."
+    },
+    {
+     "half": "pm",
+     "start": "13:00",
+     "end": "16:00",
+     "cat": "epreuve",
+     "short": "EPMSP",
+     "title": "EPMSP · épreuve de mise en situation professionnelle",
+     "planning": "EPMSP",
+     "place": "CAL Nice",
+     "who": "Y.S. + P."
+    }
+   ]
+  },
+  "2026-10-02": {
+   "week": 3,
+   "slots": [
+    {
+     "half": "am",
+     "start": "09:00",
+     "end": "12:00",
+     "cat": "cours",
+     "short": "Séance & cycle",
+     "title": "Mise en pratique de la séance et du cycle",
+     "place": "CAL Nice",
+     "who": "Y.S. + P."
+    },
+    {
+     "half": "pm",
+     "start": "13:00",
+     "end": "16:00",
+     "cat": "libre",
+     "short": "Libre",
+     "title": "Après-midi libre",
+     "free": true
+    }
+   ]
+  },
+  "2026-10-05": {
+   "week": 4,
+   "slots": [
+    {
+     "half": "am",
+     "start": "09:00",
+     "end": "12:00",
+     "cat": "cours",
+     "short": "Entretien corporel",
+     "title": "Fondamentaux de l'initiation aux activités physiques d'entretien corporel (théorie, technique, pédagogie)",
+     "planning": "Connaissance des fondamentaux théoriques techniques/pratique/démarc hes pédagogiques d'initiation aux activités physiques d'entretien corporel",
+     "place": "CAL Nice",
+     "who": "Y.S. + P."
+    },
+    {
+     "half": "pm",
+     "start": "13:00",
+     "end": "16:00",
+     "cat": "prepa",
+     "short": "Prépa ratt. EPMSP",
+     "title": "Préparation du rattrapage EPMSP",
+     "planning": "Préparation rattrapage EPMSP",
+     "place": "CAL Nice",
+     "who": "Y.S. + P."
+    }
+   ]
+  },
+  "2026-10-06": {
+   "week": 4,
+   "slots": [
+    {
+     "half": "am",
+     "start": "09:00",
+     "end": "12:00",
+     "cat": "cours",
+     "short": "Analyse de séance",
+     "title": "Technique d'analyse d'une séance",
+     "planning": "Technique analyse d'une séance",
+     "place": "CAL Nice",
+     "who": "Y.S."
+    },
+    {
+     "half": "pm",
+     "start": "13:00",
+     "end": "16:00",
+     "cat": "cours",
+     "short": "Pratique AEC",
+     "title": "Pratique des AEC (activités d'entretien corporel)",
+     "planning": "Pratique des AEC",
+     "place": "CAL Nice",
+     "who": "Y.S. + P."
+    }
+   ]
+  },
+  "2026-10-07": {
+   "week": 4,
+   "slots": [
+    {
+     "half": "am",
+     "start": "08:30",
+     "end": "12:30",
+     "cat": "centre",
+     "short": "Centre",
+     "title": "Mercredi au centre de loisirs",
+     "planning": "MSP",
+     "place": "Centre de loisirs",
+     "who": "Ville de Nice"
+    },
+    {
+     "half": "pm",
+     "start": "13:30",
+     "end": "17:00",
+     "cat": "centre",
+     "short": "Centre",
+     "title": "Mercredi au centre de loisirs",
+     "planning": "MSP",
+     "place": "Centre de loisirs",
+     "who": "Ville de Nice"
+    }
+   ]
+  },
+  "2026-10-08": {
+   "week": 4,
+   "slots": [
+    {
+     "half": "am",
+     "start": "09:00",
+     "end": "12:00",
+     "cat": "cours",
+     "short": "Pratique AEC",
+     "title": "Pratique des AEC (activités d'entretien corporel)",
+     "planning": "Pratique des AEC",
+     "place": "CAL Nice",
+     "who": "Y.S. + P."
+    },
+    {
+     "half": "pm",
+     "start": "13:00",
+     "end": "16:00",
+     "cat": "cours",
+     "short": "Pratique AEC",
+     "title": "Pratique des AEC (activités d'entretien corporel)",
+     "planning": "Pratique des AEC",
+     "place": "CAL Nice",
+     "who": "Y.S. + P."
+    }
+   ]
+  },
+  "2026-10-09": {
+   "week": 4,
+   "slots": [
+    {
+     "half": "am",
+     "start": "09:00",
+     "end": "12:00",
+     "cat": "cours",
+     "short": "Laïcité & égalité",
+     "title": "Laïcité, égalité, violences et non-discrimination",
+     "planning": "Laïcité,Egalité,Violences et non-discrimination",
+     "place": "CAL Nice",
+     "who": "K.C."
+    },
+    {
+     "half": "pm",
+     "start": "13:00",
+     "end": "16:00",
+     "cat": "libre",
+     "short": "Libre",
+     "title": "Après-midi libre",
+     "free": true
+    }
+   ]
+  },
+  "2026-10-12": {
+   "week": 5,
+   "slots": [
+    {
+     "half": "am",
+     "start": "09:00",
+     "end": "12:00",
+     "cat": "cours",
+     "short": "Incivilités",
+     "title": "Incivilités, conflits, violences et harcèlement",
+     "planning": "Incivilités,Conflits,Violences et Harcèlement",
+     "place": "CAL Nice",
+     "who": "K.C."
+    },
+    {
+     "half": "pm",
+     "start": "13:00",
+     "end": "16:00",
+     "cat": "prepa",
+     "short": "Prépa ratt. + EAPS",
+     "title": "Préparation du rattrapage EPMSP · télédéclaration EAPS",
+     "planning": "Préparation ratt EPMSP + démarche administrative pour la télédéclaration EAPS",
+     "place": "CAL Nice",
+     "who": "Y.S. + P."
+    }
+   ]
+  },
+  "2026-10-13": {
+   "week": 5,
+   "slots": [
+    {
+     "half": "am",
+     "start": "09:00",
+     "end": "12:00",
+     "cat": "cours",
+     "short": "Situations sensibles",
+     "title": "Situations sensibles et professionnalisation",
+     "planning": "Situations sensibles et professionalisation",
+     "place": "CAL Nice",
+     "who": "K.C."
+    },
+    {
+     "half": "pm",
+     "start": "13:00",
+     "end": "16:00",
+     "cat": "cours",
+     "short": "Techniques & sécurité",
+     "title": "Théorie et pratique : techniques, conduite professionnelle, sécurité",
+     "planning": "Théorie et Pratique sur la maîtrise des techniques et de conduite professionnelle de la mention en applicant les règles de sécurité",
+     "place": "CAL Nice",
+     "who": "Y.S. + P."
+    }
+   ]
+  },
+  "2026-10-14": {
+   "week": 5,
+   "slots": [
+    {
+     "half": "am",
+     "start": "08:30",
+     "end": "12:30",
+     "cat": "centre",
+     "short": "Centre",
+     "title": "Mercredi au centre de loisirs",
+     "planning": "MSP",
+     "place": "Centre de loisirs",
+     "who": "Ville de Nice"
+    },
+    {
+     "half": "pm",
+     "start": "13:30",
+     "end": "17:00",
+     "cat": "centre",
+     "short": "Centre",
+     "title": "Mercredi au centre de loisirs",
+     "planning": "MSP",
+     "place": "Centre de loisirs",
+     "who": "Ville de Nice"
+    }
+   ]
+  },
+  "2026-10-15": {
+   "week": 5,
+   "slots": [
+    {
+     "half": "am",
+     "start": "09:00",
+     "end": "12:00",
+     "cat": "epreuve",
+     "short": "Ratt. EPMSP",
+     "title": "Rattrapage de l'EPMSP",
+     "planning": "Rattrapage EPMSP",
+     "place": "CAL Nice",
+     "who": "Y.S. + P."
+    },
+    {
+     "half": "pm",
+     "start": "13:00",
+     "end": "16:00",
+     "cat": "epreuve",
+     "short": "Ratt. EPMSP",
+     "title": "Rattrapage de l'EPMSP",
+     "planning": "Rattrapage EPMSP",
+     "place": "CAL Nice",
+     "who": "Y.S. + P."
+    }
+   ]
+  },
+  "2026-10-16": {
+   "week": 5,
+   "slots": [
+    {
+     "half": "am",
+     "start": "09:00",
+     "end": "12:00",
+     "cat": "cours",
+     "short": "Séance + EAPS",
+     "title": "Mise en pratique de la séance et du cycle · télédéclaration EAPS",
+     "planning": "Mise en pratique des connaissances théoriques de la séance et du cycle + démarche administrative pour la télédéclaration EAPS",
+     "place": "CAL Nice",
+     "who": "Y.S. + P."
+    },
+    {
+     "half": "pm",
+     "start": "13:00",
+     "end": "16:00",
+     "cat": "libre",
+     "short": "Libre",
+     "title": "Après-midi libre",
+     "free": true
+    }
+   ]
+  },
+  "2026-10-19": {
+   "week": 6,
+   "slots": [
+    {
+     "half": "am",
+     "start": "09:00",
+     "end": "12:00",
+     "cat": "centre",
+     "short": "MSP 1",
+     "title": "MSP 1 au centre de loisirs",
+     "planning": "MSP 1",
+     "place": "Centre de loisirs",
+     "who": "Ville de Nice"
+    },
+    {
+     "half": "pm",
+     "start": "13:00",
+     "end": "16:00",
+     "cat": "centre",
+     "short": "MSP 1",
+     "title": "MSP 1 au centre de loisirs",
+     "planning": "MSP 1",
+     "place": "Centre de loisirs",
+     "who": "Ville de Nice"
+    }
+   ]
+  },
+  "2026-10-20": {
+   "week": 6,
+   "slots": [
+    {
+     "half": "am",
+     "start": "09:00",
+     "end": "12:00",
+     "cat": "centre",
+     "short": "MSP 1",
+     "title": "MSP 1 au centre de loisirs",
+     "planning": "MSP 1",
+     "place": "Centre de loisirs",
+     "who": "Ville de Nice"
+    },
+    {
+     "half": "pm",
+     "start": "13:00",
+     "end": "16:00",
+     "cat": "centre",
+     "short": "MSP 1",
+     "title": "MSP 1 au centre de loisirs",
+     "planning": "MSP 1",
+     "place": "Centre de loisirs",
+     "who": "Ville de Nice"
+    }
+   ]
+  },
+  "2026-10-21": {
+   "week": 6,
+   "slots": [
+    {
+     "half": "am",
+     "start": "08:30",
+     "end": "12:30",
+     "cat": "centre",
+     "short": "MSP 1",
+     "title": "MSP 1 au centre de loisirs",
+     "planning": "MSP 1",
+     "place": "Centre de loisirs",
+     "who": "Ville de Nice"
+    },
+    {
+     "half": "pm",
+     "start": "13:30",
+     "end": "17:00",
+     "cat": "centre",
+     "short": "MSP 1",
+     "title": "MSP 1 au centre de loisirs",
+     "planning": "MSP 1",
+     "place": "Centre de loisirs",
+     "who": "Ville de Nice"
+    }
+   ]
+  },
+  "2026-10-22": {
+   "week": 6,
+   "slots": [
+    {
+     "half": "am",
+     "start": "09:00",
+     "end": "12:00",
+     "cat": "centre",
+     "short": "MSP 1",
+     "title": "MSP 1 au centre de loisirs",
+     "planning": "MSP 1",
+     "place": "Centre de loisirs",
+     "who": "Ville de Nice"
+    },
+    {
+     "half": "pm",
+     "start": "13:00",
+     "end": "16:00",
+     "cat": "centre",
+     "short": "MSP 1",
+     "title": "MSP 1 au centre de loisirs",
+     "planning": "MSP 1",
+     "place": "Centre de loisirs",
+     "who": "Ville de Nice"
+    }
+   ]
+  },
+  "2026-10-23": {
+   "week": 6,
+   "slots": [
+    {
+     "half": "am",
+     "start": "09:00",
+     "end": "12:00",
+     "cat": "centre",
+     "short": "MSP 1",
+     "title": "MSP 1 au centre de loisirs",
+     "planning": "MSP 1",
+     "place": "Centre de loisirs",
+     "who": "Ville de Nice"
+    },
+    {
+     "half": "pm",
+     "start": "13:00",
+     "end": "16:00",
+     "cat": "centre",
+     "short": "MSP 1",
+     "title": "MSP 1 au centre de loisirs",
+     "planning": "MSP 1",
+     "place": "Centre de loisirs",
+     "who": "Ville de Nice"
+    }
+   ]
+  },
+  "2026-10-26": {
+   "week": 7,
+   "slots": [
+    {
+     "half": "am",
+     "start": "09:00",
+     "end": "12:00",
+     "cat": "centre",
+     "short": "MSP 1",
+     "title": "MSP 1 au centre de loisirs",
+     "planning": "MSP 1",
+     "place": "Centre de loisirs",
+     "who": "Ville de Nice"
+    },
+    {
+     "half": "pm",
+     "start": "13:00",
+     "end": "16:00",
+     "cat": "centre",
+     "short": "MSP 1",
+     "title": "MSP 1 au centre de loisirs",
+     "planning": "MSP 1",
+     "place": "Centre de loisirs",
+     "who": "Ville de Nice"
+    }
+   ]
+  },
+  "2026-10-27": {
+   "week": 7,
+   "slots": [
+    {
+     "half": "am",
+     "start": "09:00",
+     "end": "12:00",
+     "cat": "centre",
+     "short": "MSP 1",
+     "title": "MSP 1 au centre de loisirs",
+     "planning": "MSP 1",
+     "place": "Centre de loisirs",
+     "who": "Ville de Nice"
+    },
+    {
+     "half": "pm",
+     "start": "13:00",
+     "end": "16:00",
+     "cat": "centre",
+     "short": "MSP 1",
+     "title": "MSP 1 au centre de loisirs",
+     "planning": "MSP 1",
+     "place": "Centre de loisirs",
+     "who": "Ville de Nice"
+    }
+   ]
+  },
+  "2026-10-28": {
+   "week": 7,
+   "slots": [
+    {
+     "half": "am",
+     "start": "08:30",
+     "end": "12:30",
+     "cat": "centre",
+     "short": "MSP 1",
+     "title": "MSP 1 au centre de loisirs",
+     "planning": "MSP 1",
+     "place": "Centre de loisirs",
+     "who": "Ville de Nice"
+    },
+    {
+     "half": "pm",
+     "start": "13:30",
+     "end": "17:00",
+     "cat": "centre",
+     "short": "MSP 1",
+     "title": "MSP 1 au centre de loisirs",
+     "planning": "MSP 1",
+     "place": "Centre de loisirs",
+     "who": "Ville de Nice"
+    }
+   ]
+  },
+  "2026-10-29": {
+   "week": 7,
+   "slots": [
+    {
+     "half": "am",
+     "start": "09:00",
+     "end": "12:00",
+     "cat": "centre",
+     "short": "MSP 1",
+     "title": "MSP 1 au centre de loisirs",
+     "planning": "MSP 1",
+     "place": "Centre de loisirs",
+     "who": "Ville de Nice"
+    },
+    {
+     "half": "pm",
+     "start": "13:00",
+     "end": "16:00",
+     "cat": "centre",
+     "short": "MSP 1",
+     "title": "MSP 1 au centre de loisirs",
+     "planning": "MSP 1",
+     "place": "Centre de loisirs",
+     "who": "Ville de Nice"
+    }
+   ]
+  },
+  "2026-10-30": {
+   "week": 7,
+   "slots": [
+    {
+     "half": "am",
+     "start": "09:00",
+     "end": "12:00",
+     "cat": "centre",
+     "short": "MSP 1",
+     "title": "MSP 1 au centre de loisirs",
+     "planning": "MSP 1",
+     "place": "Centre de loisirs",
+     "who": "Ville de Nice"
+    },
+    {
+     "half": "pm",
+     "start": "13:00",
+     "end": "16:00",
+     "cat": "centre",
+     "short": "MSP 1",
+     "title": "MSP 1 au centre de loisirs",
+     "planning": "MSP 1",
+     "place": "Centre de loisirs",
+     "who": "Ville de Nice"
+    }
+   ]
+  },
+  "2026-11-02": {
+   "week": 8,
+   "slots": [
+    {
+     "half": "am",
+     "start": "09:00",
+     "end": "12:00",
+     "cat": "centre",
+     "short": "MSP 1",
+     "title": "MSP 1 au centre de loisirs",
+     "planning": "MSP 1",
+     "place": "Centre de loisirs",
+     "who": "Ville de Nice"
+    },
+    {
+     "half": "pm",
+     "start": "13:00",
+     "end": "16:00",
+     "cat": "centre",
+     "short": "MSP 1",
+     "title": "MSP 1 au centre de loisirs",
+     "planning": "MSP 1",
+     "place": "Centre de loisirs",
+     "who": "Ville de Nice"
+    }
+   ]
+  },
+  "2026-11-03": {
+   "week": 8,
+   "slots": [
+    {
+     "half": "am",
+     "start": "09:00",
+     "end": "12:00",
+     "cat": "centre",
+     "short": "MSP 1",
+     "title": "MSP 1 au centre de loisirs",
+     "planning": "MSP 1",
+     "place": "Centre de loisirs",
+     "who": "Ville de Nice"
+    },
+    {
+     "half": "pm",
+     "start": "13:00",
+     "end": "16:00",
+     "cat": "centre",
+     "short": "MSP 1",
+     "title": "MSP 1 au centre de loisirs",
+     "planning": "MSP 1",
+     "place": "Centre de loisirs",
+     "who": "Ville de Nice"
+    }
+   ]
+  },
+  "2026-11-04": {
+   "week": 8,
+   "slots": [
+    {
+     "half": "am",
+     "start": "08:30",
+     "end": "12:30",
+     "cat": "centre",
+     "short": "Centre",
+     "title": "Mercredi au centre de loisirs",
+     "planning": "MSP",
+     "place": "Centre de loisirs",
+     "who": "Ville de Nice"
+    },
+    {
+     "half": "pm",
+     "start": "13:30",
+     "end": "17:00",
+     "cat": "centre",
+     "short": "Centre",
+     "title": "Mercredi au centre de loisirs",
+     "planning": "MSP",
+     "place": "Centre de loisirs",
+     "who": "Ville de Nice"
+    }
+   ]
+  },
+  "2026-11-05": {
+   "week": 8,
+   "slots": [
+    {
+     "half": "am",
+     "start": "09:00",
+     "end": "12:00",
+     "cat": "centre",
+     "short": "MSP 1",
+     "title": "MSP 1 au centre de loisirs",
+     "planning": "MSP 1",
+     "place": "Centre de loisirs",
+     "who": "Ville de Nice"
+    },
+    {
+     "half": "pm",
+     "start": "13:00",
+     "end": "16:00",
+     "cat": "centre",
+     "short": "MSP 1",
+     "title": "MSP 1 au centre de loisirs",
+     "planning": "MSP 1",
+     "place": "Centre de loisirs",
+     "who": "Ville de Nice"
+    }
+   ]
+  },
+  "2026-11-06": {
+   "week": 8,
+   "slots": [
+    {
+     "half": "am",
+     "start": "09:00",
+     "end": "12:00",
+     "cat": "centre",
+     "short": "MSP 1",
+     "title": "MSP 1 au centre de loisirs",
+     "planning": "MSP 1",
+     "place": "Centre de loisirs",
+     "who": "Ville de Nice"
+    },
+    {
+     "half": "pm",
+     "start": "13:00",
+     "end": "16:00",
+     "cat": "centre",
+     "short": "MSP 1",
+     "title": "MSP 1 au centre de loisirs",
+     "planning": "MSP 1",
+     "place": "Centre de loisirs",
+     "who": "Ville de Nice"
+    }
+   ]
+  },
+  "2026-11-09": {
+   "week": 9,
+   "slots": [
+    {
+     "half": "am",
+     "start": "09:00",
+     "end": "12:00",
+     "cat": "centre",
+     "short": "MSP 1",
+     "title": "MSP 1 au centre de loisirs",
+     "planning": "MSP 1",
+     "place": "Centre de loisirs",
+     "who": "Ville de Nice"
+    },
+    {
+     "half": "pm",
+     "start": "13:00",
+     "end": "16:00",
+     "cat": "centre",
+     "short": "MSP 1",
+     "title": "MSP 1 au centre de loisirs",
+     "planning": "MSP 1",
+     "place": "Centre de loisirs",
+     "who": "Ville de Nice"
+    }
+   ]
+  },
+  "2026-11-10": {
+   "week": 9,
+   "slots": [
+    {
+     "half": "am",
+     "start": "09:00",
+     "end": "12:00",
+     "cat": "centre",
+     "short": "MSP 1",
+     "title": "MSP 1 au centre de loisirs",
+     "planning": "MSP 1",
+     "place": "Centre de loisirs",
+     "who": "Ville de Nice"
+    },
+    {
+     "half": "pm",
+     "start": "13:00",
+     "end": "16:00",
+     "cat": "centre",
+     "short": "MSP 1",
+     "title": "MSP 1 au centre de loisirs",
+     "planning": "MSP 1",
+     "place": "Centre de loisirs",
+     "who": "Ville de Nice"
+    }
+   ]
+  },
+  "2026-11-11": {
+   "week": 9,
+   "slots": [],
+   "holiday": "Armistice"
+  },
+  "2026-11-12": {
+   "week": 9,
+   "slots": [
+    {
+     "half": "am",
+     "start": "09:00",
+     "end": "12:00",
+     "cat": "centre",
+     "short": "MSP 1",
+     "title": "MSP 1 au centre de loisirs",
+     "planning": "MSP 1",
+     "place": "Centre de loisirs",
+     "who": "Ville de Nice"
+    },
+    {
+     "half": "pm",
+     "start": "13:00",
+     "end": "16:00",
+     "cat": "centre",
+     "short": "MSP 1",
+     "title": "MSP 1 au centre de loisirs",
+     "planning": "MSP 1",
+     "place": "Centre de loisirs",
+     "who": "Ville de Nice"
+    }
+   ]
+  },
+  "2026-11-13": {
+   "week": 9,
+   "slots": [
+    {
+     "half": "am",
+     "start": "09:00",
+     "end": "12:00",
+     "cat": "centre",
+     "short": "MSP 1",
+     "title": "MSP 1 au centre de loisirs",
+     "planning": "MSP 1",
+     "place": "Centre de loisirs",
+     "who": "Ville de Nice"
+    },
+    {
+     "half": "pm",
+     "start": "13:00",
+     "end": "16:00",
+     "cat": "libre",
+     "short": "Libre",
+     "title": "Après-midi libre",
+     "free": true
+    }
+   ]
+  },
+  "2026-11-16": {
+   "week": 10,
+   "slots": [
+    {
+     "half": "am",
+     "start": "09:00",
+     "end": "12:00",
+     "cat": "centre",
+     "short": "MSP 1",
+     "title": "MSP 1 au centre de loisirs",
+     "planning": "MSP 1",
+     "place": "Centre de loisirs",
+     "who": "Ville de Nice"
+    },
+    {
+     "half": "pm",
+     "start": "13:00",
+     "end": "16:00",
+     "cat": "centre",
+     "short": "MSP 1",
+     "title": "MSP 1 au centre de loisirs",
+     "planning": "MSP 1",
+     "place": "Centre de loisirs",
+     "who": "Ville de Nice"
+    }
+   ]
+  },
+  "2026-11-17": {
+   "week": 10,
+   "slots": [
+    {
+     "half": "am",
+     "start": "09:00",
+     "end": "12:00",
+     "cat": "centre",
+     "short": "MSP 1",
+     "title": "MSP 1 au centre de loisirs",
+     "planning": "MSP 1",
+     "place": "Centre de loisirs",
+     "who": "Ville de Nice"
+    },
+    {
+     "half": "pm",
+     "start": "13:00",
+     "end": "16:00",
+     "cat": "centre",
+     "short": "MSP 1",
+     "title": "MSP 1 au centre de loisirs",
+     "planning": "MSP 1",
+     "place": "Centre de loisirs",
+     "who": "Ville de Nice"
+    }
+   ]
+  },
+  "2026-11-18": {
+   "week": 10,
+   "slots": [
+    {
+     "half": "am",
+     "start": "08:30",
+     "end": "12:30",
+     "cat": "centre",
+     "short": "Centre",
+     "title": "Mercredi au centre de loisirs",
+     "planning": "MSP",
+     "place": "Centre de loisirs",
+     "who": "Ville de Nice"
+    },
+    {
+     "half": "pm",
+     "start": "13:30",
+     "end": "17:00",
+     "cat": "centre",
+     "short": "Centre",
+     "title": "Mercredi au centre de loisirs",
+     "planning": "MSP",
+     "place": "Centre de loisirs",
+     "who": "Ville de Nice"
+    }
+   ]
+  },
+  "2026-11-19": {
+   "week": 10,
+   "slots": [
+    {
+     "half": "am",
+     "start": "09:00",
+     "end": "12:00",
+     "cat": "centre",
+     "short": "MSP 1",
+     "title": "MSP 1 au centre de loisirs",
+     "planning": "MSP 1",
+     "place": "Centre de loisirs",
+     "who": "Ville de Nice"
+    },
+    {
+     "half": "pm",
+     "start": "13:00",
+     "end": "16:00",
+     "cat": "centre",
+     "short": "MSP 1",
+     "title": "MSP 1 au centre de loisirs",
+     "planning": "MSP 1",
+     "place": "Centre de loisirs",
+     "who": "Ville de Nice"
+    }
+   ]
+  },
+  "2026-11-20": {
+   "week": 10,
+   "slots": [
+    {
+     "half": "am",
+     "start": "09:00",
+     "end": "12:00",
+     "cat": "centre",
+     "short": "MSP 1",
+     "title": "MSP 1 au centre de loisirs",
+     "planning": "MSP 1",
+     "place": "Centre de loisirs",
+     "who": "Ville de Nice"
+    },
+    {
+     "half": "pm",
+     "start": "13:00",
+     "end": "16:00",
+     "cat": "libre",
+     "short": "Libre",
+     "title": "Après-midi libre",
+     "free": true
+    }
+   ]
+  },
+  "2026-11-23": {
+   "week": 11,
+   "slots": [
+    {
+     "half": "am",
+     "start": "09:00",
+     "end": "12:00",
+     "cat": "cours",
+     "short": "Environnement",
+     "title": "Sensibilisation environnementale",
+     "place": "CAL Nice",
+     "who": "B."
+    },
+    {
+     "half": "pm",
+     "start": "13:00",
+     "end": "16:00",
+     "cat": "cours",
+     "short": "Environnement",
+     "title": "Sensibilisation environnementale",
+     "place": "CAL Nice",
+     "who": "B."
+    }
+   ]
+  },
+  "2026-11-24": {
+   "week": 11,
+   "slots": [
+    {
+     "half": "am",
+     "start": "09:00",
+     "end": "12:00",
+     "cat": "cours",
+     "short": "APEN",
+     "title": "APEN · activités physiques en espace naturel",
+     "planning": "APEN",
+     "place": "CAL Nice",
+     "who": "M.C."
+    },
+    {
+     "half": "pm",
+     "start": "13:00",
+     "end": "16:00",
+     "cat": "cours",
+     "short": "APEN",
+     "title": "APEN · activités physiques en espace naturel",
+     "planning": "APEN",
+     "place": "Centre de loisirs",
+     "who": "M.C.",
+     "check": true,
+     "note": "Le planning indique le centre de loisirs pour cet après-midi d'APEN : à vérifier."
+    }
+   ]
+  },
+  "2026-11-25": {
+   "week": 11,
+   "slots": [
+    {
+     "half": "am",
+     "start": "08:30",
+     "end": "12:30",
+     "cat": "centre",
+     "short": "Centre",
+     "title": "Mercredi au centre de loisirs",
+     "planning": "MSP",
+     "place": "Centre de loisirs",
+     "who": "Ville de Nice"
+    },
+    {
+     "half": "pm",
+     "start": "13:30",
+     "end": "17:00",
+     "cat": "centre",
+     "short": "MSP 1",
+     "title": "MSP 1 au centre de loisirs",
+     "planning": "MSP1",
+     "place": "Centre de loisirs",
+     "who": "Ville de Nice"
+    }
+   ]
+  },
+  "2026-11-26": {
+   "week": 11,
+   "slots": [
+    {
+     "half": "am",
+     "start": "09:00",
+     "end": "12:00",
+     "cat": "cours",
+     "short": "APEN",
+     "title": "APEN · activités physiques en espace naturel",
+     "planning": "APEN",
+     "place": "CAL Nice",
+     "who": "M.C."
+    },
+    {
+     "half": "pm",
+     "start": "13:00",
+     "end": "16:00",
+     "cat": "cours",
+     "short": "APEN",
+     "title": "APEN · activités physiques en espace naturel",
+     "planning": "APEN",
+     "place": "Centre de loisirs",
+     "who": "M.C.",
+     "check": true,
+     "note": "Le planning indique le centre de loisirs pour cet après-midi d'APEN : à vérifier."
+    }
+   ]
+  },
+  "2026-11-27": {
+   "week": 11,
+   "slots": [
+    {
+     "half": "am",
+     "start": "09:00",
+     "end": "12:00",
+     "cat": "cours",
+     "short": "APEN",
+     "title": "APEN · activités physiques en espace naturel",
+     "planning": "APEN",
+     "place": "CAL Nice",
+     "who": "M.C."
+    },
+    {
+     "half": "pm",
+     "start": "13:00",
+     "end": "16:00",
+     "cat": "libre",
+     "short": "Libre",
+     "title": "Après-midi libre",
+     "free": true
+    }
+   ]
+  },
+  "2026-11-30": {
+   "week": 12,
+   "slots": [
+    {
+     "half": "am",
+     "start": "09:00",
+     "end": "12:00",
+     "cat": "cours",
+     "short": "Analyse de séance",
+     "title": "Technique d'analyse d'une séance",
+     "planning": "Technique analyse d'1 séance",
+     "who": "Y.S.",
+     "check": true,
+     "note": "Lieu non précisé dans le planning (sûrement le CAL Nice)."
+    },
+    {
+     "half": "pm",
+     "start": "13:00",
+     "end": "16:00",
+     "cat": "cours",
+     "short": "Analyse de séance",
+     "title": "Technique d'analyse d'une séance",
+     "planning": "Technique analyse d'1 séance",
+     "who": "Y.S.",
+     "check": true,
+     "note": "Lieu non précisé dans le planning (sûrement le CAL Nice)."
+    }
+   ]
+  },
+  "2026-12-01": {
+   "week": 12,
+   "slots": [
+    {
+     "half": "am",
+     "start": "09:00",
+     "end": "12:00",
+     "cat": "cours",
+     "short": "APEC",
+     "title": "APEC · activités physiques d'entretien corporel",
+     "planning": "APEC",
+     "who": "Y.S.",
+     "check": true,
+     "note": "Lieu non précisé dans le planning (sûrement le CAL Nice)."
+    },
+    {
+     "half": "pm",
+     "start": "13:00",
+     "end": "16:00",
+     "cat": "cours",
+     "short": "APEC",
+     "title": "APEC · activités physiques d'entretien corporel",
+     "planning": "APEC",
+     "who": "Y.S.",
+     "check": true,
+     "note": "Lieu non précisé dans le planning (sûrement le CAL Nice)."
+    }
+   ]
+  },
+  "2026-12-02": {
+   "week": 12,
+   "slots": [
+    {
+     "half": "am",
+     "start": "08:30",
+     "end": "12:30",
+     "cat": "centre",
+     "short": "Centre",
+     "title": "Mercredi au centre de loisirs",
+     "planning": "MSP",
+     "place": "Centre de loisirs",
+     "who": "Ville de Nice"
+    },
+    {
+     "half": "pm",
+     "start": "13:30",
+     "end": "17:00",
+     "cat": "centre",
+     "short": "Centre",
+     "title": "Mercredi au centre de loisirs",
+     "planning": "MSP",
+     "place": "Centre de loisirs",
+     "who": "Ville de Nice"
+    }
+   ]
+  },
+  "2026-12-03": {
+   "week": 12,
+   "slots": [
+    {
+     "half": "am",
+     "start": "09:00",
+     "end": "12:00",
+     "cat": "cours",
+     "short": "APEC",
+     "title": "APEC · activités physiques d'entretien corporel",
+     "planning": "APEC",
+     "who": "Y.S.",
+     "check": true,
+     "note": "Lieu non précisé dans le planning (sûrement le CAL Nice)."
+    },
+    {
+     "half": "pm",
+     "start": "13:00",
+     "end": "16:00",
+     "cat": "cours",
+     "short": "APEC",
+     "title": "APEC · activités physiques d'entretien corporel",
+     "planning": "APEC",
+     "who": "Y.S.",
+     "check": true,
+     "note": "Lieu non précisé dans le planning (sûrement le CAL Nice)."
+    }
+   ]
+  },
+  "2026-12-04": {
+   "week": 12,
+   "slots": [
+    {
+     "half": "am",
+     "start": "09:00",
+     "end": "12:00",
+     "cat": "cours",
+     "short": "APEC",
+     "title": "APEC · activités physiques d'entretien corporel",
+     "planning": "APEC",
+     "who": "Y.S.",
+     "check": true,
+     "note": "Lieu non précisé dans le planning (sûrement le CAL Nice)."
+    },
+    {
+     "half": "pm",
+     "start": "13:00",
+     "end": "16:00",
+     "cat": "libre",
+     "short": "Libre",
+     "title": "Après-midi libre",
+     "free": true
+    }
+   ]
+  },
+  "2026-12-07": {
+   "week": 13,
+   "slots": [
+    {
+     "half": "am",
+     "start": "09:00",
+     "end": "12:00",
+     "cat": "cours",
+     "short": "Jeux sportifs",
+     "title": "Conception de séances de jeux sportifs",
+     "planning": "Conception séance jeux sportifs",
+     "place": "CAL Nice",
+     "who": "Y.S."
+    },
+    {
+     "half": "pm",
+     "start": "13:00",
+     "end": "16:00",
+     "cat": "cours",
+     "short": "Jeux sportifs",
+     "title": "Conception de séances de jeux sportifs",
+     "planning": "Conception séance jeux sportifs",
+     "place": "CAL Nice",
+     "who": "Y.S."
+    }
+   ]
+  },
+  "2026-12-08": {
+   "week": 13,
+   "slots": [
+    {
+     "half": "am",
+     "start": "09:00",
+     "end": "12:00",
+     "cat": "cours",
+     "short": "Pratique APEC",
+     "title": "Pratique des activités physiques d'entretien corporel",
+     "planning": "Pratique APEC",
+     "place": "CAL Nice",
+     "who": "Y.S."
+    },
+    {
+     "half": "pm",
+     "start": "13:00",
+     "end": "16:00",
+     "cat": "cours",
+     "short": "Pratique APEC",
+     "title": "Pratique des activités physiques d'entretien corporel",
+     "planning": "Pratique APEC",
+     "place": "CAL Nice",
+     "who": "Y.S."
+    }
+   ]
+  },
+  "2026-12-09": {
+   "week": 13,
+   "slots": [
+    {
+     "half": "am",
+     "start": "08:30",
+     "end": "12:30",
+     "cat": "centre",
+     "short": "MSP 1",
+     "title": "MSP 1 au centre de loisirs",
+     "planning": "MSP1",
+     "place": "Centre de loisirs",
+     "who": "Ville de Nice"
+    },
+    {
+     "half": "pm",
+     "start": "13:30",
+     "end": "17:00",
+     "cat": "centre",
+     "short": "MSP 1",
+     "title": "MSP 1 au centre de loisirs",
+     "planning": "MSP1",
+     "place": "Centre de loisirs",
+     "who": "Ville de Nice"
+    }
+   ]
+  },
+  "2026-12-10": {
+   "week": 13,
+   "slots": [
+    {
+     "half": "am",
+     "start": "09:00",
+     "end": "12:00",
+     "cat": "cours",
+     "short": "Pratique APEC",
+     "title": "Pratique des activités physiques d'entretien corporel",
+     "planning": "Pratique APEC",
+     "place": "CAL Nice",
+     "who": "Y.S."
+    },
+    {
+     "half": "pm",
+     "start": "13:00",
+     "end": "16:00",
+     "cat": "cours",
+     "short": "Pratique APEC",
+     "title": "Pratique des activités physiques d'entretien corporel",
+     "planning": "Pratique APEC",
+     "place": "CAL Nice",
+     "who": "Y.S."
+    }
+   ]
+  },
+  "2026-12-11": {
+   "week": 13,
+   "slots": [
+    {
+     "half": "am",
+     "start": "09:00",
+     "end": "12:00",
+     "cat": "cours",
+     "short": "Jeux sportifs",
+     "title": "Conception de séances de jeux sportifs",
+     "planning": "Conception séance jeux sportis",
+     "place": "CAL Nice",
+     "who": "Y.S."
+    },
+    {
+     "half": "pm",
+     "start": "13:00",
+     "end": "16:00",
+     "cat": "libre",
+     "short": "Libre",
+     "title": "Après-midi libre",
+     "free": true
+    }
+   ]
+  },
+  "2026-12-14": {
+   "week": 14,
+   "slots": [
+    {
+     "half": "am",
+     "start": "09:00",
+     "end": "12:00",
+     "cat": "cours",
+     "short": "AJS",
+     "title": "AJS · activités et jeux sportifs",
+     "planning": "AJS",
+     "place": "CAL Nice",
+     "who": "Y.S."
+    },
+    {
+     "half": "pm",
+     "start": "13:00",
+     "end": "16:00",
+     "cat": "cours",
+     "short": "AJS",
+     "title": "AJS · activités et jeux sportifs",
+     "planning": "AJS",
+     "place": "CAL Nice",
+     "who": "Y.S."
+    }
+   ]
+  },
+  "2026-12-15": {
+   "week": 14,
+   "slots": [
+    {
+     "half": "am",
+     "start": "09:00",
+     "end": "12:00",
+     "cat": "cours",
+     "short": "AJS",
+     "title": "AJS · activités et jeux sportifs",
+     "planning": "AJS",
+     "place": "CAL Nice",
+     "who": "Y.S."
+    },
+    {
+     "half": "pm",
+     "start": "13:00",
+     "end": "16:00",
+     "cat": "cours",
+     "short": "AJS",
+     "title": "AJS · activités et jeux sportifs",
+     "planning": "AJS",
+     "place": "CAL Nice",
+     "who": "Y.S."
+    }
+   ]
+  },
+  "2026-12-16": {
+   "week": 14,
+   "slots": [
+    {
+     "half": "am",
+     "start": "08:30",
+     "end": "12:30",
+     "cat": "centre",
+     "short": "MSP 1",
+     "title": "MSP 1 au centre de loisirs",
+     "planning": "MSP1",
+     "place": "Centre de loisirs",
+     "who": "Ville de Nice"
+    },
+    {
+     "half": "pm",
+     "start": "13:30",
+     "end": "17:00",
+     "cat": "centre",
+     "short": "MSP 1",
+     "title": "MSP 1 au centre de loisirs",
+     "planning": "MSP1",
+     "place": "Centre de loisirs",
+     "who": "Ville de Nice"
+    }
+   ]
+  },
+  "2026-12-17": {
+   "week": 14,
+   "slots": [
+    {
+     "half": "am",
+     "start": "09:00",
+     "end": "12:00",
+     "cat": "cours",
+     "short": "AJS",
+     "title": "AJS · activités et jeux sportifs",
+     "planning": "AJS",
+     "place": "CAL Nice",
+     "who": "Y.S."
+    },
+    {
+     "half": "pm",
+     "start": "13:00",
+     "end": "16:00",
+     "cat": "cours",
+     "short": "AJS",
+     "title": "AJS · activités et jeux sportifs",
+     "planning": "AJS",
+     "place": "CAL Nice",
+     "who": "Y.S."
+    }
+   ]
+  },
+  "2026-12-18": {
+   "week": 14,
+   "slots": [
+    {
+     "half": "am",
+     "start": "09:00",
+     "end": "12:00",
+     "cat": "cours",
+     "short": "AJS",
+     "title": "AJS · activités et jeux sportifs",
+     "planning": "AJS",
+     "place": "CAL Nice",
+     "who": "Y.S."
+    },
+    {
+     "half": "pm",
+     "start": "13:00",
+     "end": "16:00",
+     "cat": "libre",
+     "short": "Libre",
+     "title": "Après-midi libre",
+     "free": true
+    }
+   ]
+  },
+  "2026-12-21": {
+   "slots": [],
+   "vacation": "Vacances de Noël"
+  },
+  "2026-12-22": {
+   "slots": [],
+   "vacation": "Vacances de Noël"
+  },
+  "2026-12-23": {
+   "slots": [],
+   "vacation": "Vacances de Noël"
+  },
+  "2026-12-24": {
+   "slots": [],
+   "vacation": "Vacances de Noël"
+  },
+  "2026-12-25": {
+   "slots": [],
+   "vacation": "Vacances de Noël",
+   "holiday": "Noël"
+  },
+  "2026-12-28": {
+   "slots": [],
+   "vacation": "Vacances de Noël"
+  },
+  "2026-12-29": {
+   "slots": [],
+   "vacation": "Vacances de Noël"
+  },
+  "2026-12-30": {
+   "slots": [],
+   "vacation": "Vacances de Noël"
+  },
+  "2026-12-31": {
+   "slots": [],
+   "vacation": "Vacances de Noël"
+  },
+  "2027-01-01": {
+   "slots": [],
+   "vacation": "Vacances de Noël",
+   "holiday": "Jour de l'an"
+  },
+  "2027-01-04": {
+   "week": 15,
+   "slots": [
+    {
+     "half": "am",
+     "start": "09:00",
+     "end": "12:00",
+     "cat": "cours",
+     "short": "Espaces naturels",
+     "title": "Fondamentaux théoriques des espaces naturels",
+     "planning": "Connaissance des fondamentaux et théorique des espaces naturels",
+     "place": "CAL Nice",
+     "who": "Y.S. + P."
+    },
+    {
+     "half": "pm",
+     "start": "13:00",
+     "end": "16:00",
+     "cat": "cours",
+     "short": "Pleine nature",
+     "title": "Pratique des activités de pleine nature",
+     "place": "CAL Nice",
+     "who": "Y.S. + P."
+    }
+   ]
+  },
+  "2027-01-05": {
+   "week": 15,
+   "slots": [
+    {
+     "half": "am",
+     "start": "09:00",
+     "end": "12:00",
+     "cat": "cours",
+     "short": "Pleine nature",
+     "title": "Pratique des activités de pleine nature",
+     "place": "CAL Nice",
+     "who": "Y.S. + P."
+    },
+    {
+     "half": "pm",
+     "start": "13:00",
+     "end": "16:00",
+     "cat": "cours",
+     "short": "Pleine nature",
+     "title": "Pratique des activités de pleine nature",
+     "place": "CAL Nice",
+     "who": "Y.S. + P."
+    }
+   ]
+  },
+  "2027-01-06": {
+   "week": 15,
+   "slots": [
+    {
+     "half": "am",
+     "start": "08:30",
+     "end": "12:30",
+     "cat": "centre",
+     "short": "MSP 1",
+     "title": "MSP 1 au centre de loisirs",
+     "planning": "MSP1",
+     "place": "Centre de loisirs",
+     "who": "Ville de Nice"
+    },
+    {
+     "half": "pm",
+     "start": "13:30",
+     "end": "17:00",
+     "cat": "centre",
+     "short": "MSP 1",
+     "title": "MSP 1 au centre de loisirs",
+     "planning": "MSP1",
+     "place": "Centre de loisirs",
+     "who": "Ville de Nice"
+    }
+   ]
+  },
+  "2027-01-07": {
+   "week": 15,
+   "slots": [
+    {
+     "half": "am",
+     "start": "09:00",
+     "end": "12:00",
+     "cat": "cours",
+     "short": "Pleine nature",
+     "title": "Pratique des activités de pleine nature",
+     "place": "CAL Nice",
+     "who": "Y.S. + P."
+    },
+    {
+     "half": "pm",
+     "start": "13:00",
+     "end": "16:00",
+     "cat": "cours",
+     "short": "Pleine nature",
+     "title": "Pratique des activités de pleine nature",
+     "place": "CAL Nice",
+     "who": "Y.S. + P."
+    }
+   ]
+  },
+  "2027-01-08": {
+   "week": 15,
+   "slots": [
+    {
+     "half": "am",
+     "start": "09:00",
+     "end": "12:00",
+     "cat": "cours",
+     "short": "Pleine nature",
+     "title": "Pratique des activités de pleine nature",
+     "place": "CAL Nice",
+     "who": "Y.S. + P."
+    },
+    {
+     "half": "pm",
+     "start": "13:00",
+     "end": "16:00",
+     "cat": "libre",
+     "short": "Libre",
+     "title": "Après-midi libre",
+     "free": true
+    }
+   ]
+  },
+  "2027-01-11": {
+   "week": 16,
+   "slots": [
+    {
+     "half": "am",
+     "start": "09:00",
+     "end": "12:00",
+     "cat": "cours",
+     "short": "Pleine nature",
+     "title": "Pratique des activités de pleine nature",
+     "place": "CAL Nice",
+     "who": "Y.S. + P."
+    },
+    {
+     "half": "pm",
+     "start": "13:00",
+     "end": "16:00",
+     "cat": "cours",
+     "short": "Pleine nature",
+     "title": "Pratique des activités de pleine nature",
+     "place": "CAL Nice",
+     "who": "Y.S. + P."
+    }
+   ]
+  },
+  "2027-01-12": {
+   "week": 16,
+   "slots": [
+    {
+     "half": "am",
+     "start": "09:00",
+     "end": "12:00",
+     "cat": "cours",
+     "short": "Pleine nature",
+     "title": "Pratique des activités de pleine nature",
+     "place": "CAL Nice",
+     "who": "Y.S. + P."
+    },
+    {
+     "half": "pm",
+     "start": "13:00",
+     "end": "16:00",
+     "cat": "cours",
+     "short": "Pleine nature",
+     "title": "Pratique des activités de pleine nature",
+     "place": "CAL Nice",
+     "who": "Y.S. + P."
+    }
+   ]
+  },
+  "2027-01-13": {
+   "week": 16,
+   "slots": [
+    {
+     "half": "am",
+     "start": "08:30",
+     "end": "12:30",
+     "cat": "centre",
+     "short": "MSP 1",
+     "title": "MSP 1 au centre de loisirs",
+     "planning": "MSP1",
+     "place": "Centre de loisirs",
+     "who": "Ville de Nice"
+    },
+    {
+     "half": "pm",
+     "start": "13:30",
+     "end": "17:00",
+     "cat": "centre",
+     "short": "MSP 1",
+     "title": "MSP 1 au centre de loisirs",
+     "planning": "MSP1",
+     "place": "Centre de loisirs",
+     "who": "Ville de Nice"
+    }
+   ]
+  },
+  "2027-01-14": {
+   "week": 16,
+   "slots": [
+    {
+     "half": "am",
+     "start": "09:00",
+     "end": "12:00",
+     "cat": "cours",
+     "short": "Pleine nature",
+     "title": "Pratique des activités de pleine nature",
+     "place": "CAL Nice",
+     "who": "Y.S. + P."
+    },
+    {
+     "half": "pm",
+     "start": "13:00",
+     "end": "16:00",
+     "cat": "cours",
+     "short": "Pleine nature",
+     "title": "Pratique des activités de pleine nature",
+     "place": "CAL Nice",
+     "who": "Y.S. + P."
+    }
+   ]
+  },
+  "2027-01-15": {
+   "week": 16,
+   "slots": [
+    {
+     "half": "am",
+     "start": "09:00",
+     "end": "12:00",
+     "cat": "cours",
+     "short": "Pleine nature",
+     "title": "Pratique des activités de pleine nature",
+     "place": "CAL Nice",
+     "who": "Y.S. + P."
+    },
+    {
+     "half": "pm",
+     "start": "13:00",
+     "end": "16:00",
+     "cat": "libre",
+     "short": "Libre",
+     "title": "Après-midi libre",
+     "free": true
+    }
+   ]
+  },
+  "2027-01-18": {
+   "week": 17,
+   "slots": [
+    {
+     "half": "am",
+     "start": "09:00",
+     "end": "12:00",
+     "cat": "cours",
+     "short": "Pleine nature",
+     "title": "Pratique des activités de pleine nature",
+     "place": "CAL Nice",
+     "who": "Y.S. + P."
+    },
+    {
+     "half": "pm",
+     "start": "13:00",
+     "end": "16:00",
+     "cat": "cours",
+     "short": "Pleine nature",
+     "title": "Pratique des activités de pleine nature",
+     "place": "CAL Nice",
+     "who": "Y.S. + P."
+    }
+   ]
+  },
+  "2027-01-19": {
+   "week": 17,
+   "slots": [
+    {
+     "half": "am",
+     "start": "09:00",
+     "end": "12:00",
+     "cat": "cours",
+     "short": "Pleine nature",
+     "title": "Pratique des activités de pleine nature",
+     "place": "CAL Nice",
+     "who": "Y.S. + P."
+    },
+    {
+     "half": "pm",
+     "start": "13:00",
+     "end": "16:00",
+     "cat": "cours",
+     "short": "Pleine nature",
+     "title": "Pratique des activités de pleine nature",
+     "place": "CAL Nice",
+     "who": "Y.S. + P."
+    }
+   ]
+  },
+  "2027-01-20": {
+   "week": 17,
+   "slots": [
+    {
+     "half": "am",
+     "start": "08:30",
+     "end": "12:30",
+     "cat": "centre",
+     "short": "MSP 1",
+     "title": "MSP 1 au centre de loisirs",
+     "planning": "MSP1",
+     "place": "Centre de loisirs",
+     "who": "Ville de Nice"
+    },
+    {
+     "half": "pm",
+     "start": "13:30",
+     "end": "17:00",
+     "cat": "centre",
+     "short": "MSP 1",
+     "title": "MSP 1 au centre de loisirs",
+     "planning": "MSP1",
+     "place": "Centre de loisirs",
+     "who": "Ville de Nice"
+    }
+   ]
+  },
+  "2027-01-21": {
+   "week": 17,
+   "slots": [
+    {
+     "half": "am",
+     "start": "09:00",
+     "end": "12:00",
+     "cat": "cours",
+     "short": "Pleine nature",
+     "title": "Pratique des activités de pleine nature",
+     "place": "CAL Nice",
+     "who": "Y.S. + P."
+    },
+    {
+     "half": "pm",
+     "start": "13:00",
+     "end": "16:00",
+     "cat": "cours",
+     "short": "Pleine nature",
+     "title": "Pratique des activités de pleine nature",
+     "place": "CAL Nice",
+     "who": "Y.S. + P."
+    }
+   ]
+  },
+  "2027-01-22": {
+   "week": 17,
+   "slots": [
+    {
+     "half": "am",
+     "start": "09:00",
+     "end": "12:00",
+     "cat": "cours",
+     "short": "Pleine nature",
+     "title": "Pratique des activités de pleine nature",
+     "place": "CAL Nice",
+     "who": "Y.S. + P."
+    },
+    {
+     "half": "pm",
+     "start": "13:00",
+     "end": "16:00",
+     "cat": "libre",
+     "short": "Libre",
+     "title": "Après-midi libre",
+     "free": true
+    }
+   ]
+  },
+  "2027-01-25": {
+   "week": 18,
+   "slots": [
+    {
+     "half": "am",
+     "start": "09:00",
+     "end": "12:00",
+     "cat": "cours",
+     "short": "Handicap",
+     "title": "Intervenir auprès d'un public en situation de handicap",
+     "planning": "Intervention sur public en situation de handicap",
+     "place": "Bureau Ville de Nice · Arénas",
+     "who": "K.P."
+    },
+    {
+     "half": "pm",
+     "start": "13:00",
+     "end": "16:00",
+     "cat": "cours",
+     "short": "Handicap",
+     "title": "Intervenir auprès d'un public en situation de handicap",
+     "planning": "Intervention sur public en situation de handicap",
+     "place": "Bureau Ville de Nice · Arénas",
+     "who": "K.P."
+    }
+   ]
+  },
+  "2027-01-26": {
+   "week": 18,
+   "slots": [
+    {
+     "half": "am",
+     "start": "09:00",
+     "end": "12:00",
+     "cat": "cours",
+     "short": "Handicap",
+     "title": "Intervenir auprès d'un public en situation de handicap",
+     "planning": "Intervention sur public en situation de handicap",
+     "place": "Bureau Ville de Nice · Arénas",
+     "who": "K.P."
+    },
+    {
+     "half": "pm",
+     "start": "13:00",
+     "end": "16:00",
+     "cat": "cours",
+     "short": "Handicap",
+     "title": "Intervenir auprès d'un public en situation de handicap",
+     "planning": "Intervention sur public en situation de handicap",
+     "place": "Bureau Ville de Nice · Arénas",
+     "who": "K.P."
+    }
+   ]
+  },
+  "2027-01-27": {
+   "week": 18,
+   "slots": [
+    {
+     "half": "am",
+     "start": "08:30",
+     "end": "12:30",
+     "cat": "centre",
+     "short": "MSP 1",
+     "title": "MSP 1 au centre de loisirs",
+     "planning": "MSP1",
+     "place": "Centre de loisirs",
+     "who": "Ville de Nice"
+    },
+    {
+     "half": "pm",
+     "start": "13:30",
+     "end": "17:00",
+     "cat": "centre",
+     "short": "MSP 1",
+     "title": "MSP 1 au centre de loisirs",
+     "planning": "MSP1",
+     "place": "Centre de loisirs",
+     "who": "Ville de Nice"
+    }
+   ]
+  },
+  "2027-01-28": {
+   "week": 18,
+   "slots": [
+    {
+     "half": "am",
+     "start": "09:00",
+     "end": "12:00",
+     "cat": "cours",
+     "short": "Animation",
+     "title": "Pratique des techniques d'animation",
+     "place": "CAL Nice",
+     "who": "Y.S. + P."
+    },
+    {
+     "half": "pm",
+     "start": "13:00",
+     "end": "16:00",
+     "cat": "cours",
+     "short": "Conduite de séance",
+     "title": "Maîtriser la conduite de la séance",
+     "place": "CAL Nice",
+     "who": "Y.S. + P."
+    }
+   ]
+  },
+  "2027-01-29": {
+   "week": 18,
+   "slots": [
+    {
+     "half": "am",
+     "start": "09:00",
+     "end": "12:00",
+     "cat": "cours",
+     "short": "Pratique APS",
+     "title": "Pratique des activités physiques et sportives",
+     "planning": "Prtique des activités physiques et sportives",
+     "place": "CAL Nice",
+     "who": "Y.S. + P."
+    },
+    {
+     "half": "pm",
+     "start": "13:00",
+     "end": "16:00",
+     "cat": "libre",
+     "short": "Libre",
+     "title": "Après-midi libre",
+     "free": true
+    }
+   ]
+  },
+  "2027-02-01": {
+   "week": 19,
+   "slots": [
+    {
+     "half": "am",
+     "start": "09:00",
+     "end": "12:00",
+     "cat": "centre",
+     "short": "MSP 2",
+     "title": "MSP 2 au centre de loisirs",
+     "planning": "MSP2",
+     "place": "Centre de loisirs",
+     "who": "Ville de Nice"
+    },
+    {
+     "half": "pm",
+     "start": "13:00",
+     "end": "16:00",
+     "cat": "centre",
+     "short": "MSP 2",
+     "title": "MSP 2 au centre de loisirs",
+     "planning": "MSP2",
+     "place": "Centre de loisirs",
+     "who": "Ville de Nice"
+    }
+   ]
+  },
+  "2027-02-02": {
+   "week": 19,
+   "slots": [
+    {
+     "half": "am",
+     "start": "09:00",
+     "end": "12:00",
+     "cat": "centre",
+     "short": "MSP 2",
+     "title": "MSP 2 au centre de loisirs",
+     "planning": "MSP2",
+     "place": "Centre de loisirs",
+     "who": "Ville de Nice"
+    },
+    {
+     "half": "pm",
+     "start": "13:00",
+     "end": "16:00",
+     "cat": "centre",
+     "short": "MSP 2",
+     "title": "MSP 2 au centre de loisirs",
+     "planning": "MSP2",
+     "place": "Centre de loisirs",
+     "who": "Ville de Nice"
+    }
+   ]
+  },
+  "2027-02-03": {
+   "week": 19,
+   "slots": [
+    {
+     "half": "am",
+     "start": "08:30",
+     "end": "12:30",
+     "cat": "centre",
+     "short": "MSP 2",
+     "title": "MSP 2 au centre de loisirs",
+     "planning": "MSP2",
+     "place": "Centre de loisirs",
+     "who": "Ville de Nice"
+    },
+    {
+     "half": "pm",
+     "start": "13:30",
+     "end": "17:00",
+     "cat": "centre",
+     "short": "MSP 2",
+     "title": "MSP 2 au centre de loisirs",
+     "planning": "MSP2",
+     "place": "Centre de loisirs",
+     "who": "Ville de Nice"
+    }
+   ]
+  },
+  "2027-02-04": {
+   "week": 19,
+   "slots": [
+    {
+     "half": "am",
+     "start": "09:00",
+     "end": "12:00",
+     "cat": "centre",
+     "short": "MSP 2",
+     "title": "MSP 2 au centre de loisirs",
+     "planning": "MSP2",
+     "place": "Centre de loisirs",
+     "who": "Ville de Nice"
+    },
+    {
+     "half": "pm",
+     "start": "13:00",
+     "end": "16:00",
+     "cat": "centre",
+     "short": "MSP 2",
+     "title": "MSP 2 au centre de loisirs",
+     "planning": "MSP2",
+     "place": "Centre de loisirs",
+     "who": "Ville de Nice"
+    }
+   ]
+  },
+  "2027-02-05": {
+   "week": 19,
+   "slots": [
+    {
+     "half": "am",
+     "start": "09:00",
+     "end": "12:00",
+     "cat": "centre",
+     "short": "MSP 2",
+     "title": "MSP 2 au centre de loisirs",
+     "planning": "MSP2",
+     "place": "Centre de loisirs",
+     "who": "Ville de Nice"
+    },
+    {
+     "half": "pm",
+     "start": "13:00",
+     "end": "16:00",
+     "cat": "libre",
+     "short": "Libre",
+     "title": "Après-midi libre",
+     "free": true
+    }
+   ]
+  },
+  "2027-02-08": {
+   "week": 20,
+   "slots": [
+    {
+     "half": "am",
+     "start": "09:00",
+     "end": "12:00",
+     "cat": "centre",
+     "short": "MSP 2",
+     "title": "MSP 2 au centre de loisirs",
+     "planning": "MSP2",
+     "place": "Centre de loisirs",
+     "who": "Ville de Nice"
+    },
+    {
+     "half": "pm",
+     "start": "13:00",
+     "end": "16:00",
+     "cat": "centre",
+     "short": "MSP 2",
+     "title": "MSP 2 au centre de loisirs",
+     "planning": "MSP2",
+     "place": "Centre de loisirs",
+     "who": "Ville de Nice"
+    }
+   ]
+  },
+  "2027-02-09": {
+   "week": 20,
+   "slots": [
+    {
+     "half": "am",
+     "start": "09:00",
+     "end": "12:00",
+     "cat": "centre",
+     "short": "MSP 2",
+     "title": "MSP 2 au centre de loisirs",
+     "planning": "MSP2",
+     "place": "Centre de loisirs",
+     "who": "Ville de Nice"
+    },
+    {
+     "half": "pm",
+     "start": "13:00",
+     "end": "16:00",
+     "cat": "centre",
+     "short": "MSP 2",
+     "title": "MSP 2 au centre de loisirs",
+     "planning": "MSP2",
+     "place": "Centre de loisirs",
+     "who": "Ville de Nice"
+    }
+   ]
+  },
+  "2027-02-10": {
+   "week": 20,
+   "slots": [
+    {
+     "half": "am",
+     "start": "08:30",
+     "end": "12:30",
+     "cat": "centre",
+     "short": "MSP 2",
+     "title": "MSP 2 au centre de loisirs",
+     "planning": "MSP2",
+     "place": "Centre de loisirs",
+     "who": "Ville de Nice"
+    },
+    {
+     "half": "pm",
+     "start": "13:30",
+     "end": "17:00",
+     "cat": "centre",
+     "short": "MSP 2",
+     "title": "MSP 2 au centre de loisirs",
+     "planning": "MSP2",
+     "place": "Centre de loisirs",
+     "who": "Ville de Nice"
+    }
+   ]
+  },
+  "2027-02-11": {
+   "week": 20,
+   "slots": [
+    {
+     "half": "am",
+     "start": "09:00",
+     "end": "12:00",
+     "cat": "centre",
+     "short": "MSP 2",
+     "title": "MSP 2 au centre de loisirs",
+     "planning": "MSP2",
+     "place": "Centre de loisirs",
+     "who": "Ville de Nice"
+    },
+    {
+     "half": "pm",
+     "start": "13:00",
+     "end": "16:00",
+     "cat": "centre",
+     "short": "MSP 2",
+     "title": "MSP 2 au centre de loisirs",
+     "planning": "MSP2",
+     "place": "Centre de loisirs",
+     "who": "Ville de Nice"
+    }
+   ]
+  },
+  "2027-02-12": {
+   "week": 20,
+   "slots": [
+    {
+     "half": "am",
+     "start": "09:00",
+     "end": "12:00",
+     "cat": "centre",
+     "short": "MSP 2",
+     "title": "MSP 2 au centre de loisirs",
+     "planning": "MSP2",
+     "place": "Centre de loisirs",
+     "who": "Ville de Nice"
+    },
+    {
+     "half": "pm",
+     "start": "13:00",
+     "end": "16:00",
+     "cat": "libre",
+     "short": "Libre",
+     "title": "Après-midi libre",
+     "free": true
+    }
+   ]
+  },
+  "2027-02-15": {
+   "week": 21,
+   "slots": [
+    {
+     "half": "am",
+     "start": "09:00",
+     "end": "12:00",
+     "cat": "centre",
+     "short": "MSP 2",
+     "title": "MSP 2 au centre de loisirs",
+     "planning": "MSP2",
+     "place": "Centre de loisirs",
+     "who": "Ville de Nice"
+    },
+    {
+     "half": "pm",
+     "start": "13:00",
+     "end": "16:00",
+     "cat": "centre",
+     "short": "MSP 2",
+     "title": "MSP 2 au centre de loisirs",
+     "planning": "MSP2",
+     "place": "Centre de loisirs",
+     "who": "Ville de Nice"
+    }
+   ]
+  },
+  "2027-02-16": {
+   "week": 21,
+   "slots": [
+    {
+     "half": "am",
+     "start": "09:00",
+     "end": "12:00",
+     "cat": "centre",
+     "short": "MSP 2",
+     "title": "MSP 2 au centre de loisirs",
+     "planning": "MSP2",
+     "place": "Centre de loisirs",
+     "who": "Ville de Nice"
+    },
+    {
+     "half": "pm",
+     "start": "13:00",
+     "end": "16:00",
+     "cat": "centre",
+     "short": "MSP 2",
+     "title": "MSP 2 au centre de loisirs",
+     "planning": "MSP2",
+     "place": "Centre de loisirs",
+     "who": "Ville de Nice"
+    }
+   ]
+  },
+  "2027-02-17": {
+   "week": 21,
+   "slots": [
+    {
+     "half": "am",
+     "start": "08:30",
+     "end": "12:30",
+     "cat": "centre",
+     "short": "MSP 2",
+     "title": "MSP 2 au centre de loisirs",
+     "planning": "MSP2",
+     "place": "Centre de loisirs",
+     "who": "Ville de Nice"
+    },
+    {
+     "half": "pm",
+     "start": "13:30",
+     "end": "17:00",
+     "cat": "centre",
+     "short": "MSP 2",
+     "title": "MSP 2 au centre de loisirs",
+     "planning": "MSP2",
+     "place": "Centre de loisirs",
+     "who": "Ville de Nice"
+    }
+   ]
+  },
+  "2027-02-18": {
+   "week": 21,
+   "slots": [
+    {
+     "half": "am",
+     "start": "09:00",
+     "end": "12:00",
+     "cat": "centre",
+     "short": "MSP 2",
+     "title": "MSP 2 au centre de loisirs",
+     "planning": "MSP2",
+     "place": "Centre de loisirs",
+     "who": "Ville de Nice"
+    },
+    {
+     "half": "pm",
+     "start": "13:00",
+     "end": "16:00",
+     "cat": "centre",
+     "short": "MSP 2",
+     "title": "MSP 2 au centre de loisirs",
+     "planning": "MSP2",
+     "place": "Centre de loisirs",
+     "who": "Ville de Nice"
+    }
+   ]
+  },
+  "2027-02-19": {
+   "week": 21,
+   "slots": [
+    {
+     "half": "am",
+     "start": "09:00",
+     "end": "12:00",
+     "cat": "centre",
+     "short": "MSP 2",
+     "title": "MSP 2 au centre de loisirs",
+     "planning": "MSP2",
+     "place": "Centre de loisirs",
+     "who": "Ville de Nice"
+    },
+    {
+     "half": "pm",
+     "start": "13:00",
+     "end": "16:00",
+     "cat": "libre",
+     "short": "Libre",
+     "title": "Après-midi libre",
+     "free": true
+    }
+   ]
+  },
+  "2027-02-22": {
+   "week": 22,
+   "slots": [
+    {
+     "half": "am",
+     "start": "09:00",
+     "end": "12:00",
+     "cat": "centre",
+     "short": "MSP 2",
+     "title": "MSP 2 au centre de loisirs",
+     "planning": "MSP2",
+     "place": "Centre de loisirs",
+     "who": "Ville de Nice"
+    },
+    {
+     "half": "pm",
+     "start": "13:00",
+     "end": "16:00",
+     "cat": "centre",
+     "short": "MSP 2",
+     "title": "MSP 2 au centre de loisirs",
+     "planning": "MSP2",
+     "place": "Centre de loisirs",
+     "who": "Ville de Nice"
+    }
+   ]
+  },
+  "2027-02-23": {
+   "week": 22,
+   "slots": [
+    {
+     "half": "am",
+     "start": "09:00",
+     "end": "12:00",
+     "cat": "centre",
+     "short": "MSP 2",
+     "title": "MSP 2 au centre de loisirs",
+     "planning": "MSP2",
+     "place": "Centre de loisirs",
+     "who": "Ville de Nice"
+    },
+    {
+     "half": "pm",
+     "start": "13:00",
+     "end": "16:00",
+     "cat": "centre",
+     "short": "MSP 2",
+     "title": "MSP 2 au centre de loisirs",
+     "planning": "MSP2",
+     "place": "Centre de loisirs",
+     "who": "Ville de Nice"
+    }
+   ]
+  },
+  "2027-02-24": {
+   "week": 22,
+   "slots": [
+    {
+     "half": "am",
+     "start": "08:30",
+     "end": "12:30",
+     "cat": "centre",
+     "short": "MSP 2",
+     "title": "MSP 2 au centre de loisirs",
+     "planning": "MSP2",
+     "place": "Centre de loisirs",
+     "who": "Ville de Nice"
+    },
+    {
+     "half": "pm",
+     "start": "13:30",
+     "end": "17:00",
+     "cat": "centre",
+     "short": "MSP 2",
+     "title": "MSP 2 au centre de loisirs",
+     "planning": "MSP2",
+     "place": "Centre de loisirs",
+     "who": "Ville de Nice"
+    }
+   ]
+  },
+  "2027-02-25": {
+   "week": 22,
+   "slots": [
+    {
+     "half": "am",
+     "start": "09:00",
+     "end": "12:00",
+     "cat": "centre",
+     "short": "MSP 2",
+     "title": "MSP 2 au centre de loisirs",
+     "planning": "MSP2",
+     "place": "Centre de loisirs",
+     "who": "Ville de Nice"
+    },
+    {
+     "half": "pm",
+     "start": "13:00",
+     "end": "16:00",
+     "cat": "centre",
+     "short": "MSP 2",
+     "title": "MSP 2 au centre de loisirs",
+     "planning": "MSP2",
+     "place": "Centre de loisirs",
+     "who": "Ville de Nice"
+    }
+   ]
+  },
+  "2027-02-26": {
+   "week": 22,
+   "slots": [
+    {
+     "half": "am",
+     "start": "09:00",
+     "end": "12:00",
+     "cat": "centre",
+     "short": "MSP 2",
+     "title": "MSP 2 au centre de loisirs",
+     "planning": "MSP2",
+     "place": "Centre de loisirs",
+     "who": "Ville de Nice"
+    },
+    {
+     "half": "pm",
+     "start": "13:00",
+     "end": "16:00",
+     "cat": "centre",
+     "short": "MSP 2",
+     "title": "MSP 2 au centre de loisirs",
+     "planning": "MSP2",
+     "place": "Centre de loisirs",
+     "who": "Ville de Nice"
+    }
+   ]
+  },
+  "2027-03-01": {
+   "week": 23,
+   "slots": [
+    {
+     "half": "am",
+     "start": "09:00",
+     "end": "12:00",
+     "cat": "centre",
+     "short": "MSP 2",
+     "title": "MSP 2 au centre de loisirs",
+     "planning": "MSP2",
+     "place": "Centre de loisirs",
+     "who": "Ville de Nice"
+    },
+    {
+     "half": "pm",
+     "start": "13:00",
+     "end": "16:00",
+     "cat": "centre",
+     "short": "MSP 2",
+     "title": "MSP 2 au centre de loisirs",
+     "planning": "MSP2",
+     "place": "Centre de loisirs",
+     "who": "Ville de Nice"
+    }
+   ]
+  },
+  "2027-03-02": {
+   "week": 23,
+   "slots": [
+    {
+     "half": "am",
+     "start": "09:00",
+     "end": "12:00",
+     "cat": "centre",
+     "short": "MSP 2",
+     "title": "MSP 2 au centre de loisirs",
+     "planning": "MSP2",
+     "place": "Centre de loisirs",
+     "who": "Ville de Nice"
+    },
+    {
+     "half": "pm",
+     "start": "13:00",
+     "end": "16:00",
+     "cat": "centre",
+     "short": "MSP 2",
+     "title": "MSP 2 au centre de loisirs",
+     "planning": "MSP2",
+     "place": "Centre de loisirs",
+     "who": "Ville de Nice"
+    }
+   ]
+  },
+  "2027-03-03": {
+   "week": 23,
+   "slots": [
+    {
+     "half": "am",
+     "start": "08:30",
+     "end": "12:30",
+     "cat": "centre",
+     "short": "MSP 2",
+     "title": "MSP 2 au centre de loisirs",
+     "planning": "MSP2",
+     "place": "Centre de loisirs",
+     "who": "Ville de Nice"
+    },
+    {
+     "half": "pm",
+     "start": "13:30",
+     "end": "17:00",
+     "cat": "centre",
+     "short": "MSP 2",
+     "title": "MSP 2 au centre de loisirs",
+     "planning": "MSP2",
+     "place": "Centre de loisirs",
+     "who": "Ville de Nice"
+    }
+   ]
+  },
+  "2027-03-04": {
+   "week": 23,
+   "slots": [
+    {
+     "half": "am",
+     "start": "09:00",
+     "end": "12:00",
+     "cat": "centre",
+     "short": "MSP 2",
+     "title": "MSP 2 au centre de loisirs",
+     "planning": "MSP2",
+     "place": "Centre de loisirs",
+     "who": "Ville de Nice"
+    },
+    {
+     "half": "pm",
+     "start": "13:00",
+     "end": "16:00",
+     "cat": "centre",
+     "short": "MSP 2",
+     "title": "MSP 2 au centre de loisirs",
+     "planning": "MSP2",
+     "place": "Centre de loisirs",
+     "who": "Ville de Nice"
+    }
+   ]
+  },
+  "2027-03-05": {
+   "week": 23,
+   "slots": [
+    {
+     "half": "am",
+     "start": "09:00",
+     "end": "12:00",
+     "cat": "centre",
+     "short": "MSP 2",
+     "title": "MSP 2 au centre de loisirs",
+     "planning": "MSP2",
+     "place": "Centre de loisirs",
+     "who": "Ville de Nice"
+    },
+    {
+     "half": "pm",
+     "start": "13:00",
+     "end": "16:00",
+     "cat": "centre",
+     "short": "MSP 2",
+     "title": "MSP 2 au centre de loisirs",
+     "planning": "MSP2",
+     "place": "Centre de loisirs",
+     "who": "Ville de Nice"
+    }
+   ]
+  },
+  "2027-03-08": {
+   "week": 24,
+   "slots": [
+    {
+     "half": "am",
+     "start": "09:00",
+     "end": "12:00",
+     "cat": "cours",
+     "short": "Projet & territoire",
+     "title": "Évaluer un projet d'animation · connaître et analyser son territoire",
+     "planning": "Evaluer 1 projet d'animation + Connaître et analyser son territoire",
+     "place": "CAL Nice",
+     "who": "Y.S. + P."
+    },
+    {
+     "half": "pm",
+     "start": "13:00",
+     "end": "16:00",
+     "cat": "cours",
+     "short": "Projet d'animation",
+     "title": "Conduire un projet d'animation",
+     "planning": "Conduire 1 projet d'animation",
+     "place": "CAL Nice",
+     "who": "Y.S. + P."
+    }
+   ]
+  },
+  "2027-03-09": {
+   "week": 24,
+   "slots": [
+    {
+     "half": "am",
+     "start": "09:00",
+     "end": "12:00",
+     "cat": "cours",
+     "short": "Créer sa structure",
+     "title": "Créer sa structure : statut juridique, comptabilité, démarches",
+     "planning": "Création de structure d'entreprise et statut juridique de travail + comptabilité et démarches administratives",
+     "place": "CAL Nice",
+     "who": "F.C."
+    },
+    {
+     "half": "pm",
+     "start": "13:00",
+     "end": "16:00",
+     "cat": "cours",
+     "short": "ACM",
+     "title": "Accueil collectif de mineurs",
+     "place": "CAL Nice",
+     "who": "N.P."
+    }
+   ]
+  },
+  "2027-03-10": {
+   "week": 24,
+   "slots": [
+    {
+     "half": "am",
+     "start": "08:30",
+     "end": "12:30",
+     "cat": "centre",
+     "short": "Centre",
+     "title": "Mercredi au centre de loisirs",
+     "planning": "MSP",
+     "place": "Centre de loisirs",
+     "who": "Ville de Nice"
+    },
+    {
+     "half": "pm",
+     "start": "13:30",
+     "end": "17:00",
+     "cat": "centre",
+     "short": "Centre",
+     "title": "Mercredi au centre de loisirs",
+     "planning": "MSP",
+     "place": "Centre de loisirs",
+     "who": "Ville de Nice"
+    }
+   ]
+  },
+  "2027-03-11": {
+   "week": 24,
+   "slots": [
+    {
+     "half": "am",
+     "start": "09:00",
+     "end": "12:00",
+     "cat": "cours",
+     "short": "Outils de com",
+     "title": "Choisir ses outils de communication",
+     "planning": "Condition et sélection des différents outils de communication",
+     "place": "CAL Nice",
+     "who": "M.R."
+    },
+    {
+     "half": "pm",
+     "start": "13:00",
+     "end": "16:00",
+     "cat": "cours",
+     "short": "3 domaines",
+     "title": "Pratique des 3 domaines d'activités",
+     "place": "CAL Nice"
+    }
+   ]
+  },
+  "2027-03-12": {
+   "week": 24,
+   "slots": [
+    {
+     "half": "am",
+     "start": "09:00",
+     "end": "12:00",
+     "cat": "cours",
+     "short": "3 domaines",
+     "title": "Pratique des 3 domaines d'activités",
+     "place": "CAL Nice"
+    },
+    {
+     "half": "pm",
+     "start": "13:00",
+     "end": "16:00",
+     "cat": "libre",
+     "short": "Libre",
+     "title": "Après-midi libre",
+     "free": true
+    }
+   ]
+  },
+  "2027-03-15": {
+   "week": 25,
+   "slots": [
+    {
+     "half": "am",
+     "start": "09:00",
+     "end": "12:00",
+     "cat": "cours",
+     "short": "Supports de com",
+     "title": "Rédiger, mettre en page et créer des supports de promotion",
+     "planning": "Rédaction de contenu de communication + Techniques de mise en page + création de support de promotion",
+     "place": "CAL Nice",
+     "who": "Y.S. + M.R."
+    },
+    {
+     "half": "pm",
+     "start": "13:00",
+     "end": "16:00",
+     "cat": "prepa",
+     "short": "Prépa BC3",
+     "title": "Préparation de la certification BC3",
+     "planning": "Préparation BC3",
+     "place": "CAL Nice",
+     "who": "Y.S. + P."
+    }
+   ]
+  },
+  "2027-03-16": {
+   "week": 25,
+   "slots": [
+    {
+     "half": "am",
+     "start": "09:00",
+     "end": "12:00",
+     "cat": "prepa",
+     "short": "Prépa BC1·BC2",
+     "title": "Préparation des certifications BC1 et BC2",
+     "planning": "Préparation BC1/BC2",
+     "place": "CAL Nice",
+     "who": "Y.S. + P."
+    },
+    {
+     "half": "pm",
+     "start": "13:00",
+     "end": "16:00",
+     "cat": "prepa",
+     "short": "Prépa BC3",
+     "title": "Préparation de la certification BC3",
+     "planning": "Préparation BC3",
+     "place": "CAL Nice",
+     "who": "Y.S. + P."
+    }
+   ]
+  },
+  "2027-03-17": {
+   "week": 25,
+   "slots": [
+    {
+     "half": "am",
+     "start": "08:30",
+     "end": "12:30",
+     "cat": "centre",
+     "short": "Centre",
+     "title": "Mercredi au centre de loisirs",
+     "planning": "MSP",
+     "place": "Centre de loisirs",
+     "who": "Ville de Nice"
+    },
+    {
+     "half": "pm",
+     "start": "13:30",
+     "end": "17:00",
+     "cat": "centre",
+     "short": "Centre",
+     "title": "Mercredi au centre de loisirs",
+     "planning": "MSP",
+     "place": "Centre de loisirs",
+     "who": "Ville de Nice"
+    }
+   ]
+  },
+  "2027-03-18": {
+   "week": 25,
+   "slots": [
+    {
+     "half": "am",
+     "start": "09:00",
+     "end": "12:00",
+     "cat": "prepa",
+     "short": "Prépa BC1·BC2",
+     "title": "Préparation des certifications BC1 et BC2",
+     "planning": "Préparation BC1/BC2",
+     "place": "CAL Nice",
+     "who": "Y.S. + P."
+    },
+    {
+     "half": "pm",
+     "start": "13:00",
+     "end": "16:00",
+     "cat": "prepa",
+     "short": "Prépa BC3",
+     "title": "Préparation de la certification BC3",
+     "planning": "Préparation BC3",
+     "place": "CAL Nice",
+     "who": "Y.S. + P."
+    }
+   ]
+  },
+  "2027-03-19": {
+   "week": 25,
+   "slots": [
+    {
+     "half": "am",
+     "start": "09:00",
+     "end": "12:00",
+     "cat": "prepa",
+     "short": "Prépa BC1·BC2",
+     "title": "Préparation des certifications BC1 et BC2",
+     "planning": "Préparation BC1/BC2",
+     "place": "CAL Nice",
+     "who": "Y.S. + P."
+    },
+    {
+     "half": "pm",
+     "start": "13:00",
+     "end": "16:00",
+     "cat": "libre",
+     "short": "Libre",
+     "title": "Après-midi libre",
+     "free": true
+    }
+   ]
+  },
+  "2027-03-22": {
+   "week": 26,
+   "slots": [
+    {
+     "half": "am",
+     "start": "09:00",
+     "end": "12:00",
+     "cat": "prepa",
+     "short": "Prépa BC3",
+     "title": "Préparation BC3 · pratique des 3 domaines d'activités",
+     "planning": "Préparation BC3 + Pratique des 3 domaines d'activités",
+     "place": "CAL Nice",
+     "who": "Y.S. + P."
+    },
+    {
+     "half": "pm",
+     "start": "13:00",
+     "end": "16:00",
+     "cat": "prepa",
+     "short": "Prépa BC3",
+     "title": "Préparation BC3 · pratique des 3 domaines d'activités",
+     "planning": "Préparation BC3 + Pratique des 3 domaines d'activités",
+     "place": "CAL Nice",
+     "who": "Y.S. + P."
+    }
+   ]
+  },
+  "2027-03-23": {
+   "week": 26,
+   "slots": [
+    {
+     "half": "am",
+     "start": "09:00",
+     "end": "12:00",
+     "cat": "prepa",
+     "short": "Prépa BC3",
+     "title": "Préparation BC3 · pratique des 3 domaines d'activités",
+     "planning": "Préparation BC3 + Pratique des 3 domaines d'activités",
+     "place": "CAL Nice",
+     "who": "Y.S. + P."
+    },
+    {
+     "half": "pm",
+     "start": "13:00",
+     "end": "16:00",
+     "cat": "prepa",
+     "short": "Prépa BC3",
+     "title": "Préparation BC3 · pratique des 3 domaines d'activités",
+     "planning": "Préparation BC3 + Pratique des 3 domaines d'activités",
+     "place": "CAL Nice",
+     "who": "Y.S. + P."
+    }
+   ]
+  },
+  "2027-03-24": {
+   "week": 26,
+   "slots": [
+    {
+     "half": "am",
+     "start": "08:30",
+     "end": "12:30",
+     "cat": "centre",
+     "short": "Centre",
+     "title": "Mercredi au centre de loisirs",
+     "planning": "MSP",
+     "place": "Centre de loisirs",
+     "who": "Ville de Nice"
+    },
+    {
+     "half": "pm",
+     "start": "13:30",
+     "end": "17:00",
+     "cat": "centre",
+     "short": "Centre",
+     "title": "Mercredi au centre de loisirs",
+     "planning": "MSP",
+     "place": "Centre de loisirs",
+     "who": "Ville de Nice"
+    }
+   ]
+  },
+  "2027-03-25": {
+   "week": 26,
+   "slots": [
+    {
+     "half": "am",
+     "start": "09:00",
+     "end": "12:00",
+     "cat": "prepa",
+     "short": "Prépa BC3",
+     "title": "Préparation BC3 · pratique des 3 domaines d'activités",
+     "planning": "Préparation BC3 + Pratique des 3 domaines d'activités",
+     "place": "CAL Nice",
+     "who": "Y.S. + P."
+    },
+    {
+     "half": "pm",
+     "start": "13:00",
+     "end": "16:00",
+     "cat": "prepa",
+     "short": "Prépa BC3",
+     "title": "Préparation BC3 · pratique des 3 domaines d'activités",
+     "planning": "Préparation BC3 + Pratique des 3 domaines d'activités",
+     "place": "CAL Nice",
+     "who": "Y.S. + P."
+    }
+   ]
+  },
+  "2027-03-26": {
+   "week": 26,
+   "slots": [
+    {
+     "half": "am",
+     "start": "09:00",
+     "end": "12:00",
+     "cat": "prepa",
+     "short": "Prépa BC3",
+     "title": "Préparation BC3 · pratique des 3 domaines d'activités",
+     "planning": "Préparation BC3 + Pratique des 3 domaines d'activités",
+     "place": "CAL Nice",
+     "who": "Y.S. + P."
+    },
+    {
+     "half": "pm",
+     "start": "13:00",
+     "end": "16:00",
+     "cat": "libre",
+     "short": "Libre",
+     "title": "Après-midi libre",
+     "free": true,
+     "note": "Après-midi vide dans le planning (sûrement libre).",
+     "check": true
+    }
+   ]
+  },
+  "2027-03-29": {
+   "week": 27,
+   "slots": [],
+   "holiday": "Lundi de Pâques"
+  },
+  "2027-03-30": {
+   "week": 27,
+   "slots": [
+    {
+     "half": "am",
+     "start": "09:00",
+     "end": "12:00",
+     "cat": "prepa",
+     "short": "Prépa BC3",
+     "title": "Préparation BC3 · pratique des 3 domaines d'activités",
+     "planning": "Préparation BC3 + Pratique des 3 domaines d'activités",
+     "place": "CAL Nice",
+     "who": "Y.S. + P."
+    },
+    {
+     "half": "pm",
+     "start": "13:00",
+     "end": "16:00",
+     "cat": "prepa",
+     "short": "Prépa BC3",
+     "title": "Préparation BC3 · pratique des 3 domaines d'activités",
+     "planning": "Préparation BC3 + Pratique des 3 domaines d'activités",
+     "place": "CAL Nice",
+     "who": "Y.S. + P."
+    }
+   ]
+  },
+  "2027-03-31": {
+   "week": 27,
+   "slots": [
+    {
+     "half": "am",
+     "start": "08:30",
+     "end": "12:30",
+     "cat": "centre",
+     "short": "Centre",
+     "title": "Mercredi au centre de loisirs",
+     "planning": "MSP",
+     "place": "Centre de loisirs",
+     "who": "Ville de Nice"
+    },
+    {
+     "half": "pm",
+     "start": "13:30",
+     "end": "17:00",
+     "cat": "centre",
+     "short": "Centre",
+     "title": "Mercredi au centre de loisirs",
+     "planning": "MSP",
+     "place": "Centre de loisirs",
+     "who": "Ville de Nice"
+    }
+   ]
+  },
+  "2027-04-01": {
+   "week": 27,
+   "slots": [
+    {
+     "half": "am",
+     "start": "09:00",
+     "end": "12:00",
+     "cat": "prepa",
+     "short": "Prépa BC3",
+     "title": "Préparation BC3 · pratique des 3 domaines d'activités",
+     "planning": "Préparation BC3 + Pratique des 3 domaines d'activités",
+     "place": "CAL Nice",
+     "who": "Y.S. + P."
+    },
+    {
+     "half": "pm",
+     "start": "13:00",
+     "end": "16:00",
+     "cat": "prepa",
+     "short": "Prépa BC3",
+     "title": "Préparation BC3 · pratique des 3 domaines d'activités",
+     "planning": "Préparation BC3 + Pratique des 3 domaines d'activités",
+     "place": "CAL Nice",
+     "who": "Y.S. + P."
+    }
+   ]
+  },
+  "2027-04-02": {
+   "week": 27,
+   "slots": [
+    {
+     "half": "am",
+     "start": "09:00",
+     "end": "12:00",
+     "cat": "prepa",
+     "short": "Prépa BC3",
+     "title": "Préparation BC3 · pratique des 3 domaines d'activités",
+     "planning": "Préparation BC3 + Pratique des 3 domaines d'activités",
+     "check": true,
+     "note": "Lieu non précisé dans le planning (sûrement le CAL Nice)."
+    },
+    {
+     "half": "pm",
+     "start": "13:00",
+     "end": "16:00",
+     "cat": "libre",
+     "short": "Libre",
+     "title": "Après-midi libre",
+     "free": true
+    }
+   ]
+  },
+  "2027-04-05": {
+   "week": 28,
+   "slots": [
+    {
+     "half": "am",
+     "start": "09:00",
+     "end": "12:00",
+     "cat": "centre",
+     "short": "MSP 3",
+     "title": "MSP 3 au centre de loisirs",
+     "planning": "MSP3",
+     "place": "Centre de loisirs",
+     "who": "Ville de Nice"
+    },
+    {
+     "half": "pm",
+     "start": "13:00",
+     "end": "16:00",
+     "cat": "centre",
+     "short": "MSP 3",
+     "title": "MSP 3 au centre de loisirs",
+     "planning": "MSP3",
+     "place": "Centre de loisirs",
+     "who": "Ville de Nice"
+    }
+   ]
+  },
+  "2027-04-06": {
+   "week": 28,
+   "slots": [
+    {
+     "half": "am",
+     "start": "08:00",
+     "end": "12:00",
+     "cat": "centre",
+     "short": "MSP 3",
+     "title": "MSP 3 au centre de loisirs",
+     "planning": "MSP3",
+     "place": "Centre de loisirs",
+     "who": "Ville de Nice"
+    },
+    {
+     "half": "pm",
+     "start": "13:00",
+     "end": "16:00",
+     "cat": "centre",
+     "short": "MSP 3",
+     "title": "MSP 3 au centre de loisirs",
+     "planning": "MSP3",
+     "place": "Centre de loisirs",
+     "who": "Ville de Nice"
+    }
+   ]
+  },
+  "2027-04-07": {
+   "week": 28,
+   "slots": [
+    {
+     "half": "am",
+     "start": "09:00",
+     "end": "12:00",
+     "cat": "epreuve",
+     "short": "Certif. BC3",
+     "title": "Certification BC3",
+     "planning": "CERTIFICATIONS BC3",
+     "place": "Centre de loisirs",
+     "who": "Évaluateurs"
+    },
+    {
+     "half": "pm",
+     "start": "13:30",
+     "end": "17:00",
+     "cat": "epreuve",
+     "short": "Certif. BC3",
+     "title": "Certification BC3",
+     "planning": "CERTIFICATIONS BC3",
+     "place": "Centre de loisirs",
+     "who": "Évaluateurs"
+    }
+   ]
+  },
+  "2027-04-08": {
+   "week": 28,
+   "slots": [
+    {
+     "half": "am",
+     "start": "09:00",
+     "end": "12:00",
+     "cat": "centre",
+     "short": "MSP 3",
+     "title": "MSP 3 au centre de loisirs",
+     "planning": "MSP3",
+     "place": "Centre de loisirs",
+     "who": "Ville de Nice"
+    },
+    {
+     "half": "pm",
+     "start": "13:00",
+     "end": "16:00",
+     "cat": "centre",
+     "short": "MSP 3",
+     "title": "MSP 3 au centre de loisirs",
+     "planning": "MSP3",
+     "place": "Centre de loisirs",
+     "who": "Ville de Nice"
+    }
+   ]
+  },
+  "2027-04-09": {
+   "week": 28,
+   "slots": [
+    {
+     "half": "am",
+     "start": "09:00",
+     "end": "12:00",
+     "cat": "centre",
+     "short": "MSP 3",
+     "title": "MSP 3 au centre de loisirs",
+     "planning": "MSP3",
+     "place": "Centre de loisirs",
+     "who": "Ville de Nice"
+    },
+    {
+     "half": "pm",
+     "start": "13:00",
+     "end": "16:00",
+     "cat": "libre",
+     "short": "Libre",
+     "title": "Après-midi libre",
+     "free": true
+    }
+   ]
+  },
+  "2027-04-12": {
+   "week": 29,
+   "slots": [
+    {
+     "half": "am",
+     "start": "09:00",
+     "end": "12:00",
+     "cat": "centre",
+     "short": "MSP 3",
+     "title": "MSP 3 au centre de loisirs",
+     "planning": "MSP3",
+     "place": "Centre de loisirs",
+     "who": "Ville de Nice"
+    },
+    {
+     "half": "pm",
+     "start": "13:00",
+     "end": "16:00",
+     "cat": "centre",
+     "short": "MSP 3",
+     "title": "MSP 3 au centre de loisirs",
+     "planning": "MSP3",
+     "place": "Centre de loisirs",
+     "who": "Ville de Nice"
+    }
+   ]
+  },
+  "2027-04-13": {
+   "week": 29,
+   "slots": [
+    {
+     "half": "am",
+     "start": "09:00",
+     "end": "12:00",
+     "cat": "centre",
+     "short": "MSP 3",
+     "title": "MSP 3 au centre de loisirs",
+     "planning": "MSP3",
+     "place": "Centre de loisirs",
+     "who": "Ville de Nice"
+    },
+    {
+     "half": "pm",
+     "start": "13:00",
+     "end": "16:00",
+     "cat": "centre",
+     "short": "MSP 3",
+     "title": "MSP 3 au centre de loisirs",
+     "planning": "MSP3",
+     "place": "Centre de loisirs",
+     "who": "Ville de Nice"
+    }
+   ]
+  },
+  "2027-04-14": {
+   "week": 29,
+   "slots": [
+    {
+     "half": "am",
+     "start": "08:30",
+     "end": "12:30",
+     "cat": "epreuve",
+     "short": "Certif. BC3",
+     "title": "Certification BC3",
+     "planning": "CERTIFICATIONS BC3",
+     "place": "Centre de loisirs",
+     "who": "Évaluateurs"
+    },
+    {
+     "half": "pm",
+     "start": "13:30",
+     "end": "17:00",
+     "cat": "epreuve",
+     "short": "Certif. BC3",
+     "title": "Certification BC3",
+     "planning": "CERTIFICATIONS BC3",
+     "place": "Centre de loisirs",
+     "who": "Évaluateurs"
+    }
+   ]
+  },
+  "2027-04-15": {
+   "week": 29,
+   "slots": [
+    {
+     "half": "am",
+     "start": "09:00",
+     "end": "12:00",
+     "cat": "centre",
+     "short": "MSP 3",
+     "title": "MSP 3 au centre de loisirs",
+     "planning": "MSP3",
+     "place": "Centre de loisirs",
+     "who": "Ville de Nice"
+    },
+    {
+     "half": "pm",
+     "start": "13:00",
+     "end": "16:00",
+     "cat": "centre",
+     "short": "MSP 3",
+     "title": "MSP 3 au centre de loisirs",
+     "planning": "MSP3",
+     "place": "Centre de loisirs",
+     "who": "Ville de Nice"
+    }
+   ]
+  },
+  "2027-04-16": {
+   "week": 29,
+   "slots": [
+    {
+     "half": "am",
+     "start": "09:00",
+     "end": "12:00",
+     "cat": "centre",
+     "short": "MSP 3",
+     "title": "MSP 3 au centre de loisirs",
+     "planning": "MSP3",
+     "place": "Centre de loisirs",
+     "who": "Ville de Nice"
+    },
+    {
+     "half": "pm",
+     "start": "13:00",
+     "end": "16:00",
+     "cat": "libre",
+     "short": "Libre",
+     "title": "Après-midi libre",
+     "free": true
+    }
+   ]
+  },
+  "2027-04-19": {
+   "week": 30,
+   "slots": [
+    {
+     "half": "am",
+     "start": "09:00",
+     "end": "12:00",
+     "cat": "epreuve",
+     "short": "MSP 3 + BC3",
+     "title": "MSP 3 au centre et certification BC3",
+     "planning": "MSP3 + Certification BC3",
+     "place": "Centre de loisirs",
+     "who": "Ville de Nice + évaluateurs"
+    },
+    {
+     "half": "pm",
+     "start": "13:00",
+     "end": "16:00",
+     "cat": "epreuve",
+     "short": "MSP 3 + BC3",
+     "title": "MSP 3 au centre et certification BC3",
+     "planning": "MSP3 + Certification BC3",
+     "place": "Centre de loisirs",
+     "who": "Ville de Nice + évaluateurs"
+    }
+   ]
+  },
+  "2027-04-20": {
+   "week": 30,
+   "slots": [
+    {
+     "half": "am",
+     "start": "09:00",
+     "end": "12:00",
+     "cat": "epreuve",
+     "short": "MSP 3 + BC3",
+     "title": "MSP 3 au centre et certification BC3",
+     "planning": "MSP3 + Certification BC3",
+     "place": "Centre de loisirs",
+     "who": "Ville de Nice + évaluateurs"
+    },
+    {
+     "half": "pm",
+     "start": "13:00",
+     "end": "16:00",
+     "cat": "epreuve",
+     "short": "MSP 3 + BC3",
+     "title": "MSP 3 au centre et certification BC3",
+     "planning": "MSP3 + Certification BC3",
+     "place": "Centre de loisirs",
+     "who": "Ville de Nice + évaluateurs"
+    }
+   ]
+  },
+  "2027-04-21": {
+   "week": 30,
+   "slots": [
+    {
+     "half": "am",
+     "start": "08:30",
+     "end": "12:30",
+     "cat": "epreuve",
+     "short": "MSP 3 + BC3",
+     "title": "MSP 3 au centre et certification BC3",
+     "planning": "MSP3 + Certification BC3",
+     "place": "Centre de loisirs",
+     "who": "Ville de Nice + évaluateurs"
+    },
+    {
+     "half": "pm",
+     "start": "13:30",
+     "end": "17:00",
+     "cat": "epreuve",
+     "short": "MSP 3 + BC3",
+     "title": "MSP 3 au centre et certification BC3",
+     "planning": "MSP3 + Certification BC3",
+     "place": "Centre de loisirs",
+     "who": "Ville de Nice + évaluateurs"
+    }
+   ]
+  },
+  "2027-04-22": {
+   "week": 30,
+   "slots": [
+    {
+     "half": "am",
+     "start": "09:00",
+     "end": "12:00",
+     "cat": "epreuve",
+     "short": "MSP 3 + BC3",
+     "title": "MSP 3 au centre et certification BC3",
+     "planning": "MSP3 + Certification BC3",
+     "place": "Centre de loisirs",
+     "who": "Ville de Nice + évaluateurs"
+    },
+    {
+     "half": "pm",
+     "start": "13:00",
+     "end": "16:00",
+     "cat": "epreuve",
+     "short": "MSP 3 + BC3",
+     "title": "MSP 3 au centre et certification BC3",
+     "planning": "MSP3 + Certification BC3",
+     "place": "Centre de loisirs",
+     "who": "Ville de Nice + évaluateurs"
+    }
+   ]
+  },
+  "2027-04-23": {
+   "week": 30,
+   "slots": [
+    {
+     "half": "am",
+     "start": "09:00",
+     "end": "12:00",
+     "cat": "epreuve",
+     "short": "MSP 3 + BC3",
+     "title": "MSP 3 au centre et certification BC3",
+     "planning": "MSP3 + Certification BC3",
+     "place": "Centre de loisirs",
+     "who": "Ville de Nice + évaluateurs"
+    },
+    {
+     "half": "pm",
+     "start": "13:00",
+     "end": "16:00",
+     "cat": "epreuve",
+     "short": "MSP 3 + BC3",
+     "title": "MSP 3 au centre et certification BC3",
+     "planning": "MSP3 + Certification BC3",
+     "place": "Centre de loisirs",
+     "who": "Ville de Nice + évaluateurs"
+    }
+   ]
+  },
+  "2027-04-26": {
+   "week": 31,
+   "slots": [
+    {
+     "half": "am",
+     "start": "09:00",
+     "end": "12:00",
+     "cat": "epreuve",
+     "short": "MSP 3 + BC3",
+     "title": "MSP 3 au centre et certification BC3",
+     "planning": "MSP3 + Certification BC3",
+     "place": "Centre de loisirs",
+     "who": "Ville de Nice + évaluateurs"
+    },
+    {
+     "half": "pm",
+     "start": "13:00",
+     "end": "16:00",
+     "cat": "epreuve",
+     "short": "MSP 3 + BC3",
+     "title": "MSP 3 au centre et certification BC3",
+     "planning": "MSP3 + Certification BC3",
+     "place": "Centre de loisirs",
+     "who": "Ville de Nice + évaluateurs"
+    }
+   ]
+  },
+  "2027-04-27": {
+   "week": 31,
+   "slots": [
+    {
+     "half": "am",
+     "start": "09:00",
+     "end": "12:00",
+     "cat": "epreuve",
+     "short": "MSP 3 + BC3",
+     "title": "MSP 3 au centre et certification BC3",
+     "planning": "MSP3 + Certification BC3",
+     "place": "Centre de loisirs",
+     "who": "Ville de Nice + évaluateurs"
+    },
+    {
+     "half": "pm",
+     "start": "13:00",
+     "end": "16:00",
+     "cat": "epreuve",
+     "short": "MSP 3 + BC3",
+     "title": "MSP 3 au centre et certification BC3",
+     "planning": "MSP3 + Certification BC3",
+     "place": "Centre de loisirs",
+     "who": "Ville de Nice + évaluateurs"
+    }
+   ]
+  },
+  "2027-04-28": {
+   "week": 31,
+   "slots": [
+    {
+     "half": "am",
+     "start": "08:30",
+     "end": "12:30",
+     "cat": "epreuve",
+     "short": "Ratt. BC3",
+     "title": "Rattrapages BC3",
+     "place": "Centre de loisirs",
+     "who": "Évaluateurs"
+    },
+    {
+     "half": "pm",
+     "start": "13:30",
+     "end": "17:00",
+     "cat": "epreuve",
+     "short": "Ratt. BC3",
+     "title": "Rattrapages BC3",
+     "place": "Centre de loisirs",
+     "who": "Évaluateurs"
+    }
+   ]
+  },
+  "2027-04-29": {
+   "week": 31,
+   "slots": [
+    {
+     "half": "am",
+     "start": "09:00",
+     "end": "12:00",
+     "cat": "centre",
+     "short": "MSP 3",
+     "title": "MSP 3 au centre de loisirs",
+     "planning": "MSP3",
+     "place": "Centre de loisirs",
+     "who": "Ville de Nice"
+    },
+    {
+     "half": "pm",
+     "start": "13:00",
+     "end": "16:00",
+     "cat": "centre",
+     "short": "MSP 3",
+     "title": "MSP 3 au centre de loisirs",
+     "planning": "MSP3",
+     "place": "Centre de loisirs",
+     "who": "Ville de Nice"
+    }
+   ]
+  },
+  "2027-04-30": {
+   "week": 31,
+   "slots": [
+    {
+     "half": "am",
+     "start": "09:00",
+     "end": "12:00",
+     "cat": "centre",
+     "short": "MSP 3",
+     "title": "MSP 3 au centre de loisirs",
+     "planning": "MSP3",
+     "place": "Centre de loisirs",
+     "who": "Ville de Nice"
+    },
+    {
+     "half": "pm",
+     "start": "13:00",
+     "end": "16:00",
+     "cat": "centre",
+     "short": "MSP 3",
+     "title": "MSP 3 au centre de loisirs",
+     "planning": "MSP3",
+     "place": "Centre de loisirs",
+     "who": "Ville de Nice"
+    }
+   ]
+  },
+  "2027-05-03": {
+   "week": 32,
+   "slots": [
+    {
+     "half": "am",
+     "start": "09:00",
+     "end": "12:00",
+     "cat": "prepa",
+     "short": "Prépa ratt. BC3",
+     "title": "Préparation des rattrapages BC3",
+     "planning": "Préparation Rattrapages BC3",
+     "place": "CAL Nice",
+     "who": "Y.S. + P."
+    },
+    {
+     "half": "pm",
+     "start": "13:00",
+     "end": "16:00",
+     "cat": "prepa",
+     "short": "Prépa ratt. BC3",
+     "title": "Préparation des rattrapages BC3",
+     "planning": "Préparation Rattrapages BC3",
+     "place": "CAL Nice",
+     "who": "Y.S. + P."
+    }
+   ]
+  },
+  "2027-05-04": {
+   "week": 32,
+   "slots": [
+    {
+     "half": "am",
+     "start": "09:00",
+     "end": "12:00",
+     "cat": "prepa",
+     "short": "Prépa ratt. BC3",
+     "title": "Préparation des rattrapages BC3",
+     "planning": "Préparation Rattrapages BC3",
+     "place": "CAL Nice",
+     "who": "Y.S. + P."
+    },
+    {
+     "half": "pm",
+     "start": "13:00",
+     "end": "16:00",
+     "cat": "prepa",
+     "short": "Prépa ratt. BC3",
+     "title": "Préparation des rattrapages BC3",
+     "planning": "Préparation Rattrapages BC3",
+     "place": "CAL Nice",
+     "who": "Y.S. + P."
+    }
+   ]
+  },
+  "2027-05-05": {
+   "week": 32,
+   "slots": [
+    {
+     "half": "am",
+     "start": "08:30",
+     "end": "12:30",
+     "cat": "epreuve",
+     "short": "Ratt. BC3",
+     "title": "Rattrapages BC3",
+     "place": "Centre de loisirs",
+     "who": "Évaluateurs"
+    },
+    {
+     "half": "pm",
+     "start": "13:30",
+     "end": "17:00",
+     "cat": "epreuve",
+     "short": "Ratt. BC3",
+     "title": "Rattrapages BC3",
+     "place": "Centre de loisirs",
+     "who": "Évaluateurs"
+    }
+   ]
+  },
+  "2027-05-06": {
+   "week": 32,
+   "slots": [],
+   "holiday": "Ascension"
+  },
+  "2027-05-07": {
+   "week": 32,
+   "slots": [],
+   "holiday": "Pont de l'Ascension"
+  },
+  "2027-05-10": {
+   "week": 33,
+   "slots": [
+    {
+     "half": "am",
+     "start": "09:00",
+     "end": "12:00",
+     "cat": "prepa",
+     "short": "Prépa BC1·BC2",
+     "title": "Préparation des certifications BC1 et BC2",
+     "planning": "Préparation BC1/BC2",
+     "place": "CAL Nice",
+     "who": "Y.S. + P."
+    },
+    {
+     "half": "pm",
+     "start": "13:00",
+     "end": "16:00",
+     "cat": "prepa",
+     "short": "Prépa BC1·BC2",
+     "title": "Préparation des certifications BC1 et BC2",
+     "planning": "Préparation BC1/BC2",
+     "place": "CAL Nice"
+    }
+   ]
+  },
+  "2027-05-11": {
+   "week": 33,
+   "slots": [
+    {
+     "half": "am",
+     "start": "09:00",
+     "end": "12:00",
+     "cat": "prepa",
+     "short": "Prépa BC1·BC2",
+     "title": "Préparation des certifications BC1 et BC2",
+     "planning": "Préparation BC1/BC2",
+     "place": "CAL Nice",
+     "who": "Y.S. + P."
+    },
+    {
+     "half": "pm",
+     "start": "13:00",
+     "end": "16:00",
+     "cat": "prepa",
+     "short": "Prépa BC1·BC2",
+     "title": "Préparation des certifications BC1 et BC2",
+     "planning": "Préparation BC1/BC2",
+     "place": "CAL Nice"
+    }
+   ]
+  },
+  "2027-05-12": {
+   "week": 33,
+   "slots": [
+    {
+     "half": "am",
+     "start": "08:30",
+     "end": "12:30",
+     "cat": "epreuve",
+     "short": "Ratt. BC3",
+     "title": "Rattrapages BC3",
+     "place": "Centre de loisirs",
+     "who": "Évaluateurs"
+    },
+    {
+     "half": "pm",
+     "start": "13:30",
+     "end": "17:00",
+     "cat": "epreuve",
+     "short": "Ratt. BC3",
+     "title": "Rattrapages BC3",
+     "place": "Centre de loisirs",
+     "who": "Évaluateurs"
+    }
+   ]
+  },
+  "2027-05-13": {
+   "week": 33,
+   "slots": [
+    {
+     "half": "am",
+     "start": "09:00",
+     "end": "12:00",
+     "cat": "epreuve",
+     "short": "Certif. BC1·BC2",
+     "title": "Certifications BC1 et BC2",
+     "planning": "CERTIFICATIONS BC1/BC2",
+     "place": "CAL Nice",
+     "who": "Évaluateurs"
+    },
+    {
+     "half": "pm",
+     "start": "13:00",
+     "end": "16:00",
+     "cat": "epreuve",
+     "short": "Certif. BC1·BC2",
+     "title": "Certifications BC1 et BC2",
+     "planning": "CERTIFICATIONS BC1/BC2",
+     "place": "CAL Nice",
+     "who": "Évaluateurs"
+    }
+   ]
+  },
+  "2027-05-14": {
+   "week": 33,
+   "slots": [
+    {
+     "half": "am",
+     "start": "09:00",
+     "end": "12:00",
+     "cat": "epreuve",
+     "short": "Certif. BC1·BC2",
+     "title": "Certifications BC1 et BC2",
+     "planning": "CERTIFICATIONS BC1/BC2",
+     "place": "CAL Nice",
+     "who": "Évaluateurs"
+    },
+    {
+     "half": "pm",
+     "start": "13:00",
+     "end": "16:00",
+     "cat": "epreuve",
+     "short": "Certif. BC1·BC2",
+     "title": "Certifications BC1 et BC2",
+     "planning": "CERTIFICATIONS BC1/BC2",
+     "place": "CAL Nice",
+     "who": "Évaluateurs"
+    }
+   ]
+  },
+  "2027-05-17": {
+   "week": 34,
+   "slots": [],
+   "holiday": "Lundi de Pentecôte"
+  },
+  "2027-05-18": {
+   "week": 34,
+   "slots": [
+    {
+     "half": "am",
+     "start": "09:00",
+     "end": "12:00",
+     "cat": "prepa",
+     "short": "Prépa ratt. BC3",
+     "title": "Préparation des rattrapages BC3",
+     "planning": "PREPARATION RATTRAPAGES BC3",
+     "place": "CAL Nice",
+     "who": "Y.S. + P."
+    },
+    {
+     "half": "pm",
+     "start": "13:00",
+     "end": "16:00",
+     "cat": "prepa",
+     "short": "Prépa ratt. BC3",
+     "title": "Préparation des rattrapages BC3",
+     "planning": "PREPARATION RATTRAPAGES BC3",
+     "check": true,
+     "note": "Lieu non précisé dans le planning (sûrement le CAL Nice)."
+    }
+   ]
+  },
+  "2027-05-19": {
+   "week": 34,
+   "slots": [
+    {
+     "half": "am",
+     "start": "08:30",
+     "end": "12:30",
+     "cat": "epreuve",
+     "short": "Ratt. BC3",
+     "title": "Rattrapages BC3",
+     "place": "Centre de loisirs",
+     "who": "Évaluateurs"
+    },
+    {
+     "half": "pm",
+     "start": "13:30",
+     "end": "17:00",
+     "cat": "epreuve",
+     "short": "Ratt. BC3",
+     "title": "Rattrapages BC3",
+     "place": "Centre de loisirs",
+     "who": "Évaluateurs"
+    }
+   ]
+  },
+  "2027-05-20": {
+   "week": 34,
+   "slots": [
+    {
+     "half": "am",
+     "start": "09:00",
+     "end": "12:00",
+     "cat": "cours",
+     "short": "Emploi & CV",
+     "title": "Recherche d'emploi et CV",
+     "planning": "Démarche de recherche d'emploi + CV",
+     "who": "Y.S. + P.",
+     "check": true,
+     "note": "Lieu non précisé dans le planning (sûrement le CAL Nice)."
+    },
+    {
+     "half": "pm",
+     "start": "13:00",
+     "end": "16:00",
+     "cat": "cours",
+     "short": "Emploi & CV",
+     "title": "Recherche d'emploi et CV",
+     "planning": "Démarche de recherche d'emploi + CV",
+     "check": true,
+     "note": "Lieu non précisé dans le planning (sûrement le CAL Nice)."
+    }
+   ]
+  },
+  "2027-05-21": {
+   "week": 34,
+   "slots": [
+    {
+     "half": "am",
+     "start": "09:00",
+     "end": "12:00",
+     "cat": "cours",
+     "short": "Emploi & CV",
+     "title": "Recherche d'emploi et CV",
+     "planning": "Démarche de recherche d'emploi + CV",
+     "who": "Y.S. + P.",
+     "check": true,
+     "note": "Lieu non précisé dans le planning (sûrement le CAL Nice)."
+    },
+    {
+     "half": "pm",
+     "start": "13:00",
+     "end": "16:00",
+     "cat": "cours",
+     "short": "Emploi & CV",
+     "title": "Recherche d'emploi et CV",
+     "planning": "Démarche de recherche d'emploi + CV",
+     "check": true,
+     "note": "Lieu non précisé dans le planning (sûrement le CAL Nice)."
+    }
+   ]
+  },
+  "2027-05-24": {
+   "week": 35,
+   "slots": [
+    {
+     "half": "am",
+     "start": "09:00",
+     "end": "12:00",
+     "cat": "prepa",
+     "short": "Prépa ratt. BC1·BC2",
+     "title": "Préparation des rattrapages BC1 et BC2",
+     "planning": "Préparation rattrapage BC1/BC2",
+     "place": "CAL Nice",
+     "who": "Y.S. + P."
+    },
+    {
+     "half": "pm",
+     "start": "13:00",
+     "end": "16:00",
+     "cat": "prepa",
+     "short": "Prépa ratt. BC1·BC2",
+     "title": "Préparation des rattrapages BC1 et BC2",
+     "planning": "Préparation rattrapage BC1/BC2",
+     "place": "CAL Nice",
+     "who": "Y.S. + P."
+    }
+   ]
+  },
+  "2027-05-25": {
+   "week": 35,
+   "slots": [
+    {
+     "half": "am",
+     "start": "09:00",
+     "end": "12:00",
+     "cat": "prepa",
+     "short": "Prépa ratt. BC1·BC2",
+     "title": "Préparation des rattrapages BC1 et BC2",
+     "planning": "Préparation rattrapage BC1/BC2",
+     "place": "CAL Nice",
+     "who": "Y.S. + P."
+    },
+    {
+     "half": "pm",
+     "start": "13:00",
+     "end": "16:00",
+     "cat": "prepa",
+     "short": "Prépa ratt. BC1·BC2",
+     "title": "Préparation des rattrapages BC1 et BC2",
+     "planning": "Préparation rattrapage BC1/BC2",
+     "place": "CAL Nice",
+     "who": "Y.S. + P."
+    }
+   ]
+  },
+  "2027-05-26": {
+   "week": 35,
+   "slots": [
+    {
+     "half": "am",
+     "start": "08:30",
+     "end": "12:30",
+     "cat": "centre",
+     "short": "Centre",
+     "title": "Mercredi au centre de loisirs",
+     "planning": "MSP",
+     "place": "Centre de loisirs",
+     "who": "Ville de Nice"
+    },
+    {
+     "half": "pm",
+     "start": "13:30",
+     "end": "17:00",
+     "cat": "centre",
+     "short": "Centre",
+     "title": "Mercredi au centre de loisirs",
+     "planning": "MSP",
+     "place": "Centre de loisirs",
+     "who": "Ville de Nice"
+    }
+   ]
+  },
+  "2027-05-27": {
+   "week": 35,
+   "slots": [
+    {
+     "half": "am",
+     "start": "09:00",
+     "end": "12:00",
+     "cat": "prepa",
+     "short": "Prépa ratt. BC1·BC2",
+     "title": "Préparation des rattrapages BC1 et BC2",
+     "planning": "Préparation rattrapage BC1/BC2",
+     "place": "CAL Nice",
+     "who": "Y.S. + P."
+    },
+    {
+     "half": "pm",
+     "start": "13:00",
+     "end": "16:00",
+     "cat": "prepa",
+     "short": "Prépa ratt. BC1·BC2",
+     "title": "Préparation des rattrapages BC1 et BC2",
+     "planning": "Préparation rattrapage BC1/BC2",
+     "place": "CAL Nice",
+     "who": "Y.S. + P."
+    }
+   ]
+  },
+  "2027-05-28": {
+   "week": 35,
+   "slots": [
+    {
+     "half": "am",
+     "start": "09:00",
+     "end": "12:00",
+     "cat": "prepa",
+     "short": "Prépa ratt. BC1·BC2",
+     "title": "Préparation des rattrapages BC1 et BC2",
+     "planning": "Préparation rattrapage BC1/BC2",
+     "place": "CAL Nice",
+     "who": "Y.S. + P."
+    },
+    {
+     "half": "pm",
+     "start": "13:00",
+     "end": "16:00",
+     "cat": "prepa",
+     "short": "Prépa ratt. BC1·BC2",
+     "title": "Préparation des rattrapages BC1 et BC2",
+     "planning": "Préparation rattrapage BC1/BC2",
+     "place": "CAL Nice",
+     "who": "Y.S. + P."
+    }
+   ]
+  },
+  "2027-05-31": {
+   "week": 36,
+   "slots": [
+    {
+     "half": "am",
+     "start": "09:00",
+     "end": "12:00",
+     "cat": "prepa",
+     "short": "Prépa ratt. BC1·BC2",
+     "title": "Préparation des rattrapages BC1 et BC2",
+     "planning": "Préparation rattrapage BC1/BC2",
+     "place": "CAL Nice",
+     "who": "Y.S. + P."
+    },
+    {
+     "half": "pm",
+     "start": "13:00",
+     "end": "16:00",
+     "cat": "prepa",
+     "short": "Prépa ratt. BC1·BC2",
+     "title": "Préparation des rattrapages BC1 et BC2",
+     "planning": "Préparation rattrapage BC1/BC2",
+     "place": "CAL Nice",
+     "who": "Y.S. + P."
+    }
+   ]
+  },
+  "2027-06-01": {
+   "week": 36,
+   "slots": [
+    {
+     "half": "am",
+     "start": "09:00",
+     "end": "12:00",
+     "cat": "prepa",
+     "short": "Prépa ratt. BC1·BC2",
+     "title": "Préparation des rattrapages BC1 et BC2",
+     "planning": "Préparation rattrapage BC1/BC2",
+     "place": "CAL Nice",
+     "who": "Y.S. + P."
+    },
+    {
+     "half": "pm",
+     "start": "13:00",
+     "end": "16:00",
+     "cat": "prepa",
+     "short": "Prépa ratt. BC1·BC2",
+     "title": "Préparation des rattrapages BC1 et BC2",
+     "planning": "Préparation rattrapage BC1/BC2",
+     "place": "CAL Nice",
+     "who": "Y.S. + P."
+    }
+   ]
+  },
+  "2027-06-02": {
+   "week": 36,
+   "slots": [
+    {
+     "half": "am",
+     "start": "08:30",
+     "end": "12:30",
+     "cat": "centre",
+     "short": "Centre",
+     "title": "Mercredi au centre de loisirs",
+     "planning": "MSP",
+     "place": "Centre de loisirs",
+     "who": "Ville de Nice"
+    },
+    {
+     "half": "pm",
+     "start": "13:30",
+     "end": "17:00",
+     "cat": "centre",
+     "short": "Centre",
+     "title": "Mercredi au centre de loisirs",
+     "planning": "MSP",
+     "place": "Centre de loisirs",
+     "who": "Ville de Nice"
+    }
+   ]
+  },
+  "2027-06-03": {
+   "week": 36,
+   "slots": [
+    {
+     "half": "am",
+     "start": "09:00",
+     "end": "12:00",
+     "cat": "epreuve",
+     "short": "Ratt. BC1·BC2",
+     "title": "Rattrapages des certifications BC1 et BC2",
+     "planning": "RATTRAPAGES CERTIFICATIONS BC1/BC2",
+     "place": "CAL Nice",
+     "who": "Évaluateurs"
+    },
+    {
+     "half": "pm",
+     "start": "13:00",
+     "end": "16:00",
+     "cat": "epreuve",
+     "short": "Ratt. BC1·BC2",
+     "title": "Rattrapages des certifications BC1 et BC2",
+     "planning": "RATTRAPAGES CERTIFICATIONS BC1/BC2",
+     "place": "CAL Nice",
+     "who": "Évaluateurs"
+    }
+   ]
+  },
+  "2027-06-04": {
+   "week": 36,
+   "slots": [
+    {
+     "half": "am",
+     "start": "09:00",
+     "end": "12:00",
+     "cat": "epreuve",
+     "short": "Ratt. BC1·BC2",
+     "title": "Rattrapages des certifications BC1 et BC2",
+     "planning": "RATTRAPAGES CERTIFICATIONS BC1/BC2",
+     "place": "CAL Nice",
+     "who": "Évaluateurs"
+    },
+    {
+     "half": "pm",
+     "start": "13:00",
+     "end": "16:00",
+     "cat": "epreuve",
+     "short": "Ratt. BC1·BC2",
+     "title": "Rattrapages des certifications BC1 et BC2",
+     "planning": "RATTRAPAGES CERTIFICATIONS BC1/BC2",
+     "place": "CAL Nice",
+     "who": "Évaluateurs"
+    }
+   ]
+  }
+ }
+}

@@ -1,0 +1,3746 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Promo MAPST//Planning BPJEPS MAPST//FR
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+X-WR-CALNAME:Promo MAPST
+X-WR-CALDESC:Planning du BPJEPS MAPST 2026-2027 (CAPA Sports\, Nice)
+X-WR-TIMEZONE:Europe/Paris
+REFRESH-INTERVAL;VALUE=DURATION:PT12H
+X-PUBLISHED-TTL:PT12H
+BEGIN:VTIMEZONE
+TZID:Europe/Paris
+BEGIN:DAYLIGHT
+TZOFFSETFROM:+0100
+TZOFFSETTO:+0200
+TZNAME:CEST
+DTSTART:19700329T020000
+RRULE:FREQ=YEARLY;BYMONTH=3;BYDAY=-1SU
+END:DAYLIGHT
+BEGIN:STANDARD
+TZOFFSETFROM:+0200
+TZOFFSETTO:+0100
+TZNAME:CET
+DTSTART:19701025T030000
+RRULE:FREQ=YEARLY;BYMONTH=10;BYDAY=-1SU
+END:STANDARD
+END:VTIMEZONE
+BEGIN:VEVENT
+UID:2026-09-14-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20260914T093000
+DTEND;TZID=Europe/Paris:20260914T120000
+SUMMARY:Accueil et présentation de la formation
+LOCATION:CAL Nice
+DESCRIPTION:Cours\nAvec : Équipe CAPA\nPlanning MAPST de CAPA Sports du 1
+ er octobre 2026. Appli non officielle Promo MAPST : en cas de doute\, vé
+ rifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-09-14-pm@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20260914T130000
+DTEND;TZID=Europe/Paris:20260914T160000
+SUMMARY:Démarches administratives
+LOCATION:CAL Nice
+DESCRIPTION:Cours\nAvec : Y.S. + P.\nPlanning MAPST de CAPA Sports du 1er 
+ octobre 2026. Appli non officielle Promo MAPST : en cas de doute\, vérif
+ ie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-09-15-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20260915T090000
+DTEND;TZID=Europe/Paris:20260915T120000
+SUMMARY:Construire une fiche de découverte\, d'initiation ou d'apprentiss
+ age
+LOCATION:CAL Nice
+DESCRIPTION:Cours\nAvec : Y.S. + P.\nPlanning MAPST de CAPA Sports du 1er 
+ octobre 2026. Appli non officielle Promo MAPST : en cas de doute\, vérif
+ ie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-09-15-pm@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20260915T130000
+DTEND;TZID=Europe/Paris:20260915T160000
+SUMMARY:Construire une fiche de découverte\, d'initiation ou d'apprentiss
+ age
+LOCATION:CAL Nice
+DESCRIPTION:Cours\nAvec : Y.S. + P.\nPlanning MAPST de CAPA Sports du 1er 
+ octobre 2026. Appli non officielle Promo MAPST : en cas de doute\, vérif
+ ie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-09-16-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20260916T083000
+DTEND;TZID=Europe/Paris:20260916T123000
+SUMMARY:Mercredi au centre de loisirs
+LOCATION:Centre de loisirs
+DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
+ A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
+ e doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-09-16-pm@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20260916T133000
+DTEND;TZID=Europe/Paris:20260916T170000
+SUMMARY:Mercredi au centre de loisirs
+LOCATION:Centre de loisirs
+DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
+ A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
+ e doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-09-17-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20260917T090000
+DTEND;TZID=Europe/Paris:20260917T120000
+SUMMARY:Méthodologie de la fiche de séance
+LOCATION:CAL Nice
+DESCRIPTION:Cours\nAvec : Y.S. + P.\nPlanning MAPST de CAPA Sports du 1er 
+ octobre 2026. Appli non officielle Promo MAPST : en cas de doute\, vérif
+ ie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-09-17-pm@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20260917T130000
+DTEND;TZID=Europe/Paris:20260917T160000
+SUMMARY:Méthodologie de la fiche de séance
+LOCATION:CAL Nice
+DESCRIPTION:Cours\nAvec : Y.S. + P.\nPlanning MAPST de CAPA Sports du 1er 
+ octobre 2026. Appli non officielle Promo MAPST : en cas de doute\, vérif
+ ie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-09-18-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20260918T090000
+DTEND;TZID=Europe/Paris:20260918T120000
+SUMMARY:Méthodologie de la fiche de séance et du cycle
+LOCATION:CAL Nice
+DESCRIPTION:Cours\nAvec : Y.S. + P.\nPlanning MAPST de CAPA Sports du 1er 
+ octobre 2026. Appli non officielle Promo MAPST : en cas de doute\, vérif
+ ie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-09-21-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20260921T090000
+DTEND;TZID=Europe/Paris:20260921T120000
+SUMMARY:Construire une fiche de découverte\, d'initiation ou d'apprentiss
+ age
+LOCATION:CAL Nice
+DESCRIPTION:Cours\nAvec : Y.S. + P.\nPlanning MAPST de CAPA Sports du 1er 
+ octobre 2026. Appli non officielle Promo MAPST : en cas de doute\, vérif
+ ie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-09-21-pm@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20260921T130000
+DTEND;TZID=Europe/Paris:20260921T160000
+SUMMARY:Principes et méthodes pour élaborer une séance et un cycle de d
+ écouverte\, sensibilisation ou initiation
+LOCATION:CAL Nice
+DESCRIPTION:Cours\nAvec : Y.S. + P.\nPlanning MAPST de CAPA Sports du 1er 
+ octobre 2026. Appli non officielle Promo MAPST : en cas de doute\, vérif
+ ie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-09-22-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20260922T090000
+DTEND;TZID=Europe/Paris:20260922T120000
+SUMMARY:Bases d'anatomie et de physiologie de l'effort
+LOCATION:CAL Nice
+DESCRIPTION:Cours\nAvec : Y.S. + P.\nPlanning MAPST de CAPA Sports du 1er 
+ octobre 2026. Appli non officielle Promo MAPST : en cas de doute\, vérif
+ ie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-09-22-pm@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20260922T130000
+DTEND;TZID=Europe/Paris:20260922T160000
+SUMMARY:Mise en pratique : élaborer une séance et un cycle de découvert
+ e\, sensibilisation ou initiation
+LOCATION:CAL Nice
+DESCRIPTION:Cours\nAvec : Y.S. + P.\nPlanning MAPST de CAPA Sports du 1er 
+ octobre 2026. Appli non officielle Promo MAPST : en cas de doute\, vérif
+ ie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-09-23-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20260923T083000
+DTEND;TZID=Europe/Paris:20260923T123000
+SUMMARY:Mercredi au centre de loisirs
+LOCATION:Centre de loisirs
+DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
+ A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
+ e doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-09-23-pm@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20260923T133000
+DTEND;TZID=Europe/Paris:20260923T170000
+SUMMARY:Mercredi au centre de loisirs
+LOCATION:Centre de loisirs
+DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
+ A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
+ e doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-09-24-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20260924T090000
+DTEND;TZID=Europe/Paris:20260924T120000
+SUMMARY:Citoyenneté\, devenir éducateur : posture\, exemplarité\, respo
+ nsabilité\, vivre ensemble
+LOCATION:CAL Nice
+DESCRIPTION:Cours\nAvec : K.C.\nPlanning MAPST de CAPA Sports du 1er octob
+ re 2026. Appli non officielle Promo MAPST : en cas de doute\, vérifie da
+ ns tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-09-24-pm@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20260924T130000
+DTEND;TZID=Europe/Paris:20260924T160000
+SUMMARY:Réglementation et législation du sport (mention)
+LOCATION:CAL Nice
+DESCRIPTION:Cours\nAvec : Y.S. + P.\nPlanning MAPST de CAPA Sports du 1er 
+ octobre 2026. Appli non officielle Promo MAPST : en cas de doute\, vérif
+ ie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-09-25-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20260925T090000
+DTEND;TZID=Europe/Paris:20260925T120000
+SUMMARY:Bases d'anatomie et de physiologie de l'effort
+LOCATION:CAL Nice
+DESCRIPTION:Cours\nAvec : Y.S. + P.\nPlanning MAPST de CAPA Sports du 1er 
+ octobre 2026. Appli non officielle Promo MAPST : en cas de doute\, vérif
+ ie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-09-28-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20260928T090000
+DTEND;TZID=Europe/Paris:20260928T120000
+SUMMARY:Réglementation et législation du sport (mention)
+LOCATION:CAL Nice
+DESCRIPTION:Cours\nAvec : Y.S. + P.\nPlanning MAPST de CAPA Sports du 1er 
+ octobre 2026. Appli non officielle Promo MAPST : en cas de doute\, vérif
+ ie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-09-28-pm@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20260928T130000
+DTEND;TZID=Europe/Paris:20260928T160000
+SUMMARY:Préparation de l'EPMSP
+LOCATION:CAL Nice
+DESCRIPTION:Préparation\nAvec : Y.S. + P.\nPlanning MAPST de CAPA Sports 
+ du 1er octobre 2026. Appli non officielle Promo MAPST : en cas de doute\,
+  vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-09-29-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20260929T090000
+DTEND;TZID=Europe/Paris:20260929T120000
+SUMMARY:Maîtrise des techniques et conduite professionnelle\, règles de 
+ sécurité
+LOCATION:CAL Nice
+DESCRIPTION:Cours\nAvec : M.C.\nPlanning MAPST de CAPA Sports du 1er octob
+ re 2026. Appli non officielle Promo MAPST : en cas de doute\, vérifie da
+ ns tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-09-29-pm@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20260929T130000
+DTEND;TZID=Europe/Paris:20260929T160000
+SUMMARY:Mise en application sur le terrain des cours du matin
+LOCATION:CAL Nice
+DESCRIPTION:Cours\nAvec : M.C.\nPlanning MAPST de CAPA Sports du 1er octob
+ re 2026. Appli non officielle Promo MAPST : en cas de doute\, vérifie da
+ ns tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-09-30-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20260930T083000
+DTEND;TZID=Europe/Paris:20260930T123000
+SUMMARY:Mercredi au centre de loisirs
+LOCATION:Centre de loisirs
+DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
+ A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
+ e doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-09-30-pm@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20260930T133000
+DTEND;TZID=Europe/Paris:20260930T170000
+SUMMARY:Mercredi au centre de loisirs
+LOCATION:Centre de loisirs
+DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
+ A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
+ e doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-10-01-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20261001T090000
+DTEND;TZID=Europe/Paris:20261001T120000
+SUMMARY:EPMSP · épreuve de mise en situation professionnelle
+LOCATION:CAL Nice
+DESCRIPTION:Épreuve\nAvec : Y.S. + P.\nPlanning MAPST de CAPA Sports du 1
+ er octobre 2026. Appli non officielle Promo MAPST : en cas de doute\, vé
+ rifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-10-01-pm@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20261001T130000
+DTEND;TZID=Europe/Paris:20261001T160000
+SUMMARY:EPMSP · épreuve de mise en situation professionnelle
+LOCATION:CAL Nice
+DESCRIPTION:Épreuve\nAvec : Y.S. + P.\nPlanning MAPST de CAPA Sports du 1
+ er octobre 2026. Appli non officielle Promo MAPST : en cas de doute\, vé
+ rifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-10-02-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20261002T090000
+DTEND;TZID=Europe/Paris:20261002T120000
+SUMMARY:Mise en pratique de la séance et du cycle
+LOCATION:CAL Nice
+DESCRIPTION:Cours\nAvec : Y.S. + P.\nPlanning MAPST de CAPA Sports du 1er 
+ octobre 2026. Appli non officielle Promo MAPST : en cas de doute\, vérif
+ ie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-10-05-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20261005T090000
+DTEND;TZID=Europe/Paris:20261005T120000
+SUMMARY:Fondamentaux de l'initiation aux activités physiques d'entretien 
+ corporel (théorie\, technique\, pédagogie)
+LOCATION:CAL Nice
+DESCRIPTION:Cours\nAvec : Y.S. + P.\nPlanning MAPST de CAPA Sports du 1er 
+ octobre 2026. Appli non officielle Promo MAPST : en cas de doute\, vérif
+ ie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-10-05-pm@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20261005T130000
+DTEND;TZID=Europe/Paris:20261005T160000
+SUMMARY:Préparation du rattrapage EPMSP
+LOCATION:CAL Nice
+DESCRIPTION:Préparation\nAvec : Y.S. + P.\nPlanning MAPST de CAPA Sports 
+ du 1er octobre 2026. Appli non officielle Promo MAPST : en cas de doute\,
+  vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-10-06-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20261006T090000
+DTEND;TZID=Europe/Paris:20261006T120000
+SUMMARY:Technique d'analyse d'une séance
+LOCATION:CAL Nice
+DESCRIPTION:Cours\nAvec : Y.S.\nPlanning MAPST de CAPA Sports du 1er octob
+ re 2026. Appli non officielle Promo MAPST : en cas de doute\, vérifie da
+ ns tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-10-06-pm@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20261006T130000
+DTEND;TZID=Europe/Paris:20261006T160000
+SUMMARY:Pratique des AEC (activités d'entretien corporel)
+LOCATION:CAL Nice
+DESCRIPTION:Cours\nAvec : Y.S. + P.\nPlanning MAPST de CAPA Sports du 1er 
+ octobre 2026. Appli non officielle Promo MAPST : en cas de doute\, vérif
+ ie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-10-07-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20261007T083000
+DTEND;TZID=Europe/Paris:20261007T123000
+SUMMARY:Mercredi au centre de loisirs
+LOCATION:Centre de loisirs
+DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
+ A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
+ e doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-10-07-pm@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20261007T133000
+DTEND;TZID=Europe/Paris:20261007T170000
+SUMMARY:Mercredi au centre de loisirs
+LOCATION:Centre de loisirs
+DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
+ A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
+ e doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-10-08-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20261008T090000
+DTEND;TZID=Europe/Paris:20261008T120000
+SUMMARY:Pratique des AEC (activités d'entretien corporel)
+LOCATION:CAL Nice
+DESCRIPTION:Cours\nAvec : Y.S. + P.\nPlanning MAPST de CAPA Sports du 1er 
+ octobre 2026. Appli non officielle Promo MAPST : en cas de doute\, vérif
+ ie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-10-08-pm@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20261008T130000
+DTEND;TZID=Europe/Paris:20261008T160000
+SUMMARY:Pratique des AEC (activités d'entretien corporel)
+LOCATION:CAL Nice
+DESCRIPTION:Cours\nAvec : Y.S. + P.\nPlanning MAPST de CAPA Sports du 1er 
+ octobre 2026. Appli non officielle Promo MAPST : en cas de doute\, vérif
+ ie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-10-09-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20261009T090000
+DTEND;TZID=Europe/Paris:20261009T120000
+SUMMARY:Laïcité\, égalité\, violences et non-discrimination
+LOCATION:CAL Nice
+DESCRIPTION:Cours\nAvec : K.C.\nPlanning MAPST de CAPA Sports du 1er octob
+ re 2026. Appli non officielle Promo MAPST : en cas de doute\, vérifie da
+ ns tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-10-12-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20261012T090000
+DTEND;TZID=Europe/Paris:20261012T120000
+SUMMARY:Incivilités\, conflits\, violences et harcèlement
+LOCATION:CAL Nice
+DESCRIPTION:Cours\nAvec : K.C.\nPlanning MAPST de CAPA Sports du 1er octob
+ re 2026. Appli non officielle Promo MAPST : en cas de doute\, vérifie da
+ ns tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-10-12-pm@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20261012T130000
+DTEND;TZID=Europe/Paris:20261012T160000
+SUMMARY:Préparation du rattrapage EPMSP · télédéclaration EAPS
+LOCATION:CAL Nice
+DESCRIPTION:Préparation\nAvec : Y.S. + P.\nPlanning MAPST de CAPA Sports 
+ du 1er octobre 2026. Appli non officielle Promo MAPST : en cas de doute\,
+  vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-10-13-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20261013T090000
+DTEND;TZID=Europe/Paris:20261013T120000
+SUMMARY:Situations sensibles et professionnalisation
+LOCATION:CAL Nice
+DESCRIPTION:Cours\nAvec : K.C.\nPlanning MAPST de CAPA Sports du 1er octob
+ re 2026. Appli non officielle Promo MAPST : en cas de doute\, vérifie da
+ ns tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-10-13-pm@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20261013T130000
+DTEND;TZID=Europe/Paris:20261013T160000
+SUMMARY:Théorie et pratique : techniques\, conduite professionnelle\, sé
+ curité
+LOCATION:CAL Nice
+DESCRIPTION:Cours\nAvec : Y.S. + P.\nPlanning MAPST de CAPA Sports du 1er 
+ octobre 2026. Appli non officielle Promo MAPST : en cas de doute\, vérif
+ ie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-10-14-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20261014T083000
+DTEND;TZID=Europe/Paris:20261014T123000
+SUMMARY:Mercredi au centre de loisirs
+LOCATION:Centre de loisirs
+DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
+ A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
+ e doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-10-14-pm@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20261014T133000
+DTEND;TZID=Europe/Paris:20261014T170000
+SUMMARY:Mercredi au centre de loisirs
+LOCATION:Centre de loisirs
+DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
+ A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
+ e doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-10-15-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20261015T090000
+DTEND;TZID=Europe/Paris:20261015T120000
+SUMMARY:Rattrapage de l'EPMSP
+LOCATION:CAL Nice
+DESCRIPTION:Épreuve\nAvec : Y.S. + P.\nPlanning MAPST de CAPA Sports du 1
+ er octobre 2026. Appli non officielle Promo MAPST : en cas de doute\, vé
+ rifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-10-15-pm@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20261015T130000
+DTEND;TZID=Europe/Paris:20261015T160000
+SUMMARY:Rattrapage de l'EPMSP
+LOCATION:CAL Nice
+DESCRIPTION:Épreuve\nAvec : Y.S. + P.\nPlanning MAPST de CAPA Sports du 1
+ er octobre 2026. Appli non officielle Promo MAPST : en cas de doute\, vé
+ rifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-10-16-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20261016T090000
+DTEND;TZID=Europe/Paris:20261016T120000
+SUMMARY:Mise en pratique de la séance et du cycle · télédéclaration E
+ APS
+LOCATION:CAL Nice
+DESCRIPTION:Cours\nAvec : Y.S. + P.\nPlanning MAPST de CAPA Sports du 1er 
+ octobre 2026. Appli non officielle Promo MAPST : en cas de doute\, vérif
+ ie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-10-19-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20261019T090000
+DTEND;TZID=Europe/Paris:20261019T120000
+SUMMARY:MSP 1 au centre de loisirs
+LOCATION:Centre de loisirs
+DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
+ A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
+ e doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-10-19-pm@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20261019T130000
+DTEND;TZID=Europe/Paris:20261019T160000
+SUMMARY:MSP 1 au centre de loisirs
+LOCATION:Centre de loisirs
+DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
+ A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
+ e doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-10-20-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20261020T090000
+DTEND;TZID=Europe/Paris:20261020T120000
+SUMMARY:MSP 1 au centre de loisirs
+LOCATION:Centre de loisirs
+DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
+ A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
+ e doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-10-20-pm@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20261020T130000
+DTEND;TZID=Europe/Paris:20261020T160000
+SUMMARY:MSP 1 au centre de loisirs
+LOCATION:Centre de loisirs
+DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
+ A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
+ e doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-10-21-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20261021T083000
+DTEND;TZID=Europe/Paris:20261021T123000
+SUMMARY:MSP 1 au centre de loisirs
+LOCATION:Centre de loisirs
+DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
+ A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
+ e doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-10-21-pm@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20261021T133000
+DTEND;TZID=Europe/Paris:20261021T170000
+SUMMARY:MSP 1 au centre de loisirs
+LOCATION:Centre de loisirs
+DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
+ A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
+ e doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-10-22-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20261022T090000
+DTEND;TZID=Europe/Paris:20261022T120000
+SUMMARY:MSP 1 au centre de loisirs
+LOCATION:Centre de loisirs
+DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
+ A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
+ e doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-10-22-pm@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20261022T130000
+DTEND;TZID=Europe/Paris:20261022T160000
+SUMMARY:MSP 1 au centre de loisirs
+LOCATION:Centre de loisirs
+DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
+ A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
+ e doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-10-23-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20261023T090000
+DTEND;TZID=Europe/Paris:20261023T120000
+SUMMARY:MSP 1 au centre de loisirs
+LOCATION:Centre de loisirs
+DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
+ A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
+ e doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-10-23-pm@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20261023T130000
+DTEND;TZID=Europe/Paris:20261023T160000
+SUMMARY:MSP 1 au centre de loisirs
+LOCATION:Centre de loisirs
+DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
+ A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
+ e doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-10-26-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20261026T090000
+DTEND;TZID=Europe/Paris:20261026T120000
+SUMMARY:MSP 1 au centre de loisirs
+LOCATION:Centre de loisirs
+DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
+ A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
+ e doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-10-26-pm@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20261026T130000
+DTEND;TZID=Europe/Paris:20261026T160000
+SUMMARY:MSP 1 au centre de loisirs
+LOCATION:Centre de loisirs
+DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
+ A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
+ e doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-10-27-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20261027T090000
+DTEND;TZID=Europe/Paris:20261027T120000
+SUMMARY:MSP 1 au centre de loisirs
+LOCATION:Centre de loisirs
+DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
+ A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
+ e doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-10-27-pm@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20261027T130000
+DTEND;TZID=Europe/Paris:20261027T160000
+SUMMARY:MSP 1 au centre de loisirs
+LOCATION:Centre de loisirs
+DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
+ A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
+ e doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-10-28-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20261028T083000
+DTEND;TZID=Europe/Paris:20261028T123000
+SUMMARY:MSP 1 au centre de loisirs
+LOCATION:Centre de loisirs
+DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
+ A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
+ e doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-10-28-pm@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20261028T133000
+DTEND;TZID=Europe/Paris:20261028T170000
+SUMMARY:MSP 1 au centre de loisirs
+LOCATION:Centre de loisirs
+DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
+ A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
+ e doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-10-29-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20261029T090000
+DTEND;TZID=Europe/Paris:20261029T120000
+SUMMARY:MSP 1 au centre de loisirs
+LOCATION:Centre de loisirs
+DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
+ A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
+ e doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-10-29-pm@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20261029T130000
+DTEND;TZID=Europe/Paris:20261029T160000
+SUMMARY:MSP 1 au centre de loisirs
+LOCATION:Centre de loisirs
+DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
+ A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
+ e doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-10-30-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20261030T090000
+DTEND;TZID=Europe/Paris:20261030T120000
+SUMMARY:MSP 1 au centre de loisirs
+LOCATION:Centre de loisirs
+DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
+ A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
+ e doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-10-30-pm@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20261030T130000
+DTEND;TZID=Europe/Paris:20261030T160000
+SUMMARY:MSP 1 au centre de loisirs
+LOCATION:Centre de loisirs
+DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
+ A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
+ e doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-11-02-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20261102T090000
+DTEND;TZID=Europe/Paris:20261102T120000
+SUMMARY:MSP 1 au centre de loisirs
+LOCATION:Centre de loisirs
+DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
+ A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
+ e doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-11-02-pm@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20261102T130000
+DTEND;TZID=Europe/Paris:20261102T160000
+SUMMARY:MSP 1 au centre de loisirs
+LOCATION:Centre de loisirs
+DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
+ A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
+ e doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-11-03-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20261103T090000
+DTEND;TZID=Europe/Paris:20261103T120000
+SUMMARY:MSP 1 au centre de loisirs
+LOCATION:Centre de loisirs
+DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
+ A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
+ e doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-11-03-pm@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20261103T130000
+DTEND;TZID=Europe/Paris:20261103T160000
+SUMMARY:MSP 1 au centre de loisirs
+LOCATION:Centre de loisirs
+DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
+ A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
+ e doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-11-04-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20261104T083000
+DTEND;TZID=Europe/Paris:20261104T123000
+SUMMARY:Mercredi au centre de loisirs
+LOCATION:Centre de loisirs
+DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
+ A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
+ e doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-11-04-pm@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20261104T133000
+DTEND;TZID=Europe/Paris:20261104T170000
+SUMMARY:Mercredi au centre de loisirs
+LOCATION:Centre de loisirs
+DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
+ A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
+ e doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-11-05-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20261105T090000
+DTEND;TZID=Europe/Paris:20261105T120000
+SUMMARY:MSP 1 au centre de loisirs
+LOCATION:Centre de loisirs
+DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
+ A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
+ e doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-11-05-pm@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20261105T130000
+DTEND;TZID=Europe/Paris:20261105T160000
+SUMMARY:MSP 1 au centre de loisirs
+LOCATION:Centre de loisirs
+DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
+ A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
+ e doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-11-06-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20261106T090000
+DTEND;TZID=Europe/Paris:20261106T120000
+SUMMARY:MSP 1 au centre de loisirs
+LOCATION:Centre de loisirs
+DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
+ A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
+ e doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-11-06-pm@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20261106T130000
+DTEND;TZID=Europe/Paris:20261106T160000
+SUMMARY:MSP 1 au centre de loisirs
+LOCATION:Centre de loisirs
+DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
+ A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
+ e doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-11-09-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20261109T090000
+DTEND;TZID=Europe/Paris:20261109T120000
+SUMMARY:MSP 1 au centre de loisirs
+LOCATION:Centre de loisirs
+DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
+ A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
+ e doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-11-09-pm@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20261109T130000
+DTEND;TZID=Europe/Paris:20261109T160000
+SUMMARY:MSP 1 au centre de loisirs
+LOCATION:Centre de loisirs
+DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
+ A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
+ e doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-11-10-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20261110T090000
+DTEND;TZID=Europe/Paris:20261110T120000
+SUMMARY:MSP 1 au centre de loisirs
+LOCATION:Centre de loisirs
+DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
+ A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
+ e doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-11-10-pm@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20261110T130000
+DTEND;TZID=Europe/Paris:20261110T160000
+SUMMARY:MSP 1 au centre de loisirs
+LOCATION:Centre de loisirs
+DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
+ A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
+ e doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-11-11-ferie@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;VALUE=DATE:20261111
+DTEND;VALUE=DATE:20261112
+TRANSP:TRANSPARENT
+SUMMARY:Férié · Armistice
+DESCRIPTION:Pas de formation. Planning MAPST de CAPA Sports du 1er octobre
+  2026. Appli non officielle Promo MAPST : en cas de doute\, vérifie dans
+  tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-11-12-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20261112T090000
+DTEND;TZID=Europe/Paris:20261112T120000
+SUMMARY:MSP 1 au centre de loisirs
+LOCATION:Centre de loisirs
+DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
+ A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
+ e doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-11-12-pm@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20261112T130000
+DTEND;TZID=Europe/Paris:20261112T160000
+SUMMARY:MSP 1 au centre de loisirs
+LOCATION:Centre de loisirs
+DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
+ A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
+ e doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-11-13-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20261113T090000
+DTEND;TZID=Europe/Paris:20261113T120000
+SUMMARY:MSP 1 au centre de loisirs
+LOCATION:Centre de loisirs
+DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
+ A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
+ e doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-11-16-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20261116T090000
+DTEND;TZID=Europe/Paris:20261116T120000
+SUMMARY:MSP 1 au centre de loisirs
+LOCATION:Centre de loisirs
+DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
+ A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
+ e doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-11-16-pm@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20261116T130000
+DTEND;TZID=Europe/Paris:20261116T160000
+SUMMARY:MSP 1 au centre de loisirs
+LOCATION:Centre de loisirs
+DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
+ A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
+ e doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-11-17-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20261117T090000
+DTEND;TZID=Europe/Paris:20261117T120000
+SUMMARY:MSP 1 au centre de loisirs
+LOCATION:Centre de loisirs
+DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
+ A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
+ e doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-11-17-pm@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20261117T130000
+DTEND;TZID=Europe/Paris:20261117T160000
+SUMMARY:MSP 1 au centre de loisirs
+LOCATION:Centre de loisirs
+DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
+ A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
+ e doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-11-18-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20261118T083000
+DTEND;TZID=Europe/Paris:20261118T123000
+SUMMARY:Mercredi au centre de loisirs
+LOCATION:Centre de loisirs
+DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
+ A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
+ e doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-11-18-pm@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20261118T133000
+DTEND;TZID=Europe/Paris:20261118T170000
+SUMMARY:Mercredi au centre de loisirs
+LOCATION:Centre de loisirs
+DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
+ A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
+ e doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-11-19-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20261119T090000
+DTEND;TZID=Europe/Paris:20261119T120000
+SUMMARY:MSP 1 au centre de loisirs
+LOCATION:Centre de loisirs
+DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
+ A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
+ e doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-11-19-pm@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20261119T130000
+DTEND;TZID=Europe/Paris:20261119T160000
+SUMMARY:MSP 1 au centre de loisirs
+LOCATION:Centre de loisirs
+DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
+ A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
+ e doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-11-20-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20261120T090000
+DTEND;TZID=Europe/Paris:20261120T120000
+SUMMARY:MSP 1 au centre de loisirs
+LOCATION:Centre de loisirs
+DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
+ A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
+ e doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-11-23-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20261123T090000
+DTEND;TZID=Europe/Paris:20261123T120000
+SUMMARY:Sensibilisation environnementale
+LOCATION:CAL Nice
+DESCRIPTION:Cours\nAvec : B.\nPlanning MAPST de CAPA Sports du 1er octobre
+  2026. Appli non officielle Promo MAPST : en cas de doute\, vérifie dans
+  tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-11-23-pm@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20261123T130000
+DTEND;TZID=Europe/Paris:20261123T160000
+SUMMARY:Sensibilisation environnementale
+LOCATION:CAL Nice
+DESCRIPTION:Cours\nAvec : B.\nPlanning MAPST de CAPA Sports du 1er octobre
+  2026. Appli non officielle Promo MAPST : en cas de doute\, vérifie dans
+  tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-11-24-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20261124T090000
+DTEND;TZID=Europe/Paris:20261124T120000
+SUMMARY:APEN · activités physiques en espace naturel
+LOCATION:CAL Nice
+DESCRIPTION:Cours\nAvec : M.C.\nPlanning MAPST de CAPA Sports du 1er octob
+ re 2026. Appli non officielle Promo MAPST : en cas de doute\, vérifie da
+ ns tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-11-24-pm@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20261124T130000
+DTEND;TZID=Europe/Paris:20261124T160000
+SUMMARY:APEN · activités physiques en espace naturel
+LOCATION:Centre de loisirs
+DESCRIPTION:Cours\nAvec : M.C.\nÀ vérifier : Le planning indique le cent
+ re de loisirs pour cet après-midi d'APEN : à vérifier.\nPlanning MAPST
+  de CAPA Sports du 1er octobre 2026. Appli non officielle Promo MAPST : e
+ n cas de doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-11-25-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20261125T083000
+DTEND;TZID=Europe/Paris:20261125T123000
+SUMMARY:Mercredi au centre de loisirs
+LOCATION:Centre de loisirs
+DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
+ A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
+ e doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-11-25-pm@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20261125T133000
+DTEND;TZID=Europe/Paris:20261125T170000
+SUMMARY:MSP 1 au centre de loisirs
+LOCATION:Centre de loisirs
+DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
+ A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
+ e doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-11-26-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20261126T090000
+DTEND;TZID=Europe/Paris:20261126T120000
+SUMMARY:APEN · activités physiques en espace naturel
+LOCATION:CAL Nice
+DESCRIPTION:Cours\nAvec : M.C.\nPlanning MAPST de CAPA Sports du 1er octob
+ re 2026. Appli non officielle Promo MAPST : en cas de doute\, vérifie da
+ ns tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-11-26-pm@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20261126T130000
+DTEND;TZID=Europe/Paris:20261126T160000
+SUMMARY:APEN · activités physiques en espace naturel
+LOCATION:Centre de loisirs
+DESCRIPTION:Cours\nAvec : M.C.\nÀ vérifier : Le planning indique le cent
+ re de loisirs pour cet après-midi d'APEN : à vérifier.\nPlanning MAPST
+  de CAPA Sports du 1er octobre 2026. Appli non officielle Promo MAPST : e
+ n cas de doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-11-27-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20261127T090000
+DTEND;TZID=Europe/Paris:20261127T120000
+SUMMARY:APEN · activités physiques en espace naturel
+LOCATION:CAL Nice
+DESCRIPTION:Cours\nAvec : M.C.\nPlanning MAPST de CAPA Sports du 1er octob
+ re 2026. Appli non officielle Promo MAPST : en cas de doute\, vérifie da
+ ns tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-11-30-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20261130T090000
+DTEND;TZID=Europe/Paris:20261130T120000
+SUMMARY:Technique d'analyse d'une séance
+DESCRIPTION:Cours\nAvec : Y.S.\nÀ vérifier : Lieu non précisé dans le 
+ planning (sûrement le CAL Nice).\nPlanning MAPST de CAPA Sports du 1er o
+ ctobre 2026. Appli non officielle Promo MAPST : en cas de doute\, vérifi
+ e dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-11-30-pm@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20261130T130000
+DTEND;TZID=Europe/Paris:20261130T160000
+SUMMARY:Technique d'analyse d'une séance
+DESCRIPTION:Cours\nAvec : Y.S.\nÀ vérifier : Lieu non précisé dans le 
+ planning (sûrement le CAL Nice).\nPlanning MAPST de CAPA Sports du 1er o
+ ctobre 2026. Appli non officielle Promo MAPST : en cas de doute\, vérifi
+ e dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-12-01-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20261201T090000
+DTEND;TZID=Europe/Paris:20261201T120000
+SUMMARY:APEC · activités physiques d'entretien corporel
+DESCRIPTION:Cours\nAvec : Y.S.\nÀ vérifier : Lieu non précisé dans le 
+ planning (sûrement le CAL Nice).\nPlanning MAPST de CAPA Sports du 1er o
+ ctobre 2026. Appli non officielle Promo MAPST : en cas de doute\, vérifi
+ e dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-12-01-pm@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20261201T130000
+DTEND;TZID=Europe/Paris:20261201T160000
+SUMMARY:APEC · activités physiques d'entretien corporel
+DESCRIPTION:Cours\nAvec : Y.S.\nÀ vérifier : Lieu non précisé dans le 
+ planning (sûrement le CAL Nice).\nPlanning MAPST de CAPA Sports du 1er o
+ ctobre 2026. Appli non officielle Promo MAPST : en cas de doute\, vérifi
+ e dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-12-02-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20261202T083000
+DTEND;TZID=Europe/Paris:20261202T123000
+SUMMARY:Mercredi au centre de loisirs
+LOCATION:Centre de loisirs
+DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
+ A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
+ e doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-12-02-pm@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20261202T133000
+DTEND;TZID=Europe/Paris:20261202T170000
+SUMMARY:Mercredi au centre de loisirs
+LOCATION:Centre de loisirs
+DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
+ A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
+ e doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-12-03-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20261203T090000
+DTEND;TZID=Europe/Paris:20261203T120000
+SUMMARY:APEC · activités physiques d'entretien corporel
+DESCRIPTION:Cours\nAvec : Y.S.\nÀ vérifier : Lieu non précisé dans le 
+ planning (sûrement le CAL Nice).\nPlanning MAPST de CAPA Sports du 1er o
+ ctobre 2026. Appli non officielle Promo MAPST : en cas de doute\, vérifi
+ e dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-12-03-pm@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20261203T130000
+DTEND;TZID=Europe/Paris:20261203T160000
+SUMMARY:APEC · activités physiques d'entretien corporel
+DESCRIPTION:Cours\nAvec : Y.S.\nÀ vérifier : Lieu non précisé dans le 
+ planning (sûrement le CAL Nice).\nPlanning MAPST de CAPA Sports du 1er o
+ ctobre 2026. Appli non officielle Promo MAPST : en cas de doute\, vérifi
+ e dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-12-04-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20261204T090000
+DTEND;TZID=Europe/Paris:20261204T120000
+SUMMARY:APEC · activités physiques d'entretien corporel
+DESCRIPTION:Cours\nAvec : Y.S.\nÀ vérifier : Lieu non précisé dans le 
+ planning (sûrement le CAL Nice).\nPlanning MAPST de CAPA Sports du 1er o
+ ctobre 2026. Appli non officielle Promo MAPST : en cas de doute\, vérifi
+ e dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-12-07-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20261207T090000
+DTEND;TZID=Europe/Paris:20261207T120000
+SUMMARY:Conception de séances de jeux sportifs
+LOCATION:CAL Nice
+DESCRIPTION:Cours\nAvec : Y.S.\nPlanning MAPST de CAPA Sports du 1er octob
+ re 2026. Appli non officielle Promo MAPST : en cas de doute\, vérifie da
+ ns tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-12-07-pm@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20261207T130000
+DTEND;TZID=Europe/Paris:20261207T160000
+SUMMARY:Conception de séances de jeux sportifs
+LOCATION:CAL Nice
+DESCRIPTION:Cours\nAvec : Y.S.\nPlanning MAPST de CAPA Sports du 1er octob
+ re 2026. Appli non officielle Promo MAPST : en cas de doute\, vérifie da
+ ns tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-12-08-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20261208T090000
+DTEND;TZID=Europe/Paris:20261208T120000
+SUMMARY:Pratique des activités physiques d'entretien corporel
+LOCATION:CAL Nice
+DESCRIPTION:Cours\nAvec : Y.S.\nPlanning MAPST de CAPA Sports du 1er octob
+ re 2026. Appli non officielle Promo MAPST : en cas de doute\, vérifie da
+ ns tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-12-08-pm@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20261208T130000
+DTEND;TZID=Europe/Paris:20261208T160000
+SUMMARY:Pratique des activités physiques d'entretien corporel
+LOCATION:CAL Nice
+DESCRIPTION:Cours\nAvec : Y.S.\nPlanning MAPST de CAPA Sports du 1er octob
+ re 2026. Appli non officielle Promo MAPST : en cas de doute\, vérifie da
+ ns tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-12-09-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20261209T083000
+DTEND;TZID=Europe/Paris:20261209T123000
+SUMMARY:MSP 1 au centre de loisirs
+LOCATION:Centre de loisirs
+DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
+ A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
+ e doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-12-09-pm@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20261209T133000
+DTEND;TZID=Europe/Paris:20261209T170000
+SUMMARY:MSP 1 au centre de loisirs
+LOCATION:Centre de loisirs
+DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
+ A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
+ e doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-12-10-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20261210T090000
+DTEND;TZID=Europe/Paris:20261210T120000
+SUMMARY:Pratique des activités physiques d'entretien corporel
+LOCATION:CAL Nice
+DESCRIPTION:Cours\nAvec : Y.S.\nPlanning MAPST de CAPA Sports du 1er octob
+ re 2026. Appli non officielle Promo MAPST : en cas de doute\, vérifie da
+ ns tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-12-10-pm@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20261210T130000
+DTEND;TZID=Europe/Paris:20261210T160000
+SUMMARY:Pratique des activités physiques d'entretien corporel
+LOCATION:CAL Nice
+DESCRIPTION:Cours\nAvec : Y.S.\nPlanning MAPST de CAPA Sports du 1er octob
+ re 2026. Appli non officielle Promo MAPST : en cas de doute\, vérifie da
+ ns tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-12-11-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20261211T090000
+DTEND;TZID=Europe/Paris:20261211T120000
+SUMMARY:Conception de séances de jeux sportifs
+LOCATION:CAL Nice
+DESCRIPTION:Cours\nAvec : Y.S.\nPlanning MAPST de CAPA Sports du 1er octob
+ re 2026. Appli non officielle Promo MAPST : en cas de doute\, vérifie da
+ ns tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-12-14-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20261214T090000
+DTEND;TZID=Europe/Paris:20261214T120000
+SUMMARY:AJS · activités et jeux sportifs
+LOCATION:CAL Nice
+DESCRIPTION:Cours\nAvec : Y.S.\nPlanning MAPST de CAPA Sports du 1er octob
+ re 2026. Appli non officielle Promo MAPST : en cas de doute\, vérifie da
+ ns tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-12-14-pm@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20261214T130000
+DTEND;TZID=Europe/Paris:20261214T160000
+SUMMARY:AJS · activités et jeux sportifs
+LOCATION:CAL Nice
+DESCRIPTION:Cours\nAvec : Y.S.\nPlanning MAPST de CAPA Sports du 1er octob
+ re 2026. Appli non officielle Promo MAPST : en cas de doute\, vérifie da
+ ns tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-12-15-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20261215T090000
+DTEND;TZID=Europe/Paris:20261215T120000
+SUMMARY:AJS · activités et jeux sportifs
+LOCATION:CAL Nice
+DESCRIPTION:Cours\nAvec : Y.S.\nPlanning MAPST de CAPA Sports du 1er octob
+ re 2026. Appli non officielle Promo MAPST : en cas de doute\, vérifie da
+ ns tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-12-15-pm@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20261215T130000
+DTEND;TZID=Europe/Paris:20261215T160000
+SUMMARY:AJS · activités et jeux sportifs
+LOCATION:CAL Nice
+DESCRIPTION:Cours\nAvec : Y.S.\nPlanning MAPST de CAPA Sports du 1er octob
+ re 2026. Appli non officielle Promo MAPST : en cas de doute\, vérifie da
+ ns tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-12-16-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20261216T083000
+DTEND;TZID=Europe/Paris:20261216T123000
+SUMMARY:MSP 1 au centre de loisirs
+LOCATION:Centre de loisirs
+DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
+ A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
+ e doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-12-16-pm@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20261216T133000
+DTEND;TZID=Europe/Paris:20261216T170000
+SUMMARY:MSP 1 au centre de loisirs
+LOCATION:Centre de loisirs
+DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
+ A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
+ e doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-12-17-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20261217T090000
+DTEND;TZID=Europe/Paris:20261217T120000
+SUMMARY:AJS · activités et jeux sportifs
+LOCATION:CAL Nice
+DESCRIPTION:Cours\nAvec : Y.S.\nPlanning MAPST de CAPA Sports du 1er octob
+ re 2026. Appli non officielle Promo MAPST : en cas de doute\, vérifie da
+ ns tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-12-17-pm@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20261217T130000
+DTEND;TZID=Europe/Paris:20261217T160000
+SUMMARY:AJS · activités et jeux sportifs
+LOCATION:CAL Nice
+DESCRIPTION:Cours\nAvec : Y.S.\nPlanning MAPST de CAPA Sports du 1er octob
+ re 2026. Appli non officielle Promo MAPST : en cas de doute\, vérifie da
+ ns tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-12-18-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20261218T090000
+DTEND;TZID=Europe/Paris:20261218T120000
+SUMMARY:AJS · activités et jeux sportifs
+LOCATION:CAL Nice
+DESCRIPTION:Cours\nAvec : Y.S.\nPlanning MAPST de CAPA Sports du 1er octob
+ re 2026. Appli non officielle Promo MAPST : en cas de doute\, vérifie da
+ ns tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-12-25-ferie@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;VALUE=DATE:20261225
+DTEND;VALUE=DATE:20261226
+TRANSP:TRANSPARENT
+SUMMARY:Férié · Noël
+DESCRIPTION:Pas de formation. Planning MAPST de CAPA Sports du 1er octobre
+  2026. Appli non officielle Promo MAPST : en cas de doute\, vérifie dans
+  tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-01-01-ferie@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;VALUE=DATE:20270101
+DTEND;VALUE=DATE:20270102
+TRANSP:TRANSPARENT
+SUMMARY:Férié · Jour de l'an
+DESCRIPTION:Pas de formation. Planning MAPST de CAPA Sports du 1er octobre
+  2026. Appli non officielle Promo MAPST : en cas de doute\, vérifie dans
+  tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-01-04-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270104T090000
+DTEND;TZID=Europe/Paris:20270104T120000
+SUMMARY:Fondamentaux théoriques des espaces naturels
+LOCATION:CAL Nice
+DESCRIPTION:Cours\nAvec : Y.S. + P.\nPlanning MAPST de CAPA Sports du 1er 
+ octobre 2026. Appli non officielle Promo MAPST : en cas de doute\, vérif
+ ie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-01-04-pm@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270104T130000
+DTEND;TZID=Europe/Paris:20270104T160000
+SUMMARY:Pratique des activités de pleine nature
+LOCATION:CAL Nice
+DESCRIPTION:Cours\nAvec : Y.S. + P.\nPlanning MAPST de CAPA Sports du 1er 
+ octobre 2026. Appli non officielle Promo MAPST : en cas de doute\, vérif
+ ie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-01-05-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270105T090000
+DTEND;TZID=Europe/Paris:20270105T120000
+SUMMARY:Pratique des activités de pleine nature
+LOCATION:CAL Nice
+DESCRIPTION:Cours\nAvec : Y.S. + P.\nPlanning MAPST de CAPA Sports du 1er 
+ octobre 2026. Appli non officielle Promo MAPST : en cas de doute\, vérif
+ ie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-01-05-pm@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270105T130000
+DTEND;TZID=Europe/Paris:20270105T160000
+SUMMARY:Pratique des activités de pleine nature
+LOCATION:CAL Nice
+DESCRIPTION:Cours\nAvec : Y.S. + P.\nPlanning MAPST de CAPA Sports du 1er 
+ octobre 2026. Appli non officielle Promo MAPST : en cas de doute\, vérif
+ ie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-01-06-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270106T083000
+DTEND;TZID=Europe/Paris:20270106T123000
+SUMMARY:MSP 1 au centre de loisirs
+LOCATION:Centre de loisirs
+DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
+ A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
+ e doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-01-06-pm@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270106T133000
+DTEND;TZID=Europe/Paris:20270106T170000
+SUMMARY:MSP 1 au centre de loisirs
+LOCATION:Centre de loisirs
+DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
+ A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
+ e doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-01-07-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270107T090000
+DTEND;TZID=Europe/Paris:20270107T120000
+SUMMARY:Pratique des activités de pleine nature
+LOCATION:CAL Nice
+DESCRIPTION:Cours\nAvec : Y.S. + P.\nPlanning MAPST de CAPA Sports du 1er 
+ octobre 2026. Appli non officielle Promo MAPST : en cas de doute\, vérif
+ ie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-01-07-pm@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270107T130000
+DTEND;TZID=Europe/Paris:20270107T160000
+SUMMARY:Pratique des activités de pleine nature
+LOCATION:CAL Nice
+DESCRIPTION:Cours\nAvec : Y.S. + P.\nPlanning MAPST de CAPA Sports du 1er 
+ octobre 2026. Appli non officielle Promo MAPST : en cas de doute\, vérif
+ ie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-01-08-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270108T090000
+DTEND;TZID=Europe/Paris:20270108T120000
+SUMMARY:Pratique des activités de pleine nature
+LOCATION:CAL Nice
+DESCRIPTION:Cours\nAvec : Y.S. + P.\nPlanning MAPST de CAPA Sports du 1er 
+ octobre 2026. Appli non officielle Promo MAPST : en cas de doute\, vérif
+ ie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-01-11-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270111T090000
+DTEND;TZID=Europe/Paris:20270111T120000
+SUMMARY:Pratique des activités de pleine nature
+LOCATION:CAL Nice
+DESCRIPTION:Cours\nAvec : Y.S. + P.\nPlanning MAPST de CAPA Sports du 1er 
+ octobre 2026. Appli non officielle Promo MAPST : en cas de doute\, vérif
+ ie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-01-11-pm@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270111T130000
+DTEND;TZID=Europe/Paris:20270111T160000
+SUMMARY:Pratique des activités de pleine nature
+LOCATION:CAL Nice
+DESCRIPTION:Cours\nAvec : Y.S. + P.\nPlanning MAPST de CAPA Sports du 1er 
+ octobre 2026. Appli non officielle Promo MAPST : en cas de doute\, vérif
+ ie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-01-12-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270112T090000
+DTEND;TZID=Europe/Paris:20270112T120000
+SUMMARY:Pratique des activités de pleine nature
+LOCATION:CAL Nice
+DESCRIPTION:Cours\nAvec : Y.S. + P.\nPlanning MAPST de CAPA Sports du 1er 
+ octobre 2026. Appli non officielle Promo MAPST : en cas de doute\, vérif
+ ie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-01-12-pm@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270112T130000
+DTEND;TZID=Europe/Paris:20270112T160000
+SUMMARY:Pratique des activités de pleine nature
+LOCATION:CAL Nice
+DESCRIPTION:Cours\nAvec : Y.S. + P.\nPlanning MAPST de CAPA Sports du 1er 
+ octobre 2026. Appli non officielle Promo MAPST : en cas de doute\, vérif
+ ie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-01-13-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270113T083000
+DTEND;TZID=Europe/Paris:20270113T123000
+SUMMARY:MSP 1 au centre de loisirs
+LOCATION:Centre de loisirs
+DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
+ A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
+ e doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-01-13-pm@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270113T133000
+DTEND;TZID=Europe/Paris:20270113T170000
+SUMMARY:MSP 1 au centre de loisirs
+LOCATION:Centre de loisirs
+DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
+ A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
+ e doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-01-14-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270114T090000
+DTEND;TZID=Europe/Paris:20270114T120000
+SUMMARY:Pratique des activités de pleine nature
+LOCATION:CAL Nice
+DESCRIPTION:Cours\nAvec : Y.S. + P.\nPlanning MAPST de CAPA Sports du 1er 
+ octobre 2026. Appli non officielle Promo MAPST : en cas de doute\, vérif
+ ie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-01-14-pm@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270114T130000
+DTEND;TZID=Europe/Paris:20270114T160000
+SUMMARY:Pratique des activités de pleine nature
+LOCATION:CAL Nice
+DESCRIPTION:Cours\nAvec : Y.S. + P.\nPlanning MAPST de CAPA Sports du 1er 
+ octobre 2026. Appli non officielle Promo MAPST : en cas de doute\, vérif
+ ie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-01-15-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270115T090000
+DTEND;TZID=Europe/Paris:20270115T120000
+SUMMARY:Pratique des activités de pleine nature
+LOCATION:CAL Nice
+DESCRIPTION:Cours\nAvec : Y.S. + P.\nPlanning MAPST de CAPA Sports du 1er 
+ octobre 2026. Appli non officielle Promo MAPST : en cas de doute\, vérif
+ ie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-01-18-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270118T090000
+DTEND;TZID=Europe/Paris:20270118T120000
+SUMMARY:Pratique des activités de pleine nature
+LOCATION:CAL Nice
+DESCRIPTION:Cours\nAvec : Y.S. + P.\nPlanning MAPST de CAPA Sports du 1er 
+ octobre 2026. Appli non officielle Promo MAPST : en cas de doute\, vérif
+ ie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-01-18-pm@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270118T130000
+DTEND;TZID=Europe/Paris:20270118T160000
+SUMMARY:Pratique des activités de pleine nature
+LOCATION:CAL Nice
+DESCRIPTION:Cours\nAvec : Y.S. + P.\nPlanning MAPST de CAPA Sports du 1er 
+ octobre 2026. Appli non officielle Promo MAPST : en cas de doute\, vérif
+ ie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-01-19-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270119T090000
+DTEND;TZID=Europe/Paris:20270119T120000
+SUMMARY:Pratique des activités de pleine nature
+LOCATION:CAL Nice
+DESCRIPTION:Cours\nAvec : Y.S. + P.\nPlanning MAPST de CAPA Sports du 1er 
+ octobre 2026. Appli non officielle Promo MAPST : en cas de doute\, vérif
+ ie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-01-19-pm@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270119T130000
+DTEND;TZID=Europe/Paris:20270119T160000
+SUMMARY:Pratique des activités de pleine nature
+LOCATION:CAL Nice
+DESCRIPTION:Cours\nAvec : Y.S. + P.\nPlanning MAPST de CAPA Sports du 1er 
+ octobre 2026. Appli non officielle Promo MAPST : en cas de doute\, vérif
+ ie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-01-20-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270120T083000
+DTEND;TZID=Europe/Paris:20270120T123000
+SUMMARY:MSP 1 au centre de loisirs
+LOCATION:Centre de loisirs
+DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
+ A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
+ e doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-01-20-pm@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270120T133000
+DTEND;TZID=Europe/Paris:20270120T170000
+SUMMARY:MSP 1 au centre de loisirs
+LOCATION:Centre de loisirs
+DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
+ A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
+ e doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-01-21-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270121T090000
+DTEND;TZID=Europe/Paris:20270121T120000
+SUMMARY:Pratique des activités de pleine nature
+LOCATION:CAL Nice
+DESCRIPTION:Cours\nAvec : Y.S. + P.\nPlanning MAPST de CAPA Sports du 1er 
+ octobre 2026. Appli non officielle Promo MAPST : en cas de doute\, vérif
+ ie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-01-21-pm@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270121T130000
+DTEND;TZID=Europe/Paris:20270121T160000
+SUMMARY:Pratique des activités de pleine nature
+LOCATION:CAL Nice
+DESCRIPTION:Cours\nAvec : Y.S. + P.\nPlanning MAPST de CAPA Sports du 1er 
+ octobre 2026. Appli non officielle Promo MAPST : en cas de doute\, vérif
+ ie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-01-22-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270122T090000
+DTEND;TZID=Europe/Paris:20270122T120000
+SUMMARY:Pratique des activités de pleine nature
+LOCATION:CAL Nice
+DESCRIPTION:Cours\nAvec : Y.S. + P.\nPlanning MAPST de CAPA Sports du 1er 
+ octobre 2026. Appli non officielle Promo MAPST : en cas de doute\, vérif
+ ie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-01-25-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270125T090000
+DTEND;TZID=Europe/Paris:20270125T120000
+SUMMARY:Intervenir auprès d'un public en situation de handicap
+LOCATION:Bureau Ville de Nice · Arénas
+DESCRIPTION:Cours\nAvec : K.P.\nPlanning MAPST de CAPA Sports du 1er octob
+ re 2026. Appli non officielle Promo MAPST : en cas de doute\, vérifie da
+ ns tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-01-25-pm@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270125T130000
+DTEND;TZID=Europe/Paris:20270125T160000
+SUMMARY:Intervenir auprès d'un public en situation de handicap
+LOCATION:Bureau Ville de Nice · Arénas
+DESCRIPTION:Cours\nAvec : K.P.\nPlanning MAPST de CAPA Sports du 1er octob
+ re 2026. Appli non officielle Promo MAPST : en cas de doute\, vérifie da
+ ns tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-01-26-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270126T090000
+DTEND;TZID=Europe/Paris:20270126T120000
+SUMMARY:Intervenir auprès d'un public en situation de handicap
+LOCATION:Bureau Ville de Nice · Arénas
+DESCRIPTION:Cours\nAvec : K.P.\nPlanning MAPST de CAPA Sports du 1er octob
+ re 2026. Appli non officielle Promo MAPST : en cas de doute\, vérifie da
+ ns tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-01-26-pm@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270126T130000
+DTEND;TZID=Europe/Paris:20270126T160000
+SUMMARY:Intervenir auprès d'un public en situation de handicap
+LOCATION:Bureau Ville de Nice · Arénas
+DESCRIPTION:Cours\nAvec : K.P.\nPlanning MAPST de CAPA Sports du 1er octob
+ re 2026. Appli non officielle Promo MAPST : en cas de doute\, vérifie da
+ ns tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-01-27-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270127T083000
+DTEND;TZID=Europe/Paris:20270127T123000
+SUMMARY:MSP 1 au centre de loisirs
+LOCATION:Centre de loisirs
+DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
+ A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
+ e doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-01-27-pm@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270127T133000
+DTEND;TZID=Europe/Paris:20270127T170000
+SUMMARY:MSP 1 au centre de loisirs
+LOCATION:Centre de loisirs
+DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
+ A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
+ e doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-01-28-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270128T090000
+DTEND;TZID=Europe/Paris:20270128T120000
+SUMMARY:Pratique des techniques d'animation
+LOCATION:CAL Nice
+DESCRIPTION:Cours\nAvec : Y.S. + P.\nPlanning MAPST de CAPA Sports du 1er 
+ octobre 2026. Appli non officielle Promo MAPST : en cas de doute\, vérif
+ ie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-01-28-pm@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270128T130000
+DTEND;TZID=Europe/Paris:20270128T160000
+SUMMARY:Maîtriser la conduite de la séance
+LOCATION:CAL Nice
+DESCRIPTION:Cours\nAvec : Y.S. + P.\nPlanning MAPST de CAPA Sports du 1er 
+ octobre 2026. Appli non officielle Promo MAPST : en cas de doute\, vérif
+ ie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-01-29-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270129T090000
+DTEND;TZID=Europe/Paris:20270129T120000
+SUMMARY:Pratique des activités physiques et sportives
+LOCATION:CAL Nice
+DESCRIPTION:Cours\nAvec : Y.S. + P.\nPlanning MAPST de CAPA Sports du 1er 
+ octobre 2026. Appli non officielle Promo MAPST : en cas de doute\, vérif
+ ie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-02-01-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270201T090000
+DTEND;TZID=Europe/Paris:20270201T120000
+SUMMARY:MSP 2 au centre de loisirs
+LOCATION:Centre de loisirs
+DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
+ A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
+ e doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-02-01-pm@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270201T130000
+DTEND;TZID=Europe/Paris:20270201T160000
+SUMMARY:MSP 2 au centre de loisirs
+LOCATION:Centre de loisirs
+DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
+ A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
+ e doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-02-02-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270202T090000
+DTEND;TZID=Europe/Paris:20270202T120000
+SUMMARY:MSP 2 au centre de loisirs
+LOCATION:Centre de loisirs
+DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
+ A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
+ e doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-02-02-pm@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270202T130000
+DTEND;TZID=Europe/Paris:20270202T160000
+SUMMARY:MSP 2 au centre de loisirs
+LOCATION:Centre de loisirs
+DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
+ A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
+ e doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-02-03-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270203T083000
+DTEND;TZID=Europe/Paris:20270203T123000
+SUMMARY:MSP 2 au centre de loisirs
+LOCATION:Centre de loisirs
+DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
+ A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
+ e doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-02-03-pm@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270203T133000
+DTEND;TZID=Europe/Paris:20270203T170000
+SUMMARY:MSP 2 au centre de loisirs
+LOCATION:Centre de loisirs
+DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
+ A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
+ e doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-02-04-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270204T090000
+DTEND;TZID=Europe/Paris:20270204T120000
+SUMMARY:MSP 2 au centre de loisirs
+LOCATION:Centre de loisirs
+DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
+ A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
+ e doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-02-04-pm@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270204T130000
+DTEND;TZID=Europe/Paris:20270204T160000
+SUMMARY:MSP 2 au centre de loisirs
+LOCATION:Centre de loisirs
+DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
+ A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
+ e doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-02-05-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270205T090000
+DTEND;TZID=Europe/Paris:20270205T120000
+SUMMARY:MSP 2 au centre de loisirs
+LOCATION:Centre de loisirs
+DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
+ A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
+ e doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-02-08-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270208T090000
+DTEND;TZID=Europe/Paris:20270208T120000
+SUMMARY:MSP 2 au centre de loisirs
+LOCATION:Centre de loisirs
+DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
+ A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
+ e doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-02-08-pm@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270208T130000
+DTEND;TZID=Europe/Paris:20270208T160000
+SUMMARY:MSP 2 au centre de loisirs
+LOCATION:Centre de loisirs
+DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
+ A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
+ e doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-02-09-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270209T090000
+DTEND;TZID=Europe/Paris:20270209T120000
+SUMMARY:MSP 2 au centre de loisirs
+LOCATION:Centre de loisirs
+DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
+ A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
+ e doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-02-09-pm@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270209T130000
+DTEND;TZID=Europe/Paris:20270209T160000
+SUMMARY:MSP 2 au centre de loisirs
+LOCATION:Centre de loisirs
+DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
+ A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
+ e doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-02-10-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270210T083000
+DTEND;TZID=Europe/Paris:20270210T123000
+SUMMARY:MSP 2 au centre de loisirs
+LOCATION:Centre de loisirs
+DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
+ A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
+ e doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-02-10-pm@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270210T133000
+DTEND;TZID=Europe/Paris:20270210T170000
+SUMMARY:MSP 2 au centre de loisirs
+LOCATION:Centre de loisirs
+DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
+ A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
+ e doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-02-11-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270211T090000
+DTEND;TZID=Europe/Paris:20270211T120000
+SUMMARY:MSP 2 au centre de loisirs
+LOCATION:Centre de loisirs
+DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
+ A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
+ e doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-02-11-pm@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270211T130000
+DTEND;TZID=Europe/Paris:20270211T160000
+SUMMARY:MSP 2 au centre de loisirs
+LOCATION:Centre de loisirs
+DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
+ A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
+ e doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-02-12-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270212T090000
+DTEND;TZID=Europe/Paris:20270212T120000
+SUMMARY:MSP 2 au centre de loisirs
+LOCATION:Centre de loisirs
+DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
+ A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
+ e doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-02-15-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270215T090000
+DTEND;TZID=Europe/Paris:20270215T120000
+SUMMARY:MSP 2 au centre de loisirs
+LOCATION:Centre de loisirs
+DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
+ A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
+ e doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-02-15-pm@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270215T130000
+DTEND;TZID=Europe/Paris:20270215T160000
+SUMMARY:MSP 2 au centre de loisirs
+LOCATION:Centre de loisirs
+DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
+ A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
+ e doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-02-16-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270216T090000
+DTEND;TZID=Europe/Paris:20270216T120000
+SUMMARY:MSP 2 au centre de loisirs
+LOCATION:Centre de loisirs
+DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
+ A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
+ e doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-02-16-pm@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270216T130000
+DTEND;TZID=Europe/Paris:20270216T160000
+SUMMARY:MSP 2 au centre de loisirs
+LOCATION:Centre de loisirs
+DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
+ A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
+ e doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-02-17-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270217T083000
+DTEND;TZID=Europe/Paris:20270217T123000
+SUMMARY:MSP 2 au centre de loisirs
+LOCATION:Centre de loisirs
+DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
+ A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
+ e doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-02-17-pm@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270217T133000
+DTEND;TZID=Europe/Paris:20270217T170000
+SUMMARY:MSP 2 au centre de loisirs
+LOCATION:Centre de loisirs
+DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
+ A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
+ e doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-02-18-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270218T090000
+DTEND;TZID=Europe/Paris:20270218T120000
+SUMMARY:MSP 2 au centre de loisirs
+LOCATION:Centre de loisirs
+DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
+ A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
+ e doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-02-18-pm@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270218T130000
+DTEND;TZID=Europe/Paris:20270218T160000
+SUMMARY:MSP 2 au centre de loisirs
+LOCATION:Centre de loisirs
+DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
+ A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
+ e doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-02-19-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270219T090000
+DTEND;TZID=Europe/Paris:20270219T120000
+SUMMARY:MSP 2 au centre de loisirs
+LOCATION:Centre de loisirs
+DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
+ A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
+ e doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-02-22-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270222T090000
+DTEND;TZID=Europe/Paris:20270222T120000
+SUMMARY:MSP 2 au centre de loisirs
+LOCATION:Centre de loisirs
+DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
+ A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
+ e doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-02-22-pm@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270222T130000
+DTEND;TZID=Europe/Paris:20270222T160000
+SUMMARY:MSP 2 au centre de loisirs
+LOCATION:Centre de loisirs
+DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
+ A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
+ e doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-02-23-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270223T090000
+DTEND;TZID=Europe/Paris:20270223T120000
+SUMMARY:MSP 2 au centre de loisirs
+LOCATION:Centre de loisirs
+DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
+ A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
+ e doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-02-23-pm@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270223T130000
+DTEND;TZID=Europe/Paris:20270223T160000
+SUMMARY:MSP 2 au centre de loisirs
+LOCATION:Centre de loisirs
+DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
+ A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
+ e doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-02-24-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270224T083000
+DTEND;TZID=Europe/Paris:20270224T123000
+SUMMARY:MSP 2 au centre de loisirs
+LOCATION:Centre de loisirs
+DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
+ A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
+ e doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-02-24-pm@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270224T133000
+DTEND;TZID=Europe/Paris:20270224T170000
+SUMMARY:MSP 2 au centre de loisirs
+LOCATION:Centre de loisirs
+DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
+ A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
+ e doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-02-25-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270225T090000
+DTEND;TZID=Europe/Paris:20270225T120000
+SUMMARY:MSP 2 au centre de loisirs
+LOCATION:Centre de loisirs
+DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
+ A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
+ e doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-02-25-pm@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270225T130000
+DTEND;TZID=Europe/Paris:20270225T160000
+SUMMARY:MSP 2 au centre de loisirs
+LOCATION:Centre de loisirs
+DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
+ A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
+ e doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-02-26-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270226T090000
+DTEND;TZID=Europe/Paris:20270226T120000
+SUMMARY:MSP 2 au centre de loisirs
+LOCATION:Centre de loisirs
+DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
+ A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
+ e doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-02-26-pm@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270226T130000
+DTEND;TZID=Europe/Paris:20270226T160000
+SUMMARY:MSP 2 au centre de loisirs
+LOCATION:Centre de loisirs
+DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
+ A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
+ e doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-03-01-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270301T090000
+DTEND;TZID=Europe/Paris:20270301T120000
+SUMMARY:MSP 2 au centre de loisirs
+LOCATION:Centre de loisirs
+DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
+ A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
+ e doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-03-01-pm@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270301T130000
+DTEND;TZID=Europe/Paris:20270301T160000
+SUMMARY:MSP 2 au centre de loisirs
+LOCATION:Centre de loisirs
+DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
+ A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
+ e doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-03-02-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270302T090000
+DTEND;TZID=Europe/Paris:20270302T120000
+SUMMARY:MSP 2 au centre de loisirs
+LOCATION:Centre de loisirs
+DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
+ A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
+ e doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-03-02-pm@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270302T130000
+DTEND;TZID=Europe/Paris:20270302T160000
+SUMMARY:MSP 2 au centre de loisirs
+LOCATION:Centre de loisirs
+DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
+ A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
+ e doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-03-03-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270303T083000
+DTEND;TZID=Europe/Paris:20270303T123000
+SUMMARY:MSP 2 au centre de loisirs
+LOCATION:Centre de loisirs
+DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
+ A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
+ e doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-03-03-pm@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270303T133000
+DTEND;TZID=Europe/Paris:20270303T170000
+SUMMARY:MSP 2 au centre de loisirs
+LOCATION:Centre de loisirs
+DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
+ A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
+ e doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-03-04-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270304T090000
+DTEND;TZID=Europe/Paris:20270304T120000
+SUMMARY:MSP 2 au centre de loisirs
+LOCATION:Centre de loisirs
+DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
+ A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
+ e doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-03-04-pm@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270304T130000
+DTEND;TZID=Europe/Paris:20270304T160000
+SUMMARY:MSP 2 au centre de loisirs
+LOCATION:Centre de loisirs
+DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
+ A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
+ e doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-03-05-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270305T090000
+DTEND;TZID=Europe/Paris:20270305T120000
+SUMMARY:MSP 2 au centre de loisirs
+LOCATION:Centre de loisirs
+DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
+ A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
+ e doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-03-05-pm@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270305T130000
+DTEND;TZID=Europe/Paris:20270305T160000
+SUMMARY:MSP 2 au centre de loisirs
+LOCATION:Centre de loisirs
+DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
+ A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
+ e doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-03-08-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270308T090000
+DTEND;TZID=Europe/Paris:20270308T120000
+SUMMARY:Évaluer un projet d'animation · connaître et analyser son terri
+ toire
+LOCATION:CAL Nice
+DESCRIPTION:Cours\nAvec : Y.S. + P.\nPlanning MAPST de CAPA Sports du 1er 
+ octobre 2026. Appli non officielle Promo MAPST : en cas de doute\, vérif
+ ie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-03-08-pm@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270308T130000
+DTEND;TZID=Europe/Paris:20270308T160000
+SUMMARY:Conduire un projet d'animation
+LOCATION:CAL Nice
+DESCRIPTION:Cours\nAvec : Y.S. + P.\nPlanning MAPST de CAPA Sports du 1er 
+ octobre 2026. Appli non officielle Promo MAPST : en cas de doute\, vérif
+ ie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-03-09-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270309T090000
+DTEND;TZID=Europe/Paris:20270309T120000
+SUMMARY:Créer sa structure : statut juridique\, comptabilité\, démarche
+ s
+LOCATION:CAL Nice
+DESCRIPTION:Cours\nAvec : F.C.\nPlanning MAPST de CAPA Sports du 1er octob
+ re 2026. Appli non officielle Promo MAPST : en cas de doute\, vérifie da
+ ns tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-03-09-pm@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270309T130000
+DTEND;TZID=Europe/Paris:20270309T160000
+SUMMARY:Accueil collectif de mineurs
+LOCATION:CAL Nice
+DESCRIPTION:Cours\nAvec : N.P.\nPlanning MAPST de CAPA Sports du 1er octob
+ re 2026. Appli non officielle Promo MAPST : en cas de doute\, vérifie da
+ ns tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-03-10-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270310T083000
+DTEND;TZID=Europe/Paris:20270310T123000
+SUMMARY:Mercredi au centre de loisirs
+LOCATION:Centre de loisirs
+DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
+ A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
+ e doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-03-10-pm@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270310T133000
+DTEND;TZID=Europe/Paris:20270310T170000
+SUMMARY:Mercredi au centre de loisirs
+LOCATION:Centre de loisirs
+DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
+ A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
+ e doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-03-11-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270311T090000
+DTEND;TZID=Europe/Paris:20270311T120000
+SUMMARY:Choisir ses outils de communication
+LOCATION:CAL Nice
+DESCRIPTION:Cours\nAvec : M.R.\nPlanning MAPST de CAPA Sports du 1er octob
+ re 2026. Appli non officielle Promo MAPST : en cas de doute\, vérifie da
+ ns tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-03-11-pm@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270311T130000
+DTEND;TZID=Europe/Paris:20270311T160000
+SUMMARY:Pratique des 3 domaines d'activités
+LOCATION:CAL Nice
+DESCRIPTION:Cours\nPlanning MAPST de CAPA Sports du 1er octobre 2026. Appl
+ i non officielle Promo MAPST : en cas de doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-03-12-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270312T090000
+DTEND;TZID=Europe/Paris:20270312T120000
+SUMMARY:Pratique des 3 domaines d'activités
+LOCATION:CAL Nice
+DESCRIPTION:Cours\nPlanning MAPST de CAPA Sports du 1er octobre 2026. Appl
+ i non officielle Promo MAPST : en cas de doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-03-15-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270315T090000
+DTEND;TZID=Europe/Paris:20270315T120000
+SUMMARY:Rédiger\, mettre en page et créer des supports de promotion
+LOCATION:CAL Nice
+DESCRIPTION:Cours\nAvec : Y.S. + M.R.\nPlanning MAPST de CAPA Sports du 1e
+ r octobre 2026. Appli non officielle Promo MAPST : en cas de doute\, vér
+ ifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-03-15-pm@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270315T130000
+DTEND;TZID=Europe/Paris:20270315T160000
+SUMMARY:Préparation de la certification BC3
+LOCATION:CAL Nice
+DESCRIPTION:Préparation\nAvec : Y.S. + P.\nPlanning MAPST de CAPA Sports 
+ du 1er octobre 2026. Appli non officielle Promo MAPST : en cas de doute\,
+  vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-03-16-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270316T090000
+DTEND;TZID=Europe/Paris:20270316T120000
+SUMMARY:Préparation des certifications BC1 et BC2
+LOCATION:CAL Nice
+DESCRIPTION:Préparation\nAvec : Y.S. + P.\nPlanning MAPST de CAPA Sports 
+ du 1er octobre 2026. Appli non officielle Promo MAPST : en cas de doute\,
+  vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-03-16-pm@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270316T130000
+DTEND;TZID=Europe/Paris:20270316T160000
+SUMMARY:Préparation de la certification BC3
+LOCATION:CAL Nice
+DESCRIPTION:Préparation\nAvec : Y.S. + P.\nPlanning MAPST de CAPA Sports 
+ du 1er octobre 2026. Appli non officielle Promo MAPST : en cas de doute\,
+  vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-03-17-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270317T083000
+DTEND;TZID=Europe/Paris:20270317T123000
+SUMMARY:Mercredi au centre de loisirs
+LOCATION:Centre de loisirs
+DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
+ A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
+ e doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-03-17-pm@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270317T133000
+DTEND;TZID=Europe/Paris:20270317T170000
+SUMMARY:Mercredi au centre de loisirs
+LOCATION:Centre de loisirs
+DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
+ A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
+ e doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-03-18-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270318T090000
+DTEND;TZID=Europe/Paris:20270318T120000
+SUMMARY:Préparation des certifications BC1 et BC2
+LOCATION:CAL Nice
+DESCRIPTION:Préparation\nAvec : Y.S. + P.\nPlanning MAPST de CAPA Sports 
+ du 1er octobre 2026. Appli non officielle Promo MAPST : en cas de doute\,
+  vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-03-18-pm@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270318T130000
+DTEND;TZID=Europe/Paris:20270318T160000
+SUMMARY:Préparation de la certification BC3
+LOCATION:CAL Nice
+DESCRIPTION:Préparation\nAvec : Y.S. + P.\nPlanning MAPST de CAPA Sports 
+ du 1er octobre 2026. Appli non officielle Promo MAPST : en cas de doute\,
+  vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-03-19-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270319T090000
+DTEND;TZID=Europe/Paris:20270319T120000
+SUMMARY:Préparation des certifications BC1 et BC2
+LOCATION:CAL Nice
+DESCRIPTION:Préparation\nAvec : Y.S. + P.\nPlanning MAPST de CAPA Sports 
+ du 1er octobre 2026. Appli non officielle Promo MAPST : en cas de doute\,
+  vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-03-22-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270322T090000
+DTEND;TZID=Europe/Paris:20270322T120000
+SUMMARY:Préparation BC3 · pratique des 3 domaines d'activités
+LOCATION:CAL Nice
+DESCRIPTION:Préparation\nAvec : Y.S. + P.\nPlanning MAPST de CAPA Sports 
+ du 1er octobre 2026. Appli non officielle Promo MAPST : en cas de doute\,
+  vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-03-22-pm@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270322T130000
+DTEND;TZID=Europe/Paris:20270322T160000
+SUMMARY:Préparation BC3 · pratique des 3 domaines d'activités
+LOCATION:CAL Nice
+DESCRIPTION:Préparation\nAvec : Y.S. + P.\nPlanning MAPST de CAPA Sports 
+ du 1er octobre 2026. Appli non officielle Promo MAPST : en cas de doute\,
+  vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-03-23-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270323T090000
+DTEND;TZID=Europe/Paris:20270323T120000
+SUMMARY:Préparation BC3 · pratique des 3 domaines d'activités
+LOCATION:CAL Nice
+DESCRIPTION:Préparation\nAvec : Y.S. + P.\nPlanning MAPST de CAPA Sports 
+ du 1er octobre 2026. Appli non officielle Promo MAPST : en cas de doute\,
+  vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-03-23-pm@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270323T130000
+DTEND;TZID=Europe/Paris:20270323T160000
+SUMMARY:Préparation BC3 · pratique des 3 domaines d'activités
+LOCATION:CAL Nice
+DESCRIPTION:Préparation\nAvec : Y.S. + P.\nPlanning MAPST de CAPA Sports 
+ du 1er octobre 2026. Appli non officielle Promo MAPST : en cas de doute\,
+  vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-03-24-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270324T083000
+DTEND;TZID=Europe/Paris:20270324T123000
+SUMMARY:Mercredi au centre de loisirs
+LOCATION:Centre de loisirs
+DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
+ A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
+ e doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-03-24-pm@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270324T133000
+DTEND;TZID=Europe/Paris:20270324T170000
+SUMMARY:Mercredi au centre de loisirs
+LOCATION:Centre de loisirs
+DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
+ A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
+ e doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-03-25-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270325T090000
+DTEND;TZID=Europe/Paris:20270325T120000
+SUMMARY:Préparation BC3 · pratique des 3 domaines d'activités
+LOCATION:CAL Nice
+DESCRIPTION:Préparation\nAvec : Y.S. + P.\nPlanning MAPST de CAPA Sports 
+ du 1er octobre 2026. Appli non officielle Promo MAPST : en cas de doute\,
+  vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-03-25-pm@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270325T130000
+DTEND;TZID=Europe/Paris:20270325T160000
+SUMMARY:Préparation BC3 · pratique des 3 domaines d'activités
+LOCATION:CAL Nice
+DESCRIPTION:Préparation\nAvec : Y.S. + P.\nPlanning MAPST de CAPA Sports 
+ du 1er octobre 2026. Appli non officielle Promo MAPST : en cas de doute\,
+  vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-03-26-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270326T090000
+DTEND;TZID=Europe/Paris:20270326T120000
+SUMMARY:Préparation BC3 · pratique des 3 domaines d'activités
+LOCATION:CAL Nice
+DESCRIPTION:Préparation\nAvec : Y.S. + P.\nPlanning MAPST de CAPA Sports 
+ du 1er octobre 2026. Appli non officielle Promo MAPST : en cas de doute\,
+  vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-03-29-ferie@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;VALUE=DATE:20270329
+DTEND;VALUE=DATE:20270330
+TRANSP:TRANSPARENT
+SUMMARY:Férié · Lundi de Pâques
+DESCRIPTION:Pas de formation. Planning MAPST de CAPA Sports du 1er octobre
+  2026. Appli non officielle Promo MAPST : en cas de doute\, vérifie dans
+  tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-03-30-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270330T090000
+DTEND;TZID=Europe/Paris:20270330T120000
+SUMMARY:Préparation BC3 · pratique des 3 domaines d'activités
+LOCATION:CAL Nice
+DESCRIPTION:Préparation\nAvec : Y.S. + P.\nPlanning MAPST de CAPA Sports 
+ du 1er octobre 2026. Appli non officielle Promo MAPST : en cas de doute\,
+  vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-03-30-pm@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270330T130000
+DTEND;TZID=Europe/Paris:20270330T160000
+SUMMARY:Préparation BC3 · pratique des 3 domaines d'activités
+LOCATION:CAL Nice
+DESCRIPTION:Préparation\nAvec : Y.S. + P.\nPlanning MAPST de CAPA Sports 
+ du 1er octobre 2026. Appli non officielle Promo MAPST : en cas de doute\,
+  vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-03-31-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270331T083000
+DTEND;TZID=Europe/Paris:20270331T123000
+SUMMARY:Mercredi au centre de loisirs
+LOCATION:Centre de loisirs
+DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
+ A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
+ e doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-03-31-pm@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270331T133000
+DTEND;TZID=Europe/Paris:20270331T170000
+SUMMARY:Mercredi au centre de loisirs
+LOCATION:Centre de loisirs
+DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
+ A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
+ e doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-04-01-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270401T090000
+DTEND;TZID=Europe/Paris:20270401T120000
+SUMMARY:Préparation BC3 · pratique des 3 domaines d'activités
+LOCATION:CAL Nice
+DESCRIPTION:Préparation\nAvec : Y.S. + P.\nPlanning MAPST de CAPA Sports 
+ du 1er octobre 2026. Appli non officielle Promo MAPST : en cas de doute\,
+  vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-04-01-pm@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270401T130000
+DTEND;TZID=Europe/Paris:20270401T160000
+SUMMARY:Préparation BC3 · pratique des 3 domaines d'activités
+LOCATION:CAL Nice
+DESCRIPTION:Préparation\nAvec : Y.S. + P.\nPlanning MAPST de CAPA Sports 
+ du 1er octobre 2026. Appli non officielle Promo MAPST : en cas de doute\,
+  vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-04-02-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270402T090000
+DTEND;TZID=Europe/Paris:20270402T120000
+SUMMARY:Préparation BC3 · pratique des 3 domaines d'activités
+DESCRIPTION:Préparation\nÀ vérifier : Lieu non précisé dans le planni
+ ng (sûrement le CAL Nice).\nPlanning MAPST de CAPA Sports du 1er octobre
+  2026. Appli non officielle Promo MAPST : en cas de doute\, vérifie dans
+  tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-04-05-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270405T090000
+DTEND;TZID=Europe/Paris:20270405T120000
+SUMMARY:MSP 3 au centre de loisirs
+LOCATION:Centre de loisirs
+DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
+ A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
+ e doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-04-05-pm@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270405T130000
+DTEND;TZID=Europe/Paris:20270405T160000
+SUMMARY:MSP 3 au centre de loisirs
+LOCATION:Centre de loisirs
+DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
+ A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
+ e doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-04-06-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270406T080000
+DTEND;TZID=Europe/Paris:20270406T120000
+SUMMARY:MSP 3 au centre de loisirs
+LOCATION:Centre de loisirs
+DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
+ A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
+ e doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-04-06-pm@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270406T130000
+DTEND;TZID=Europe/Paris:20270406T160000
+SUMMARY:MSP 3 au centre de loisirs
+LOCATION:Centre de loisirs
+DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
+ A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
+ e doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-04-07-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270407T090000
+DTEND;TZID=Europe/Paris:20270407T120000
+SUMMARY:Certification BC3
+LOCATION:Centre de loisirs
+DESCRIPTION:Épreuve\nAvec : Évaluateurs\nPlanning MAPST de CAPA Sports d
+ u 1er octobre 2026. Appli non officielle Promo MAPST : en cas de doute\, 
+ vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-04-07-pm@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270407T133000
+DTEND;TZID=Europe/Paris:20270407T170000
+SUMMARY:Certification BC3
+LOCATION:Centre de loisirs
+DESCRIPTION:Épreuve\nAvec : Évaluateurs\nPlanning MAPST de CAPA Sports d
+ u 1er octobre 2026. Appli non officielle Promo MAPST : en cas de doute\, 
+ vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-04-08-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270408T090000
+DTEND;TZID=Europe/Paris:20270408T120000
+SUMMARY:MSP 3 au centre de loisirs
+LOCATION:Centre de loisirs
+DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
+ A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
+ e doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-04-08-pm@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270408T130000
+DTEND;TZID=Europe/Paris:20270408T160000
+SUMMARY:MSP 3 au centre de loisirs
+LOCATION:Centre de loisirs
+DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
+ A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
+ e doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-04-09-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270409T090000
+DTEND;TZID=Europe/Paris:20270409T120000
+SUMMARY:MSP 3 au centre de loisirs
+LOCATION:Centre de loisirs
+DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
+ A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
+ e doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-04-12-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270412T090000
+DTEND;TZID=Europe/Paris:20270412T120000
+SUMMARY:MSP 3 au centre de loisirs
+LOCATION:Centre de loisirs
+DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
+ A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
+ e doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-04-12-pm@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270412T130000
+DTEND;TZID=Europe/Paris:20270412T160000
+SUMMARY:MSP 3 au centre de loisirs
+LOCATION:Centre de loisirs
+DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
+ A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
+ e doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-04-13-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270413T090000
+DTEND;TZID=Europe/Paris:20270413T120000
+SUMMARY:MSP 3 au centre de loisirs
+LOCATION:Centre de loisirs
+DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
+ A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
+ e doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-04-13-pm@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270413T130000
+DTEND;TZID=Europe/Paris:20270413T160000
+SUMMARY:MSP 3 au centre de loisirs
+LOCATION:Centre de loisirs
+DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
+ A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
+ e doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-04-14-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270414T083000
+DTEND;TZID=Europe/Paris:20270414T123000
+SUMMARY:Certification BC3
+LOCATION:Centre de loisirs
+DESCRIPTION:Épreuve\nAvec : Évaluateurs\nPlanning MAPST de CAPA Sports d
+ u 1er octobre 2026. Appli non officielle Promo MAPST : en cas de doute\, 
+ vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-04-14-pm@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270414T133000
+DTEND;TZID=Europe/Paris:20270414T170000
+SUMMARY:Certification BC3
+LOCATION:Centre de loisirs
+DESCRIPTION:Épreuve\nAvec : Évaluateurs\nPlanning MAPST de CAPA Sports d
+ u 1er octobre 2026. Appli non officielle Promo MAPST : en cas de doute\, 
+ vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-04-15-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270415T090000
+DTEND;TZID=Europe/Paris:20270415T120000
+SUMMARY:MSP 3 au centre de loisirs
+LOCATION:Centre de loisirs
+DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
+ A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
+ e doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-04-15-pm@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270415T130000
+DTEND;TZID=Europe/Paris:20270415T160000
+SUMMARY:MSP 3 au centre de loisirs
+LOCATION:Centre de loisirs
+DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
+ A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
+ e doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-04-16-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270416T090000
+DTEND;TZID=Europe/Paris:20270416T120000
+SUMMARY:MSP 3 au centre de loisirs
+LOCATION:Centre de loisirs
+DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
+ A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
+ e doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-04-19-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270419T090000
+DTEND;TZID=Europe/Paris:20270419T120000
+SUMMARY:MSP 3 au centre et certification BC3
+LOCATION:Centre de loisirs
+DESCRIPTION:Épreuve\nAvec : Ville de Nice + évaluateurs\nPlanning MAPST 
+ de CAPA Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en
+  cas de doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-04-19-pm@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270419T130000
+DTEND;TZID=Europe/Paris:20270419T160000
+SUMMARY:MSP 3 au centre et certification BC3
+LOCATION:Centre de loisirs
+DESCRIPTION:Épreuve\nAvec : Ville de Nice + évaluateurs\nPlanning MAPST 
+ de CAPA Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en
+  cas de doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-04-20-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270420T090000
+DTEND;TZID=Europe/Paris:20270420T120000
+SUMMARY:MSP 3 au centre et certification BC3
+LOCATION:Centre de loisirs
+DESCRIPTION:Épreuve\nAvec : Ville de Nice + évaluateurs\nPlanning MAPST 
+ de CAPA Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en
+  cas de doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-04-20-pm@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270420T130000
+DTEND;TZID=Europe/Paris:20270420T160000
+SUMMARY:MSP 3 au centre et certification BC3
+LOCATION:Centre de loisirs
+DESCRIPTION:Épreuve\nAvec : Ville de Nice + évaluateurs\nPlanning MAPST 
+ de CAPA Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en
+  cas de doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-04-21-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270421T083000
+DTEND;TZID=Europe/Paris:20270421T123000
+SUMMARY:MSP 3 au centre et certification BC3
+LOCATION:Centre de loisirs
+DESCRIPTION:Épreuve\nAvec : Ville de Nice + évaluateurs\nPlanning MAPST 
+ de CAPA Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en
+  cas de doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-04-21-pm@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270421T133000
+DTEND;TZID=Europe/Paris:20270421T170000
+SUMMARY:MSP 3 au centre et certification BC3
+LOCATION:Centre de loisirs
+DESCRIPTION:Épreuve\nAvec : Ville de Nice + évaluateurs\nPlanning MAPST 
+ de CAPA Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en
+  cas de doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-04-22-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270422T090000
+DTEND;TZID=Europe/Paris:20270422T120000
+SUMMARY:MSP 3 au centre et certification BC3
+LOCATION:Centre de loisirs
+DESCRIPTION:Épreuve\nAvec : Ville de Nice + évaluateurs\nPlanning MAPST 
+ de CAPA Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en
+  cas de doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-04-22-pm@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270422T130000
+DTEND;TZID=Europe/Paris:20270422T160000
+SUMMARY:MSP 3 au centre et certification BC3
+LOCATION:Centre de loisirs
+DESCRIPTION:Épreuve\nAvec : Ville de Nice + évaluateurs\nPlanning MAPST 
+ de CAPA Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en
+  cas de doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-04-23-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270423T090000
+DTEND;TZID=Europe/Paris:20270423T120000
+SUMMARY:MSP 3 au centre et certification BC3
+LOCATION:Centre de loisirs
+DESCRIPTION:Épreuve\nAvec : Ville de Nice + évaluateurs\nPlanning MAPST 
+ de CAPA Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en
+  cas de doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-04-23-pm@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270423T130000
+DTEND;TZID=Europe/Paris:20270423T160000
+SUMMARY:MSP 3 au centre et certification BC3
+LOCATION:Centre de loisirs
+DESCRIPTION:Épreuve\nAvec : Ville de Nice + évaluateurs\nPlanning MAPST 
+ de CAPA Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en
+  cas de doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-04-26-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270426T090000
+DTEND;TZID=Europe/Paris:20270426T120000
+SUMMARY:MSP 3 au centre et certification BC3
+LOCATION:Centre de loisirs
+DESCRIPTION:Épreuve\nAvec : Ville de Nice + évaluateurs\nPlanning MAPST 
+ de CAPA Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en
+  cas de doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-04-26-pm@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270426T130000
+DTEND;TZID=Europe/Paris:20270426T160000
+SUMMARY:MSP 3 au centre et certification BC3
+LOCATION:Centre de loisirs
+DESCRIPTION:Épreuve\nAvec : Ville de Nice + évaluateurs\nPlanning MAPST 
+ de CAPA Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en
+  cas de doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-04-27-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270427T090000
+DTEND;TZID=Europe/Paris:20270427T120000
+SUMMARY:MSP 3 au centre et certification BC3
+LOCATION:Centre de loisirs
+DESCRIPTION:Épreuve\nAvec : Ville de Nice + évaluateurs\nPlanning MAPST 
+ de CAPA Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en
+  cas de doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-04-27-pm@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270427T130000
+DTEND;TZID=Europe/Paris:20270427T160000
+SUMMARY:MSP 3 au centre et certification BC3
+LOCATION:Centre de loisirs
+DESCRIPTION:Épreuve\nAvec : Ville de Nice + évaluateurs\nPlanning MAPST 
+ de CAPA Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en
+  cas de doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-04-28-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270428T083000
+DTEND;TZID=Europe/Paris:20270428T123000
+SUMMARY:Rattrapages BC3
+LOCATION:Centre de loisirs
+DESCRIPTION:Épreuve\nAvec : Évaluateurs\nPlanning MAPST de CAPA Sports d
+ u 1er octobre 2026. Appli non officielle Promo MAPST : en cas de doute\, 
+ vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-04-28-pm@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270428T133000
+DTEND;TZID=Europe/Paris:20270428T170000
+SUMMARY:Rattrapages BC3
+LOCATION:Centre de loisirs
+DESCRIPTION:Épreuve\nAvec : Évaluateurs\nPlanning MAPST de CAPA Sports d
+ u 1er octobre 2026. Appli non officielle Promo MAPST : en cas de doute\, 
+ vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-04-29-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270429T090000
+DTEND;TZID=Europe/Paris:20270429T120000
+SUMMARY:MSP 3 au centre de loisirs
+LOCATION:Centre de loisirs
+DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
+ A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
+ e doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-04-29-pm@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270429T130000
+DTEND;TZID=Europe/Paris:20270429T160000
+SUMMARY:MSP 3 au centre de loisirs
+LOCATION:Centre de loisirs
+DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
+ A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
+ e doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-04-30-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270430T090000
+DTEND;TZID=Europe/Paris:20270430T120000
+SUMMARY:MSP 3 au centre de loisirs
+LOCATION:Centre de loisirs
+DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
+ A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
+ e doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-04-30-pm@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270430T130000
+DTEND;TZID=Europe/Paris:20270430T160000
+SUMMARY:MSP 3 au centre de loisirs
+LOCATION:Centre de loisirs
+DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
+ A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
+ e doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-05-03-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270503T090000
+DTEND;TZID=Europe/Paris:20270503T120000
+SUMMARY:Préparation des rattrapages BC3
+LOCATION:CAL Nice
+DESCRIPTION:Préparation\nAvec : Y.S. + P.\nPlanning MAPST de CAPA Sports 
+ du 1er octobre 2026. Appli non officielle Promo MAPST : en cas de doute\,
+  vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-05-03-pm@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270503T130000
+DTEND;TZID=Europe/Paris:20270503T160000
+SUMMARY:Préparation des rattrapages BC3
+LOCATION:CAL Nice
+DESCRIPTION:Préparation\nAvec : Y.S. + P.\nPlanning MAPST de CAPA Sports 
+ du 1er octobre 2026. Appli non officielle Promo MAPST : en cas de doute\,
+  vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-05-04-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270504T090000
+DTEND;TZID=Europe/Paris:20270504T120000
+SUMMARY:Préparation des rattrapages BC3
+LOCATION:CAL Nice
+DESCRIPTION:Préparation\nAvec : Y.S. + P.\nPlanning MAPST de CAPA Sports 
+ du 1er octobre 2026. Appli non officielle Promo MAPST : en cas de doute\,
+  vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-05-04-pm@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270504T130000
+DTEND;TZID=Europe/Paris:20270504T160000
+SUMMARY:Préparation des rattrapages BC3
+LOCATION:CAL Nice
+DESCRIPTION:Préparation\nAvec : Y.S. + P.\nPlanning MAPST de CAPA Sports 
+ du 1er octobre 2026. Appli non officielle Promo MAPST : en cas de doute\,
+  vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-05-05-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270505T083000
+DTEND;TZID=Europe/Paris:20270505T123000
+SUMMARY:Rattrapages BC3
+LOCATION:Centre de loisirs
+DESCRIPTION:Épreuve\nAvec : Évaluateurs\nPlanning MAPST de CAPA Sports d
+ u 1er octobre 2026. Appli non officielle Promo MAPST : en cas de doute\, 
+ vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-05-05-pm@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270505T133000
+DTEND;TZID=Europe/Paris:20270505T170000
+SUMMARY:Rattrapages BC3
+LOCATION:Centre de loisirs
+DESCRIPTION:Épreuve\nAvec : Évaluateurs\nPlanning MAPST de CAPA Sports d
+ u 1er octobre 2026. Appli non officielle Promo MAPST : en cas de doute\, 
+ vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-05-06-ferie@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;VALUE=DATE:20270506
+DTEND;VALUE=DATE:20270507
+TRANSP:TRANSPARENT
+SUMMARY:Férié · Ascension
+DESCRIPTION:Pas de formation. Planning MAPST de CAPA Sports du 1er octobre
+  2026. Appli non officielle Promo MAPST : en cas de doute\, vérifie dans
+  tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-05-07-ferie@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;VALUE=DATE:20270507
+DTEND;VALUE=DATE:20270508
+TRANSP:TRANSPARENT
+SUMMARY:Férié · Pont de l'Ascension
+DESCRIPTION:Pas de formation. Planning MAPST de CAPA Sports du 1er octobre
+  2026. Appli non officielle Promo MAPST : en cas de doute\, vérifie dans
+  tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-05-10-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270510T090000
+DTEND;TZID=Europe/Paris:20270510T120000
+SUMMARY:Préparation des certifications BC1 et BC2
+LOCATION:CAL Nice
+DESCRIPTION:Préparation\nAvec : Y.S. + P.\nPlanning MAPST de CAPA Sports 
+ du 1er octobre 2026. Appli non officielle Promo MAPST : en cas de doute\,
+  vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-05-10-pm@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270510T130000
+DTEND;TZID=Europe/Paris:20270510T160000
+SUMMARY:Préparation des certifications BC1 et BC2
+LOCATION:CAL Nice
+DESCRIPTION:Préparation\nPlanning MAPST de CAPA Sports du 1er octobre 202
+ 6. Appli non officielle Promo MAPST : en cas de doute\, vérifie dans tes
+  cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-05-11-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270511T090000
+DTEND;TZID=Europe/Paris:20270511T120000
+SUMMARY:Préparation des certifications BC1 et BC2
+LOCATION:CAL Nice
+DESCRIPTION:Préparation\nAvec : Y.S. + P.\nPlanning MAPST de CAPA Sports 
+ du 1er octobre 2026. Appli non officielle Promo MAPST : en cas de doute\,
+  vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-05-11-pm@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270511T130000
+DTEND;TZID=Europe/Paris:20270511T160000
+SUMMARY:Préparation des certifications BC1 et BC2
+LOCATION:CAL Nice
+DESCRIPTION:Préparation\nPlanning MAPST de CAPA Sports du 1er octobre 202
+ 6. Appli non officielle Promo MAPST : en cas de doute\, vérifie dans tes
+  cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-05-12-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270512T083000
+DTEND;TZID=Europe/Paris:20270512T123000
+SUMMARY:Rattrapages BC3
+LOCATION:Centre de loisirs
+DESCRIPTION:Épreuve\nAvec : Évaluateurs\nPlanning MAPST de CAPA Sports d
+ u 1er octobre 2026. Appli non officielle Promo MAPST : en cas de doute\, 
+ vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-05-12-pm@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270512T133000
+DTEND;TZID=Europe/Paris:20270512T170000
+SUMMARY:Rattrapages BC3
+LOCATION:Centre de loisirs
+DESCRIPTION:Épreuve\nAvec : Évaluateurs\nPlanning MAPST de CAPA Sports d
+ u 1er octobre 2026. Appli non officielle Promo MAPST : en cas de doute\, 
+ vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-05-13-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270513T090000
+DTEND;TZID=Europe/Paris:20270513T120000
+SUMMARY:Certifications BC1 et BC2
+LOCATION:CAL Nice
+DESCRIPTION:Épreuve\nAvec : Évaluateurs\nPlanning MAPST de CAPA Sports d
+ u 1er octobre 2026. Appli non officielle Promo MAPST : en cas de doute\, 
+ vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-05-13-pm@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270513T130000
+DTEND;TZID=Europe/Paris:20270513T160000
+SUMMARY:Certifications BC1 et BC2
+LOCATION:CAL Nice
+DESCRIPTION:Épreuve\nAvec : Évaluateurs\nPlanning MAPST de CAPA Sports d
+ u 1er octobre 2026. Appli non officielle Promo MAPST : en cas de doute\, 
+ vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-05-14-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270514T090000
+DTEND;TZID=Europe/Paris:20270514T120000
+SUMMARY:Certifications BC1 et BC2
+LOCATION:CAL Nice
+DESCRIPTION:Épreuve\nAvec : Évaluateurs\nPlanning MAPST de CAPA Sports d
+ u 1er octobre 2026. Appli non officielle Promo MAPST : en cas de doute\, 
+ vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-05-14-pm@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270514T130000
+DTEND;TZID=Europe/Paris:20270514T160000
+SUMMARY:Certifications BC1 et BC2
+LOCATION:CAL Nice
+DESCRIPTION:Épreuve\nAvec : Évaluateurs\nPlanning MAPST de CAPA Sports d
+ u 1er octobre 2026. Appli non officielle Promo MAPST : en cas de doute\, 
+ vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-05-17-ferie@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;VALUE=DATE:20270517
+DTEND;VALUE=DATE:20270518
+TRANSP:TRANSPARENT
+SUMMARY:Férié · Lundi de Pentecôte
+DESCRIPTION:Pas de formation. Planning MAPST de CAPA Sports du 1er octobre
+  2026. Appli non officielle Promo MAPST : en cas de doute\, vérifie dans
+  tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-05-18-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270518T090000
+DTEND;TZID=Europe/Paris:20270518T120000
+SUMMARY:Préparation des rattrapages BC3
+LOCATION:CAL Nice
+DESCRIPTION:Préparation\nAvec : Y.S. + P.\nPlanning MAPST de CAPA Sports 
+ du 1er octobre 2026. Appli non officielle Promo MAPST : en cas de doute\,
+  vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-05-18-pm@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270518T130000
+DTEND;TZID=Europe/Paris:20270518T160000
+SUMMARY:Préparation des rattrapages BC3
+DESCRIPTION:Préparation\nÀ vérifier : Lieu non précisé dans le planni
+ ng (sûrement le CAL Nice).\nPlanning MAPST de CAPA Sports du 1er octobre
+  2026. Appli non officielle Promo MAPST : en cas de doute\, vérifie dans
+  tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-05-19-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270519T083000
+DTEND;TZID=Europe/Paris:20270519T123000
+SUMMARY:Rattrapages BC3
+LOCATION:Centre de loisirs
+DESCRIPTION:Épreuve\nAvec : Évaluateurs\nPlanning MAPST de CAPA Sports d
+ u 1er octobre 2026. Appli non officielle Promo MAPST : en cas de doute\, 
+ vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-05-19-pm@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270519T133000
+DTEND;TZID=Europe/Paris:20270519T170000
+SUMMARY:Rattrapages BC3
+LOCATION:Centre de loisirs
+DESCRIPTION:Épreuve\nAvec : Évaluateurs\nPlanning MAPST de CAPA Sports d
+ u 1er octobre 2026. Appli non officielle Promo MAPST : en cas de doute\, 
+ vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-05-20-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270520T090000
+DTEND;TZID=Europe/Paris:20270520T120000
+SUMMARY:Recherche d'emploi et CV
+DESCRIPTION:Cours\nAvec : Y.S. + P.\nÀ vérifier : Lieu non précisé dan
+ s le planning (sûrement le CAL Nice).\nPlanning MAPST de CAPA Sports du 
+ 1er octobre 2026. Appli non officielle Promo MAPST : en cas de doute\, v
+ érifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-05-20-pm@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270520T130000
+DTEND;TZID=Europe/Paris:20270520T160000
+SUMMARY:Recherche d'emploi et CV
+DESCRIPTION:Cours\nÀ vérifier : Lieu non précisé dans le planning (sû
+ rement le CAL Nice).\nPlanning MAPST de CAPA Sports du 1er octobre 2026. 
+ Appli non officielle Promo MAPST : en cas de doute\, vérifie dans tes co
+ urs.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-05-21-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270521T090000
+DTEND;TZID=Europe/Paris:20270521T120000
+SUMMARY:Recherche d'emploi et CV
+DESCRIPTION:Cours\nAvec : Y.S. + P.\nÀ vérifier : Lieu non précisé dan
+ s le planning (sûrement le CAL Nice).\nPlanning MAPST de CAPA Sports du 
+ 1er octobre 2026. Appli non officielle Promo MAPST : en cas de doute\, v
+ érifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-05-21-pm@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270521T130000
+DTEND;TZID=Europe/Paris:20270521T160000
+SUMMARY:Recherche d'emploi et CV
+DESCRIPTION:Cours\nÀ vérifier : Lieu non précisé dans le planning (sû
+ rement le CAL Nice).\nPlanning MAPST de CAPA Sports du 1er octobre 2026. 
+ Appli non officielle Promo MAPST : en cas de doute\, vérifie dans tes co
+ urs.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-05-24-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270524T090000
+DTEND;TZID=Europe/Paris:20270524T120000
+SUMMARY:Préparation des rattrapages BC1 et BC2
+LOCATION:CAL Nice
+DESCRIPTION:Préparation\nAvec : Y.S. + P.\nPlanning MAPST de CAPA Sports 
+ du 1er octobre 2026. Appli non officielle Promo MAPST : en cas de doute\,
+  vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-05-24-pm@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270524T130000
+DTEND;TZID=Europe/Paris:20270524T160000
+SUMMARY:Préparation des rattrapages BC1 et BC2
+LOCATION:CAL Nice
+DESCRIPTION:Préparation\nAvec : Y.S. + P.\nPlanning MAPST de CAPA Sports 
+ du 1er octobre 2026. Appli non officielle Promo MAPST : en cas de doute\,
+  vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-05-25-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270525T090000
+DTEND;TZID=Europe/Paris:20270525T120000
+SUMMARY:Préparation des rattrapages BC1 et BC2
+LOCATION:CAL Nice
+DESCRIPTION:Préparation\nAvec : Y.S. + P.\nPlanning MAPST de CAPA Sports 
+ du 1er octobre 2026. Appli non officielle Promo MAPST : en cas de doute\,
+  vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-05-25-pm@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270525T130000
+DTEND;TZID=Europe/Paris:20270525T160000
+SUMMARY:Préparation des rattrapages BC1 et BC2
+LOCATION:CAL Nice
+DESCRIPTION:Préparation\nAvec : Y.S. + P.\nPlanning MAPST de CAPA Sports 
+ du 1er octobre 2026. Appli non officielle Promo MAPST : en cas de doute\,
+  vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-05-26-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270526T083000
+DTEND;TZID=Europe/Paris:20270526T123000
+SUMMARY:Mercredi au centre de loisirs
+LOCATION:Centre de loisirs
+DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
+ A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
+ e doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-05-26-pm@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270526T133000
+DTEND;TZID=Europe/Paris:20270526T170000
+SUMMARY:Mercredi au centre de loisirs
+LOCATION:Centre de loisirs
+DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
+ A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
+ e doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-05-27-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270527T090000
+DTEND;TZID=Europe/Paris:20270527T120000
+SUMMARY:Préparation des rattrapages BC1 et BC2
+LOCATION:CAL Nice
+DESCRIPTION:Préparation\nAvec : Y.S. + P.\nPlanning MAPST de CAPA Sports 
+ du 1er octobre 2026. Appli non officielle Promo MAPST : en cas de doute\,
+  vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-05-27-pm@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270527T130000
+DTEND;TZID=Europe/Paris:20270527T160000
+SUMMARY:Préparation des rattrapages BC1 et BC2
+LOCATION:CAL Nice
+DESCRIPTION:Préparation\nAvec : Y.S. + P.\nPlanning MAPST de CAPA Sports 
+ du 1er octobre 2026. Appli non officielle Promo MAPST : en cas de doute\,
+  vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-05-28-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270528T090000
+DTEND;TZID=Europe/Paris:20270528T120000
+SUMMARY:Préparation des rattrapages BC1 et BC2
+LOCATION:CAL Nice
+DESCRIPTION:Préparation\nAvec : Y.S. + P.\nPlanning MAPST de CAPA Sports 
+ du 1er octobre 2026. Appli non officielle Promo MAPST : en cas de doute\,
+  vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-05-28-pm@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270528T130000
+DTEND;TZID=Europe/Paris:20270528T160000
+SUMMARY:Préparation des rattrapages BC1 et BC2
+LOCATION:CAL Nice
+DESCRIPTION:Préparation\nAvec : Y.S. + P.\nPlanning MAPST de CAPA Sports 
+ du 1er octobre 2026. Appli non officielle Promo MAPST : en cas de doute\,
+  vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-05-31-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270531T090000
+DTEND;TZID=Europe/Paris:20270531T120000
+SUMMARY:Préparation des rattrapages BC1 et BC2
+LOCATION:CAL Nice
+DESCRIPTION:Préparation\nAvec : Y.S. + P.\nPlanning MAPST de CAPA Sports 
+ du 1er octobre 2026. Appli non officielle Promo MAPST : en cas de doute\,
+  vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-05-31-pm@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270531T130000
+DTEND;TZID=Europe/Paris:20270531T160000
+SUMMARY:Préparation des rattrapages BC1 et BC2
+LOCATION:CAL Nice
+DESCRIPTION:Préparation\nAvec : Y.S. + P.\nPlanning MAPST de CAPA Sports 
+ du 1er octobre 2026. Appli non officielle Promo MAPST : en cas de doute\,
+  vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-06-01-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270601T090000
+DTEND;TZID=Europe/Paris:20270601T120000
+SUMMARY:Préparation des rattrapages BC1 et BC2
+LOCATION:CAL Nice
+DESCRIPTION:Préparation\nAvec : Y.S. + P.\nPlanning MAPST de CAPA Sports 
+ du 1er octobre 2026. Appli non officielle Promo MAPST : en cas de doute\,
+  vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-06-01-pm@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270601T130000
+DTEND;TZID=Europe/Paris:20270601T160000
+SUMMARY:Préparation des rattrapages BC1 et BC2
+LOCATION:CAL Nice
+DESCRIPTION:Préparation\nAvec : Y.S. + P.\nPlanning MAPST de CAPA Sports 
+ du 1er octobre 2026. Appli non officielle Promo MAPST : en cas de doute\,
+  vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-06-02-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270602T083000
+DTEND;TZID=Europe/Paris:20270602T123000
+SUMMARY:Mercredi au centre de loisirs
+LOCATION:Centre de loisirs
+DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
+ A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
+ e doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-06-02-pm@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270602T133000
+DTEND;TZID=Europe/Paris:20270602T170000
+SUMMARY:Mercredi au centre de loisirs
+LOCATION:Centre de loisirs
+DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
+ A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
+ e doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-06-03-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270603T090000
+DTEND;TZID=Europe/Paris:20270603T120000
+SUMMARY:Rattrapages des certifications BC1 et BC2
+LOCATION:CAL Nice
+DESCRIPTION:Épreuve\nAvec : Évaluateurs\nPlanning MAPST de CAPA Sports d
+ u 1er octobre 2026. Appli non officielle Promo MAPST : en cas de doute\, 
+ vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-06-03-pm@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270603T130000
+DTEND;TZID=Europe/Paris:20270603T160000
+SUMMARY:Rattrapages des certifications BC1 et BC2
+LOCATION:CAL Nice
+DESCRIPTION:Épreuve\nAvec : Évaluateurs\nPlanning MAPST de CAPA Sports d
+ u 1er octobre 2026. Appli non officielle Promo MAPST : en cas de doute\, 
+ vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-06-04-am@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270604T090000
+DTEND;TZID=Europe/Paris:20270604T120000
+SUMMARY:Rattrapages des certifications BC1 et BC2
+LOCATION:CAL Nice
+DESCRIPTION:Épreuve\nAvec : Évaluateurs\nPlanning MAPST de CAPA Sports d
+ u 1er octobre 2026. Appli non officielle Promo MAPST : en cas de doute\, 
+ vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-06-04-pm@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;TZID=Europe/Paris:20270604T130000
+DTEND;TZID=Europe/Paris:20270604T160000
+SUMMARY:Rattrapages des certifications BC1 et BC2
+LOCATION:CAL Nice
+DESCRIPTION:Épreuve\nAvec : Évaluateurs\nPlanning MAPST de CAPA Sports d
+ u 1er octobre 2026. Appli non officielle Promo MAPST : en cas de doute\, 
+ vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-12-19-vacances@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;VALUE=DATE:20261219
+DTEND;VALUE=DATE:20270104
+TRANSP:TRANSPARENT
+SUMMARY:Vacances de Noël · pas de formation
+DESCRIPTION:Planning MAPST de CAPA Sports du 1er octobre 2026. Appli non o
+ fficielle Promo MAPST : en cas de doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-03-15-dossier@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;VALUE=DATE:20270315
+DTEND;VALUE=DATE:20270316
+TRANSP:TRANSPARENT
+SUMMARY:Dossier BC3 à rendre
+DESCRIPTION:D’après le calendrier de la formation (déc. 2025) : à con
+ firmer avec CAPA. Planning MAPST de CAPA Sports du 1er octobre 2026. Appl
+ i non officielle Promo MAPST : en cas de doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-03-19-dossier@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;VALUE=DATE:20270319
+DTEND;VALUE=DATE:20270320
+TRANSP:TRANSPARENT
+SUMMARY:Prérequis BC3
+DESCRIPTION:D’après le calendrier de la formation (déc. 2025) : à con
+ firmer avec CAPA. Planning MAPST de CAPA Sports du 1er octobre 2026. Appl
+ i non officielle Promo MAPST : en cas de doute\, vérifie dans tes cours.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-04-20-dossier@promo-mapst
+DTSTAMP:20261106T000000Z
+DTSTART;VALUE=DATE:20270420
+DTEND;VALUE=DATE:20270421
+TRANSP:TRANSPARENT
+SUMMARY:Dossier BC1-2 à rendre
+DESCRIPTION:D’après le calendrier de la formation (déc. 2025) : à con
+ firmer avec CAPA. Planning MAPST de CAPA Sports du 1er octobre 2026. Appl
+ i non officielle Promo MAPST : en cas de doute\, vérifie dans tes cours.
+END:VEVENT
+END:VCALENDAR
