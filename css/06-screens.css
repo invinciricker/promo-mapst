@@ -1,0 +1,88 @@
+/* =====================================================================================
+   06-screens.css: the Réviser and Étudier screens (« Bientôt » for now) and Infos.
+   ===================================================================================== */
+
+/* ---- Big coloured card at the top of Réviser and Étudier ---------------------------- */
+.hero {
+  position: relative;
+  overflow: hidden;
+  padding: 22px 20px 20px;
+  border-radius: 26px;
+  color: #fff;
+  background: linear-gradient(150deg, #154A70 0%, #103550 55%, #0B2A40 100%);
+  box-shadow: var(--shadow-2);
+  isolation: isolate;
+}
+.hero::before {               /* coloured light in the corner */
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: radial-gradient(90% 80% at 100% 0%, var(--hero-glow, rgba(0, 230, 191, 0.38)), transparent 62%);
+}
+.hero--reviser { --hero-glow: rgba(240, 144, 0, 0.5); }
+.hero--etudier { --hero-glow: rgba(0, 230, 191, 0.42); }
+.hero__art { position: absolute; right: -14px; top: -14px; width: 116px; height: 116px; z-index: -1; }
+.hero__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 11px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.16);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.hero__badge .icon { width: 14px; height: 14px; }
+.hero__title { margin-top: 14px; max-width: 13ch; font-size: 27px; line-height: 1.12; font-weight: 800; letter-spacing: -0.03em; }
+.hero__text { margin-top: 10px; max-width: 34ch; color: rgba(255, 255, 255, 0.86); font-size: 15px; font-weight: 500; }
+
+/* ---- What is coming (small tiles) ---------------------------------------------------- */
+.features { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+@media (min-width: 640px) { .features { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+.feature { display: flex; flex-direction: column; gap: 10px; padding: 16px; }
+.feature__icon {
+  width: 38px; height: 38px;
+  border-radius: 12px;
+  display: grid; place-items: center;
+  background: var(--soft);
+  color: var(--ink);
+}
+.feature__icon .icon { width: 20px; height: 20px; }
+.feature__title { font-weight: 800; font-size: 15px; line-height: 1.25; }
+.feature__text { font-size: 13.5px; color: var(--text-2); font-weight: 600; }
+/* colours of the tiles */
+.tone-turquoise { --soft: rgba(0, 230, 191, 0.16); --ink: var(--ok-ink); }
+.tone-orange { --soft: rgba(240, 144, 0, 0.16); --ink: var(--warn-ink); }
+.tone-blue { --soft: var(--azur-soft); --ink: var(--azur-ink); }
+.tone-lavande { --soft: var(--lavande-soft); --ink: var(--lavande-ink); }
+
+/* ---- List of themes ------------------------------------------------------------------ */
+.theme-num {
+  width: 34px; height: 34px; flex: none;
+  border-radius: 11px;
+  display: grid; place-items: center;
+  background: var(--fill);
+  font-weight: 800;
+  font-size: 14px;
+  font-variant-numeric: tabular-nums;
+}
+.list__row.is-focus { background: rgba(0, 230, 191, 0.10); }
+.list__row.is-focus .theme-num { background: var(--primary); color: var(--on-primary); }
+
+/* ---- Infos --------------------------------------------------------------------------- */
+.infos-intro { display: flex; align-items: center; gap: 16px; padding: 18px; }
+.infos-intro__logo { width: 60px; height: 60px; flex: none; border-radius: 16px; box-shadow: var(--shadow-1); }
+.infos-intro__name { font-size: 20px; font-weight: 800; letter-spacing: -0.02em; }
+.infos-intro__text { color: var(--text-2); font-size: 14px; font-weight: 600; }
+.legend-list .list__row { align-items: flex-start; }
+.legend-list .pebble { width: 20px; height: 18px; margin-top: 2px; }
+.prose { display: flex; flex-direction: column; gap: 10px; padding: 16px 18px; font-size: 15px; }
+.prose p { color: var(--text-2); font-weight: 500; }
+.prose b { color: var(--text); font-weight: 800; }
+.prose ul { display: flex; flex-direction: column; gap: 6px; }
+.prose li { display: grid; grid-template-columns: 18px minmax(0, 1fr); gap: 8px; color: var(--text-2); font-weight: 600; }
+.prose li .icon { width: 18px; height: 18px; margin-top: 2px; color: var(--ok-ink); }
+.platform-tabs { margin-bottom: 4px; }

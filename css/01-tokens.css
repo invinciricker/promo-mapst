@@ -1,0 +1,120 @@
+/* =====================================================================================
+   01-tokens.css: the design choices of the app, in one place.
+
+   Change a value here and it changes everywhere. Light mode comes first; the block
+   "prefers-color-scheme: dark" at the bottom is used when the phone is in dark mode.
+   Every text colour was checked against its background so it stays readable (contrast
+   of at least 4.5:1, the accessibility standard).
+   ===================================================================================== */
+
+/* The font of the app, stored in vendor/fonts (one file holds every weight). */
+@font-face {
+  font-family: "Plus Jakarta Sans";
+  src: url("../vendor/fonts/plus-jakarta-sans.woff2") format("woff2");
+  font-weight: 200 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  /* ---- CAPA Sports colours ---------------------------------------------------- */
+  --navy: #103550;        /* header and tab bar */
+  --turquoise: #00E6BF;   /* main buttons, correct answers */
+  --orange: #F09000;      /* streak and XP (Réviser) */
+  --blue: #1070B0;        /* Azur: the courses */
+
+  /* ---- Backgrounds and text (light mode) ------------------------------------- */
+  --bg: #F2F5F8;          /* behind everything */
+  --surface: #FFFFFF;     /* cards and sheets */
+  --surface-2: #F5F7FA;   /* boxes inside cards, inputs */
+  --fill: #E7ECF1;        /* tracks, segmented control, round buttons */
+  --thumb: #FFFFFF;       /* moving part of the segmented control */
+  --line: rgba(16, 53, 80, 0.10);     /* thin separators */
+  --text: #0D2232;        /* main text */
+  --text-2: #485C6F;      /* secondary text */
+  --text-3: #5F7184;      /* small hints */
+  --link: #0F69A6;
+  --danger: #C4302B;
+  --ok-ink: #007A66;      /* "turquoise" for text: real turquoise is too light on white */
+  --warn-soft: #FFF0D6;  --warn-ink: #8A4E00;   /* « à vérifier » notes */
+
+  /* Header (top) and tab bar (bottom) */
+  --appbar-1: #0D2E46;  --appbar-2: #103550;  --appbar-3: #15476C;
+  --on-navy: #FFFFFF;
+  --on-navy-2: rgba(255, 255, 255, 0.78);
+  --tabbar-bg: rgba(16, 53, 80, 0.94);
+
+  /* Buttons */
+  --primary: var(--turquoise);
+  --on-primary: #062B3D;
+  --inverse: #0D2232;  --on-inverse: #FFFFFF;   /* dark pill (« Aujourd’hui », messages) */
+
+  /* Shadows (only in light mode; dark mode uses a thin outline instead) */
+  --shadow-1: 0 1px 2px rgba(16, 53, 80, 0.05), 0 4px 16px rgba(16, 53, 80, 0.06);
+  --shadow-2: 0 2px 6px rgba(16, 53, 80, 0.06), 0 18px 44px rgba(16, 53, 80, 0.16);
+  --scrim: rgba(7, 22, 34, 0.42);   /* dark veil behind a sheet */
+
+  /* ---- Planning categories (named after Nice) ----------------------------------
+     solid: dots, bars, pebbles   soft: tinted backgrounds   ink: text on soft or white
+     on: text written on the solid colour                                               */
+  --azur: #1070B0;     --azur-soft: #E3EFF9;     --azur-ink: #0C5C93;     --azur-on: #FFFFFF;
+  --lavande: #6F55D0;  --lavande-soft: #EDE9FB;  --lavande-ink: #5640B4;  --lavande-on: #FFFFFF;
+  --olivier: #2A7F50;  --olivier-soft: #E1F2E8;  --olivier-ink: #1F6840;  --olivier-on: #FFFFFF;
+  --bougain: #CC2F7D;  --bougain-soft: #FBE5F0;  --bougain-ink: #A82264;  --bougain-on: #FFFFFF;
+  --galet: #828F9E;    --galet-soft: #ECEFF3;    --galet-ink: #4F5C69;    --galet-on: #0D2232;
+  --citron: #F2C200;   --citron-soft: #FFF4C7;   --citron-ink: #6E5500;   --citron-on: #2B2100;
+
+  /* ---- Sizes ------------------------------------------------------------------- */
+  --font: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --radius-s: 10px;
+  --radius-m: 14px;
+  --radius-l: 20px;
+  --radius-xl: 28px;
+  --pad: 20px;              /* space on the left and right of the screen */
+  --tabbar-h: 64px;         /* height of the bottom bar (without the iPhone home bar) */
+  --rail-w: 104px;          /* width of the side bar on a laptop */
+  --ease: cubic-bezier(0.2, 0.8, 0.2, 1);   /* the soft "springy" curve of the animations */
+}
+
+/* ---- Dark mode: used automatically when the phone is in dark mode ------------------ */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #08141D;
+    --surface: #102130;
+    --surface-2: #15293A;
+    --fill: #1D3447;
+    --thumb: #2B4559;
+    --line: rgba(255, 255, 255, 0.08);
+    --text: #ECF2F7;
+    --text-2: #A9B8C6;
+    --text-3: #8C9CAD;
+    --link: #62B6F2;
+    --danger: #FF8178;
+    --ok-ink: #3FF0CF;
+    --warn-soft: rgba(240, 144, 0, 0.16);  --warn-ink: #FFC56B;
+
+    --appbar-1: #061723;  --appbar-2: #0A2538;  --appbar-3: #0E3350;
+    --tabbar-bg: rgba(12, 39, 59, 0.92);
+    --inverse: #ECF2F7;  --on-inverse: #0D2232;
+
+    --shadow-1: 0 0 0 1px rgba(255, 255, 255, 0.05);
+    --shadow-2: 0 0 0 1px rgba(255, 255, 255, 0.07), 0 18px 44px rgba(0, 0, 0, 0.5);
+    --scrim: rgba(0, 0, 0, 0.6);
+
+    --azur-soft: rgba(16, 112, 176, 0.24);    --azur-ink: #8DC7F4;
+    --lavande-soft: rgba(111, 85, 208, 0.26); --lavande-ink: #C4B7F8;
+    --olivier-soft: rgba(42, 127, 80, 0.30);  --olivier-ink: #8FDEB1;
+    --bougain-soft: rgba(204, 47, 125, 0.26); --bougain-ink: #F8A6CD;
+    --galet-soft: rgba(138, 151, 166, 0.18);  --galet-ink: #BAC5D0;
+    --citron-soft: rgba(242, 194, 0, 0.16);   --citron-ink: #F6D85E;
+  }
+}
+
+/* Category hooks: add class "cat-cours" (etc.) to an element and its children can use
+   var(--c), var(--soft), var(--ink) and var(--on). */
+.cat-cours   { --c: var(--azur);    --soft: var(--azur-soft);    --ink: var(--azur-ink);    --on: var(--azur-on); }
+.cat-prepa   { --c: var(--lavande); --soft: var(--lavande-soft); --ink: var(--lavande-ink); --on: var(--lavande-on); }
+.cat-centre  { --c: var(--olivier); --soft: var(--olivier-soft); --ink: var(--olivier-ink); --on: var(--olivier-on); }
+.cat-epreuve { --c: var(--bougain); --soft: var(--bougain-soft); --ink: var(--bougain-ink); --on: var(--bougain-on); }
+.cat-libre   { --c: var(--galet);   --soft: var(--galet-soft);   --ink: var(--galet-ink);   --on: var(--galet-on); }
+.cat-perso   { --c: var(--citron);  --soft: var(--citron-soft);  --ink: var(--citron-ink);  --on: var(--citron-on); }

@@ -1,0 +1,11 @@
+# Never commit the private planning repository, even if it is cloned or copied here.
+private/
+Claude-timetable-artefact/
+claude-timetable-artefact/
+
+# Python and system leftovers
+__pycache__/
+*.pyc
+.DS_Store
+Thumbs.db
+node_modules/
