@@ -148,7 +148,7 @@
 .rv-themehead__done { display: flex; justify-content: center; gap: 6px; color: var(--ok-ink); font-weight: 700; font-size: 14px; }
 
 /* ---- The path of lessons --------------------------------------------------------------- */
-.path { display: flex; flex-direction: column; align-items: center; gap: 22px; padding: 44px 0 6px; }
+.path { display: flex; flex-direction: column; align-items: center; gap: 46px; padding: 46px 0 6px; }
 .path__step {
   position: relative;
   display: flex;
@@ -190,8 +190,24 @@
   pointer-events: none;
 }
 .is-locked .path__node .icon { width: 26px; height: 26px; }
-.path__label { font-size: 13.5px; font-weight: 800; color: var(--text-2); }
-.is-locked .path__label { color: var(--text-3); }
+/* Open but not next (only in Relecture, or after a lesson with new questions) */
+.is-open .path__node { background: var(--azur-soft); color: var(--azur-ink); box-shadow: 0 6px 0 rgba(16, 112, 176, 0.28); }
+.is-open .path__node:active { box-shadow: 0 2px 0 rgba(16, 112, 176, 0.28); }
+.path__label { display: flex; flex-direction: column; align-items: center; gap: 1px; max-width: 172px; text-align: center; }
+.path__num { color: var(--text-2); font-size: 11.5px; font-weight: 800; letter-spacing: 0.07em; text-transform: uppercase; }
+.path__title { color: var(--text); font-size: 14.5px; line-height: 1.25; font-weight: 800; text-wrap: balance; }
+.is-locked .path__num, .is-locked .path__title { color: var(--text-3); }
+.path__relu {
+  margin-top: 5px;
+  padding: 2px 9px;
+  border-radius: 999px;
+  background: var(--lavande-soft);
+  color: var(--lavande-ink);
+  font-size: 12px;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+.path__relu.is-done { background: var(--good-soft); color: var(--ok-ink); }
 .path__bubble {
   position: absolute;
   top: -40px;
@@ -281,7 +297,7 @@ html.has-player, html.has-player body { overflow: hidden; }
   justify-content: flex-end;
   gap: 5px;
   min-width: 46px;
-  color: var(--heart);
+  color: var(--danger);       /* the number: darker red, readable (the heart keeps --heart) */
   font-size: 18px;
   font-weight: 800;
   font-variant-numeric: tabular-nums;
@@ -313,16 +329,18 @@ html.has-player, html.has-player body { overflow: hidden; }
 }
 .question { display: flex; flex-direction: column; gap: 16px; }
 .question.is-shaking { animation: shake 0.45s ease; }
-.q-kind {
-  display: flex;
+.q-kind { display: flex; align-items: center; flex-wrap: wrap; gap: 6px 8px; }
+.q-kind__type {
+  display: inline-flex;
   align-items: center;
-  flex-wrap: wrap;
   gap: 8px;
+  margin-right: 2px;
   color: var(--text-2);
   font-size: 13.5px;
   font-weight: 800;
 }
-.q-kind > .icon { color: var(--link); }
+.q-kind__type .icon { color: var(--link); }
+.badge--id { font-variant-numeric: tabular-nums; letter-spacing: 0.01em; }
 .q-text { font-size: 21px; line-height: 1.32; font-weight: 800; letter-spacing: -0.015em; outline: none; text-wrap: pretty; }
 
 /* QCM */
@@ -373,6 +391,9 @@ html.has-player, html.has-player body { overflow: hidden; }
 .choice.is-right { animation: pop 0.35s var(--ease); }
 .choice.is-wrong { border-color: var(--danger); background: var(--bad-soft); box-shadow: 0 3px 0 var(--danger); }
 .choice.is-wrong .choice__key { border-color: var(--danger); background: var(--danger); color: var(--surface); }
+.choice.is-checked .choice__key .icon { opacity: 1; }      /* ✓ or × once the answer is checked */
+/* Relecture: every choice stays easy to read, with the letter of the file (A, B, C, D). */
+.choice.is-lettered:disabled { opacity: 1; }
 
 /* Réponse à taper */
 .q-input { min-height: 56px; font-size: 18px; }
@@ -401,9 +422,8 @@ html.has-player, html.has-player body { overflow: hidden; }
   font-weight: 600;
 }
 
-/* Associer */
+/* Associer: one grid, left and right buttons in turn, so each row lines up */
 .pairs { display: grid; grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr); gap: 10px; margin-top: 2px; }
-.pairs__col { display: flex; flex-direction: column; gap: 10px; }
 .pair {
   appearance: none;
   -webkit-appearance: none;
@@ -432,6 +452,8 @@ html.has-player, html.has-player body { overflow: hidden; }
   animation: pop 0.35s var(--ease);
 }
 .pair.is-miss { border-color: var(--danger); background: var(--bad-soft); animation: shake 0.45s ease; }
+/* All found: each right button glides next to its left one (see alignPairs in player.js) */
+.pairs.is-solved .pair { animation: none; transition: transform 0.5s var(--ease), background-color 0.15s, border-color 0.15s; }
 
 /* Bottom: « Vérifier », then the result and « Continuer » */
 .player__bottom {
@@ -519,6 +541,157 @@ html.has-player, html.has-player body { overflow: hidden; }
 }
 .streak-note .icon { width: 18px; height: 18px; color: var(--orange); fill: currentColor; fill-opacity: 0.3; }
 .confetti { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 5; }
+
+/* ---- Lesson title, under the bar ------------------------------------------------------ */
+.player__heading {
+  width: 100%;
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 0 max(20px, env(safe-area-inset-right, 0px)) 2px max(20px, env(safe-area-inset-left, 0px));
+  overflow: hidden;
+  color: var(--text-2);
+  font-size: 13px;
+  font-weight: 800;
+  text-align: center;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ---- Relecture: what to check, and the verdict ----------------------------------------- */
+.feedback__extra { font-size: 14px; font-weight: 600; color: var(--text); }
+.feedback__extra b { font-weight: 800; }
+.verdict-slot { align-self: stretch; }
+.verdict {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 6px;
+  padding: 12px;
+  border-radius: 16px;
+  background: var(--surface);
+  box-shadow: inset 0 0 0 1.5px var(--lavande-soft), var(--shadow-1);
+}
+.verdict__label { display: flex; align-items: center; gap: 7px; color: var(--lavande-ink); font-size: 13.5px; font-weight: 800; }
+.verdict__btns { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.verdict__btn {
+  appearance: none;
+  -webkit-appearance: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-height: 46px;
+  padding: 0 10px;
+  border: 2px solid var(--line-strong);
+  border-radius: 13px;
+  background: var(--surface);
+  color: var(--text);
+  font-size: 15px;
+  font-weight: 800;
+  transition: border-color 0.15s, background-color 0.15s, color 0.15s, transform 0.12s ease;
+}
+.verdict__btn:active { transform: scale(0.97); }
+.verdict__btn .icon { width: 18px; height: 18px; }
+.verdict__btn--ok[aria-pressed="true"] { border-color: var(--ok-ink); background: var(--good-soft); color: var(--ok-ink); }
+.verdict__btn--fix[aria-pressed="true"] { border-color: var(--warn-ink); background: var(--warn-soft); color: var(--warn-ink); }
+.verdict__btn[aria-pressed="true"] .icon { stroke-width: 2.6; }
+.verdict__note { color: var(--text-2); font-size: 13.5px; font-weight: 600; }
+.verdict__edit {
+  margin-left: 6px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--link);
+  font-size: 13.5px;
+  font-weight: 800;
+}
+.sheet-hint { margin-top: -6px; color: var(--text-2); font-size: 13px; font-weight: 600; }
+
+/* « Mode relecture » card in Réviser */
+.rv-relecture {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 16px;
+  box-shadow: var(--shadow-1), inset 0 0 0 1.5px var(--lavande-soft);
+}
+.rv-relecture__icon {
+  width: 44px;
+  height: 44px;
+  flex: none;
+  border-radius: 14px;
+  display: grid;
+  place-items: center;
+  background: var(--lavande-soft);
+  color: var(--lavande-ink);
+}
+.rv-relecture__body { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.rv-relecture__title { font-size: 15.5px; font-weight: 800; }
+.rv-relecture__text { font-size: 13.5px; font-weight: 600; color: var(--text-2); }
+.rv-relecture .rv-progress i { background: var(--lavande); }
+.rv-relecture__end { display: inline-flex; align-items: center; gap: 2px; color: var(--lavande-ink); font-size: 14px; font-weight: 800; }
+
+/* « Questions en préparation » */
+.rv-next--soon .rv-next__label { color: var(--azur-ink); }
+.rv-theme.is-soon .rv-theme__num { color: var(--text-2); }
+.rv-theme.is-soon .rv-theme__end { color: var(--text-3); }
+.rv-soon .icon { color: var(--azur-ink); }
+.rv-soon b { color: var(--text); font-size: 16px; }
+
+/* ---- Rapport de relecture (Infos › Rapport) -------------------------------------------- */
+.rl-head { display: flex; flex-direction: column; gap: 8px; padding: 16px 18px 18px; }
+.rl-head__title { font-size: 26px; line-height: 1.15; font-weight: 800; letter-spacing: -0.025em; }
+.rl-head__count { color: var(--text-2); font-size: 15px; font-weight: 700; }
+.rl-head__count b { margin-right: 2px; color: var(--text); font-size: 24px; font-weight: 800; font-variant-numeric: tabular-nums; }
+.rl-head__bar { height: 8px; margin: 0 0 4px; border-radius: 4px; }
+.rl-head__bar i { border-radius: 4px; background: var(--lavande); }
+.rl-head .btn { margin-top: 6px; }
+.rl-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.rl-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 10px;
+  border-radius: 999px;
+  background: var(--fill);
+  color: var(--text-2);
+  font-size: 13px;
+  font-weight: 800;
+}
+.rl-chip--ok { background: var(--good-soft); color: var(--ok-ink); }
+.rl-chip--fix { background: var(--warn-soft); color: var(--warn-ink); }
+.rl-help { color: var(--text-2); font-size: 13.5px; font-weight: 600; text-align: center; text-wrap: balance; }
+.rl-item { align-items: flex-start; }
+.rl-item__id { margin-bottom: 4px; }
+.rl-item .list__text { color: var(--warn-ink); font-weight: 700; }
+.list__row > .icon { color: var(--text-3); }
+.rl-count {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  flex: none;
+  color: var(--text-2);
+  font-size: 14px;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+.rl-count.is-done { color: var(--ok-ink); }
+.rl-preview {
+  margin: 0;
+  padding: 14px 16px;
+  border-radius: var(--radius-m);
+  background: var(--surface);
+  box-shadow: var(--shadow-1);
+  color: var(--text);
+  font: 600 13.5px/1.55 var(--font);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  -webkit-user-select: text;
+  user-select: text;
+}
+.rl-empty { padding: 20px; }
+.rl-empty .icon { color: var(--ok-ink); }
+.rl-switch__row { cursor: pointer; }
 
 /* ---- Animations ------------------------------------------------------------------------- */
 @keyframes shake {
