@@ -25,10 +25,14 @@ I'm a beginner. Explain things in plain English, keep it short, and tell me exac
 - At the end of each phase: open a pull request, update « État » at the bottom of this file, tell me exactly what to test on my phone, and wait for my go before the next phase.
 
 ## Design
-My private repository invinciricker/Claude-timetable-artefact holds my personal timetable page. Its "Riviera" design becomes the design of the whole app: the sea header with the day's date, Gloock and Albert Sans, floating cards, pebble days, and the dock, which becomes the bottom bar for the three modes. Its README describes the design; site/template.html has the code. That page also uses claude.ai artifact features (Google Calendar, a database): leave them out, this app can't use them.
+Polished and inviting, nice to look at and to use: it should feel like a good app from the App Store. On 6 Nov 2026 I dropped the "Riviera" design of my personal timetable page (in my private repository invinciricker/Claude-timetable-artefact, which still holds the planning data): don't copy it.
+- Light or dark mode, following the phone's setting.
+- Navy header with the day's date, floating cards, a navy bottom bar for the three modes (a side bar on a laptop), smooth animations and bottom sheets.
+- Font: Plus Jakarta Sans, in vendor/fonts. Colours, font and sizes live in css/01-tokens.css.
+- Useful comments in the code, and well-structured folders and files that a beginner can follow.
 
-Use CAPA Sports' colours inside that design:
-- navy #103550: sea header and bottom bar
+Use CAPA Sports' colours, mixed and matched:
+- navy #103550: header and bottom bar
 - turquoise #00E6BF: correct answers and main buttons
 - orange #F09000: streak and XP
 - blue #1070B0: the Azur category (courses)
@@ -98,3 +102,11 @@ I write the real content elsewhere in these exact formats, so keep them. If you 
 
 ## État
 (Updated by Claude at the end of each phase.)
+
+**6 Nov 2026: Phase 1 done, in a pull request, waiting for the go before Phase 2.**
+- App: Réviser and Étudier show « Bientôt » (with the 6 themes of content/themes.json); Planning works; Infos screen (ⓘ); installable; works offline and updates by itself (sw.js). Design as above.
+- Planning: Jour, Semaine, Mois, Année; « En ce moment » card; details with « Réviser / Étudier ce thème » (keywords in content/planning-themes.json); personal events « + » saved on the phone (localStorage key promo-mapst:events); « Ajouter à ton agenda » (subscribe to or download content/planning.ics).
+- Data: content/planning.json and content/planning.ics, made by scripts/export_planning.py from the planning of 1 Oct 2026 and the corrections of 4 Nov 2026. What was kept and dropped was shown and approved on 6 Nov 2026.
+- Approved choices: Lavande = « Préparation » (the half-days that prepare the épreuves); trainers as initials (first name + surname when known, otherwise surname only).
+- To do once: switch on GitHub Pages (Settings › Pages › main, / (root)), see README.
+- When adding a file to the app, add it to the list in sw.js (check with scripts/check_offline_list.py).
