@@ -2,29 +2,41 @@
 """
 Checks the content of Réviser before you publish it:
     python3 scripts/check_content.py
+    python3 scripts/check_content.py path/to/content     (another folder, used by the tests)
 
 It reads content/themes.json and content/questions.json and prints:
-  - every problem it finds (a missing field, a wrong index, an unknown theme...), with the
-    id of the question, so you can fix it;
-  - a summary: how many questions and lessons each theme has.
+  - every PROBLEM it finds (a missing field, a wrong index, an unknown theme, a gap in the
+    lesson numbers, a hint that gives the answer...), with the id of the question;
+  - WARNINGS: things to look at, which do not block (a lesson title without questions,
+    a wrong answer that the « one typo » rule would accept...);
+  - a summary: for each theme and lesson, how many questions, their status, and whether
+    the class can see the lesson yet.
 
+If there is at least one problem, it ends with an error: GitHub shows a red cross on the
+pull request (see .github/workflows/checks.yml) and the problems are in its log.
 The app itself skips a broken question instead of crashing, but it is better to fix it:
 a skipped question is simply missing for everyone.
 The formats are described in CLAUDE.md (« Content formats »).
 """
 import json
+import re
 import sys
+import unicodedata
 from collections import defaultdict
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
+CONTENT = Path(sys.argv[1]).resolve() if len(sys.argv) > 1 else ROOT / "content"
 TYPES = ("qcm", "saisie", "paires")
 STATUSES = ("brouillon", "verifie", "exemple")
+MIN_CHECKED = 5            # same rule as js/reviser/content.js: a lesson is shown with 5 "verifie"
+TYPO_MIN_LENGTH = 8        # same rule as js/reviser/answer.js: one typo forgiven from 8 letters
 problems = []
+warnings = []
 
 
 def load(name):
-    path = ROOT / "content" / name
+    path = CONTENT / name
     try:
         return json.loads(path.read_text(encoding="utf-8"))
     except FileNotFoundError:
@@ -38,22 +50,132 @@ def text(value):
     return isinstance(value, str) and value.strip() != ""
 
 
+def whole_number(value):
+    return isinstance(value, int) and not isinstance(value, bool)
+
+
+# ---- How the app compares typed answers (same rules as js/reviser/answer.js) -----------
+LEADING_ARTICLE = re.compile(r"^(?:l'|d'|le |la |les |un |une |des |du |de la |de l')")
+ARTICLE_WORDS = {"l", "d", "le", "la", "les", "un", "une", "des", "du", "de"}
+
+
+def plain(value):
+    """Lower case, no accents, straight apostrophes, single spaces."""
+    t = unicodedata.normalize("NFKD", str(value))
+    t = "".join(c for c in t if not unicodedata.combining(c))
+    t = t.replace("’", "'").replace("‘", "'").lower()
+    return re.sub(r"\s+", " ", t).strip()
+
+
+def squash(value):
+    """Only letters and digits: « La loi de Wolff ! » -> "loidewolff" (like the app)."""
+    t = plain(value).replace("œ", "oe").replace("æ", "ae")
+    t = LEADING_ARTICLE.sub("", t)
+    return re.sub(r"[^a-z0-9]", "", t)
+
+
+def words(value):
+    t = plain(value).replace("œ", "oe").replace("æ", "ae")
+    return re.findall(r"[a-z0-9]+", t)
+
+
+def one_typo_away(a, b):
+    """At most one letter added, missing, changed, or two neighbours swapped."""
+    if a == b:
+        return True
+    if abs(len(a) - len(b)) > 1:
+        return False
+    d = [[0] * (len(b) + 1) for _ in range(len(a) + 1)]
+    for i in range(len(a) + 1):
+        d[i][0] = i
+    for j in range(len(b) + 1):
+        d[0][j] = j
+    for i in range(1, len(a) + 1):
+        for j in range(1, len(b) + 1):
+            cost = 0 if a[i - 1] == b[j - 1] else 1
+            d[i][j] = min(d[i - 1][j] + 1, d[i][j - 1] + 1, d[i - 1][j - 1] + cost)
+            if i > 1 and j > 1 and a[i - 1] == b[j - 2] and a[i - 2] == b[j - 1]:
+                d[i][j] = min(d[i][j], d[i - 2][j - 2] + 1)
+    return d[len(a)][len(b)] <= 1
+
+
+def join_letters(tokens):
+    """« s d j e s » (from « S.D.J.E.S. ») -> « sdjes »: single letters in a row make one word."""
+    joined = []
+    for token in tokens:
+        if len(token) == 1 and joined and joined[-1][1]:
+            joined[-1] = (joined[-1][0] + token, True)
+        else:
+            joined.append((token, len(token) == 1))
+    return [token for token, _ in joined]
+
+
+def hint_gives_answer(hint, answer):
+    """True if the hint contains the answer (whole words, a final s or x allowed)."""
+    target = words(answer)
+    while len(target) > 1 and target[0] in ARTICLE_WORDS:
+        target = target[1:]
+    if not target:
+        return False
+    n = len(target)
+    for hint_words in (words(hint), join_letters(words(hint))):
+        for i in range(len(hint_words) - n + 1):
+            chunk = hint_words[i:i + n]
+            last = chunk[-1]
+            if chunk[:-1] == target[:-1] and last in (target[-1], target[-1] + "s", target[-1] + "x"):
+                return True
+    # Answers written with dots or dashes (« S.D.J.E.S. », « VO2 max »): compare letters only.
+    short = squash(answer)
+    return len(short) >= 6 and short in squash(hint)
+
+
+# ---- Read the files ---------------------------------------------------------------------
 themes = load("themes.json") or []
 questions = load("questions.json") or []
+if not isinstance(themes, list):
+    problems.append("themes.json: must be a list [ ... ] of themes")
+    themes = []
+if not isinstance(questions, list):
+    problems.append("questions.json: must be a list [ ... ] of questions")
+    questions = []
 
 theme_ids = []
+titles = {}                 # theme id -> {lesson number: title}
 for i, theme in enumerate(themes):
     if not isinstance(theme, dict) or not text(theme.get("id")) or not text(theme.get("title")):
         problems.append(f"themes.json, item {i + 1}: needs an \"id\" and a \"title\"")
         continue
-    if theme["id"] in theme_ids:
-        problems.append(f"themes.json: the id \"{theme['id']}\" is used twice")
-    theme_ids.append(theme["id"])
+    tid = theme["id"]
+    if tid in theme_ids:
+        problems.append(f"themes.json: the id \"{tid}\" is used twice")
+    theme_ids.append(tid)
+    titles[tid] = {}
+    lessons = theme.get("lessons")
+    if lessons is None:
+        continue
+    if not isinstance(lessons, list):
+        problems.append(f"themes.json, {tid}: \"lessons\" must be a list of {{ \"n\", \"title\" }}")
+        continue
+    for item in lessons:
+        if not isinstance(item, dict) or not whole_number(item.get("n")) or item["n"] < 1 or not text(item.get("title")):
+            problems.append(f"themes.json, {tid}: each lesson title needs \"n\" (1, 2, 3...) and a \"title\", found {json.dumps(item, ensure_ascii=False)}")
+        elif item["n"] in titles[tid]:
+            problems.append(f"themes.json, {tid}: two titles for lesson {item['n']}")
+        else:
+            titles[tid][item["n"]] = item["title"].strip()
+
+study_ids = None
+study_index = CONTENT / "study" / "index.json"
+if study_index.is_file():
+    try:
+        study_ids = {p.get("id") for p in json.loads(study_index.read_text(encoding="utf-8")) if isinstance(p, dict)}
+    except (json.JSONDecodeError, TypeError):
+        study_ids = None     # Phase 3 has its own checks for this file
 
 seen = set()
-counts = defaultdict(lambda: defaultdict(int))
+by_lesson = defaultdict(lambda: defaultdict(list))   # theme -> lesson -> [questions]
 types = defaultdict(int)
-examples = 0
+statuses = defaultdict(int)
 
 for i, q in enumerate(questions):
     where = f"question {i + 1}"
@@ -72,7 +194,7 @@ for i, q in enumerate(questions):
     if q.get("theme") not in theme_ids:
         problems.append(f"{where}: unknown theme \"{q.get('theme')}\" (see themes.json)")
     lesson = q.get("lesson")
-    if not isinstance(lesson, int) or isinstance(lesson, bool) or lesson < 1:
+    if not whole_number(lesson) or lesson < 1:
         problems.append(f"{where}: \"lesson\" must be a whole number (1, 2, 3...)")
     if not text(q.get("question")):
         problems.append(f"{where}: \"question\" is empty")
@@ -81,12 +203,19 @@ for i, q in enumerate(questions):
             problems.append(f"{where}: \"{field}\" must be a text")
     if not text(q.get("explanation")):
         problems.append(f"{where}: \"explanation\" is empty (one sentence is shown after each answer)")
-    if q.get("status") not in STATUSES:
+    status = q.get("status")
+    if status not in STATUSES:
         problems.append(f"{where}: \"status\" must be \"brouillon\", \"verifie\" or \"exemple\"")
-    if q.get("status") == "exemple":
-        examples += 1
-    if "study" in q and q["study"] is not None and not isinstance(q["study"], str):
-        problems.append(f"{where}: \"study\" must be the id of a study page (a text)")
+    else:
+        statuses[status] += 1
+    marked = text(q.get("question")) and q["question"].lstrip().upper().startswith("[EXEMPLE]")
+    if marked != (status == "exemple"):
+        warnings.append(f"{where}: sample content starts with « [EXEMPLE] » AND has the status \"exemple\" (one of the two is missing)")
+    if "study" in q and q["study"] is not None:
+        if not isinstance(q["study"], str):
+            problems.append(f"{where}: \"study\" must be the id of a study page (a text)")
+        elif study_ids is not None and q["study"] not in study_ids:
+            warnings.append(f"{where}: \"study\" is \"{q['study']}\", but content/study/index.json has no page with that id")
 
     kind = q.get("type")
     if kind not in TYPES:
@@ -96,22 +225,32 @@ for i, q in enumerate(questions):
         correct = q.get("correct")
         if not isinstance(choices, list) or len(choices) < 2 or not all(text(c) for c in choices):
             problems.append(f"{where}: \"choices\" needs at least 2 texts (4 is the rule)")
-        elif len(choices) != 4:
-            problems.append(f"{where}: {len(choices)} choices (the rule is 4)")
+        else:
+            if len(choices) != 4:
+                problems.append(f"{where}: {len(choices)} choices (the rule is 4)")
+            if len({plain(c) for c in choices}) != len(choices):
+                problems.append(f"{where}: two choices have the same text")
         if not isinstance(correct, list) or not correct:
             problems.append(f"{where}: \"correct\" needs the index of at least one right choice (0 = the first)")
         elif isinstance(choices, list):
             for index in correct:
-                if not isinstance(index, int) or isinstance(index, bool) or not 0 <= index < len(choices):
+                if not whole_number(index) or not 0 <= index < len(choices):
                     problems.append(f"{where}: \"correct\" has {index!r}, but the choices go from 0 to {len(choices) - 1}")
             if len(set(map(str, correct))) != len(correct):
                 problems.append(f"{where}: an index appears twice in \"correct\"")
+            elif len(choices) > 1 and len(correct) == len(choices):
+                warnings.append(f"{where}: every choice is right: is it really a question?")
     elif kind == "saisie":
         answers = q.get("answers")
         if not isinstance(answers, list) or not answers or not all(text(a) for a in answers):
             problems.append(f"{where}: \"answers\" needs at least one accepted answer (the main one first)")
+            answers = []
         if not text(q.get("hint")):
             problems.append(f"{where}: a « Réponse à taper » needs a \"hint\" (a clue that does not give the answer)")
+        else:
+            for answer in answers:
+                if hint_gives_answer(q["hint"], answer):
+                    problems.append(f"{where}: the hint contains the accepted answer « {answer} »: it must not give the answer away")
     elif kind == "paires":
         pairs = q.get("pairs")
         if not isinstance(pairs, list) or len(pairs) < 2 or not all(
@@ -125,22 +264,98 @@ for i, q in enumerate(questions):
             if len(set(lefts)) != len(lefts) or len(set(rights)) != len(rights):
                 problems.append(f"{where}: two pairs have the same text: each side must be different")
 
-    if q.get("theme") in theme_ids and isinstance(lesson, int):
-        counts[q["theme"]][lesson] += 1
+    if q.get("theme") in theme_ids and whole_number(lesson) and lesson >= 1:
+        by_lesson[q["theme"]][lesson].append(q)
     if kind in TYPES:
         types[kind] += 1
 
-print(f"{len(questions)} questions, {len(theme_ids)} themes"
-      f" ({types['qcm']} QCM, {types['saisie']} à taper, {types['paires']} à associer; {examples} exemples)")
-for theme_id in theme_ids:
-    lessons = counts.get(theme_id, {})
-    detail = ", ".join(f"leçon {n}: {lessons[n]}" for n in sorted(lessons)) or "no question yet"
-    short = [n for n in sorted(lessons) if lessons[n] < 8 or lessons[n] > 10]
-    note = f"  (the rule is 8 to 10 questions per lesson: check leçon {', '.join(map(str, short))})" if short and examples < len(questions) else ""
-    print(f"  {theme_id}: {detail}{note}")
+# ---- Lessons: numbered 1, 2, 3... without gaps; titles for lessons that exist ----------
+for tid in theme_ids:
+    numbers = sorted(by_lesson[tid])
+    if numbers and numbers != list(range(1, len(numbers) + 1)):
+        missing = sorted(set(range(1, numbers[-1] + 1)) - set(numbers))
+        problems.append(f"{tid}: the lessons are {', '.join(map(str, numbers))}; they must start at 1 and follow"
+                        f" each other (missing: {', '.join(map(str, missing))})")
+    for n, title in sorted(titles.get(tid, {}).items()):
+        if n not in by_lesson[tid]:
+            warnings.append(f"themes.json, {tid}: lesson {n} « {title} » has a title but no question yet")
 
+
+# ---- Wrong answers the « one typo » rule would accept ------------------------------------
+def phrases(value, size):
+    """The groups of `size` words of a text, as written (« les ostéoclastes »)."""
+    parts = [w.strip("«»“”\"()[]?!.,;:…") for w in str(value).split()]
+    parts = [w for w in parts if w]
+    return [" ".join(parts[i:i + size]) for i in range(len(parts) - size + 1)]
+
+
+everything = []      # texts from the whole file: choices, pairs, other answers
+for q in questions:
+    if not isinstance(q, dict):
+        continue
+    if isinstance(q.get("choices"), list):
+        everything += [c for c in q["choices"] if text(c)]
+    if isinstance(q.get("pairs"), list):
+        everything += [s for p in q["pairs"] if isinstance(p, list) for s in p if text(s)]
+    if isinstance(q.get("answers"), list):
+        everything += [a for a in q["answers"] if text(a)]
+
+for q in questions:
+    if not isinstance(q, dict) or q.get("type") != "saisie" or not isinstance(q.get("answers"), list):
+        continue
+    accepted = {squash(a) for a in q["answers"] if text(a)}
+    sources = [q.get("question"), q.get("hint"), q.get("explanation")] + everything
+    reported = set()
+    for answer in q["answers"]:
+        if not text(answer):
+            continue
+        target = squash(answer)
+        if len(target) < TYPO_MIN_LENGTH:
+            continue
+        for size in range(1, len(words(answer)) + 2):
+            for source in sources:
+                if not text(source):
+                    continue
+                for phrase in phrases(source, size):
+                    short = squash(phrase)
+                    if not short or short in accepted or short in reported:
+                        continue
+                    if short in (target + "s", target + "x") or target in (short + "s", short + "x"):
+                        continue          # a plural is the same answer
+                    if one_typo_away(short, target):
+                        reported.add(short)
+                        warnings.append(f"{q.get('id')}: « {phrase} » would be accepted as a typo of « {answer} »"
+                                        " (one letter apart). If it is a wrong answer, think of another"
+                                        " question type or another wording.")
+
+# ---- Summary ------------------------------------------------------------------------------
+print(f"{len(questions)} questions, {len(theme_ids)} themes"
+      f" ({types['qcm']} QCM, {types['saisie']} à taper, {types['paires']} à associer;"
+      f" {statuses['verifie']} verifie, {statuses['brouillon']} brouillon, {statuses['exemple']} exemple)")
+for tid in theme_ids:
+    lessons = by_lesson.get(tid, {})
+    if not lessons:
+        print(f"  {tid}: no question yet (the app says « Questions en préparation »)")
+        continue
+    print(f"  {tid}:")
+    for n in sorted(lessons):
+        items = lessons[n]
+        count = defaultdict(int)
+        for q in items:
+            count[q.get("status")] += 1
+        detail = ", ".join(f"{count[s]} {s}" for s in STATUSES if count[s])
+        title = titles.get(tid, {}).get(n)
+        shown = count["verifie"] >= MIN_CHECKED or count["exemple"] > 0
+        size_note = "" if 8 <= len(items) <= 10 or count["exemple"] else "; the rule is 8 to 10 questions"
+        print(f"    leçon {n}{f' « {title} »' if title else ''}: {len(items)} questions ({detail})"
+              f" - {'shown to the class' if shown else f'hidden from the class until {MIN_CHECKED} are verifie'}{size_note}")
+
+if warnings:
+    print(f"\n{len(warnings)} warning(s) (to look at, they do not block):")
+    for w in warnings:
+        print("  -", w)
 if problems:
-    print(f"\n{len(problems)} problem(s):")
+    print(f"\n{len(problems)} problem(s) (to fix before publishing):")
     for p in problems:
         print("  -", p)
     sys.exit(1)

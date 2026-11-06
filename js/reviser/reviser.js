@@ -6,7 +6,8 @@
      #reviser/<theme>    one theme: its lessons, as a path to follow (they unlock in order)
 
    The lesson itself opens over the app (player.js). What is remembered (XP, série,
-   lessons done, mistakes) is in progress.js, the questions in content.js.
+   questions done, mistakes) is in progress.js, the questions in content.js, and the
+   « Mode relecture » in relecture.js.
    ===================================================================================== */
 
 import { esc, icon, setHTML } from "../core/dom.js";
@@ -16,8 +17,9 @@ import { showToast } from "../core/toast.js";
 import { footerHTML } from "../core/texts.js";
 import { openPlayer, isPlaying } from "./player.js";
 import { soundOn, setSoundOn } from "./sound.js";
-import { XP, xpTotal, xpToday, streak, lessonInfo, isUnlocked, themeProgress, nextLesson,
-  mistakes, daysUntil, finishSession } from "./progress.js";
+import { verdictFor, relectureSummary } from "./relecture.js";
+import { XP, xpTotal, xpToday, streak, lessonInfo, isUnlocked, themeProgress, currentLesson,
+  nextLesson, mistakes, daysUntil, finishSession } from "./progress.js";
 
 const REVIEW_SIZE = 10;            // questions per « Mes erreurs » session
 
@@ -32,6 +34,16 @@ const view = {
 
 const plural = (n, one, many) => `${n} ${n > 1 ? many : one}`;
 const minutesFor = (count) => Math.max(1, Math.round((count * 35) / 60));   // ~35 s a question
+
+/** « Leçon 1 · Os et articulations », or « Leçon 1 » when the lesson has no title. */
+export function lessonHeading(lesson) {
+  return lesson.title ? `Leçon ${lesson.number} · ${lesson.title}` : `Leçon ${lesson.number}`;
+}
+
+/** In Relecture: how many unchecked questions of a list already have a verdict. */
+function checkedCount(questions) {
+  return questions.filter((q) => q.draft && verdictFor(q)).length;
+}
 
 /**
  * Draws the Réviser tab.
@@ -88,10 +100,29 @@ function examplesNote(content) {
     : "";
 }
 
-function progressBar(done, total) {
-  const share = total ? Math.round((100 * done) / total) : 0;
-  return `<span class="rv-progress" role="img" aria-label="${done} sur ${total}"><i style="width:${share}%"></i></span>`;
+/** In « Mode relecture »: where the checking stands, and the way to the report. */
+function relectureCard(content) {
+  if (!content.relecture) return "";
+  const s = relectureSummary(content);
+  return `<button type="button" class="card rv-relecture" data-report>
+      <span class="rv-relecture__icon">${icon("clipboard")}</span>
+      <span class="rv-relecture__body">
+        <span class="rv-relecture__title">Mode relecture</span>
+        <span class="rv-relecture__text">${s.total
+          ? `${s.checked} sur ${s.total} relues${s.corriger.length ? ` · ${s.corriger.length} à corriger` : ""}`
+          : "Aucune question à vérifier pour l’instant"}</span>
+        ${s.total ? progressBar(s.checked / s.total, `${s.checked} questions relues sur ${s.total}`) : ""}
+      </span>
+      <span class="rv-relecture__end">Rapport${icon("right", "icon--s")}</span>
+    </button>`;
 }
+
+function progressBar(share, label) {
+  const percent = Math.round(Math.max(0, Math.min(1, share)) * 100);
+  return `<span class="rv-progress" role="img" aria-label="${esc(label)}"><i style="width:${percent}%"></i></span>`;
+}
+
+const preparingText = "Chaque question est relue avec les cours avant d’apparaître ici. Reviens bientôt !";
 
 // -------------------------------------------------------------------------------------
 // Home of Réviser
@@ -99,18 +130,21 @@ function progressBar(done, total) {
 function renderHome(container, content) {
   const next = nextLesson(content);
   const errors = mistakes(content);
+  const nothing = !content.total;
 
   let hero;
-  if (!content.total) {
-    hero = `<div class="rv-next"><p class="rv-next__label">Bientôt</p>
-        <p class="rv-next__title">Les questions arrivent</p>
-        <p class="rv-next__meta">Les leçons apparaîtront ici dès que les questions seront prêtes.</p></div>`;
+  if (nothing) {
+    hero = `<div class="rv-next rv-next--soon">
+        <p class="rv-next__label">Questions en préparation</p>
+        <p class="rv-next__title">Les leçons arrivent bientôt</p>
+        <p class="rv-next__meta">${preparingText}</p></div>`;
   } else if (next) {
-    const started = next.theme.lessons.some((l) => lessonInfo(l.key).done) || xpTotal() > 0;
+    const started = xpTotal() > 0 || next.theme.lessons.some((l) => lessonInfo(l).started);
+    const count = next.lesson.questions.length;
     hero = `<div class="rv-next">
         <p class="rv-next__label">${started ? "Continuer" : "Pour commencer"}</p>
         <p class="rv-next__title">${esc(next.theme.title)}</p>
-        <p class="rv-next__meta">Leçon ${next.lesson.index} · ${plural(next.lesson.questions.length, "question", "questions")} · ${minutesFor(next.lesson.questions.length)} min</p>
+        <p class="rv-next__meta"><b>${esc(lessonHeading(next.lesson))}</b><br>${plural(count, "question", "questions")} · environ ${minutesFor(count)} min</p>
         <button type="button" class="btn btn--primary btn--block btn--big" data-start="${esc(next.lesson.key)}">${icon("reviser")}${started ? "Continuer" : "Commencer"}</button>
       </div>`;
   } else {
@@ -118,6 +152,7 @@ function renderHome(container, content) {
         <p class="rv-next__title">Toutes les leçons sont faites</p>
         <p class="rv-next__meta">Revois tes erreurs, ou refais une leçon pour gagner des XP.</p></div>`;
   }
+  const showStats = !nothing || xpTotal() > 0;
 
   let errorsCard;
   if (errors.due.length) {
@@ -152,26 +187,31 @@ function renderHome(container, content) {
   const themes = content.themes.map((theme) => {
     const p = themeProgress(theme);
     const complete = p.total > 0 && p.done === p.total;
-    return `<button type="button" class="card rv-theme${complete ? " is-complete" : ""}" data-theme="${esc(theme.id)}">
+    const drafts = theme.lessons.flatMap((l) => l.questions.filter((q) => q.draft));
+    const relu = content.relecture && drafts.length ? ` · ${checkedCount(drafts)}/${drafts.length} relues` : "";
+    return `<button type="button" class="card rv-theme${complete ? " is-complete" : ""}${p.total ? "" : " is-soon"}" data-theme="${esc(theme.id)}">
         <span class="rv-theme__num">${complete ? icon("check") : theme.index}</span>
         <span class="rv-theme__body">
           <span class="rv-theme__title">${esc(theme.title)}</span>
-          <span class="rv-theme__meta">${p.total ? `${plural(p.total, "leçon", "leçons")} · ${plural(theme.questionCount, "question", "questions")}` : "Bientôt"}</span>
-          ${p.total ? progressBar(p.done, p.total) : ""}
+          <span class="rv-theme__meta">${p.total
+            ? `${plural(p.total, "leçon", "leçons")} · ${plural(theme.questionCount, "question", "questions")}${relu}`
+            : "Questions en préparation"}</span>
+          ${p.total ? progressBar(p.share, `${p.done} leçons terminées sur ${p.total}`) : ""}
         </span>
-        <span class="rv-theme__end">${p.total ? `${p.done}/${p.total}` : icon("lock", "icon--s")}</span>
+        <span class="rv-theme__end">${p.total ? `${p.done}/${p.total}` : icon("clock", "icon--s")}</span>
       </button>`;
   }).join("");
 
   setHTML(container, `
     <div class="wrap screen__body">
-      <section class="card card--float rv-hero">${statsHTML()}${hero}</section>
+      <section class="card card--float rv-hero">${showStats ? statsHTML() : ""}${hero}</section>
+      ${relectureCard(content)}
       ${examplesNote(content)}
-      <section class="section">
+      ${nothing && !errors.all ? "" : `<section class="section">
         <div class="section__head"><h2 class="section__title">Mes erreurs</h2>
           ${errors.all ? `<span class="section__aside">${plural(errors.all, "question", "questions")} en tout</span>` : ""}</div>
         ${errorsCard}
-      </section>
+      </section>`}
       <section class="section">
         <div class="section__head"><h2 class="section__title">Les thèmes</h2><span class="section__aside">${plural(content.themes.length, "thème", "thèmes")}</span></div>
         <div class="rv-themes">${themes}</div>
@@ -190,32 +230,40 @@ function renderHome(container, content) {
 const SHIFTS = [0, 46, 70, 46, 0, -46, -70, -46];   // the zigzag of the path, in pixels
 
 function renderTheme(container, content, theme) {
+  const relecture = content.relecture;
   const p = themeProgress(theme);
-  const current = theme.lessons.find((l) => !lessonInfo(l.key).done && isUnlocked(theme, l)) || null;
-  const doneKeys = theme.lessons.filter((l) => lessonInfo(l.key).done).map((l) => l.key);
+  const current = currentLesson(theme, relecture);
+  const doneKeys = theme.lessons.filter((l) => lessonInfo(l).complete).map((l) => l.key);
   const freshKey = view.justDone && current && doneKeys.includes(view.justDone) ? current.key : null;
 
   let action = "";
   if (current) {
-    action = `<button type="button" class="btn btn--primary btn--block btn--big" data-start="${esc(current.key)}">${icon("reviser")}${lessonInfo(current.key).count ? "Reprendre" : "Commencer"} la leçon ${current.index}</button>`;
+    const info = lessonInfo(current);
+    action = `<button type="button" class="btn btn--primary btn--block btn--big" data-start="${esc(current.key)}">${icon("reviser")}${info.fresh ? "Voir les nouvelles questions" : `Commencer la leçon ${current.number}`}</button>`;
   } else if (theme.lessons.length) {
-    action = `<button type="button" class="btn btn--secondary btn--block btn--big" data-start="${esc(theme.lessons[0].key)}">${icon("repeat")}Refaire la leçon 1</button>
+    action = `<button type="button" class="btn btn--secondary btn--block btn--big" data-start="${esc(theme.lessons[0].key)}">${icon("repeat")}Refaire la leçon ${theme.lessons[0].number}</button>
       <p class="rv-themehead__done">${icon("check", "icon--s")}Toutes les leçons de ce thème sont faites.</p>`;
   }
 
   const steps = theme.lessons.map((lesson, i) => {
-    const info = lessonInfo(lesson.key);
-    const unlocked = isUnlocked(theme, lesson);
-    const state = info.done ? "done" : unlocked ? "current" : "locked";
-    const label = info.done
-      ? `Leçon ${lesson.index}, terminée${info.best ? `, meilleur score ${info.best} %` : ""}`
-      : unlocked ? `Leçon ${lesson.index}, à faire` : `Leçon ${lesson.index}, verrouillée`;
+    const info = lessonInfo(lesson);
+    const unlocked = isUnlocked(theme, lesson, relecture);
+    const state = info.complete ? "done" : lesson === current ? "current" : unlocked ? "open" : "locked";
+    const label = `Leçon ${lesson.number}${lesson.title ? `, ${lesson.title}` : ""}, ${{
+      done: `terminée${info.score ? `, ${info.score} % du premier coup` : ""}`,
+      current: info.fresh ? "nouvelles questions" : "à faire",
+      open: info.fresh ? "nouvelles questions" : "ouverte",
+      locked: "verrouillée",
+    }[state]}`;
+    const relu = relecture && lesson.draftCount
+      ? `<span class="path__relu${checkedCount(lesson.questions) === lesson.draftCount ? " is-done" : ""}">${checkedCount(lesson.questions)}/${lesson.draftCount} relues</span>`
+      : "";
     return `<li class="path__step is-${state}${lesson.key === freshKey ? " is-new" : ""}" style="--shift:${SHIFTS[i % SHIFTS.length]}px">
-        ${state === "current" ? `<span class="path__bubble" aria-hidden="true">${info.count ? "Reprendre" : "Commencer"}</span>` : ""}
+        ${state === "current" ? `<span class="path__bubble" aria-hidden="true">${info.fresh ? "Nouveau" : "Commencer"}</span>` : ""}
         <button type="button" class="path__node" data-lesson="${esc(lesson.key)}" aria-label="${esc(label)}"${state === "locked" ? ' aria-disabled="true"' : ""}>
           ${icon(state === "done" ? "check" : state === "locked" ? "lock" : "reviser")}
         </button>
-        <span class="path__label">Leçon ${lesson.index}</span>
+        <span class="path__label"><span class="path__num">Leçon ${lesson.number}</span>${lesson.title ? `<span class="path__title">${esc(lesson.title)}</span>` : ""}${relu}</span>
       </li>`;
   }).join("");
 
@@ -225,16 +273,17 @@ function renderTheme(container, content, theme) {
         <button type="button" class="rv-back" data-back>${icon("left", "icon--s")}Tous les thèmes</button>
         <p class="rv-eyebrow">Thème ${theme.index} sur ${content.themes.length}</p>
         <h2 class="rv-themehead__title">${esc(theme.title)}</h2>
-        ${p.total ? `<div class="rv-themehead__progress">${progressBar(p.done, p.total)}<span>${p.done}/${plural(p.total, "leçon", "leçons")}</span></div>` : ""}
+        ${p.total ? `<div class="rv-themehead__progress">${progressBar(p.share, `${p.done} leçons terminées sur ${p.total}`)}<span>${p.done}/${plural(p.total, "leçon", "leçons")}</span></div>` : ""}
         ${action}
       </section>
+      ${relectureCard(content)}
       ${examplesNote(content)}
       ${theme.lessons.length ? `<section class="section">
         <div class="section__head"><h2 class="section__title">Le parcours</h2>
           <span class="section__aside">${plural(theme.questionCount, "question", "questions")}</span></div>
         <ol class="path">${steps}</ol>
-      </section>` : `<div class="card empty">${icon("sparkles")}<p><b>Pas encore de questions pour ce thème.</b></p>
-        <p>Elles arrivent bientôt, vérifiées avec les cours.</p></div>`}
+      </section>` : `<div class="card empty rv-soon">${icon("clock")}<p><b>Questions en préparation</b></p>
+        <p>${preparingText}</p></div>`}
       ${footerHTML()}
     </div>`);
 
@@ -265,7 +314,10 @@ function onClick(event) {
     else go("reviser");
     view.pushed = null;
   } else if (target.closest("[data-review]")) startReview();
-  else if (target.closest("[data-how]")) openHowSheet();
+  else if (target.closest("[data-report]")) {
+    go("infos", "relecture", { push: true });
+    window.scrollTo(0, 0);
+  } else if (target.closest("[data-how]")) openHowSheet();
   else if (target.closest("[data-sound]")) {
     setSoundOn(!soundOn());
     showToast(soundOn() ? "Sons et vibrations activés" : "Sons et vibrations coupés");
@@ -277,13 +329,14 @@ function startLesson(lesson) {
   if (!lesson) return;
   const theme = view.content.theme(lesson.theme);
   openPlayer({
-    title: `${theme.title} · Leçon ${lesson.index}`,
+    title: theme.title,
+    heading: lessonHeading(lesson),
     questions: lesson.questions,
     onFinish: (result) => {
       view.justDone = lesson.key;
       return finishSession({
-        kind: "lesson", lessonKey: lesson.key, themeId: theme.id,
-        xp: result.xp, total: result.total, firstTryRight: result.firstTryRight,
+        kind: "lesson", themeId: theme.id, xp: result.xp,
+        questionIds: result.questionIds, firstTryIds: result.firstTryIds,
       });
     },
     onClose: () => {
@@ -306,7 +359,7 @@ function startReview() {
     title: "Mes erreurs",
     questions: due,
     review: true,
-    onFinish: (result) => finishSession({ kind: "review", xp: result.xp, total: result.total }),
+    onFinish: (result) => finishSession({ kind: "review", xp: result.xp }),
     onClose: () => refreshReviser(),
   });
 }
@@ -316,25 +369,29 @@ function openLessonSheet(key) {
   const lesson = content.lesson(key);
   if (!lesson) return;
   const theme = content.theme(lesson.theme);
-  if (!isUnlocked(theme, lesson)) {
+  if (!isUnlocked(theme, lesson, content.relecture)) {
     const before = theme.lessons[theme.lessons.indexOf(lesson) - 1];
-    showToast(`Termine d’abord la leçon ${before.index}`);
+    showToast(`Termine d’abord la leçon ${before.number}`);
     return;
   }
-  const info = lessonInfo(key);
+  const info = lessonInfo(lesson);
+  const count = lesson.questions.length;
+  let state;
+  if (info.complete) state = "Déjà terminée. La refaire rapporte encore des XP.";
+  else if (info.fresh) state = `${plural(info.fresh, "nouvelle question", "nouvelles questions")} depuis ta dernière fois.`;
+  else state = "Une erreur coûte une vie, et la question revient à la fin. 3 vies par leçon.";
   const sheet = openSheet({
-    title: `Leçon ${lesson.index}`,
-    body: `<p class="sheet-text">${esc(theme.title)}</p>
+    title: lesson.title || `Leçon ${lesson.number}`,
+    body: `<p class="sheet-text">${esc(lesson.title ? `Leçon ${lesson.number} · ${theme.title}` : theme.title)}</p>
       <div class="rv-sheet-facts">
-        <span>${icon("layers", "icon--s")}${plural(lesson.questions.length, "question", "questions")}</span>
-        <span>${icon("clock", "icon--s")}environ ${minutesFor(lesson.questions.length)} min</span>
-        ${info.done ? `<span>${icon("award", "icon--s")}meilleur score ${info.best} %</span>` : ""}
+        <span>${icon("layers", "icon--s")}${plural(count, "question", "questions")}</span>
+        <span>${icon("clock", "icon--s")}environ ${minutesFor(count)} min</span>
+        ${info.complete && info.score ? `<span>${icon("award", "icon--s")}${info.score} % du premier coup</span>` : ""}
+        ${content.relecture && lesson.draftCount ? `<span>${icon("clipboard", "icon--s")}${checkedCount(lesson.questions)}/${lesson.draftCount} relues</span>` : ""}
       </div>
-      <p class="sheet-text">${info.done
-        ? `Déjà faite ${info.count > 1 ? `${info.count} fois` : "une fois"}. La refaire rapporte encore des XP.`
-        : "Une erreur coûte une vie, et la question revient à la fin. 3 vies par leçon."}</p>
+      <p class="sheet-text">${state}</p>
       <div class="sheet__actions">
-        <button type="button" class="btn btn--primary btn--block btn--big" data-go>${icon(info.done ? "repeat" : "reviser")}${info.done ? "Refaire la leçon" : "Commencer la leçon"}</button>
+        <button type="button" class="btn btn--primary btn--block btn--big" data-go>${icon(info.complete ? "repeat" : "reviser")}${info.complete ? "Refaire la leçon" : "Commencer la leçon"}</button>
       </div>`,
   });
   sheet.body.addEventListener("click", (event) => {
@@ -344,12 +401,13 @@ function openLessonSheet(key) {
 
 function openHowSheet() {
   const rows = [
-    ["reviser", "Des leçons courtes", "Quelques questions par leçon. Après chaque réponse, tu sais tout de suite si c’est juste, avec une explication."],
+    ["reviser", "Des leçons courtes", "8 à 10 questions par leçon. Après chaque réponse, tu sais tout de suite si c’est juste, avec une explication."],
     ["heart", "3 vies par leçon", "Une erreur coûte une vie, et la question revient à la fin. Plus de vies : la leçon recommence."],
     ["flame", "La série", "Le nombre de jours de suite où tu as fini au moins une leçon ou une révision."],
     ["sun", "Les XP", `${XP.firstTry} par bonne réponse du premier coup, ${XP.corrected} si tu la corriges, ${XP.perfect} de bonus sans faute, ${XP.review} en révision.`],
     ["repeat", "Mes erreurs", "Une question ratée revient le jour même, puis le lendemain, 3 jours et 7 jours plus tard, jusqu’à ce qu’elle soit acquise."],
-    ["sparkles", "Réponses à taper", "Les majuscules et les accents ne comptent pas, et une faute de frappe est pardonnée dans les mots longs."],
+    ["sparkles", "Réponses à taper", "Les majuscules et les accents ne comptent pas, et une faute de frappe est pardonnée dans les mots de 8 lettres ou plus."],
+    ["check", "Des questions vérifiées", "Chaque question est relue avec les cours avant d’apparaître. Un doute ? Vérifie dans tes cours."],
     ["lock", "Sur ce téléphone", "Ta progression reste sur ce téléphone. Les comptes, pour la retrouver ailleurs, arriveront plus tard."],
   ];
   openSheet({

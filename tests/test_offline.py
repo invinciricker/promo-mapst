@@ -1,0 +1,105 @@
+"""
+Test of the offline mode and of « content without code » (sw.js), in Chromium:
+  - after a first visit, the app opens without internet, with Réviser and the planning;
+  - a content file that no code lists (like a future study page) works offline once
+    it has been opened;
+  - when a content file changes on the website, the app uses it at the next opening.
+
+    python3 tests/test_offline.py [<repo folder>]
+
+It copies the app to a temporary folder (to add and change files there), and serves it.
+Needs Python Playwright (pip install playwright).
+"""
+import json
+import os
+import shutil
+import socket
+import subprocess
+import sys
+import tempfile
+import time
+from pathlib import Path
+
+from playwright.sync_api import sync_playwright
+
+REPO = Path(sys.argv[1]).resolve() if len(sys.argv) > 1 else Path(__file__).resolve().parent.parent
+results = []
+
+
+def check(name, ok):
+    results.append((name, bool(ok)))
+
+
+def free_port():
+    with socket.socket() as s:
+        s.bind(("127.0.0.1", 0))
+        return s.getsockname()[1]
+
+
+site = Path(tempfile.mkdtemp(prefix="promo-mapst-site-"))
+for item in ("index.html", "manifest.webmanifest", "sw.js", "css", "js", "content", "icons", "vendor"):
+    source = REPO / item
+    if source.is_dir():
+        shutil.copytree(source, site / item)
+    else:
+        shutil.copy2(source, site / item)
+(site / "content" / "extra-test.json").write_text('{"page": "une page ajoutée sans toucher au code"}', encoding="utf-8")
+
+PORT = free_port()
+BASE = f"http://127.0.0.1:{PORT}/"
+server = subprocess.Popen([sys.executable, "-m", "http.server", str(PORT), "--bind", "127.0.0.1"], cwd=site,
+                          stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+time.sleep(1)
+
+try:
+    with sync_playwright() as p:
+        browser = p.chromium.launch(executable_path=os.environ.get("CHROME_PATH") or None)
+        ctx = browser.new_context(viewport={"width": 390, "height": 844}, service_workers="allow", locale="fr-FR")
+        page = ctx.new_page()
+        errors = []
+        page.on("pageerror", lambda e: errors.append(str(e)))
+
+        # First visit: sw.js installs and saves the app.
+        page.goto(BASE + "#reviser")
+        page.wait_for_selector(".rv-hero")
+        page.evaluate("navigator.serviceWorker.ready")
+        page.reload()                                     # now the page goes through sw.js
+        page.wait_for_selector(".rv-hero")
+        check("sw.js controls the page", page.evaluate("Boolean(navigator.serviceWorker.controller)"))
+        body = page.evaluate("fetch('content/extra-test.json').then(r => r.text())")
+        check("a content file not listed anywhere loads", "sans toucher au code" in body)
+        page.wait_for_timeout(500)
+
+        # Without internet.
+        ctx.set_offline(True)
+        page.reload()
+        page.wait_for_selector(".rv-hero", timeout=15000)
+        check("offline: the app opens on Réviser", page.locator(".rv-theme").count() == 6)
+        page.goto(BASE + "#planning")
+        page.wait_for_selector(".now", timeout=15000)
+        check("offline: the planning works", page.locator(".now").count() == 1)
+        body = page.evaluate("fetch('content/extra-test.json').then(r => r.ok ? r.text() : 'erreur ' + r.status).catch(e => 'erreur ' + e)")
+        check("offline: the unlisted content file comes from the saved copy", "sans toucher au code" in body)
+
+        # Back online, the content changed on the website: used at the next opening.
+        ctx.set_offline(False)
+        questions = json.loads((site / "content" / "questions.json").read_text(encoding="utf-8"))
+        for q in questions:
+            if q["id"].startswith("fds-1-"):
+                q["status"] = "verifie"
+        (site / "content" / "questions.json").write_text(json.dumps(questions, ensure_ascii=False), encoding="utf-8")
+        page.goto(BASE + "#reviser")
+        page.reload()
+        page.wait_for_selector(".rv-hero")
+        page.wait_for_timeout(300)
+        check("online again: new content is used straight away", page.locator(".rv-theme:not(.is-soon)").count() == 1)
+        check("no page errors", not errors)
+        browser.close()
+finally:
+    server.terminate()
+    shutil.rmtree(site, ignore_errors=True)
+
+print("\n".join(f"{'PASS' if ok else 'FAIL'}  {name}" for name, ok in results))
+passed = sum(ok for _, ok in results)
+print(f"\n{passed}/{len(results)} checks passed")
+sys.exit(0 if passed == len(results) else 1)

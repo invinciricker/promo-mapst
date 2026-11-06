@@ -7,7 +7,9 @@
      - one typo is forgiven, but only in answers of 8 letters or more
        (« phosphocreatin » is accepted, « ATb » for « ATP » is not).
    Also forgiven: spaces, dashes, dots and apostrophes (« L.212-1 » = « L 212 1 »),
-   a « le / la / l’ / un / une » at the start, and « oe » written for « œ ».
+   a « le / la / l’ / un / une » at the start, « oe » written for « œ », and small
+   digits written as normal ones (« VO₂max » = « VO2max »).
+   scripts/check_content.py uses the same rules (its squash()): change both together.
    ===================================================================================== */
 
 import { plain } from "../core/dom.js";
@@ -16,7 +18,8 @@ const LEADING_ARTICLE = /^(?:l'|d'|le |la |les |un |une |des |du |de la |de l')/
 
 /** Reduces a text to its letters and digits: « La loi de Wolff ! » -> "loidewolff" */
 export function squash(text) {
-  return plain(text)                    // lower case, no accents, straight apostrophes
+  // NFKD turns « ₂ » into « 2 » (and splits accents off, which plain() then removes).
+  return plain(String(text ?? "").normalize("NFKD"))   // lower case, no accents, straight apostrophes
     .replace(/œ/g, "oe")
     .replace(/æ/g, "ae")
     .replace(LEADING_ARTICLE, "")

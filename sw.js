@@ -7,11 +7,13 @@
    2. Each time the app is opened, it checks quietly (in the background) whether the
       files changed on GitHub Pages. If they did, it saves the new ones and tells the
       app, which offers to reload (see js/core/offline.js).
-   3. The content (content/...) is always fetched fresh when there is internet, so a new
-      planning shows up straight away. Without internet, the saved copy is used.
+   3. The content (content/...) is always fetched fresh when there is internet, so new
+      questions or a new planning show up straight away. Each content file is saved when
+      it is fetched; without internet, the saved copy is used. So a NEW content file
+      (a study page...) needs no change here: it works offline once it has been opened.
 
-   IMPORTANT: when you add a file to the app (a new .js or .css...), add it to APP_FILES
-   below, otherwise it won't work offline. scripts/check_offline_list.py checks it.
+   IMPORTANT: when you add a file to the app itself (a new .js or .css...), add it to
+   APP_FILES below, otherwise it won't work offline. scripts/check_offline_list.py checks it.
    ===================================================================================== */
 
 // Change this name only to force every phone to throw away its copy and start fresh.
@@ -54,10 +56,13 @@ const APP_FILES = [
   "js/reviser/content.js",
   "js/reviser/player.js",
   "js/reviser/progress.js",
+  "js/reviser/relecture.js",
   "js/reviser/reviser.js",
   "js/reviser/sound.js",
+  "js/reviser/verdict.js",
   "js/screens/infos.js",
   "js/screens/install.js",
+  "js/screens/relecture.js",
   "js/screens/soon.js",
   "icons/icon.svg",
   "icons/icon-192.png",
@@ -65,7 +70,8 @@ const APP_FILES = [
   "vendor/fonts/plus-jakarta-sans.woff2",
 ];
 
-// The content: fetched fresh first, the saved copy is only used offline.
+// The main content, saved at installation so the app works offline straight away.
+// Any other file of content/ is saved the first time it is fetched (no need to list it).
 const CONTENT_FILES = [
   "content/planning.json",
   "content/planning.ics",
@@ -82,7 +88,9 @@ self.addEventListener("install", (event) => {
   event.waitUntil((async () => {
     const cache = await caches.open(CACHE);
     // "reload": take the files from GitHub Pages, not from an old copy of the browser
-    await cache.addAll(APP_FILES.concat(CONTENT_FILES).map((url) => new Request(url, { cache: "reload" })));
+    await cache.addAll(APP_FILES.map((url) => new Request(url, { cache: "reload" })));
+    // The content one by one: a missing or renamed content file must not stop the app.
+    await Promise.all(CONTENT_FILES.map((url) => cache.add(new Request(url, { cache: "reload" })).catch(() => null)));
     await self.skipWaiting();     // the new version starts straight away
   })());
 });
@@ -140,7 +148,7 @@ async function fromCache(key, request) {
 function fetchAndSave(request, path) {
   const fresh = request.mode === "navigate" ? fetch(request) : fetch(request, { cache: "no-cache" });
   return fresh.then(async (response) => {
-    if (response.ok && response.type === "basic" && CONTENT_FILES.includes(path)) {
+    if (response.ok && response.type === "basic" && path.startsWith("content/")) {
       const cache = await caches.open(CACHE);
       await cache.put(path, response.clone());
     }

@@ -3,14 +3,22 @@
    "promo-mapst:reviser"). Nothing is sent anywhere. From Phase 4 it will also be synced
    with the account.
 
+   Everything is saved by question id (« anat-1-04 »), never by lesson number or by
+   position: ids never change, so the progress survives when questions are added,
+   moved to another lesson or removed (an id that no longer exists is simply ignored).
+
    What is saved:
      xp        all the XP won so far
      days      for each day with activity: the XP won and the sessions finished
                (used for the « série »: the number of days in a row with at least one
                lesson or one review finished)
-     lessons   for each lesson: finished or not, how many times, best score
+     done      the questions answered right in a finished lesson:
+               2 = right the first time, 1 = right after a mistake (the best result is kept)
      cards     the questions answered wrong, for « Mes erreurs » (see below)
      lastTheme the theme played last, so « Continuer » goes back to it
+
+   A lesson is « terminée » when all its questions are in "done". If new questions are
+   added to it later, it shows « Nouvelles questions », and the next lesson stays open.
 
    « Mes erreurs » works like flash cards in boxes:
      - a wrong answer puts the question in box 0: it can be reviewed straight away;
@@ -27,7 +35,7 @@ const INTERVALS = [0, 1, 3, 7];          // days before the question comes back,
 const KNOWN = INTERVALS.length;           // box reached = the question is known
 const KEEP_DAYS = 400;                    // older days are forgotten (the year is shorter)
 
-/** XP won (see CLAUDE.md « État » for the reasons of these numbers). */
+/** XP won (also explained in « Comment ça marche »). */
 export const XP = {
   firstTry: 10,       // right the first time, in a lesson
   corrected: 5,       // right on the second try (the question comes back at the end)
@@ -36,14 +44,20 @@ export const XP = {
 };
 
 const today = () => toISO(new Date());
-const blank = () => ({ v: 1, xp: 0, days: {}, lessons: {}, cards: {}, lastTheme: null });
+const blank = () => ({ v: 1, xp: 0, days: {}, done: {}, cards: {}, lastTheme: null });
+const isMap = (value) => Boolean(value) && typeof value === "object" && !Array.isArray(value);
 
 let state = null;
 
 function read() {
   if (!state) {
     const saved = load(KEY, null);
-    state = saved && saved.v === 1 ? { ...blank(), ...saved } : blank();
+    state = blank();
+    if (isMap(saved) && saved.v === 1) {
+      if (Number.isFinite(saved.xp) && saved.xp > 0) state.xp = Math.round(saved.xp);
+      for (const field of ["days", "done", "cards"]) if (isMap(saved[field])) state[field] = saved[field];
+      if (typeof saved.lastTheme === "string") state.lastTheme = saved.lastTheme;
+    }
   }
   return state;
 }
@@ -83,31 +97,63 @@ export function streak() {
   return { count, doneToday, atRisk: count > 0 && !doneToday };
 }
 
-/** { done, count, best } for a lesson (best = best share of right answers, 0 to 100). */
-export function lessonInfo(key) {
-  const info = read().lessons[key];
-  return { done: Boolean(info && info.done), count: (info && info.count) || 0, best: (info && info.best) || 0 };
+/**
+ * Where a lesson stands, from its questions:
+ *   total, done    its questions, and how many were answered right in a finished lesson
+ *   complete       all of them: the lesson is « terminée »
+ *   started        at least one: the lesson was finished before (it opens the next one)
+ *   fresh          questions added since (complete is false, started is true)
+ *   score          share of questions right the first time, 0 to 100 (best result)
+ */
+export function lessonInfo(lesson) {
+  const done = read().done;
+  const total = lesson.questions.length;
+  const answered = lesson.questions.filter((q) => done[q.id]).length;
+  const firstTry = lesson.questions.filter((q) => done[q.id] === 2).length;
+  return {
+    total,
+    done: answered,
+    complete: total > 0 && answered === total,
+    started: answered > 0,
+    fresh: answered > 0 ? total - answered : 0,
+    score: total ? Math.round((100 * firstTry) / total) : 0,
+  };
 }
 
-/** A lesson can be played if it is the first of its theme or if the one before is done. */
-export function isUnlocked(theme, lesson) {
+/**
+ * A lesson can be played if it is the first of its theme, if the one before was
+ * finished, or in « Mode relecture » (every lesson is open there).
+ */
+export function isUnlocked(theme, lesson, relecture = false) {
+  if (relecture) return true;
   const position = theme.lessons.indexOf(lesson);
-  return position <= 0 || lessonInfo(theme.lessons[position - 1].key).done;
+  return position <= 0 || lessonInfo(theme.lessons[position - 1]).started;
 }
 
-/** { done, total } lessons finished in a theme. */
+/** { done, total, share }: lessons « terminées » in a theme, and the share of its questions done. */
 export function themeProgress(theme) {
-  const done = theme.lessons.filter((l) => lessonInfo(l.key).done).length;
-  return { done, total: theme.lessons.length };
+  const infos = theme.lessons.map(lessonInfo);
+  const questions = infos.reduce((sum, info) => sum + info.total, 0);
+  const answered = infos.reduce((sum, info) => sum + info.done, 0);
+  return {
+    done: infos.filter((info) => info.complete).length,
+    total: theme.lessons.length,
+    share: questions ? answered / questions : 0,
+  };
+}
+
+/** The first lesson of a theme still to do (open and not « terminée »), or null. */
+export function currentLesson(theme, relecture = false) {
+  return theme.lessons.find((l) => !lessonInfo(l).complete && isUnlocked(theme, l, relecture)) || null;
 }
 
 /** The lesson « Continuer » should open: in the last theme played first, else the first one left. */
 export function nextLesson(content) {
-  const firstOpen = (theme) => theme.lessons.find((l) => !lessonInfo(l.key).done && isUnlocked(theme, l));
   const last = content.theme(read().lastTheme);
-  if (last && firstOpen(last)) return { theme: last, lesson: firstOpen(last) };
+  const fromLast = last && currentLesson(last, content.relecture);
+  if (fromLast) return { theme: last, lesson: fromLast };
   for (const theme of content.themes) {
-    const lesson = firstOpen(theme);
+    const lesson = currentLesson(theme, content.relecture);
     if (lesson) return { theme, lesson };
   }
   return null;
@@ -119,9 +165,9 @@ export function mistakes(content) {
   const now = today();
   const all = Object.keys(cards)
     .map((id) => ({ q: content.question(id), card: cards[id] }))
-    .filter((x) => x.q);                                   // a removed question is ignored
+    .filter((x) => x.q && isMap(x.card));                  // a question not shown is ignored
   const due = all.filter((x) => x.card.due <= now)
-    .sort((a, b) => (a.card.due < b.card.due ? -1 : a.card.due > b.card.due ? 1 : b.card.wrong - a.card.wrong));
+    .sort((a, b) => (a.card.due < b.card.due ? -1 : a.card.due > b.card.due ? 1 : (b.card.wrong || 0) - (a.card.wrong || 0)));
   const next = all.filter((x) => x.card.due > now).map((x) => x.card.due).sort()[0] || null;
   return { all: all.length, due: due.map((x) => x.q), nextDue: next };
 }
@@ -146,7 +192,7 @@ export function recordAnswer(questionId, right, { firstTry = true, review = fals
   if (!right) {
     s.cards[questionId] = { box: 0, due: today(), wrong: ((card && card.wrong) || 0) + 1 };
   } else if (card && (review || firstTry) && card.due <= today()) {
-    const box = card.box + 1;
+    const box = (card.box || 0) + 1;
     if (box >= KNOWN) delete s.cards[questionId];          // known now: out of « Mes erreurs »
     else s.cards[questionId] = { ...card, box, due: toISO(addDays(new Date(), INTERVALS[box])) };
   }
@@ -155,7 +201,9 @@ export function recordAnswer(questionId, right, { firstTry = true, review = fals
 
 /**
  * Called when a lesson or a review is finished (not when it is left or lost).
- *   result: { kind: "lesson" | "review", lessonKey, themeId, xp, total, firstTryRight }
+ *   result: { kind: "lesson" | "review", themeId, xp, questionIds, firstTryIds }
+ *     questionIds  the questions of the lesson (all answered right by now)
+ *     firstTryIds  the ones answered right the first time
  * Returns what the end screen shows: { xp, xpTotal, streak, streakGrew }.
  */
 export function finishSession(result) {
@@ -168,10 +216,11 @@ export function finishSession(result) {
   s.days[day] = entry;
   s.xp += result.xp;
 
-  if (result.kind === "lesson" && result.lessonKey) {
-    const previous = s.lessons[result.lessonKey] || { done: false, count: 0, best: 0 };
-    const score = result.total ? Math.round((100 * result.firstTryRight) / result.total) : 0;
-    s.lessons[result.lessonKey] = { done: true, count: previous.count + 1, best: Math.max(previous.best, score), last: day };
+  if (result.kind === "lesson") {
+    const firstTry = new Set(result.firstTryIds || []);
+    for (const id of result.questionIds || []) {
+      s.done[id] = Math.max(s.done[id] || 0, firstTry.has(id) ? 2 : 1);
+    }
   }
   if (result.themeId) s.lastTheme = result.themeId;
   write();
@@ -189,5 +238,5 @@ export function resetProgress() {
 /** Is there any progress at all? (to show or hide the reset button) */
 export function hasProgress() {
   const s = read();
-  return s.xp > 0 || Object.keys(s.cards).length > 0 || Object.keys(s.lessons).length > 0;
+  return s.xp > 0 || Object.keys(s.cards).length > 0 || Object.keys(s.done).length > 0;
 }

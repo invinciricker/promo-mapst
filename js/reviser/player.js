@@ -4,12 +4,16 @@
    How a lesson goes:
      1. The questions come in a random order (and the choices of a QCM too).
      2. The person answers, taps « Vérifier », and sees straight away if it is right,
-        with a one-sentence explanation.
+        with a one-sentence explanation (and « Approfondir » when a study page exists).
      3. A wrong answer costs one of the 3 lives, and the question comes back at the end
         of the lesson. Losing all 3 lives restarts the lesson.
      4. When every question has been answered right, the lesson is finished: XP, série,
         a little celebration.
    In « Mes erreurs » there are no lives, and a wrong answer simply stays to review.
+
+   « Mode relecture »: an unchecked question ("brouillon") shows an « À vérifier » badge
+   and its id; after the answer, the letters A, B, C, D of the file appear on the choices
+   (so a note can say « la réponse C ») and the buttons « Juste / À corriger » (verdict.js).
 
    Every answer is saved straight away (progress.js), so a mistake goes into
    « Mes erreurs » even if the lesson is left before the end.
@@ -19,11 +23,13 @@ import { esc, icon, setHTML } from "../core/dom.js";
 import { openSheet, hasOpenSheet } from "../core/sheet.js";
 import { checkTyped } from "./answer.js";
 import { recordAnswer, XP } from "./progress.js";
+import { verdictHTML, handleVerdictTap } from "./verdict.js";
 import { playRight, playWrong, playPair, playWin } from "./sound.js";
 import { launchConfetti } from "./confetti.js";
 
 const LIVES = 3;
 const KEYS = ["1", "2", "3", "4", "5", "6"];
+const LETTERS = "ABCDEFGH";
 let current = null;       // the player open now (there is only ever one)
 
 /** A copy of a list in a random order. */
@@ -40,7 +46,8 @@ const plural = (n, one, many) => `${n} ${n > 1 ? many : one}`;
 
 /**
  * Opens the player.
- *   title       « Anatomie et mouvement · Leçon 1 » (shown on the end screen)
+ *   title       « Anatomie et mouvement » (the theme, shown on the end screen)
+ *   heading     « Leçon 1 · Os et articulations » (shown at the top of the lesson)
  *   questions   the questions (from content.js)
  *   review      true for « Mes erreurs »: no lives, nothing comes back at the end
  *   onFinish    function(result) called when everything is answered; it saves the
@@ -49,7 +56,7 @@ const plural = (n, one, many) => `${n} ${n > 1 ? many : one}`;
  *   canStudy    function(studyId): true if a study page exists (« Approfondir »)
  *   onStudy     function(studyId): opens that study page
  */
-export function openPlayer({ title, questions, review = false, onFinish, onClose,
+export function openPlayer({ title, heading = "", questions, review = false, onFinish, onClose,
   canStudy = () => false, onStudy = () => {} }) {
   if (current) current.destroy();
 
@@ -57,7 +64,7 @@ export function openPlayer({ title, questions, review = false, onFinish, onClose
   root.className = "player";
   root.setAttribute("role", "dialog");
   root.setAttribute("aria-modal", "true");
-  root.setAttribute("aria-label", review ? "Révision de tes erreurs" : `Leçon : ${title}`);
+  root.setAttribute("aria-label", review ? "Révision de tes erreurs" : `Leçon : ${heading || title}`);
   setHTML(root, `
     <div class="player__top">
       <button type="button" class="icon-btn player__close" data-close aria-label="Quitter">${icon("close")}</button>
@@ -66,6 +73,7 @@ export function openPlayer({ title, questions, review = false, onFinish, onClose
         ? `<span class="player__tag">${icon("repeat", "icon--s")}Mes erreurs</span>`
         : `<span class="player__lives" aria-live="polite"><svg class="icon icon--heart" aria-hidden="true"><use href="#i-heart"/></svg><b></b></span>`}
     </div>
+    ${heading ? `<p class="player__heading">${esc(heading)}</p>` : ""}
     <div class="player__stage"><div class="player__inner"></div></div>
     <div class="player__bottom">
       <div class="player__feedback" aria-live="assertive"></div>
@@ -96,7 +104,7 @@ export function openPlayer({ title, questions, review = false, onFinish, onClose
       queue: shuffle(questions).map((q) => ({ q, firstTry: true })),
       total: questions.length,
       right: 0,              // questions answered right (at least once)
-      firstTryRight: 0,
+      firstTryIds: [],       // questions answered right the first time
       mistakes: 0,
       answered: 0,
       lives: LIVES,
@@ -110,9 +118,12 @@ export function openPlayer({ title, questions, review = false, onFinish, onClose
   }
 
   function updateBar() {
-    const share = session.total ? session.right / session.total : 0;
+    // In a lesson, the bar follows the questions answered right (a wrong one comes back).
+    // In « Mes erreurs », every answer moves it on (nothing comes back).
+    const progress = review ? session.answered : session.right;
+    const share = session.total ? progress / session.total : 0;
     bar.firstElementChild.style.width = `${Math.max(share * 100, 4)}%`;
-    bar.setAttribute("aria-valuenow", String(session.right));
+    bar.setAttribute("aria-valuenow", String(progress));
   }
 
   function updateLives(lost) {
@@ -139,8 +150,9 @@ export function openPlayer({ title, questions, review = false, onFinish, onClose
   }
 
   function kindHTML(q, label, iconName) {
-    return `<p class="q-kind">${icon(iconName, "icon--s")}<span>${esc(label)}</span>
-      ${q.example ? `<span class="badge badge--warn" title="Question d’exemple, pas encore vérifiée">Exemple</span>` : ""}</p>`;
+    return `<div class="q-kind"><p class="q-kind__type">${icon(iconName, "icon--s")}<span>${esc(label)}</span></p>
+      ${q.draft ? `<span class="badge badge--warn badge--id" title="Pas encore vérifiée : elle peut contenir des erreurs">${icon("alert")}À vérifier · ${esc(q.id)}</span>` : ""}
+      ${q.example ? `<span class="badge badge--warn" title="Question d’exemple, pas encore vérifiée">Exemple</span>` : ""}</div>`;
   }
 
   function showQuestion() {
@@ -159,7 +171,7 @@ export function openPlayer({ title, questions, review = false, onFinish, onClose
       body = kindHTML(q, ui.multi ? "Plusieurs réponses possibles" : "Une seule bonne réponse",
         ui.multi ? "layers" : "check")
         + `<h2 class="q-text" tabindex="-1">${esc(q.text)}</h2>
-        <div class="choices" role="group" aria-label="Réponses">${ui.order.map((index, position) => `
+        <div class="choices${ui.multi ? " is-multi" : ""}" role="group" aria-label="Réponses">${ui.order.map((index, position) => `
           <button type="button" class="choice" data-choice="${index}" aria-pressed="false">
             <span class="choice__key" aria-hidden="true">${ui.multi ? icon("check", "icon--s") : position + 1}</span>
             <span class="choice__text">${esc(q.choices[index])}</span>
@@ -175,6 +187,7 @@ export function openPlayer({ title, questions, review = false, onFinish, onClose
           <p class="hint-box" hidden>${esc(q.hint)}</p>` : ""}`;
       setMain("Vérifier", { enabled: false });
     } else {
+      // Two columns in one grid: each row holds a left and a right button, so they line up.
       const lefts = shuffle(q.pairs.map((_, i) => i));
       const rights = shuffle(q.pairs.map((_, i) => i));
       ui.picked = null;
@@ -182,9 +195,9 @@ export function openPlayer({ title, questions, review = false, onFinish, onClose
       ui.wrongMatches = 0;
       body = kindHTML(q, `Associe les ${q.pairs.length} paires`, "layers")
         + `<h2 class="q-text" tabindex="-1">${esc(q.text)}</h2>
-        <div class="pairs">
-          <div class="pairs__col">${lefts.map((i) => `<button type="button" class="pair pair--left" data-side="0" data-pair="${i}" aria-pressed="false">${esc(q.pairs[i][0])}</button>`).join("")}</div>
-          <div class="pairs__col">${rights.map((i) => `<button type="button" class="pair" data-side="1" data-pair="${i}" aria-pressed="false">${esc(q.pairs[i][1])}</button>`).join("")}</div>
+        <div class="pairs" data-pairs>${lefts.map((left, row) => `
+          <button type="button" class="pair pair--left" data-side="0" data-pair="${left}" aria-pressed="false">${esc(q.pairs[left][0])}</button>
+          <button type="button" class="pair" data-side="1" data-pair="${rights[row]}" aria-pressed="false">${esc(q.pairs[rights[row]][1])}</button>`).join("")}
         </div>`;
       setMain(`Associe les ${q.pairs.length} paires`, { enabled: false });
     }
@@ -236,6 +249,7 @@ export function openPlayer({ title, questions, review = false, onFinish, onClose
     box.classList.add("anim-fade-up");
     button.setAttribute("aria-expanded", "true");
     button.disabled = true;
+    ui.hintSeen = true;
   }
 
   function pickPair(button) {
@@ -261,7 +275,10 @@ export function openPlayer({ title, questions, review = false, onFinish, onClose
       [picked, button].forEach((b) => { b.classList.add("is-matched"); b.disabled = true; });
       playPair();
       ui.matched++;
-      if (ui.matched === ui.q.pairs.length) setTimeout(check, 350);
+      if (ui.matched === ui.q.pairs.length) {
+        const q = ui.q;
+        setTimeout(() => { if (ui.q === q) check(); }, 350);
+      }
     } else {
       ui.wrongMatches++;
       [picked, button].forEach((b) => {
@@ -274,11 +291,39 @@ export function openPlayer({ title, questions, review = false, onFinish, onClose
     }
   }
 
+  /** When all the pairs are found, each right button glides next to its left one. */
+  function alignPairs() {
+    const grid = inner.querySelector("[data-pairs]");
+    if (!grid) return;
+    const before = new Map([...grid.children].map((el) => [el, el.getBoundingClientRect()]));
+    const rights = new Map([...grid.querySelectorAll('[data-side="1"]')].map((b) => [b.dataset.pair, b]));
+    [...grid.querySelectorAll('[data-side="0"]')].forEach((left) => {
+      grid.appendChild(left);
+      grid.appendChild(rights.get(left.dataset.pair));
+    });
+    grid.classList.add("is-solved");
+    // "FLIP" animation: start each button where it was, then let it slide to its new place.
+    const moved = [];
+    for (const el of grid.children) {
+      const from = before.get(el);
+      const to = el.getBoundingClientRect();
+      const dx = from.left - to.left;
+      const dy = from.top - to.top;
+      if (Math.abs(dx) < 1 && Math.abs(dy) < 1) continue;
+      el.style.transition = "none";
+      el.style.transform = `translate(${dx}px, ${dy}px)`;
+      moved.push(el);
+    }
+    if (!moved.length) return;
+    void grid.offsetWidth;
+    moved.forEach((el) => { el.style.transition = ""; el.style.transform = ""; });
+  }
+
   // ---------------------------------------------------------------------------------
   // Check the answer and show the result
   // ---------------------------------------------------------------------------------
   function check() {
-    if (session.phase !== "question") return;
+    if (closing || session.phase !== "question") return;
     const { q, item } = ui;
     let right = false;
     let note = "";           // extra line: the right answer, or a spelling tip
@@ -293,9 +338,16 @@ export function openPlayer({ title, questions, review = false, onFinish, onClose
         if (isCorrect && chosen) b.classList.add("is-right");
         else if (isCorrect) b.classList.add("is-missed");
         else if (chosen) b.classList.add("is-wrong");
+        // The little box: the letter of the file in Relecture (« la réponse C »),
+        // otherwise ✓ for a right choice and × for a wrong one.
+        const key = b.querySelector(".choice__key");
+        if (q.draft) { key.textContent = LETTERS[index]; b.classList.add("is-lettered"); }
+        else if (isCorrect) key.innerHTML = icon("check", "icon--s");
+        else if (chosen) key.innerHTML = icon("close", "icon--s");
+        b.classList.add("is-checked");
       });
       if (!right) {
-        const good = q.correct.map((i) => q.choices[i]);
+        const good = q.correct.map((i) => (q.draft ? `${LETTERS[i]}. ${q.choices[i]}` : q.choices[i]));
         note = good.length > 1 ? `Les bonnes réponses : ${good.join(" · ")}` : `La bonne réponse : ${good[0]}`;
       }
     } else if (q.type === "saisie") {
@@ -311,7 +363,8 @@ export function openPlayer({ title, questions, review = false, onFinish, onClose
       input.blur();
     } else {
       right = ui.wrongMatches === 0;
-      if (!right) note = `${plural(ui.wrongMatches, "erreur", "erreurs")} en associant. Toutes les paires sont maintenant en vert.`;
+      if (!right) note = `${plural(ui.wrongMatches, "erreur", "erreurs")} en associant. Voici les bonnes paires, côte à côte.`;
+      alignPairs();
     }
 
     session.answered++;
@@ -322,9 +375,8 @@ export function openPlayer({ title, questions, review = false, onFinish, onClose
     if (right) {
       session.right++;
       if (review) session.xp += XP.review;
-      else if (item.firstTry) { session.xp += XP.firstTry; session.firstTryRight++; }
+      else if (item.firstTry) { session.xp += XP.firstTry; session.firstTryIds.push(q.id); }
       else session.xp += XP.corrected;
-      updateBar();
       playRight();
     } else {
       session.mistakes++;
@@ -338,7 +390,15 @@ export function openPlayer({ title, questions, review = false, onFinish, onClose
       void qBox.offsetWidth;
       qBox.classList.add("is-shaking");
     }
+    updateBar();
     showFeedback(right, note);
+  }
+
+  /** In Relecture, what the owner needs to check besides the explanation. */
+  function relectureExtrasHTML(q) {
+    if (!q.draft || q.type !== "saisie") return "";
+    return `<p class="feedback__extra"><b>Réponses acceptées :</b> ${q.answers.map(esc).join(" · ")}</p>
+      ${q.hint ? `<p class="feedback__extra"><b>Indice :</b> ${esc(q.hint)}</p>` : `<p class="feedback__extra"><b>Indice :</b> aucun</p>`}`;
   }
 
   function showFeedback(right, note) {
@@ -351,18 +411,26 @@ export function openPlayer({ title, questions, review = false, onFinish, onClose
         <p class="feedback__title">${icon(right ? "check" : "close")}<span>${title}</span></p>
         ${note ? `<p class="feedback__note">${esc(note)}</p>` : ""}
         ${q.explanation ? `<p class="feedback__text">${esc(q.explanation)}</p>` : ""}
+        ${relectureExtrasHTML(q)}
         ${q.source ? `<p class="feedback__source">Source : ${esc(q.source)}</p>` : ""}
         ${comeBack}
         ${q.study && canStudy(q.study) ? `<button type="button" class="btn btn--small btn--secondary" data-study>${icon("etudier")}Approfondir</button>` : ""}
+        ${q.draft ? `<div class="verdict-slot" data-verdict-slot>${verdictHTML(q)}</div>` : ""}
       </div>`);
+    feedbackEl.scrollTop = 0;
     bottom.classList.add("has-feedback", right ? "is-right" : "is-wrong");
     setMain("Continuer", { tone: right ? "primary" : "bad" });
     actions.querySelector("[data-main]").focus({ preventScroll: true });
   }
 
   feedbackEl.addEventListener("click", (event) => {
+    const q = ui.q;
+    if (q && q.draft && handleVerdictTap(event, q, () => {
+      const slot = feedbackEl.querySelector("[data-verdict-slot]");
+      if (slot && ui.q === q) setHTML(slot, verdictHTML(q));
+    })) return;
     if (!event.target.closest("[data-study]")) return;
-    const id = ui.q.study;
+    const id = q.study;
     requestClose({ force: true }).then(() => onStudy(id));
   });
 
@@ -402,17 +470,21 @@ export function openPlayer({ title, questions, review = false, onFinish, onClose
     const summary = onFinish({
       xp: session.xp,
       total: session.total,
-      firstTryRight: session.firstTryRight,
+      firstTryRight: session.firstTryIds.length,
+      firstTryIds: session.firstTryIds.slice(),
+      questionIds: questions.map((q) => q.id),
       mistakes: session.mistakes,
       perfect,
     }) || { xp: session.xp, streak: 0, streakGrew: false };
 
     const accuracy = review
       ? Math.round((100 * session.right) / Math.max(1, session.total))
-      : Math.round((100 * session.firstTryRight) / Math.max(1, session.total));
+      : Math.round((100 * session.firstTryIds.length) / Math.max(1, session.total));
     const lead = review
       ? (session.mistakes ? `${plural(session.right, "question revue", "questions revues")} sur ${session.total}. Les autres restent à revoir.` : "Tout est juste : ces questions reviendront plus tard pour vérifier que c’est acquis.")
-      : (perfect ? "Sans faute ! Bonus de " + XP.perfect + " XP." : `${plural(session.mistakes, "erreur corrigée", "erreurs corrigées")} en route : elles sont dans « Mes erreurs ».`);
+      : (perfect ? `Sans faute ! Bonus de ${XP.perfect} XP.`
+        : session.mistakes > 1 ? `${session.mistakes} erreurs corrigées en route : elles sont dans « Mes erreurs ».`
+          : "1 erreur corrigée en route : elle est dans « Mes erreurs ».");
 
     bottom.classList.remove("is-right", "is-wrong", "has-feedback");
     setHTML(feedbackEl, "");
@@ -427,7 +499,7 @@ export function openPlayer({ title, questions, review = false, onFinish, onClose
           <div class="end-stat end-stat--streak${summary.streakGrew ? " is-new" : ""}"><b>${summary.streak}</b><span>${summary.streak > 1 ? "jours de série" : "jour de série"}</span></div>
         </div>
         ${summary.streakGrew ? `<p class="streak-note">${icon("flame")}${summary.streak > 1 ? `Ta série passe à ${summary.streak} jours !` : "Ta série commence aujourd’hui !"}</p>` : ""}
-        <p class="player-end__title-small">${esc(title)}</p>
+        <p class="player-end__title-small">${esc(heading ? `${title} · ${heading}` : title)}</p>
       </div>`);
     setHTML(actions, `<button type="button" class="btn btn--primary btn--block btn--big" data-close>Continuer</button>`);
     playWin();
@@ -523,6 +595,7 @@ export function openPlayer({ title, questions, review = false, onFinish, onClose
   }
 
   function destroy() {
+    closing = true;
     document.removeEventListener("keydown", onKey);
     window.removeEventListener("popstate", onPop);
     document.documentElement.classList.remove("has-player");
