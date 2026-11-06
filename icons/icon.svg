@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <!-- Promo MAPST icon: a turquoise "M" drawn like two peaks, with an orange sun.
+       Source of the PNG icons (see scripts/make_icons.cjs). No logo of CAPA Sports. -->
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0B2A40"/>
+      <stop offset=".55" stop-color="#103550"/>
+      <stop offset="1" stop-color="#16527C"/>
+    </linearGradient>
+    <radialGradient id="glow" cx=".82" cy=".12" r=".7">
+      <stop offset="0" stop-color="#00E6BF" stop-opacity=".32"/>
+      <stop offset="1" stop-color="#00E6BF" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="sun" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#FFC15C"/>
+      <stop offset="1" stop-color="#F09000"/>
+    </linearGradient>
+    <linearGradient id="m" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#3FF3D2"/>
+      <stop offset="1" stop-color="#00E6BF"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" fill="url(#bg)"/>
+  <rect width="512" height="512" fill="url(#glow)"/>
+  <circle cx="348" cy="166" r="50" fill="url(#sun)"/>
+  <path d="M118 362 194 214 256 318 318 214 394 362" fill="none" stroke="url(#m)" stroke-width="54" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

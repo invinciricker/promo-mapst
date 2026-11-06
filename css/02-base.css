@@ -1,0 +1,105 @@
+/* =====================================================================================
+   02-base.css: the basics of every page (font, background, links, focus, icons).
+   ===================================================================================== */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  background: var(--bg);
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  min-height: 100dvh;
+  background: var(--bg);
+  color: var(--text);
+  font: 500 15px/1.45 var(--font);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-tap-highlight-color: transparent;   /* no grey flash when tapping on iPhone */
+}
+
+/* The status bar of the iPhone sits on top of the app: this strip keeps it navy. */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0 0 auto;
+  height: env(safe-area-inset-top, 0px);
+  background: var(--appbar-1);
+  z-index: 45;
+}
+
+/* While a sheet is open, the page behind it does not scroll. */
+html.has-sheet, html.has-sheet body { overflow: hidden; }
+
+h1, h2, h3, h4, p, ul, ol, figure { margin: 0; }
+ul, ol { padding: 0; list-style: none; }
+button, input, select, textarea { font: inherit; color: inherit; }
+button { cursor: pointer; touch-action: manipulation; }
+a { color: var(--link); text-decoration: none; }
+img, svg { display: block; }
+[hidden] { display: none !important; }
+
+/* Keyboard users see where they are. */
+:focus-visible {
+  outline: 3px solid var(--link);
+  outline-offset: 2px;
+  border-radius: 8px;
+}
+
+/* Icons come from the <symbol> list at the top of index.html. */
+.icon {
+  width: 22px;
+  height: 22px;
+  flex: none;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.icon--s { width: 16px; height: 16px; }
+.icon--inline { display: inline-block; width: 18px; height: 18px; vertical-align: -3px; margin: 0 2px; }
+.icon--dots { stroke-width: 3.2; }
+.icon--l { width: 28px; height: 28px; }
+
+/* Centred column with space on the sides (and around the iPhone notch). */
+.wrap {
+  width: 100%;
+  max-width: 760px;
+  margin-inline: auto;
+  padding-left: max(var(--pad), env(safe-area-inset-left, 0px));
+  padding-right: max(var(--pad), env(safe-area-inset-right, 0px));
+}
+
+/* Text only for screen readers (people who can't see the screen). */
+.visually-hidden {
+  position: absolute !important;
+  width: 1px; height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.noscript {
+  padding: 40px 20px;
+  text-align: center;
+  font-weight: 700;
+}
+
+@media (max-width: 360px) {
+  :root { --pad: 16px; }
+}
+
+/* People who asked their phone for less motion get (almost) no animation. */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
