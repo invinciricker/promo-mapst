@@ -12,7 +12,7 @@
    "Planning MAPST de CAPA Sports, version du 1er oct. 2026",
    "Calendrier BPJEPS MAPST session 1, 2026/2027 (CAPA Sports, déc. 2025) : dossiers, vacances scolaires"
   ],
-  "corrections": "2026-11-04",
+  "corrections": "2026-11-07",
   "exported": "2026-11-06"
  },
  "categories": [
@@ -31,8 +31,8 @@
   {
    "id": "centre",
    "name": "Olivier",
-   "label": "Centre de loisirs",
-   "desc": "Mercredis et périodes MSP au centre de loisirs, avec la Ville de Nice"
+   "label": "Ville de Nice",
+   "desc": "MSP avec la Ville de Nice : mercredis et vacances au centre de loisirs, stage APEC dans les AnimaNice"
   },
   {
    "id": "epreuve",
@@ -217,8 +217,8 @@
   {
    "start": "2026-11-02",
    "end": "2026-11-20",
-   "title": "MSP 1 · Ville de Nice",
-   "text": "D’après le planning officiel : MSP 1 au centre de loisirs, avec la Ville de Nice.",
+   "title": "Stage APEC · AnimaNice",
+   "text": "Entretien corporel dans les structures AnimaNice de la Ville de Nice : d’abord de l’observation, puis ta fiche de séance et ton cycle de 6 séances, mis en pratique la dernière semaine. Le mercredi : centre de loisirs.",
    "cat": "centre"
   },
   {
@@ -474,6 +474,11 @@
   }
  ],
  "checks": [
+  {
+   "title": "Du 2 au 20 novembre",
+   "text": "Stage APEC dans les AnimaNice (le planning officiel indique « MSP 1 »). Tes horaires exacts sont sur ton planning de stage.",
+   "date": "2026-11-02"
+  },
   {
    "title": "Mercredi 11 novembre",
    "text": "Le planning indique « MSP », mais c’est un jour férié (Armistice). Affiché comme férié.",
@@ -1428,10 +1433,10 @@
      "start": "09:00",
      "end": "12:00",
      "cat": "centre",
-     "short": "MSP 1",
-     "title": "MSP 1 au centre de loisirs",
+     "short": "Stage APEC",
+     "title": "Stage APEC · AnimaNice",
      "planning": "MSP 1",
-     "place": "Centre de loisirs",
+     "place": "Structures AnimaNice",
      "who": "Ville de Nice"
     },
     {
@@ -1439,10 +1444,10 @@
      "start": "13:00",
      "end": "16:00",
      "cat": "centre",
-     "short": "MSP 1",
-     "title": "MSP 1 au centre de loisirs",
+     "short": "Stage APEC",
+     "title": "Stage APEC · AnimaNice",
      "planning": "MSP 1",
-     "place": "Centre de loisirs",
+     "place": "Structures AnimaNice",
      "who": "Ville de Nice"
     }
    ]
@@ -1455,10 +1460,10 @@
      "start": "09:00",
      "end": "12:00",
      "cat": "centre",
-     "short": "MSP 1",
-     "title": "MSP 1 au centre de loisirs",
+     "short": "Stage APEC",
+     "title": "Stage APEC · AnimaNice",
      "planning": "MSP 1",
-     "place": "Centre de loisirs",
+     "place": "Structures AnimaNice",
      "who": "Ville de Nice"
     },
     {
@@ -1466,10 +1471,10 @@
      "start": "13:00",
      "end": "16:00",
      "cat": "centre",
-     "short": "MSP 1",
-     "title": "MSP 1 au centre de loisirs",
+     "short": "Stage APEC",
+     "title": "Stage APEC · AnimaNice",
      "planning": "MSP 1",
-     "place": "Centre de loisirs",
+     "place": "Structures AnimaNice",
      "who": "Ville de Nice"
     }
    ]
@@ -1509,10 +1514,10 @@
      "start": "09:00",
      "end": "12:00",
      "cat": "centre",
-     "short": "MSP 1",
-     "title": "MSP 1 au centre de loisirs",
+     "short": "Stage APEC",
+     "title": "Stage APEC · AnimaNice",
      "planning": "MSP 1",
-     "place": "Centre de loisirs",
+     "place": "Structures AnimaNice",
      "who": "Ville de Nice"
     },
     {
@@ -1520,10 +1525,10 @@
      "start": "13:00",
      "end": "16:00",
      "cat": "centre",
-     "short": "MSP 1",
-     "title": "MSP 1 au centre de loisirs",
+     "short": "Stage APEC",
+     "title": "Stage APEC · AnimaNice",
      "planning": "MSP 1",
-     "place": "Centre de loisirs",
+     "place": "Structures AnimaNice",
      "who": "Ville de Nice"
     }
    ]
@@ -1536,10 +1541,10 @@
      "start": "09:00",
      "end": "12:00",
      "cat": "centre",
-     "short": "MSP 1",
-     "title": "MSP 1 au centre de loisirs",
+     "short": "Stage APEC",
+     "title": "Stage APEC · AnimaNice",
      "planning": "MSP 1",
-     "place": "Centre de loisirs",
+     "place": "Structures AnimaNice",
      "who": "Ville de Nice"
     },
     {
@@ -1547,10 +1552,10 @@
      "start": "13:00",
      "end": "16:00",
      "cat": "centre",
-     "short": "MSP 1",
-     "title": "MSP 1 au centre de loisirs",
+     "short": "Stage APEC",
+     "title": "Stage APEC · AnimaNice",
      "planning": "MSP 1",
-     "place": "Centre de loisirs",
+     "place": "Structures AnimaNice",
      "who": "Ville de Nice"
     }
    ]
@@ -1563,10 +1568,10 @@
      "start": "09:00",
      "end": "12:00",
      "cat": "centre",
-     "short": "MSP 1",
-     "title": "MSP 1 au centre de loisirs",
+     "short": "Stage APEC",
+     "title": "Stage APEC · AnimaNice",
      "planning": "MSP 1",
-     "place": "Centre de loisirs",
+     "place": "Structures AnimaNice",
      "who": "Ville de Nice"
     },
     {
@@ -1574,10 +1579,10 @@
      "start": "13:00",
      "end": "16:00",
      "cat": "centre",
-     "short": "MSP 1",
-     "title": "MSP 1 au centre de loisirs",
+     "short": "Stage APEC",
+     "title": "Stage APEC · AnimaNice",
      "planning": "MSP 1",
-     "place": "Centre de loisirs",
+     "place": "Structures AnimaNice",
      "who": "Ville de Nice"
     }
    ]
@@ -1590,10 +1595,10 @@
      "start": "09:00",
      "end": "12:00",
      "cat": "centre",
-     "short": "MSP 1",
-     "title": "MSP 1 au centre de loisirs",
+     "short": "Stage APEC",
+     "title": "Stage APEC · AnimaNice",
      "planning": "MSP 1",
-     "place": "Centre de loisirs",
+     "place": "Structures AnimaNice",
      "who": "Ville de Nice"
     },
     {
@@ -1601,10 +1606,10 @@
      "start": "13:00",
      "end": "16:00",
      "cat": "centre",
-     "short": "MSP 1",
-     "title": "MSP 1 au centre de loisirs",
+     "short": "Stage APEC",
+     "title": "Stage APEC · AnimaNice",
      "planning": "MSP 1",
-     "place": "Centre de loisirs",
+     "place": "Structures AnimaNice",
      "who": "Ville de Nice"
     }
    ]
@@ -1622,10 +1627,10 @@
      "start": "09:00",
      "end": "12:00",
      "cat": "centre",
-     "short": "MSP 1",
-     "title": "MSP 1 au centre de loisirs",
+     "short": "Stage APEC",
+     "title": "Stage APEC · AnimaNice",
      "planning": "MSP 1",
-     "place": "Centre de loisirs",
+     "place": "Structures AnimaNice",
      "who": "Ville de Nice"
     },
     {
@@ -1633,10 +1638,10 @@
      "start": "13:00",
      "end": "16:00",
      "cat": "centre",
-     "short": "MSP 1",
-     "title": "MSP 1 au centre de loisirs",
+     "short": "Stage APEC",
+     "title": "Stage APEC · AnimaNice",
      "planning": "MSP 1",
-     "place": "Centre de loisirs",
+     "place": "Structures AnimaNice",
      "who": "Ville de Nice"
     }
    ]
@@ -1649,10 +1654,10 @@
      "start": "09:00",
      "end": "12:00",
      "cat": "centre",
-     "short": "MSP 1",
-     "title": "MSP 1 au centre de loisirs",
+     "short": "Stage APEC",
+     "title": "Stage APEC · AnimaNice",
      "planning": "MSP 1",
-     "place": "Centre de loisirs",
+     "place": "Structures AnimaNice",
      "who": "Ville de Nice"
     },
     {
@@ -1674,10 +1679,10 @@
      "start": "09:00",
      "end": "12:00",
      "cat": "centre",
-     "short": "MSP 1",
-     "title": "MSP 1 au centre de loisirs",
+     "short": "Stage APEC",
+     "title": "Stage APEC · AnimaNice",
      "planning": "MSP 1",
-     "place": "Centre de loisirs",
+     "place": "Structures AnimaNice",
      "who": "Ville de Nice"
     },
     {
@@ -1685,10 +1690,10 @@
      "start": "13:00",
      "end": "16:00",
      "cat": "centre",
-     "short": "MSP 1",
-     "title": "MSP 1 au centre de loisirs",
+     "short": "Stage APEC",
+     "title": "Stage APEC · AnimaNice",
      "planning": "MSP 1",
-     "place": "Centre de loisirs",
+     "place": "Structures AnimaNice",
      "who": "Ville de Nice"
     }
    ]
@@ -1701,10 +1706,10 @@
      "start": "09:00",
      "end": "12:00",
      "cat": "centre",
-     "short": "MSP 1",
-     "title": "MSP 1 au centre de loisirs",
+     "short": "Stage APEC",
+     "title": "Stage APEC · AnimaNice",
      "planning": "MSP 1",
-     "place": "Centre de loisirs",
+     "place": "Structures AnimaNice",
      "who": "Ville de Nice"
     },
     {
@@ -1712,10 +1717,10 @@
      "start": "13:00",
      "end": "16:00",
      "cat": "centre",
-     "short": "MSP 1",
-     "title": "MSP 1 au centre de loisirs",
+     "short": "Stage APEC",
+     "title": "Stage APEC · AnimaNice",
      "planning": "MSP 1",
-     "place": "Centre de loisirs",
+     "place": "Structures AnimaNice",
      "who": "Ville de Nice"
     }
    ]
@@ -1755,10 +1760,10 @@
      "start": "09:00",
      "end": "12:00",
      "cat": "centre",
-     "short": "MSP 1",
-     "title": "MSP 1 au centre de loisirs",
+     "short": "Stage APEC",
+     "title": "Stage APEC · AnimaNice",
      "planning": "MSP 1",
-     "place": "Centre de loisirs",
+     "place": "Structures AnimaNice",
      "who": "Ville de Nice"
     },
     {
@@ -1766,10 +1771,10 @@
      "start": "13:00",
      "end": "16:00",
      "cat": "centre",
-     "short": "MSP 1",
-     "title": "MSP 1 au centre de loisirs",
+     "short": "Stage APEC",
+     "title": "Stage APEC · AnimaNice",
      "planning": "MSP 1",
-     "place": "Centre de loisirs",
+     "place": "Structures AnimaNice",
      "who": "Ville de Nice"
     }
    ]
@@ -1782,10 +1787,10 @@
      "start": "09:00",
      "end": "12:00",
      "cat": "centre",
-     "short": "MSP 1",
-     "title": "MSP 1 au centre de loisirs",
+     "short": "Stage APEC",
+     "title": "Stage APEC · AnimaNice",
      "planning": "MSP 1",
-     "place": "Centre de loisirs",
+     "place": "Structures AnimaNice",
      "who": "Ville de Nice"
     },
     {

@@ -1,0 +1,34 @@
+{
+ "about": "Corrections to the official planning (Planning MAPST, CAPA Sports, 1 Oct 2026). Written by Claude chat. scripts/export_planning.py applies them every time it rebuilds content/planning.json and content/planning.ics, so a rebuild never undoes them.",
+ "fixes": [
+  {
+   "id": "stage-apec-animanice",
+   "added": "2026-11-07",
+   "from": "2026-11-02",
+   "to": "2026-11-20",
+   "match": {"planning": "MSP 1"},
+   "set": {
+    "cat": "centre",
+    "short": "Stage APEC",
+    "title": "Stage APEC · AnimaNice",
+    "place": "Structures AnimaNice",
+    "who": "Ville de Nice"
+   },
+   "stage": {
+    "title": "Stage APEC · AnimaNice",
+    "text": "Entretien corporel dans les structures AnimaNice de la Ville de Nice : d’abord de l’observation, puis ta fiche de séance et ton cycle de 6 séances, mis en pratique la dernière semaine. Le mercredi : centre de loisirs."
+   },
+   "check": {
+    "title": "Du 2 au 20 novembre",
+    "text": "Stage APEC dans les AnimaNice (le planning officiel indique « MSP 1 »). Tes horaires exacts sont sur ton planning de stage.",
+    "date": "2026-11-02"
+   },
+   "category": {
+    "id": "centre",
+    "label": "Ville de Nice",
+    "desc": "MSP avec la Ville de Nice : mercredis et vacances au centre de loisirs, stage APEC dans les AnimaNice"
+   },
+   "why": "The official planning only says « MSP 1 · Centre de loisirs » for these three weeks. CAPA's email of 30 Oct 2026 announces the stage APEC in the Ville de Nice's AnimaNice structures from 2 to 20 Nov; the Ville de Nice's email of 3 Nov confirms it. Wednesdays stay at the centre de loisirs. Personal details (structure, partner, individual hours) stay out of this public file."
+  }
+ ]
+}

@@ -752,47 +752,47 @@ DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
 END:VEVENT
 BEGIN:VEVENT
 UID:2026-11-02-am@promo-mapst
-DTSTAMP:20261106T000000Z
+DTSTAMP:20261107T000000Z
 DTSTART;TZID=Europe/Paris:20261102T090000
 DTEND;TZID=Europe/Paris:20261102T120000
-SUMMARY:MSP 1 au centre de loisirs
-LOCATION:Centre de loisirs
-DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
- A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
- e doute\, vérifie dans tes cours.
+SUMMARY:Stage APEC · AnimaNice
+LOCATION:Structures AnimaNice
+DESCRIPTION:Structures AnimaNice\nAvec : Ville de Nice\nPlanning MAPST de C
+ APA Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas 
+ de doute\, vérifie dans tes cours.
 END:VEVENT
 BEGIN:VEVENT
 UID:2026-11-02-pm@promo-mapst
-DTSTAMP:20261106T000000Z
+DTSTAMP:20261107T000000Z
 DTSTART;TZID=Europe/Paris:20261102T130000
 DTEND;TZID=Europe/Paris:20261102T160000
-SUMMARY:MSP 1 au centre de loisirs
-LOCATION:Centre de loisirs
-DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
- A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
- e doute\, vérifie dans tes cours.
+SUMMARY:Stage APEC · AnimaNice
+LOCATION:Structures AnimaNice
+DESCRIPTION:Structures AnimaNice\nAvec : Ville de Nice\nPlanning MAPST de C
+ APA Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas 
+ de doute\, vérifie dans tes cours.
 END:VEVENT
 BEGIN:VEVENT
 UID:2026-11-03-am@promo-mapst
-DTSTAMP:20261106T000000Z
+DTSTAMP:20261107T000000Z
 DTSTART;TZID=Europe/Paris:20261103T090000
 DTEND;TZID=Europe/Paris:20261103T120000
-SUMMARY:MSP 1 au centre de loisirs
-LOCATION:Centre de loisirs
-DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
- A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
- e doute\, vérifie dans tes cours.
+SUMMARY:Stage APEC · AnimaNice
+LOCATION:Structures AnimaNice
+DESCRIPTION:Structures AnimaNice\nAvec : Ville de Nice\nPlanning MAPST de C
+ APA Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas 
+ de doute\, vérifie dans tes cours.
 END:VEVENT
 BEGIN:VEVENT
 UID:2026-11-03-pm@promo-mapst
-DTSTAMP:20261106T000000Z
+DTSTAMP:20261107T000000Z
 DTSTART;TZID=Europe/Paris:20261103T130000
 DTEND;TZID=Europe/Paris:20261103T160000
-SUMMARY:MSP 1 au centre de loisirs
-LOCATION:Centre de loisirs
-DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
- A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
- e doute\, vérifie dans tes cours.
+SUMMARY:Stage APEC · AnimaNice
+LOCATION:Structures AnimaNice
+DESCRIPTION:Structures AnimaNice\nAvec : Ville de Nice\nPlanning MAPST de C
+ APA Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas 
+ de doute\, vérifie dans tes cours.
 END:VEVENT
 BEGIN:VEVENT
 UID:2026-11-04-am@promo-mapst
@@ -818,91 +818,91 @@ DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
 END:VEVENT
 BEGIN:VEVENT
 UID:2026-11-05-am@promo-mapst
-DTSTAMP:20261106T000000Z
+DTSTAMP:20261107T000000Z
 DTSTART;TZID=Europe/Paris:20261105T090000
 DTEND;TZID=Europe/Paris:20261105T120000
-SUMMARY:MSP 1 au centre de loisirs
-LOCATION:Centre de loisirs
-DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
- A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
- e doute\, vérifie dans tes cours.
+SUMMARY:Stage APEC · AnimaNice
+LOCATION:Structures AnimaNice
+DESCRIPTION:Structures AnimaNice\nAvec : Ville de Nice\nPlanning MAPST de C
+ APA Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas 
+ de doute\, vérifie dans tes cours.
 END:VEVENT
 BEGIN:VEVENT
 UID:2026-11-05-pm@promo-mapst
-DTSTAMP:20261106T000000Z
+DTSTAMP:20261107T000000Z
 DTSTART;TZID=Europe/Paris:20261105T130000
 DTEND;TZID=Europe/Paris:20261105T160000
-SUMMARY:MSP 1 au centre de loisirs
-LOCATION:Centre de loisirs
-DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
- A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
- e doute\, vérifie dans tes cours.
+SUMMARY:Stage APEC · AnimaNice
+LOCATION:Structures AnimaNice
+DESCRIPTION:Structures AnimaNice\nAvec : Ville de Nice\nPlanning MAPST de C
+ APA Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas 
+ de doute\, vérifie dans tes cours.
 END:VEVENT
 BEGIN:VEVENT
 UID:2026-11-06-am@promo-mapst
-DTSTAMP:20261106T000000Z
+DTSTAMP:20261107T000000Z
 DTSTART;TZID=Europe/Paris:20261106T090000
 DTEND;TZID=Europe/Paris:20261106T120000
-SUMMARY:MSP 1 au centre de loisirs
-LOCATION:Centre de loisirs
-DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
- A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
- e doute\, vérifie dans tes cours.
+SUMMARY:Stage APEC · AnimaNice
+LOCATION:Structures AnimaNice
+DESCRIPTION:Structures AnimaNice\nAvec : Ville de Nice\nPlanning MAPST de C
+ APA Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas 
+ de doute\, vérifie dans tes cours.
 END:VEVENT
 BEGIN:VEVENT
 UID:2026-11-06-pm@promo-mapst
-DTSTAMP:20261106T000000Z
+DTSTAMP:20261107T000000Z
 DTSTART;TZID=Europe/Paris:20261106T130000
 DTEND;TZID=Europe/Paris:20261106T160000
-SUMMARY:MSP 1 au centre de loisirs
-LOCATION:Centre de loisirs
-DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
- A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
- e doute\, vérifie dans tes cours.
+SUMMARY:Stage APEC · AnimaNice
+LOCATION:Structures AnimaNice
+DESCRIPTION:Structures AnimaNice\nAvec : Ville de Nice\nPlanning MAPST de C
+ APA Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas 
+ de doute\, vérifie dans tes cours.
 END:VEVENT
 BEGIN:VEVENT
 UID:2026-11-09-am@promo-mapst
-DTSTAMP:20261106T000000Z
+DTSTAMP:20261107T000000Z
 DTSTART;TZID=Europe/Paris:20261109T090000
 DTEND;TZID=Europe/Paris:20261109T120000
-SUMMARY:MSP 1 au centre de loisirs
-LOCATION:Centre de loisirs
-DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
- A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
- e doute\, vérifie dans tes cours.
+SUMMARY:Stage APEC · AnimaNice
+LOCATION:Structures AnimaNice
+DESCRIPTION:Structures AnimaNice\nAvec : Ville de Nice\nPlanning MAPST de C
+ APA Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas 
+ de doute\, vérifie dans tes cours.
 END:VEVENT
 BEGIN:VEVENT
 UID:2026-11-09-pm@promo-mapst
-DTSTAMP:20261106T000000Z
+DTSTAMP:20261107T000000Z
 DTSTART;TZID=Europe/Paris:20261109T130000
 DTEND;TZID=Europe/Paris:20261109T160000
-SUMMARY:MSP 1 au centre de loisirs
-LOCATION:Centre de loisirs
-DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
- A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
- e doute\, vérifie dans tes cours.
+SUMMARY:Stage APEC · AnimaNice
+LOCATION:Structures AnimaNice
+DESCRIPTION:Structures AnimaNice\nAvec : Ville de Nice\nPlanning MAPST de C
+ APA Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas 
+ de doute\, vérifie dans tes cours.
 END:VEVENT
 BEGIN:VEVENT
 UID:2026-11-10-am@promo-mapst
-DTSTAMP:20261106T000000Z
+DTSTAMP:20261107T000000Z
 DTSTART;TZID=Europe/Paris:20261110T090000
 DTEND;TZID=Europe/Paris:20261110T120000
-SUMMARY:MSP 1 au centre de loisirs
-LOCATION:Centre de loisirs
-DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
- A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
- e doute\, vérifie dans tes cours.
+SUMMARY:Stage APEC · AnimaNice
+LOCATION:Structures AnimaNice
+DESCRIPTION:Structures AnimaNice\nAvec : Ville de Nice\nPlanning MAPST de C
+ APA Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas 
+ de doute\, vérifie dans tes cours.
 END:VEVENT
 BEGIN:VEVENT
 UID:2026-11-10-pm@promo-mapst
-DTSTAMP:20261106T000000Z
+DTSTAMP:20261107T000000Z
 DTSTART;TZID=Europe/Paris:20261110T130000
 DTEND;TZID=Europe/Paris:20261110T160000
-SUMMARY:MSP 1 au centre de loisirs
-LOCATION:Centre de loisirs
-DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
- A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
- e doute\, vérifie dans tes cours.
+SUMMARY:Stage APEC · AnimaNice
+LOCATION:Structures AnimaNice
+DESCRIPTION:Structures AnimaNice\nAvec : Ville de Nice\nPlanning MAPST de C
+ APA Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas 
+ de doute\, vérifie dans tes cours.
 END:VEVENT
 BEGIN:VEVENT
 UID:2026-11-11-ferie@promo-mapst
@@ -917,80 +917,80 @@ DESCRIPTION:Pas de formation. Planning MAPST de CAPA Sports du 1er octobre
 END:VEVENT
 BEGIN:VEVENT
 UID:2026-11-12-am@promo-mapst
-DTSTAMP:20261106T000000Z
+DTSTAMP:20261107T000000Z
 DTSTART;TZID=Europe/Paris:20261112T090000
 DTEND;TZID=Europe/Paris:20261112T120000
-SUMMARY:MSP 1 au centre de loisirs
-LOCATION:Centre de loisirs
-DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
- A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
- e doute\, vérifie dans tes cours.
+SUMMARY:Stage APEC · AnimaNice
+LOCATION:Structures AnimaNice
+DESCRIPTION:Structures AnimaNice\nAvec : Ville de Nice\nPlanning MAPST de C
+ APA Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas 
+ de doute\, vérifie dans tes cours.
 END:VEVENT
 BEGIN:VEVENT
 UID:2026-11-12-pm@promo-mapst
-DTSTAMP:20261106T000000Z
+DTSTAMP:20261107T000000Z
 DTSTART;TZID=Europe/Paris:20261112T130000
 DTEND;TZID=Europe/Paris:20261112T160000
-SUMMARY:MSP 1 au centre de loisirs
-LOCATION:Centre de loisirs
-DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
- A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
- e doute\, vérifie dans tes cours.
+SUMMARY:Stage APEC · AnimaNice
+LOCATION:Structures AnimaNice
+DESCRIPTION:Structures AnimaNice\nAvec : Ville de Nice\nPlanning MAPST de C
+ APA Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas 
+ de doute\, vérifie dans tes cours.
 END:VEVENT
 BEGIN:VEVENT
 UID:2026-11-13-am@promo-mapst
-DTSTAMP:20261106T000000Z
+DTSTAMP:20261107T000000Z
 DTSTART;TZID=Europe/Paris:20261113T090000
 DTEND;TZID=Europe/Paris:20261113T120000
-SUMMARY:MSP 1 au centre de loisirs
-LOCATION:Centre de loisirs
-DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
- A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
- e doute\, vérifie dans tes cours.
+SUMMARY:Stage APEC · AnimaNice
+LOCATION:Structures AnimaNice
+DESCRIPTION:Structures AnimaNice\nAvec : Ville de Nice\nPlanning MAPST de C
+ APA Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas 
+ de doute\, vérifie dans tes cours.
 END:VEVENT
 BEGIN:VEVENT
 UID:2026-11-16-am@promo-mapst
-DTSTAMP:20261106T000000Z
+DTSTAMP:20261107T000000Z
 DTSTART;TZID=Europe/Paris:20261116T090000
 DTEND;TZID=Europe/Paris:20261116T120000
-SUMMARY:MSP 1 au centre de loisirs
-LOCATION:Centre de loisirs
-DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
- A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
- e doute\, vérifie dans tes cours.
+SUMMARY:Stage APEC · AnimaNice
+LOCATION:Structures AnimaNice
+DESCRIPTION:Structures AnimaNice\nAvec : Ville de Nice\nPlanning MAPST de C
+ APA Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas 
+ de doute\, vérifie dans tes cours.
 END:VEVENT
 BEGIN:VEVENT
 UID:2026-11-16-pm@promo-mapst
-DTSTAMP:20261106T000000Z
+DTSTAMP:20261107T000000Z
 DTSTART;TZID=Europe/Paris:20261116T130000
 DTEND;TZID=Europe/Paris:20261116T160000
-SUMMARY:MSP 1 au centre de loisirs
-LOCATION:Centre de loisirs
-DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
- A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
- e doute\, vérifie dans tes cours.
+SUMMARY:Stage APEC · AnimaNice
+LOCATION:Structures AnimaNice
+DESCRIPTION:Structures AnimaNice\nAvec : Ville de Nice\nPlanning MAPST de C
+ APA Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas 
+ de doute\, vérifie dans tes cours.
 END:VEVENT
 BEGIN:VEVENT
 UID:2026-11-17-am@promo-mapst
-DTSTAMP:20261106T000000Z
+DTSTAMP:20261107T000000Z
 DTSTART;TZID=Europe/Paris:20261117T090000
 DTEND;TZID=Europe/Paris:20261117T120000
-SUMMARY:MSP 1 au centre de loisirs
-LOCATION:Centre de loisirs
-DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
- A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
- e doute\, vérifie dans tes cours.
+SUMMARY:Stage APEC · AnimaNice
+LOCATION:Structures AnimaNice
+DESCRIPTION:Structures AnimaNice\nAvec : Ville de Nice\nPlanning MAPST de C
+ APA Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas 
+ de doute\, vérifie dans tes cours.
 END:VEVENT
 BEGIN:VEVENT
 UID:2026-11-17-pm@promo-mapst
-DTSTAMP:20261106T000000Z
+DTSTAMP:20261107T000000Z
 DTSTART;TZID=Europe/Paris:20261117T130000
 DTEND;TZID=Europe/Paris:20261117T160000
-SUMMARY:MSP 1 au centre de loisirs
-LOCATION:Centre de loisirs
-DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
- A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
- e doute\, vérifie dans tes cours.
+SUMMARY:Stage APEC · AnimaNice
+LOCATION:Structures AnimaNice
+DESCRIPTION:Structures AnimaNice\nAvec : Ville de Nice\nPlanning MAPST de C
+ APA Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas 
+ de doute\, vérifie dans tes cours.
 END:VEVENT
 BEGIN:VEVENT
 UID:2026-11-18-am@promo-mapst
@@ -1016,36 +1016,36 @@ DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
 END:VEVENT
 BEGIN:VEVENT
 UID:2026-11-19-am@promo-mapst
-DTSTAMP:20261106T000000Z
+DTSTAMP:20261107T000000Z
 DTSTART;TZID=Europe/Paris:20261119T090000
 DTEND;TZID=Europe/Paris:20261119T120000
-SUMMARY:MSP 1 au centre de loisirs
-LOCATION:Centre de loisirs
-DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
- A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
- e doute\, vérifie dans tes cours.
+SUMMARY:Stage APEC · AnimaNice
+LOCATION:Structures AnimaNice
+DESCRIPTION:Structures AnimaNice\nAvec : Ville de Nice\nPlanning MAPST de C
+ APA Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas 
+ de doute\, vérifie dans tes cours.
 END:VEVENT
 BEGIN:VEVENT
 UID:2026-11-19-pm@promo-mapst
-DTSTAMP:20261106T000000Z
+DTSTAMP:20261107T000000Z
 DTSTART;TZID=Europe/Paris:20261119T130000
 DTEND;TZID=Europe/Paris:20261119T160000
-SUMMARY:MSP 1 au centre de loisirs
-LOCATION:Centre de loisirs
-DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
- A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
- e doute\, vérifie dans tes cours.
+SUMMARY:Stage APEC · AnimaNice
+LOCATION:Structures AnimaNice
+DESCRIPTION:Structures AnimaNice\nAvec : Ville de Nice\nPlanning MAPST de C
+ APA Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas 
+ de doute\, vérifie dans tes cours.
 END:VEVENT
 BEGIN:VEVENT
 UID:2026-11-20-am@promo-mapst
-DTSTAMP:20261106T000000Z
+DTSTAMP:20261107T000000Z
 DTSTART;TZID=Europe/Paris:20261120T090000
 DTEND;TZID=Europe/Paris:20261120T120000
-SUMMARY:MSP 1 au centre de loisirs
-LOCATION:Centre de loisirs
-DESCRIPTION:Centre de loisirs\nAvec : Ville de Nice\nPlanning MAPST de CAP
- A Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas d
- e doute\, vérifie dans tes cours.
+SUMMARY:Stage APEC · AnimaNice
+LOCATION:Structures AnimaNice
+DESCRIPTION:Structures AnimaNice\nAvec : Ville de Nice\nPlanning MAPST de C
+ APA Sports du 1er octobre 2026. Appli non officielle Promo MAPST : en cas 
+ de doute\, vérifie dans tes cours.
 END:VEVENT
 BEGIN:VEVENT
 UID:2026-11-23-am@promo-mapst

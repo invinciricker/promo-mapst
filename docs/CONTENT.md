@@ -1,7 +1,7 @@
 # Content log
 
 Kept by Claude chat. Read this before writing new content, so that no course file is read twice.
-Last update: 6 Nov 2026.
+Last update: 7 Nov 2026.
 
 ## Course files
 
@@ -33,7 +33,7 @@ They stay in the owner's claude.ai Project « BPJEPS MAPST », never in this rep
 | role-educateur | 1 | Obligations et sanctions | 10 | brouillon | Obligations; Les rôles de l'éducateur sportif |
 | fiche-de-seance | 1 | Construire sa fiche | 10 | brouillon | Cours fiche de séance du 15 sept. |
 
-Total: 70 (46 QCM, 12 of them with several right answers; 17 à taper; 7 à associer).
+Total: 70 (47 QCM, 12 of them with several right answers; 16 à taper; 7 à associer).
 Ids: `anat-`, `fil-`, `pub-`, `ent-`, `role-`, `fds-`, then lesson and number (`anat-1-04`). Never reuse or change an id.
 
 ## How questions are written
@@ -47,8 +47,18 @@ Ids: `anat-`, `fil-`, `pub-`, `ent-`, `role-`, `fds-`, then lesson and number (`
 
 - Lesson 2: filières (training each system: intensities, durations, recoveries; case studies), publics (publics by age, disability, adaptation variables, mistakes), entretien corporel (more activities), rôle (blocks a) to d), EAPS secours and insurance, documents), fiche de séance (evaluation, equipment, stretching, cycle).
 - Anatomy lesson 3: biomechanics (centre of gravity, base of support, levers, power) and injuries. Anatomy lesson 4: wrist muscles (Les muscles).
-- Phase 3, study pages and SVG diagrams: planes and axes of movement; the three energy systems over time; the parts of a séance; Maslow's pyramid; the anatomy of a long bone; agonist and antagonist.
+- Phase 5 (Étudier), study pages and SVG diagrams: planes and axes of movement; the three energy systems over time; the parts of a séance; Maslow's pyramid; the anatomy of a long bone; agonist and antagonist.
 
 ## Relecture log
 
 - **6 Nov 2026** · 70 questions written, all `brouillon`. No report yet.
+- **7 Nov 2026** · The owner chose to publish the 70 questions as they are (still `brouillon`, shown to everyone from Phase 3) and to check them later. anat-1-02 became a QCM: as a typed answer, « ostéoclastes » was one typo away from « ostéoblastes » and would have been accepted.
+
+## Planning corrections
+
+The app follows « Planning MAPST » (CAPA, 1 Oct 2026). The one-page « Calendrier BPJEPS MAPST » (Dec 2025) is older: only its dossier dates and school holidays are used, marked « à confirmer ».
+Corrections for the whole class go in `content/planning-fixes.json`; personal details (the owner's structure, partner, hours) never do.
+
+| Added | Dates | Correction | Source |
+|---|---|---|---|
+| 7 Nov 2026 | 2–20 Nov 2026 | « MSP 1 au centre de loisirs » → « Stage APEC · AnimaNice » (Wednesdays stay at the centre de loisirs) | CAPA's email to the class, 30 Oct 2026; Ville de Nice, 3 Nov 2026 |
