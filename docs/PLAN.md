@@ -1,6 +1,6 @@
 # How Promo MAPST is built
 
-Kept up to date by Claude chat. Last update: 6 Nov 2026.
+Kept up to date by Claude chat. Last update: 7 Nov 2026.
 
 ## Who does what
 
@@ -34,16 +34,18 @@ Claude Code never needs the course files: everything it needs is in this reposit
 3. The automatic checks run (from Phase 2). The owner merges. No Claude Code session needed.
 
 ### Checking the questions (Relecture)
-1. New questions arrive with status `brouillon`: classmates don't see them.
-2. The owner switches on « Mode relecture » in Infos, plays the lessons and taps « Juste » or « À corriger » (with a note) on each question.
-3. They tap « Copier le rapport » and pastes it into a chat with Claude chat.
-4. Claude chat fixes the flagged questions and switches the others to `verifie` in a content pull request. Once it's merged, the class sees them.
+1. New questions arrive with status `brouillon`. Since 7 Nov 2026 classmates see them too (the owner's choice, from Phase 3), so Relecture is for catching mistakes, not for unlocking questions.
+2. The owner switches on « Mode relecture » in Profil (Infos before Phase 3), plays the lessons and taps « Juste » or « À corriger » (with a note) on each question.
+3. They tap « Copier le rapport » and paste it into a chat with Claude chat.
+4. Claude chat fixes the flagged questions and switches the others to `verifie` in a content pull request.
 
 ### Code tweaks
 Small ones: the owner asks Claude Code directly. Bigger ones: the owner asks Claude chat, which writes the prompt.
 
 ### A new planning PDF
 The owner adds it to the claude.ai Project. Claude chat updates the private timetable repository and regenerates `content/planning.json` and `content/planning.ics` with the existing scripts, then opens a content pull request. If a script needs changing, that part is a Claude Code job.
+
+When the official planning is wrong for the whole class (an email from CAPA, a change announced in class), Claude chat adds a correction to `content/planning-fixes.json` and applies it to `planning.json` and `planning.ics`. From Phase 3, `scripts/export_planning.py` applies those corrections on every run, so a new export never undoes them.
 
 ## Saving usage
 
@@ -61,3 +63,8 @@ Claude chat and Claude Code use the same Pro allowance.
 - **6 Nov 2026** · Accounts (Phase 4): username + 6-digit PIN through Firebase, no email or real name; a class code to join the classement.
 - **6 Nov 2026** · Who does what: as above. Claude chat's draft of the Réviser engine is handed to Claude Code on `chat/phase-2`; from then on Claude Code owns all code.
 - **6 Nov 2026** · Questions start as `brouillon` and go live after the owner's Relecture. Lesson titles live in `themes.json`.
+- **7 Nov 2026** · The owner found the app crowded and too dark. Phase 3 becomes « Nouveau look »: bright, an Accueil tab with a window onto the Baie des Anges that follows the sky of the day, pages with back buttons, smaller type, a welcome with the first name. Target: `docs/design/`.
+- **7 Nov 2026** · Phase order: 3 Nouveau look, 4 Accounts (the owner wants the sign-in soon), 5 Étudier. Étudier's tab stays hidden until it has pages.
+- **7 Nov 2026** · The 70 `brouillon` questions go live for everyone as they are; the owner will check them later in Relecture.
+- **7 Nov 2026** · Planning: from 2 to 20 Nov the class is on the stage APEC in the AnimaNice (CAPA's email of 30 Oct), not « MSP 1 au centre de loisirs » as the official planning says. Kept in `content/planning-fixes.json`.
+- **7 Nov 2026** · « Infos » becomes « Profil », opened from Accueil.

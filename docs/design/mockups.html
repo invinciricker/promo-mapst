@@ -1,0 +1,822 @@
+<!doctype html>
+<!--
+  Promo MAPST · Phase 3 « Nouveau look »: the target design.
+  Written by Claude chat on 7 Nov 2026 for Claude Code to build. Read docs/design/README.md first.
+  - The CSS variables in :root (light) and .dark (dark) are the design tokens:
+    copy them into css/01-tokens.css (the dark ones go in @media (prefers-color-scheme: dark)).
+  - Each <section class="phone"> is one screen at iPhone size (390 × 844), with the real data of the planning
+    and the questions. The little script at the bottom only draws the iPhone status bars.
+  - Open it through a local server from the repository root:
+      python3 -m http.server 8000   then   http://localhost:8000/docs/design/mockups.html
+-->
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Promo MAPST, nouveau look</title>
+<style>
+@font-face {
+  font-family: "Plus Jakarta Sans";
+  src: url("../../vendor/fonts/plus-jakarta-sans.woff2") format("woff2");
+  font-weight: 200 800;
+}
+
+/* ================= Design tokens: light ================= */
+:root {
+  /* Surfaces are bright; CAPA navy is the text colour, not a background. */
+  --bg: #F3F7FA;
+  --surface: #FFFFFF;
+  --surface-2: #EDF3F7;
+  --line: #E1E9F0;
+  --ink: #103550;
+  --ink-2: #4F6680;
+  --ink-3: #60738A;
+  --on-accent: #FFFFFF;           /* text and icons on a filled --X-ink background */
+  --scrim: rgba(16, 53, 80, .42); /* behind bottom sheets */
+
+  /* Each colour comes in three: X (fills, bars, dots), X-ink (text and icons), X-tint (soft backgrounds).
+     Every X-ink reads at 4.5:1 or more on its tint and on white (checked on 7 Nov 2026). */
+  --azur: #1070B0;           --azur-ink: #1070B0;           --azur-tint: #E5F1FA;
+  --turquoise: #00E6BF;      --turquoise-ink: #007A65;      --turquoise-tint: #DCFAF2;
+  --soleil: #F09000;         --soleil-ink: #9A5800;         --soleil-tint: #FFF1DC;
+  --lavande: #7766EE;        --lavande-ink: #5B49D6;        --lavande-tint: #EEECFE;
+  --bougainvillier: #E0437C; --bougainvillier-ink: #BE2C62; --bougainvillier-tint: #FDE7EF;
+  --olivier: #3E9762;        --olivier-ink: #2E7A4E;        --olivier-tint: #E3F4E9;
+  --galet: #8E9BA8;          --galet-ink: #5A6B7C;          --galet-tint: #EEF1F4;
+  --citron: #E7B416;         --citron-ink: #7A5D00;         --citron-tint: #FFF5D3;
+
+  /* The main button is always turquoise with navy text, in both modes (CAPA's main-button colour). */
+  --btn: #00E6BF;
+  --on-btn: #103550;
+
+  /* One colour per mode: the active tab, the back buttons and the links inside that mode. */
+  --accueil: var(--soleil-ink);      --accueil-tint: var(--soleil-tint);
+  --reviser: var(--turquoise-ink);   --reviser-tint: var(--turquoise-tint);
+  --etudier: var(--lavande-ink);     --etudier-tint: var(--lavande-tint);   /* from Phase 5 */
+  --planning: var(--azur-ink);       --planning-tint: var(--azur-tint);
+
+  /* Type: one family, a small scale, weights 500 to 800 (800 only for big titles). */
+  --font: "Plus Jakarta Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --t-hero: 800 40px/1.05 var(--font);      /* the welcome screen only */
+  --t-display: 800 26px/1.15 var(--font);   /* page titles */
+  --t-title: 700 17px/1.3 var(--font);      /* card and section titles */
+  --t-body: 500 15px/1.45 var(--font);
+  --t-strong: 650 15px/1.35 var(--font);    /* list rows */
+  --t-small: 500 13px/1.4 var(--font);
+  --t-micro: 650 11px/1.3 var(--font);      /* weekday letters, lesson numbers */
+
+  /* Shape: the bigger the surface, the rounder. */
+  --r-sheet: 28px;
+  --r-hero: 24px;
+  --r-card: 20px;
+  --r-tile: 16px;
+  --r-control: 12px;
+  --r-pill: 999px;
+  --shadow: 0 1px 2px rgba(16, 53, 80, .05), 0 10px 28px -14px rgba(16, 53, 80, .28);
+  --gutter: 16px;
+  --tabbar: 84px;   /* 54 px of tabs + the iPhone's home-indicator area */
+}
+
+/* ================= Design tokens: dark (in the app: @media (prefers-color-scheme: dark)) ================= */
+.dark {
+  --bg: #0B1A28;
+  --surface: #132637;
+  --surface-2: #1B3146;
+  --line: #23394E;
+  --ink: #EAF2F8;
+  --ink-2: #A9BCCC;
+  --ink-3: #7F98AD;
+  --on-accent: #0B1A28;
+  --scrim: rgba(0, 0, 0, .55);
+  --azur: #3D9AE0;           --azur-ink: #7CC0F2;           --azur-tint: rgba(61, 154, 224, .18);
+  --turquoise: #00E6BF;      --turquoise-ink: #41EDCF;      --turquoise-tint: rgba(0, 230, 191, .14);
+  --soleil: #FF9F1C;         --soleil-ink: #FFB95C;         --soleil-tint: rgba(255, 159, 28, .16);
+  --lavande: #8F82FF;        --lavande-ink: #B4ABFF;        --lavande-tint: rgba(143, 130, 255, .18);
+  --bougainvillier: #FF5C93; --bougainvillier-ink: #FF8FB5; --bougainvillier-tint: rgba(255, 92, 147, .16);
+  --olivier: #4FBF7F;        --olivier-ink: #86DAA8;        --olivier-tint: rgba(79, 191, 127, .16);
+  --galet: #8E9BA8;          --galet-ink: #B9C4CF;          --galet-tint: rgba(142, 155, 168, .16);
+  --citron: #F5CF4A;         --citron-ink: #F8DA74;         --citron-tint: rgba(245, 207, 74, .15);
+  --shadow: 0 1px 2px rgba(0, 0, 0, .3), 0 12px 28px -16px rgba(0, 0, 0, .7);
+}
+
+/* ================= The board that holds the screens (not part of the app) ================= */
+* { box-sizing: border-box; }
+body { margin: 0; background: #D8E2EA; font-family: var(--font); color: var(--ink); -webkit-font-smoothing: antialiased; }
+.board { display: grid; grid-template-columns: repeat(4, 390px); gap: 56px 40px; padding: 48px; width: max-content; }
+.board figure { margin: 0; }
+.board figcaption { font: 650 15px/1.4 var(--font); color: #34506A; margin: 0 0 12px 6px; }
+.board .phone { border-radius: 38px; box-shadow: 0 40px 70px -40px rgba(16, 53, 80, .55); }
+.board .wide { grid-column: 1 / -1; }
+
+/* ================= Phone frame, status bar, home indicator ================= */
+.phone { position: relative; width: 390px; height: 844px; overflow: hidden; background: var(--bg); color: var(--ink); font: var(--t-body); }
+/* The app uses apple-mobile-web-app-status-bar-style "default": iOS draws the bar on a plain background
+   with dark symbols (light symbols in dark mode), and the app starts below it. */
+.status { position: absolute; inset: 0 0 auto 0; height: 47px; padding: 4px 26px 0 36px; display: flex; align-items: center; justify-content: space-between; font: 650 15px/1 var(--font); background: var(--bg); z-index: 8; }
+.status__icons { display: flex; gap: 6px; align-items: center; }
+.home-ind { position: absolute; left: 50%; bottom: 8px; width: 134px; height: 5px; margin-left: -67px; border-radius: 3px; background: var(--ink); z-index: 9; }
+svg.i { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round; flex: none; }
+svg.i--s { width: 18px; height: 18px; }
+svg.i--xs { width: 15px; height: 15px; stroke-width: 2.2; }
+svg.i--fill { fill: currentColor; stroke: none; }
+
+/* ================= Buttons, chips, controls ================= */
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; height: 48px; padding: 0 20px; border: 0; border-radius: 14px; font: 700 16px/1 var(--font); white-space: nowrap; }
+.btn--primary { background: var(--btn); color: var(--on-btn); }
+.btn--block { width: 100%; }
+.btn--small { height: 34px; padding: 0 14px; border-radius: 10px; font: 700 13px/1 var(--font); }
+.chip { display: inline-flex; align-items: center; gap: 5px; height: 30px; padding: 0 11px 0 9px; border-radius: var(--r-pill); font: 700 13px/1 var(--font); white-space: nowrap; }
+.tag { display: inline-flex; align-items: center; height: 20px; padding: 0 7px; border-radius: 6px; font: 700 11px/1 var(--font); vertical-align: 2px; }
+.icon-btn { width: 38px; height: 38px; border-radius: 50%; display: grid; place-items: center; border: 0; flex: none; }
+.tile-icon { width: 36px; height: 36px; border-radius: 11px; display: grid; place-items: center; flex: none; }
+.switch { width: 46px; height: 28px; border-radius: 14px; background: var(--surface-2); border: 1px solid var(--line); position: relative; flex: none; }
+.switch::after { content: ""; position: absolute; top: 2px; left: 2px; width: 22px; height: 22px; border-radius: 50%; background: #fff; box-shadow: 0 1px 3px rgba(16, 53, 80, .3); }
+
+/* ================= Tab bar: white and translucent; the active tab takes its mode colour =================
+   Phase 3 has three tabs. Étudier comes back as the third tab, in lavande, in Phase 5. */
+.tabbar { position: absolute; inset: auto 0 0 0; height: var(--tabbar); padding: 7px 18px 0; display: grid; grid-template-columns: repeat(3, 1fr); background: color-mix(in srgb, var(--surface) 90%, transparent); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-top: 1px solid var(--line); z-index: 6; }
+.tab { display: flex; flex-direction: column; align-items: center; gap: 3px; font: 650 10.5px/1.1 var(--font); color: var(--ink-3); }
+.tab__icon { width: 56px; height: 30px; border-radius: 15px; display: grid; place-items: center; }
+.tab.is-on { color: var(--c); }
+.tab.is-on .tab__icon { background: var(--t); }
+
+/* ================= Shared page parts ================= */
+.page { position: absolute; inset: 47px 0 var(--tabbar) 0; padding: 4px var(--gutter) 24px; overflow: hidden; }
+.page--full { bottom: 0; }
+.page-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 56px; }
+.page-title { font: var(--t-display); letter-spacing: -.02em; margin: 0; }
+.section-title { font: var(--t-title); margin: 22px 4px 10px; }
+.navbar { display: flex; align-items: center; justify-content: space-between; height: 44px; margin: 0 -6px; }
+.back { display: inline-flex; align-items: center; gap: 1px; font: 650 16px/1 var(--font); }
+.card { background: var(--surface); border-radius: var(--r-card); box-shadow: var(--shadow); }
+.list { background: var(--surface); border-radius: var(--r-card); box-shadow: var(--shadow); overflow: hidden; }
+.row { display: flex; align-items: center; gap: 12px; padding: 13px 14px 13px 16px; min-height: 56px; }
+.row + .row { border-top: 1px solid var(--line); }
+.row__main { flex: 1; min-width: 0; }
+.row__title { font: var(--t-strong); }
+.muted { color: var(--ink-2); }
+.faint { color: var(--ink-3); }
+.small { font: var(--t-small); }
+.chev { color: var(--ink-3); }
+.bar { height: 5px; border-radius: 3px; background: var(--surface-2); overflow: hidden; }
+.bar i { display: block; height: 100%; border-radius: 3px; }
+.slot-bar { width: 4px; align-self: stretch; border-radius: 2px; flex: none; }
+.time { font: 700 15px/1.2 var(--font); font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+/* ================= 1. Bienvenue ================= */
+.welcome__scene { position: absolute; inset: 47px 0 0 0; width: 100%; height: calc(100% - 47px); object-fit: cover; object-position: 50% 100%; }
+.welcome__fade { position: absolute; inset: 47px 0 auto 0; height: 90px; background: linear-gradient(var(--bg), transparent); }
+.welcome__brand { position: absolute; left: 28px; right: 28px; top: 112px; }
+.welcome__title { font: var(--t-hero); letter-spacing: -.035em; margin: 0 0 12px; }
+.welcome__sub { font: 500 17px/1.45 var(--font); color: #2E4D68; margin: 0; max-width: 300px; }
+.welcome__cta { position: absolute; left: 24px; right: 24px; bottom: 30px; text-align: center; }
+.welcome__note { font: var(--t-small); color: #6A7B8B; margin: 12px 0 0; }
+
+/* ================= 2. Prénom (in Phase 4 this step becomes « Crée ton compte ») ================= */
+.steps { display: flex; gap: 6px; }
+.steps i { width: 22px; height: 5px; border-radius: 3px; background: var(--line); }
+.steps i.on { background: var(--turquoise-ink); }
+.mini-sky { width: 64px; height: 64px; border-radius: 20px; overflow: hidden; margin: 30px 0 22px; box-shadow: var(--shadow); }
+.mini-sky img { width: 100%; height: 100%; object-fit: cover; object-position: 60% 66%; }
+.field { margin-top: 24px; height: 54px; border-radius: 14px; background: var(--surface); border: 2px solid var(--turquoise-ink); display: flex; align-items: center; padding: 0 16px; font: 650 17px/1 var(--font); box-shadow: 0 0 0 4px var(--turquoise-tint); }
+.caret { width: 2px; height: 22px; background: var(--turquoise-ink); margin-left: 2px; border-radius: 1px; }
+.note { display: flex; gap: 12px; align-items: flex-start; margin-top: 16px; padding: 14px; border-radius: 14px; background: var(--surface-2); font: var(--t-small); color: var(--ink-2); }
+.bottom-cta { position: absolute; left: var(--gutter); right: var(--gutter); bottom: 34px; }
+
+/* ================= 3–4. Accueil: a « window » onto the Baie des Anges, then two cards ================= */
+/* The window keeps the same shape at every width (aspect-ratio), so the crop is always the same:
+   sky for the greeting, the hills, then a strip of sea. The palm stays out of the window. */
+.hero { position: relative; aspect-ratio: 358 / 220; margin: 8px 0 14px; border-radius: var(--r-hero); overflow: hidden; }
+.hero img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 54%; display: block; }
+.hero__hello { position: absolute; left: 18px; top: 16px; }
+.hero__hello h1 { font: 800 28px/1.1 var(--font); letter-spacing: -.03em; margin: 0 0 5px; color: #103550; }
+.hero__hello p { font: 650 14px/1.3 var(--font); color: #24506F; margin: 0; }
+.hero__me { position: absolute; right: 14px; top: 14px; width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center; font: 800 15px/1 var(--font); background: rgba(255, 255, 255, .85); color: #103550; }
+.hero--night .hero__hello h1, .hero--night .hero__hello p { color: #fff; }
+.hero--night .hero__hello p { opacity: .85; }
+.hero--night .hero__me { background: rgba(255, 255, 255, .16); color: #fff; }
+.today { padding: 16px; }
+.today__top { display: flex; gap: 12px; align-items: center; }
+.today__next { margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--line); }
+.slot { display: flex; align-items: center; gap: 12px; }
+.revise { margin-top: 14px; padding: 16px; }
+.revise__stats { display: flex; gap: 8px; margin-bottom: 14px; align-items: center; }
+.revise__lesson { display: flex; align-items: center; gap: 14px; margin-bottom: 14px; }
+.ring { width: 46px; height: 46px; flex: none; }
+
+/* ================= 5. Réviser ================= */
+.grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.tile { background: var(--surface); border-radius: var(--r-tile); box-shadow: var(--shadow); padding: 14px; min-height: 138px; display: flex; flex-direction: column; }
+.tile__title { font: 700 15px/1.3 var(--font); margin: 10px 0 0; }
+.tile__foot { margin-top: auto; padding-top: 12px; }
+.tile__foot small { display: flex; align-items: center; gap: 4px; margin-top: 7px; font: 600 12px/1 var(--font); color: var(--ink-3); }
+.play { width: 38px; height: 38px; border-radius: 50%; display: grid; place-items: center; background: var(--btn); color: var(--on-btn); flex: none; }
+
+/* ================= 6. Thème: a pushed page, with a back button ================= */
+.theme-head { display: flex; gap: 14px; align-items: center; margin: 10px 0 4px; }
+.theme-head .tile-icon { width: 52px; height: 52px; border-radius: 16px; }
+.path { position: relative; margin-top: 26px; }
+.path::before { content: ""; position: absolute; left: 29px; top: 64px; height: 84px; border-left: 2px dashed var(--line); }
+.lesson { position: relative; display: flex; gap: 18px; align-items: flex-start; padding-bottom: 30px; }
+.node { position: relative; width: 60px; height: 60px; border-radius: 50%; display: grid; place-items: center; flex: none; z-index: 1; }
+.node--now { background: var(--surface); color: var(--bougainvillier-ink); box-shadow: var(--shadow); }
+.node--now svg.ringbig { position: absolute; inset: -5px; width: 70px; height: 70px; }
+.node--locked { background: var(--surface-2); color: var(--ink-3); }
+.lesson__text { padding-top: 4px; flex: 1; }
+.lesson__n { font: var(--t-micro); color: var(--ink-3); }
+.lesson__title { font: var(--t-title); margin: 3px 0 2px; }
+
+/* ================= 7. Question ================= */
+.qbar { display: flex; align-items: center; gap: 12px; height: 56px; }
+.qbar .bar { flex: 1; height: 8px; border-radius: 4px; }
+.lives { display: inline-flex; align-items: center; gap: 4px; font: 750 15px/1 var(--font); color: var(--bougainvillier-ink); }
+.q { font: 750 20px/1.35 var(--font); letter-spacing: -.01em; margin: 18px 2px 18px; }
+.choice { display: flex; align-items: center; gap: 12px; min-height: 56px; padding: 12px 14px; margin-bottom: 10px; border-radius: 14px; background: var(--surface); border: 1.5px solid var(--line); font: 600 15px/1.35 var(--font); }
+.choice__mark { width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center; margin-left: auto; flex: none; }
+.choice--right { background: var(--turquoise-tint); border-color: var(--turquoise-ink); }
+.choice--right .choice__mark { background: var(--turquoise-ink); color: var(--on-accent); }
+.choice--wrong { background: var(--bougainvillier-tint); border-color: var(--bougainvillier-ink); }
+.choice--wrong .choice__mark { background: var(--bougainvillier-ink); color: var(--on-accent); }
+.choice--dim { opacity: .55; }
+.feedback { position: absolute; inset: auto 0 0 0; padding: 20px var(--gutter) 34px; border-radius: var(--r-sheet) var(--r-sheet) 0 0; background: var(--surface); box-shadow: 0 -12px 30px -18px rgba(16, 53, 80, .35); }
+.feedback__head { display: flex; align-items: center; gap: 10px; font: 800 18px/1.2 var(--font); color: var(--bougainvillier-ink); }
+.feedback__head span { width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; background: var(--bougainvillier-tint); }
+.feedback p { margin: 10px 0 0; }
+.feedback .btn { margin-top: 16px; background: var(--bougainvillier-ink); color: var(--on-accent); }
+
+/* ================= 8. Profil ================= */
+.me-big { display: flex; flex-direction: column; align-items: center; text-align: center; margin: 4px 0 18px; }
+.me-big__avatar { width: 76px; height: 76px; border-radius: 50%; overflow: hidden; position: relative; box-shadow: var(--shadow); }
+.me-big__avatar img { width: 100%; height: 100%; object-fit: cover; object-position: 62% 60%; }
+.me-big__avatar b { position: absolute; inset: 0; display: grid; place-items: center; font: 800 30px/1 var(--font); color: #103550; }
+.me-big h1 { font: 800 22px/1.2 var(--font); margin: 12px 0 2px; }
+.group-title { font: 650 13px/1.3 var(--font); color: var(--ink-3); margin: 18px 4px 8px; }
+.footer-note { font: var(--t-small); color: var(--ink-3); text-align: center; margin: 18px 20px 0; }
+
+/* ================= 9–11. Planning ================= */
+.seg { display: grid; grid-template-columns: repeat(3, 1fr); height: 36px; padding: 3px; margin-top: 2px; border-radius: var(--r-control); background: var(--surface-2); }
+.seg span { display: grid; place-items: center; border-radius: 9px; font: 650 13px/1 var(--font); color: var(--ink-2); }
+.seg span.on { background: var(--surface); color: var(--ink); font-weight: 750; box-shadow: 0 1px 3px rgba(16, 53, 80, .14); }
+.seg--2 { grid-template-columns: 1fr 1fr; }
+.weekhead { display: flex; align-items: center; justify-content: space-between; margin: 16px 4px 10px; }
+.weekhead b { font: var(--t-title); }
+.arrows { display: flex; gap: 6px; }
+.arrows span { width: 30px; height: 30px; border-radius: 50%; background: var(--surface); display: grid; place-items: center; box-shadow: 0 1px 3px rgba(16, 53, 80, .12); }
+.week { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; padding: 10px 6px 8px; }
+.day { display: flex; flex-direction: column; align-items: center; gap: 5px; }
+.day small { font: var(--t-micro); color: var(--ink-3); }
+.day b { width: 40px; height: 40px; border-radius: 13px; display: grid; place-items: center; font: 750 16px/1 var(--font); font-variant-numeric: tabular-nums; }
+.day.off b { color: var(--ink-3); font-weight: 600; }
+.day.on b { background: var(--azur-ink); color: var(--on-accent); }
+.dots { display: flex; gap: 3px; height: 6px; }
+.dots i { width: 6px; height: 6px; border-radius: 50%; }
+.banner { display: flex; gap: 10px; align-items: flex-start; margin-top: 12px; padding: 12px 14px; border-radius: 14px; background: var(--citron-tint); font: var(--t-small); color: var(--ink-2); }
+.banner b { color: var(--ink); font-weight: 700; }
+.dayhead { font: var(--t-title); margin: 18px 4px 10px; }
+.row__time { width: 46px; flex: none; font: 700 14px/1.25 var(--font); font-variant-numeric: tabular-nums; }
+.row__time span { display: block; font: 500 13px/1.3 var(--font); color: var(--ink-3); }
+.sheet { position: absolute; inset: auto 0 0 0; z-index: 7; background: var(--surface); border-radius: var(--r-sheet) var(--r-sheet) 0 0; padding: 10px 20px 34px; box-shadow: 0 -20px 40px -20px rgba(16, 53, 80, .4); }
+.grabber { width: 38px; height: 5px; border-radius: 3px; background: var(--line); margin: 0 auto 14px; }
+.scrim { position: absolute; inset: 0; background: var(--scrim); z-index: 6; }
+.facts { margin: 16px 0 0; padding: 0; list-style: none; }
+.facts li { display: flex; align-items: center; gap: 12px; padding: 9px 0; font: var(--t-strong); }
+.facts li svg { color: var(--ink-3); }
+.linked { margin-top: 18px; padding: 14px; border-radius: 16px; background: var(--surface-2); }
+.datebox { width: 46px; flex: none; text-align: center; border-radius: 12px; padding: 7px 0 6px; }
+.datebox b { display: block; font: 800 18px/1 var(--font); font-variant-numeric: tabular-nums; }
+.datebox small { display: block; margin-top: 3px; font: 700 11px/1 var(--font); }
+.month { font: 650 13px/1.3 var(--font); color: var(--ink-3); margin: 18px 4px 8px; }
+
+/* ================= 12. Couleurs et texte (a reference panel, not a screen) ================= */
+.swatches { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 10px; }
+.sw { border-radius: 12px; overflow: hidden; background: var(--surface); box-shadow: var(--shadow); }
+.sw i { display: block; height: 34px; }
+.sw i + i { height: 14px; }
+.sw small { display: block; padding: 6px 7px 7px; font: 650 10.5px/1.25 var(--font); color: var(--ink-2); }
+
+/* ================= 13. The Accueil window across the day (a reference strip) ================= */
+.skies { display: grid; grid-template-columns: repeat(4, 358px); gap: 72px; padding: 32px 16px 28px; border-radius: 38px; background: #F3F7FA; box-shadow: 0 40px 70px -40px rgba(16, 53, 80, .55); }
+.skies .hero { margin: 0; }
+.skies p.cap { font: var(--t-small); color: #4F6680; margin: 10px 4px 0; }
+.skies p.cap b { color: #103550; }
+</style>
+</head>
+<body>
+
+<!-- Icons, drawn once (24 × 24, 1.9 px strokes, round ends) -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="home" viewBox="0 0 24 24"><path d="M4 10.4 12 4l8 6.4V19a1.6 1.6 0 0 1-1.6 1.6H15v-5.4H9v5.4H5.6A1.6 1.6 0 0 1 4 19z"/></symbol>
+    <symbol id="bolt" viewBox="0 0 24 24"><path d="M13.2 2.8 5 13.4h6.1L10.2 21 18.4 10.4h-6.1z"/></symbol>
+    <symbol id="book" viewBox="0 0 24 24"><path d="M2.8 5.2h5.8A3.4 3.4 0 0 1 12 8.6v11a2.6 2.6 0 0 0-2.6-2.6H2.8z"/><path d="M21.2 5.2h-5.8A3.4 3.4 0 0 0 12 8.6v11a2.6 2.6 0 0 1 2.6-2.6h6.6z"/></symbol>
+    <symbol id="cal" viewBox="0 0 24 24"><rect x="3.2" y="4.6" width="17.6" height="16.2" rx="3.6"/><path d="M3.2 9.6h17.6M8 2.8v3.6M16 2.8v3.6"/></symbol>
+    <symbol id="cal-add" viewBox="0 0 24 24"><path d="M20.8 11.6V8.2a3.6 3.6 0 0 0-3.6-3.6H6.8a3.6 3.6 0 0 0-3.6 3.6v9a3.6 3.6 0 0 0 3.6 3.6h5"/><path d="M3.2 9.6h17.6M8 2.8v3.6M16 2.8v3.6M18 14.6v6.4M14.8 17.8h6.4"/></symbol>
+    <symbol id="left" viewBox="0 0 24 24"><path d="m14.5 18-6-6 6-6"/></symbol>
+    <symbol id="right" viewBox="0 0 24 24"><path d="m9.5 18 6-6-6-6"/></symbol>
+    <symbol id="plus" viewBox="0 0 24 24"><path d="M12 5.5v13M5.5 12h13"/></symbol>
+    <symbol id="x" viewBox="0 0 24 24"><path d="M6.5 6.5l11 11M17.5 6.5l-11 11"/></symbol>
+    <symbol id="flame" viewBox="0 0 24 24"><path d="M12 2.8c.6 3 2.6 4.6 4.1 6.4 1.4 1.7 2.4 3.4 2.4 5.6a6.5 6.5 0 0 1-13 0c0-2.4 1.2-4.2 2.6-5.6.3 1.4 1 2.4 2 2.8C9.6 9 10.2 5.4 12 2.8z"/></symbol>
+    <symbol id="heart" viewBox="0 0 24 24"><path d="M12 20.4s-8-4.7-8-10.6a4.4 4.4 0 0 1 8-2.6 4.4 4.4 0 0 1 8 2.6c0 5.9-8 10.6-8 10.6z"/></symbol>
+    <symbol id="repeat" viewBox="0 0 24 24"><path d="M17 2.5 20.5 6 17 9.5"/><path d="M3.5 11V9.5A3.5 3.5 0 0 1 7 6h13.5"/><path d="M7 21.5 3.5 18 7 14.5"/><path d="M20.5 13v1.5A3.5 3.5 0 0 1 17 18H3.5"/></symbol>
+    <symbol id="flag" viewBox="0 0 24 24"><path d="M5.5 21V4.4M5.5 4.4h11.6l-2.1 4 2.1 4H5.5"/></symbol>
+    <symbol id="lock" viewBox="0 0 24 24"><rect x="4.6" y="10.4" width="14.8" height="10.6" rx="2.8"/><path d="M8 10.4V7.8a4 4 0 0 1 8 0v2.6"/></symbol>
+    <symbol id="check" viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5"/></symbol>
+    <symbol id="play" viewBox="0 0 24 24"><path d="M8.5 5.8v12.4l10-6.2z" fill="currentColor"/></symbol>
+    <symbol id="sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M4.6 4.6 6 6M18 18l1.4 1.4M2.5 12h2M19.5 12h2M4.6 19.4 6 18M18 6l1.4-1.4"/></symbol>
+    <symbol id="moon" viewBox="0 0 24 24"><path d="M19.6 14.4A7.8 7.8 0 0 1 9.6 4.4a7.8 7.8 0 1 0 10 10z"/></symbol>
+    <symbol id="clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.6"/><path d="M12 7.6V12l3 2"/></symbol>
+    <symbol id="pin" viewBox="0 0 24 24"><path d="M12 21s-6.4-6.1-6.4-11a6.4 6.4 0 0 1 12.8 0c0 4.9-6.4 11-6.4 11z"/><circle cx="12" cy="10" r="2.3"/></symbol>
+    <symbol id="person" viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.6"/><path d="M5 20.4a7 7 0 0 1 14 0"/></symbol>
+    <symbol id="info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.6"/><path d="M12 11v5.2M12 7.9v.1"/></symbol>
+    <symbol id="phone" viewBox="0 0 24 24"><rect x="6.6" y="2.8" width="10.8" height="18.4" rx="2.8"/><path d="M10.6 17.8h2.8"/></symbol>
+    <symbol id="figure" viewBox="0 0 24 24"><circle cx="12" cy="4.8" r="2.1"/><path d="M6 9.4 12 11l6-1.6M12 11v4.6M12 15.6 8.6 21M12 15.6l3.4 5.4"/></symbol>
+    <symbol id="battery" viewBox="0 0 24 24"><rect x="2.6" y="7" width="16.4" height="10" rx="2.6"/><path d="M21.4 10.4v3.2M11.6 8.8 9.4 12.3h3.2l-2.2 3.5"/></symbol>
+    <symbol id="users" viewBox="0 0 24 24"><circle cx="9" cy="8.4" r="3.2"/><path d="M3.2 19.6a5.8 5.8 0 0 1 11.6 0"/><circle cx="17.2" cy="9.6" r="2.4"/><path d="M15.8 14.6a4.6 4.6 0 0 1 5 5"/></symbol>
+    <symbol id="dumbbell" viewBox="0 0 24 24"><path d="M6.6 7.6v8.8M17.4 7.6v8.8M3.6 9.8v4.4M20.4 9.8v4.4M6.6 12h10.8"/></symbol>
+    <symbol id="shield" viewBox="0 0 24 24"><path d="M12 3.2 5.2 5.8v5.6c0 4.4 2.9 7.6 6.8 9.2 3.9-1.6 6.8-4.8 6.8-9.2V5.8z"/><path d="m9.2 12 2 2 3.8-3.9"/></symbol>
+    <symbol id="clipboard" viewBox="0 0 24 24"><path d="M9 4.5H7.3A2.3 2.3 0 0 0 5 6.8v12.4a2.3 2.3 0 0 0 2.3 2.3h9.4a2.3 2.3 0 0 0 2.3-2.3V6.8a2.3 2.3 0 0 0-2.3-2.3H15"/><rect x="9" y="2.8" width="6" height="3.6" rx="1.2"/><path d="m9 13.6 2.2 2.2 4-4.2"/></symbol>
+    <symbol id="eye" viewBox="0 0 24 24"><path d="M2.6 12S6 5.6 12 5.6 21.4 12 21.4 12 18 18.4 12 18.4 2.6 12 2.6 12z"/><circle cx="12" cy="12" r="2.8"/></symbol>
+  </defs>
+</svg>
+
+<main class="board">
+
+  <!-- ====================== 1. Bienvenue ====================== -->
+  <figure>
+    <figcaption>1 · Bienvenue (premier lancement seulement)</figcaption>
+    <section class="phone" id="s1">
+      <div class="status"></div>
+      <img class="welcome__scene" src="baie-aube.svg" alt="">
+      <div class="welcome__fade"></div>
+      <div class="welcome__brand">
+        <h1 class="welcome__title">Promo MAPST</h1>
+        <p class="welcome__sub">Des leçons de 5&nbsp;minutes sur tes cours, et le planning de la promo toujours sur toi.</p>
+      </div>
+      <div class="welcome__cta">
+        <button class="btn btn--primary btn--block">Commencer</button>
+        <p class="welcome__note">Appli non officielle, faite par un stagiaire.</p>
+      </div>
+      <div class="home-ind"></div>
+    </section>
+  </figure>
+
+  <!-- ====================== 2. Prénom ====================== -->
+  <figure>
+    <figcaption>2 · Ton prénom (étape 1 sur 2)</figcaption>
+    <section class="phone" id="s2">
+      <div class="status"></div>
+      <div class="page page--full">
+        <div class="page-head">
+          <span class="icon-btn" style="background:var(--surface);box-shadow:var(--shadow)"><svg class="i"><use href="#left"/></svg></span>
+          <span class="steps"><i class="on"></i><i></i></span>
+          <span class="small" style="font-weight:650;color:var(--ink-2);width:38px;text-align:right">Passer</span>
+        </div>
+        <div class="mini-sky"><img src="baie-aube.svg" alt=""></div>
+        <h1 class="page-title">On t’appelle comment&nbsp;?</h1>
+        <p class="muted" style="margin:8px 0 0">Ton prénom ou un surnom, pour te dire bonjour. Il reste sur ce téléphone.</p>
+        <div class="field">Sam<span class="caret"></span></div>
+        <div class="note"><svg class="i i--s" style="color:var(--ink-3);margin-top:1px"><use href="#lock"/></svg><span>Bientôt, un compte avec un code à 6&nbsp;chiffres pour retrouver ta progression sur un autre téléphone.</span></div>
+        <div class="bottom-cta"><button class="btn btn--primary btn--block">Continuer</button></div>
+      </div>
+      <div class="home-ind"></div>
+    </section>
+  </figure>
+
+  <!-- ====================== 3. Accueil, jour ====================== -->
+  <figure>
+    <figcaption>3 · Accueil, un samedi matin (s’ouvre ici)</figcaption>
+    <section class="phone" id="s3">
+      <div class="status"></div>
+      <div class="page">
+        <div class="hero">
+          <img src="baie-jour.svg" alt="">
+          <div class="hero__hello"><h1>Bonjour Sam</h1><p>Samedi 7 novembre</p></div>
+          <div class="hero__me">S</div>
+        </div>
+        <div class="card today">
+          <div class="today__top">
+            <span class="tile-icon" style="background:var(--galet-tint);color:var(--galet-ink)"><svg class="i i--s"><use href="#sun"/></svg></span>
+            <div><div class="row__title" style="font-weight:750">Week-end</div><div class="small muted">Pas de formation aujourd’hui</div></div>
+          </div>
+          <div class="today__next">
+            <div class="small faint" style="font-weight:650;margin-bottom:8px">Lundi 9 novembre</div>
+            <div class="slot">
+              <span class="slot-bar" style="background:var(--olivier)"></span>
+              <div class="row__main"><div class="row__title">Stage APEC · AnimaNice</div><div class="small muted">Structures AnimaNice</div></div>
+              <span class="time">9:00</span>
+              <svg class="i i--s chev"><use href="#right"/></svg>
+            </div>
+          </div>
+        </div>
+        <div class="card revise">
+          <div class="revise__stats">
+            <span class="chip" style="background:var(--soleil-tint);color:var(--soleil-ink)"><svg class="i i--xs i--fill"><use href="#flame"/></svg>3 jours</span>
+            <span class="chip" style="background:var(--soleil-tint);color:var(--soleil-ink)"><svg class="i i--xs i--fill"><use href="#bolt"/></svg>120 XP</span>
+          </div>
+          <div class="revise__lesson">
+            <svg class="ring" viewBox="0 0 46 46"><circle cx="23" cy="23" r="19" fill="none" stroke="var(--surface-2)" stroke-width="5"/><circle cx="23" cy="23" r="19" fill="none" stroke="var(--bougainvillier)" stroke-width="5" stroke-linecap="round" stroke-dasharray="47.8 119.4" transform="rotate(-90 23 23)"/><text x="23" y="27.5" text-anchor="middle" font-family="Plus Jakarta Sans" font-weight="800" font-size="12" fill="var(--ink)">4/10</text></svg>
+            <div><div class="row__title" style="font-weight:750">Os et articulations</div><div class="small muted">Anatomie et mouvement, leçon 1</div></div>
+          </div>
+          <button class="btn btn--primary btn--block" style="height:46px">Continuer</button>
+        </div>
+      </div>
+      <nav class="tabbar">
+        <span class="tab is-on" style="--c:var(--accueil);--t:var(--accueil-tint)"><span class="tab__icon"><svg class="i"><use href="#home"/></svg></span>Accueil</span>
+        <span class="tab"><span class="tab__icon"><svg class="i"><use href="#bolt"/></svg></span>Réviser</span>
+        <span class="tab"><span class="tab__icon"><svg class="i"><use href="#cal"/></svg></span>Planning</span>
+      </nav>
+      <div class="home-ind"></div>
+    </section>
+  </figure>
+
+  <!-- ====================== 4. Accueil, nuit, mode sombre ====================== -->
+  <figure>
+    <figcaption>4 · Accueil, un mardi soir, téléphone en mode sombre</figcaption>
+    <section class="phone dark" id="s4" data-time="21:30">
+      <div class="status"></div>
+      <div class="page">
+        <div class="hero hero--night">
+          <img src="baie-nuit.svg" alt="">
+          <div class="hero__hello"><h1>Bonsoir Sam</h1><p>Mardi 24 novembre</p></div>
+          <div class="hero__me">S</div>
+        </div>
+        <div class="card today">
+          <div class="today__top">
+            <span class="tile-icon" style="background:var(--azur-tint);color:var(--azur-ink)"><svg class="i i--s"><use href="#moon"/></svg></span>
+            <div><div class="row__title" style="font-weight:750">Fini pour aujourd’hui</div><div class="small muted">Bonne soirée&nbsp;!</div></div>
+          </div>
+          <div class="today__next">
+            <div class="small faint" style="font-weight:650;margin-bottom:8px">Demain</div>
+            <div class="slot">
+              <span class="slot-bar" style="background:var(--olivier)"></span>
+              <div class="row__main"><div class="row__title">Mercredi au centre de loisirs</div><div class="small muted">Centre de loisirs</div></div>
+              <span class="time">8:30</span>
+              <svg class="i i--s chev"><use href="#right"/></svg>
+            </div>
+          </div>
+        </div>
+        <div class="card revise">
+          <div class="revise__stats">
+            <span class="chip" style="background:var(--soleil-tint);color:var(--soleil-ink)"><svg class="i i--xs i--fill"><use href="#flame"/></svg>3 jours</span>
+            <span class="small muted">Une leçon ce soir pour garder ta série.</span>
+          </div>
+          <div class="revise__lesson">
+            <svg class="ring" viewBox="0 0 46 46"><circle cx="23" cy="23" r="19" fill="none" stroke="var(--surface-2)" stroke-width="5"/><circle cx="23" cy="23" r="19" fill="none" stroke="var(--bougainvillier)" stroke-width="5" stroke-linecap="round" stroke-dasharray="83.6 119.4" transform="rotate(-90 23 23)"/><text x="23" y="27.5" text-anchor="middle" font-family="Plus Jakarta Sans" font-weight="800" font-size="12" fill="var(--ink)">7/10</text></svg>
+            <div><div class="row__title" style="font-weight:750">Os et articulations</div><div class="small muted">Anatomie et mouvement, leçon 1</div></div>
+          </div>
+          <button class="btn btn--primary btn--block" style="height:46px">Continuer</button>
+        </div>
+      </div>
+      <nav class="tabbar">
+        <span class="tab is-on" style="--c:var(--accueil);--t:var(--accueil-tint)"><span class="tab__icon"><svg class="i"><use href="#home"/></svg></span>Accueil</span>
+        <span class="tab"><span class="tab__icon"><svg class="i"><use href="#bolt"/></svg></span>Réviser</span>
+        <span class="tab"><span class="tab__icon"><svg class="i"><use href="#cal"/></svg></span>Planning</span>
+      </nav>
+      <div class="home-ind"></div>
+    </section>
+  </figure>
+
+  <!-- ====================== 5. Réviser ====================== -->
+  <figure>
+    <figcaption>5 · Réviser</figcaption>
+    <section class="phone" id="s5">
+      <div class="status"></div>
+      <div class="page">
+        <div class="page-head">
+          <h1 class="page-title">Réviser</h1>
+          <span style="display:flex;gap:6px">
+            <span class="chip" style="background:var(--soleil-tint);color:var(--soleil-ink)"><svg class="i i--xs i--fill"><use href="#flame"/></svg>3</span>
+            <span class="chip" style="background:var(--soleil-tint);color:var(--soleil-ink)"><svg class="i i--xs i--fill"><use href="#bolt"/></svg>120 XP</span>
+          </span>
+        </div>
+        <div class="list">
+          <div class="row">
+            <svg class="ring" viewBox="0 0 46 46" style="width:40px;height:40px"><circle cx="23" cy="23" r="19" fill="none" stroke="var(--surface-2)" stroke-width="5"/><circle cx="23" cy="23" r="19" fill="none" stroke="var(--bougainvillier)" stroke-width="5" stroke-linecap="round" stroke-dasharray="47.8 119.4" transform="rotate(-90 23 23)"/></svg>
+            <div class="row__main"><div class="row__title">Os et articulations</div><div class="small muted">Continuer, 4 sur 10</div></div>
+            <span class="play"><svg class="i i--s"><use href="#play"/></svg></span>
+          </div>
+          <div class="row">
+            <span class="tile-icon" style="width:40px;height:40px;background:var(--bougainvillier-tint);color:var(--bougainvillier-ink)"><svg class="i i--s"><use href="#repeat"/></svg></span>
+            <div class="row__main"><div class="row__title">Mes erreurs</div><div class="small muted">4 questions à revoir</div></div>
+            <span class="btn btn--small" style="background:var(--bougainvillier-tint);color:var(--bougainvillier-ink)">Revoir</span>
+          </div>
+        </div>
+        <h2 class="section-title">Thèmes</h2>
+        <div class="grid">
+          <div class="tile"><span class="tile-icon" style="background:var(--bougainvillier-tint);color:var(--bougainvillier-ink)"><svg class="i i--s"><use href="#figure"/></svg></span><p class="tile__title">Anatomie et mouvement</p><div class="tile__foot"><div class="bar"><i style="width:20%;background:var(--bougainvillier)"></i></div><small>Leçon 1 sur 2</small></div></div>
+          <div class="tile"><span class="tile-icon" style="background:var(--soleil-tint);color:var(--soleil-ink)"><svg class="i i--s"><use href="#battery"/></svg></span><p class="tile__title">Filières énergétiques</p><div class="tile__foot"><div class="bar"><i style="width:100%;background:var(--soleil)"></i></div><small style="color:var(--soleil-ink)"><svg class="i i--xs"><use href="#check"/></svg>Terminé</small></div></div>
+          <div class="tile"><span class="tile-icon" style="background:var(--lavande-tint);color:var(--lavande-ink)"><svg class="i i--s"><use href="#users"/></svg></span><p class="tile__title">Les publics et leurs caractéristiques</p><div class="tile__foot"><div class="bar"></div><small>1 leçon</small></div></div>
+          <div class="tile"><span class="tile-icon" style="background:var(--turquoise-tint);color:var(--turquoise-ink)"><svg class="i i--s"><use href="#dumbbell"/></svg></span><p class="tile__title">Activités d’entretien corporel</p><div class="tile__foot"><div class="bar"></div><small>1 leçon</small></div></div>
+          <div class="tile"><span class="tile-icon" style="background:var(--azur-tint);color:var(--azur-ink)"><svg class="i i--s"><use href="#shield"/></svg></span><p class="tile__title">Rôle et obligations de l’éducateur sportif</p><div class="tile__foot"><div class="bar"></div><small>1 leçon</small></div></div>
+          <div class="tile"><span class="tile-icon" style="background:var(--olivier-tint);color:var(--olivier-ink)"><svg class="i i--s"><use href="#clipboard"/></svg></span><p class="tile__title">La fiche de séance</p><div class="tile__foot"><div class="bar"><i style="width:60%;background:var(--olivier)"></i></div><small>Leçon 1 sur 1</small></div></div>
+        </div>
+      </div>
+      <nav class="tabbar">
+        <span class="tab"><span class="tab__icon"><svg class="i"><use href="#home"/></svg></span>Accueil</span>
+        <span class="tab is-on" style="--c:var(--reviser);--t:var(--reviser-tint)"><span class="tab__icon"><svg class="i"><use href="#bolt"/></svg></span>Réviser</span>
+        <span class="tab"><span class="tab__icon"><svg class="i"><use href="#cal"/></svg></span>Planning</span>
+      </nav>
+      <div class="home-ind"></div>
+    </section>
+  </figure>
+
+  <!-- ====================== 6. Thème ====================== -->
+  <figure>
+    <figcaption>6 · Un thème (page ouverte depuis Réviser)</figcaption>
+    <section class="phone" id="s6">
+      <div class="status"></div>
+      <div class="page">
+        <div class="navbar"><span class="back" style="color:var(--reviser)"><svg class="i"><use href="#left"/></svg>Réviser</span></div>
+        <div class="theme-head">
+          <span class="tile-icon" style="background:var(--bougainvillier-tint);color:var(--bougainvillier-ink)"><svg class="i"><use href="#figure"/></svg></span>
+          <div><h1 class="page-title" style="font-size:24px">Anatomie et mouvement</h1><div class="small muted" style="margin-top:4px">2 leçons, 20 questions</div></div>
+        </div>
+        <div class="path">
+          <div class="lesson">
+            <span class="node node--now"><svg class="ringbig" viewBox="0 0 70 70"><circle cx="35" cy="35" r="32" fill="none" stroke="var(--bougainvillier-tint)" stroke-width="5"/><circle cx="35" cy="35" r="32" fill="none" stroke="var(--bougainvillier)" stroke-width="5" stroke-linecap="round" stroke-dasharray="80.4 201" transform="rotate(-90 35 35)"/></svg><svg class="i" style="width:26px;height:26px"><use href="#play"/></svg></span>
+            <div class="lesson__text"><div class="lesson__n">Leçon 1</div><div class="lesson__title">Os et articulations</div><div class="small muted">4 questions sur 10</div>
+              <span class="btn btn--small" style="margin-top:12px;background:var(--bougainvillier-ink);color:var(--on-accent);height:38px;padding:0 18px;font-size:14px">Continuer</span></div>
+          </div>
+          <div class="lesson">
+            <span class="node node--locked"><svg class="i"><use href="#lock"/></svg></span>
+            <div class="lesson__text"><div class="lesson__n">Leçon 2</div><div class="lesson__title" style="color:var(--ink-2)">Muscles et contractions</div><div class="small faint">S’ouvre quand la leçon 1 est finie.</div></div>
+          </div>
+        </div>
+        <p class="small faint" style="margin:4px 0 0 78px">D’autres leçons arrivent au fil des cours.</p>
+      </div>
+      <nav class="tabbar">
+        <span class="tab"><span class="tab__icon"><svg class="i"><use href="#home"/></svg></span>Accueil</span>
+        <span class="tab is-on" style="--c:var(--reviser);--t:var(--reviser-tint)"><span class="tab__icon"><svg class="i"><use href="#bolt"/></svg></span>Réviser</span>
+        <span class="tab"><span class="tab__icon"><svg class="i"><use href="#cal"/></svg></span>Planning</span>
+      </nav>
+      <div class="home-ind"></div>
+    </section>
+  </figure>
+
+  <!-- ====================== 7. Question ====================== -->
+  <figure>
+    <figcaption>7 · Une question, après une mauvaise réponse</figcaption>
+    <section class="phone" id="s7">
+      <div class="status"></div>
+      <div class="page page--full">
+        <div class="qbar">
+          <span class="icon-btn" style="width:34px;height:34px;color:var(--ink-2)"><svg class="i"><use href="#x"/></svg></span>
+          <div class="bar"><i style="width:50%;background:var(--turquoise)"></i></div>
+          <span class="lives"><svg class="i i--s i--fill"><use href="#heart"/></svg>2</span>
+        </div>
+        <p class="q">Qu’est-ce qui assure la croissance d’un os en longueur&nbsp;?</p>
+        <div class="choice choice--right">Le cartilage de croissance (plaque épiphysaire)<span class="choice__mark"><svg class="i i--xs" style="stroke-width:3"><use href="#check"/></svg></span></div>
+        <div class="choice choice--wrong">Le périoste<span class="choice__mark"><svg class="i i--xs" style="stroke-width:3"><use href="#x"/></svg></span></div>
+        <div class="choice choice--dim">La moelle osseuse rouge</div>
+        <div class="choice choice--dim">Le cartilage articulaire</div>
+      </div>
+      <div class="feedback">
+        <div class="feedback__head"><span><svg class="i i--xs" style="stroke-width:3"><use href="#x"/></svg></span>Pas tout à fait</div>
+        <p>La longueur dépend du cartilage de croissance et l’épaisseur du périoste&nbsp;; plus fragile que l’os mature, le cartilage de croissance demande de la vigilance chez l’enfant et l’ado.</p>
+        <p class="small faint" style="margin-top:8px">Anatomie du mouvement (CAPA), ch.&nbsp;2</p>
+        <button class="btn btn--block">Continuer</button>
+      </div>
+      <div class="home-ind"></div>
+    </section>
+  </figure>
+
+  <!-- ====================== 8. Profil ====================== -->
+  <figure>
+    <figcaption>8 · Profil (le rond « S » en haut d’Accueil)</figcaption>
+    <section class="phone" id="s8">
+      <div class="status"></div>
+      <div class="page">
+        <div class="navbar"><span class="back" style="color:var(--accueil)"><svg class="i"><use href="#left"/></svg>Accueil</span></div>
+        <div class="me-big">
+          <div class="me-big__avatar"><img src="baie-jour.svg" alt=""><b>S</b></div>
+          <h1>Sam</h1>
+          <span class="small" style="font-weight:650;color:var(--accueil)">Changer mon prénom</span>
+        </div>
+        <div class="list">
+          <div class="row">
+            <span class="tile-icon" style="background:var(--lavande-tint);color:var(--lavande-ink)"><svg class="i i--s"><use href="#eye"/></svg></span>
+            <div class="row__main"><div class="row__title">Mode relecture</div><div class="small muted">Pour vérifier les questions et signaler les erreurs.</div></div>
+            <span class="switch"></span>
+          </div>
+        </div>
+        <div class="group-title">L’appli</div>
+        <div class="list">
+          <div class="row"><span class="tile-icon" style="background:var(--turquoise-tint);color:var(--turquoise-ink)"><svg class="i i--s"><use href="#phone"/></svg></span><div class="row__main row__title">Installer l’appli</div><svg class="i i--s chev"><use href="#right"/></svg></div>
+          <div class="row"><span class="tile-icon" style="background:var(--azur-tint);color:var(--azur-ink)"><svg class="i i--s"><use href="#cal"/></svg></span><div class="row__main"><div class="row__title">À propos du planning</div><div class="small muted">Version du 1er octobre, corrigée le 7 novembre</div></div><svg class="i i--s chev"><use href="#right"/></svg></div>
+          <div class="row"><span class="tile-icon" style="background:var(--galet-tint);color:var(--galet-ink)"><svg class="i i--s"><use href="#lock"/></svg></span><div class="row__main row__title">Ce que l’appli garde</div><svg class="i i--s chev"><use href="#right"/></svg></div>
+        </div>
+        <p class="footer-note">Application non officielle créée par un stagiaire. En cas de doute, vérifie dans tes cours.</p>
+      </div>
+      <nav class="tabbar">
+        <span class="tab is-on" style="--c:var(--accueil);--t:var(--accueil-tint)"><span class="tab__icon"><svg class="i"><use href="#home"/></svg></span>Accueil</span>
+        <span class="tab"><span class="tab__icon"><svg class="i"><use href="#bolt"/></svg></span>Réviser</span>
+        <span class="tab"><span class="tab__icon"><svg class="i"><use href="#cal"/></svg></span>Planning</span>
+      </nav>
+      <div class="home-ind"></div>
+    </section>
+  </figure>
+
+  <!-- ====================== 9. Planning, Semaine ====================== -->
+  <figure>
+    <figcaption>9 · Planning, vue Semaine</figcaption>
+    <section class="phone" id="s9">
+      <div class="status"></div>
+      <div class="page">
+        <div class="page-head">
+          <h1 class="page-title">Planning</h1>
+          <span style="display:flex;gap:8px;align-items:center">
+            <span class="chip" style="background:var(--azur-tint);color:var(--azur-ink);padding:0 12px">Aujourd’hui</span>
+            <span class="icon-btn" style="background:var(--azur-ink);color:var(--on-accent);width:34px;height:34px"><svg class="i i--s" style="stroke-width:2.4"><use href="#plus"/></svg></span>
+          </span>
+        </div>
+        <div class="seg"><span class="on">Semaine</span><span>Mois</span><span>Année</span></div>
+        <div class="weekhead"><b>9 – 15 novembre</b><span class="arrows"><span><svg class="i i--xs"><use href="#left"/></svg></span><span><svg class="i i--xs"><use href="#right"/></svg></span></span></div>
+        <div class="card week">
+          <div class="day on"><small>L</small><b>9</b><span class="dots"><i style="background:var(--olivier)"></i></span></div>
+          <div class="day"><small>M</small><b>10</b><span class="dots"><i style="background:var(--olivier)"></i></span></div>
+          <div class="day"><small>M</small><b>11</b><span class="dots"><i style="background:var(--galet)"></i></span></div>
+          <div class="day"><small>J</small><b>12</b><span class="dots"><i style="background:var(--olivier)"></i></span></div>
+          <div class="day"><small>V</small><b>13</b><span class="dots"><i style="background:var(--olivier)"></i></span></div>
+          <div class="day off"><small>S</small><b>14</b><span class="dots"></span></div>
+          <div class="day off"><small>D</small><b>15</b><span class="dots"></span></div>
+        </div>
+        <div class="banner"><svg class="i i--s" style="color:var(--citron-ink);margin-top:1px"><use href="#info"/></svg><span><b>Du 2 au 20 novembre</b>&nbsp;: stage APEC dans les AnimaNice (le planning officiel indique «&nbsp;MSP&nbsp;1&nbsp;»). Tes horaires exacts sont sur ton planning de stage.</span></div>
+        <div class="dayhead">Lundi 9 novembre</div>
+        <div class="list">
+          <div class="row">
+            <div class="row__time">9:00<span>12:00</span></div>
+            <span class="slot-bar" style="background:var(--olivier)"></span>
+            <div class="row__main"><div class="row__title">Stage APEC · AnimaNice</div><div class="small muted">Structures AnimaNice, Ville de Nice</div></div>
+            <svg class="i i--s chev"><use href="#right"/></svg>
+          </div>
+          <div class="row">
+            <div class="row__time">13:00<span>16:00</span></div>
+            <span class="slot-bar" style="background:var(--olivier)"></span>
+            <div class="row__main"><div class="row__title">Stage APEC · AnimaNice</div><div class="small muted">Structures AnimaNice, Ville de Nice</div></div>
+            <svg class="i i--s chev"><use href="#right"/></svg>
+          </div>
+        </div>
+        <div class="list" style="margin-top:14px">
+          <div class="row">
+            <span class="tile-icon" style="background:var(--bougainvillier-tint);color:var(--bougainvillier-ink)"><svg class="i i--s"><use href="#flag"/></svg></span>
+            <div class="row__main"><div class="row__title">Dates clés</div><div class="small muted">Prochaine&nbsp;: dossier BC3, 15&nbsp;mars</div></div>
+            <svg class="i i--s chev"><use href="#right"/></svg>
+          </div>
+          <div class="row">
+            <span class="tile-icon" style="background:var(--azur-tint);color:var(--azur-ink)"><svg class="i i--s"><use href="#cal-add"/></svg></span>
+            <div class="row__main"><div class="row__title">Ajouter à ton agenda</div><div class="small muted">Google Agenda ou Calendrier d’Apple</div></div>
+            <svg class="i i--s chev"><use href="#right"/></svg>
+          </div>
+        </div>
+      </div>
+      <nav class="tabbar">
+        <span class="tab"><span class="tab__icon"><svg class="i"><use href="#home"/></svg></span>Accueil</span>
+        <span class="tab"><span class="tab__icon"><svg class="i"><use href="#bolt"/></svg></span>Réviser</span>
+        <span class="tab is-on" style="--c:var(--planning);--t:var(--planning-tint)"><span class="tab__icon"><svg class="i"><use href="#cal"/></svg></span>Planning</span>
+      </nav>
+      <div class="home-ind"></div>
+    </section>
+  </figure>
+
+  <!-- ====================== 10. Détails d'une demi-journée (feuille) ====================== -->
+  <figure>
+    <figcaption>10 · Détails d’une demi-journée (feuille qui monte)</figcaption>
+    <section class="phone" id="s10">
+      <div class="status"></div>
+      <div class="page" data-copy-of="s9"><!-- the script copies screen 9 here --></div>
+      <div class="scrim"></div>
+      <div class="sheet">
+        <div class="grabber"></div>
+        <div style="display:flex;align-items:center;justify-content:space-between">
+          <span class="chip" style="background:var(--olivier-tint);color:var(--olivier-ink);height:26px">Ville de Nice</span>
+          <span class="icon-btn" style="width:32px;height:32px;background:var(--surface-2);color:var(--ink-2)"><svg class="i i--s"><use href="#x"/></svg></span>
+        </div>
+        <h2 style="font:800 22px/1.2 var(--font);letter-spacing:-.02em;margin:12px 0 0">Stage APEC · AnimaNice</h2>
+        <ul class="facts">
+          <li><svg class="i i--s"><use href="#cal"/></svg>Lundi 9 novembre</li>
+          <li><svg class="i i--s"><use href="#clock"/></svg>9:00 – 12:00</li>
+          <li><svg class="i i--s"><use href="#pin"/></svg>Structures AnimaNice</li>
+          <li><svg class="i i--s"><use href="#person"/></svg>Ville de Nice</li>
+        </ul>
+        <div class="linked">
+          <div style="display:flex;gap:12px;align-items:center">
+            <span class="tile-icon" style="background:var(--turquoise-tint);color:var(--turquoise-ink)"><svg class="i i--s"><use href="#dumbbell"/></svg></span>
+            <div class="row__main"><div class="small faint" style="font-weight:650">Thème lié</div><div class="row__title">Activités d’entretien corporel</div></div>
+          </div>
+          <button class="btn btn--primary btn--block" style="margin-top:14px;height:44px;font-size:15px">Réviser ce thème</button>
+        </div>
+      </div>
+      <div class="home-ind"></div>
+    </section>
+  </figure>
+
+  <!-- ====================== 11. Dates clés ====================== -->
+  <figure>
+    <figcaption>11 · Dates clés (page ouverte depuis Planning)</figcaption>
+    <section class="phone" id="s11">
+      <div class="status"></div>
+      <div class="page">
+        <div class="navbar"><span class="back" style="color:var(--planning)"><svg class="i"><use href="#left"/></svg>Planning</span></div>
+        <h1 class="page-title" style="margin:6px 0 14px">Dates clés</h1>
+        <div class="seg seg--2"><span class="on">Tout</span><span>Épreuves et dossiers</span></div>
+        <div class="month">Novembre</div>
+        <div class="list">
+          <div class="row"><span class="datebox" style="background:var(--galet-tint);color:var(--galet-ink)"><b>11</b><small>nov.</small></span><div class="row__main"><div class="row__title">Armistice, férié</div></div></div>
+          <div class="row"><span class="datebox" style="background:var(--azur-tint);color:var(--azur-ink)"><b>23</b><small>nov.</small></span><div class="row__main"><div class="row__title">Retour au CAL</div><div class="small muted">Environnement, puis APEN</div></div></div>
+        </div>
+        <div class="month">Décembre</div>
+        <div class="list">
+          <div class="row"><span class="datebox" style="background:var(--galet-tint);color:var(--galet-ink)"><b>19</b><small>déc.</small></span><div class="row__main"><div class="row__title">Vacances de Noël</div><div class="small muted">Jusqu’au 3&nbsp;janvier</div></div></div>
+        </div>
+        <div class="month">Mars</div>
+        <div class="list">
+          <div class="row"><span class="datebox" style="background:var(--bougainvillier-tint);color:var(--bougainvillier-ink)"><b>15</b><small>mars</small></span><div class="row__main"><div class="row__title">Dossier BC3 à rendre</div><div class="small muted"><span class="tag" style="background:var(--citron-tint);color:var(--citron-ink)">À confirmer</span></div></div><span class="chip" style="background:var(--bougainvillier-tint);color:var(--bougainvillier-ink);height:26px;padding:0 10px">J&#8209;128</span></div>
+          <div class="row"><span class="datebox" style="background:var(--bougainvillier-tint);color:var(--bougainvillier-ink)"><b>19</b><small>mars</small></span><div class="row__main"><div class="row__title">Prérequis BC3</div><div class="small muted"><span class="tag" style="background:var(--citron-tint);color:var(--citron-ink)">À confirmer</span></div></div><span class="chip" style="background:var(--bougainvillier-tint);color:var(--bougainvillier-ink);height:26px;padding:0 10px">J&#8209;132</span></div>
+        </div>
+      </div>
+      <nav class="tabbar">
+        <span class="tab"><span class="tab__icon"><svg class="i"><use href="#home"/></svg></span>Accueil</span>
+        <span class="tab"><span class="tab__icon"><svg class="i"><use href="#bolt"/></svg></span>Réviser</span>
+        <span class="tab is-on" style="--c:var(--planning);--t:var(--planning-tint)"><span class="tab__icon"><svg class="i"><use href="#cal"/></svg></span>Planning</span>
+      </nav>
+      <div class="home-ind"></div>
+    </section>
+  </figure>
+
+  <!-- ====================== 12. Couleurs et texte ====================== -->
+  <figure>
+    <figcaption>12 · Couleurs et texte (référence)</figcaption>
+    <section class="phone" id="s12">
+      <div class="page page--full" style="top:0;padding-top:34px">
+        <h1 class="page-title" style="font-size:22px">Couleurs</h1>
+        <p class="small muted" style="margin:6px 0 0">Plein, texte, fond doux. Les noms de Nice classent aussi le planning.</p>
+        <div class="swatches">
+          <div class="sw"><i style="background:var(--turquoise)"></i><i style="background:var(--turquoise-tint)"></i><small>Turquoise<br>Réviser, boutons</small></div>
+          <div class="sw"><i style="background:var(--azur)"></i><i style="background:var(--azur-tint)"></i><small>Azur<br>Planning, cours</small></div>
+          <div class="sw"><i style="background:var(--soleil)"></i><i style="background:var(--soleil-tint)"></i><small>Soleil<br>Accueil, série, XP</small></div>
+          <div class="sw"><i style="background:var(--lavande)"></i><i style="background:var(--lavande-tint)"></i><small>Lavande<br>Préparation</small></div>
+          <div class="sw"><i style="background:var(--bougainvillier)"></i><i style="background:var(--bougainvillier-tint)"></i><small>Bougainvillier<br>Épreuves, erreurs</small></div>
+          <div class="sw"><i style="background:var(--olivier)"></i><i style="background:var(--olivier-tint)"></i><small>Olivier<br>Ville de Nice</small></div>
+          <div class="sw"><i style="background:var(--galet)"></i><i style="background:var(--galet-tint)"></i><small>Galet<br>Libre, férié</small></div>
+          <div class="sw"><i style="background:var(--citron)"></i><i style="background:var(--citron-tint)"></i><small>Citron<br>Perso, à vérifier</small></div>
+        </div>
+        <div class="swatches" style="grid-template-columns:repeat(3,1fr)">
+          <div class="sw"><i style="background:#103550"></i><small>Marine<br>le texte</small></div>
+          <div class="sw"><i style="background:#F3F7FA;box-shadow:inset 0 0 0 1px #E1E9F0"></i><small>Fond clair</small></div>
+          <div class="sw"><i style="background:#0B1A28"></i><small>Fond sombre</small></div>
+        </div>
+        <h1 class="page-title" style="font-size:22px;margin-top:26px">Texte</h1>
+        <div style="margin-top:10px;display:grid;gap:8px">
+          <div style="font:var(--t-display);letter-spacing:-.02em">Titre de page 26</div>
+          <div style="font:var(--t-title)">Titre de carte 17</div>
+          <div style="font:var(--t-strong)">Ligne de liste 15</div>
+          <div style="font:var(--t-body)" class="muted">Texte courant 15, phrases simples et courtes.</div>
+          <div style="font:var(--t-small)" class="muted">Petit texte 13 pour les détails</div>
+          <div style="font:var(--t-micro)" class="faint">Micro 11 : L M M J V</div>
+        </div>
+      </div>
+    </section>
+  </figure>
+
+  <!-- ====================== 13. La fenêtre d'Accueil suit le ciel de Nice ====================== -->
+  <figure class="wide">
+    <figcaption>13 · La fenêtre d’Accueil suit le ciel de Nice (heures de lever et de coucher du soleil du jour)</figcaption>
+    <div class="skies">
+      <div>
+        <div class="hero"><img src="baie-aube.svg" alt=""><div class="hero__hello"><h1>Bonjour Sam</h1><p>Lundi 9 novembre</p></div><div class="hero__me">S</div></div>
+        <p class="cap"><b>Aube</b>, d’une heure avant le lever du soleil à deux heures après</p>
+      </div>
+      <div>
+        <div class="hero"><img src="baie-jour.svg" alt=""><div class="hero__hello"><h1>Bonjour Sam</h1><p>Lundi 9 novembre</p></div><div class="hero__me">S</div></div>
+        <p class="cap"><b>Jour</b>, le reste de la journée</p>
+      </div>
+      <div>
+        <div class="hero"><img src="baie-couchant.svg" alt=""><div class="hero__hello"><h1>Bonsoir Sam</h1><p>Lundi 9 novembre</p></div><div class="hero__me">S</div></div>
+        <p class="cap"><b>Couchant</b>, d’une heure et demie avant le coucher du soleil à 45&nbsp;minutes après</p>
+      </div>
+      <div>
+        <div class="hero hero--night"><img src="baie-nuit.svg" alt=""><div class="hero__hello"><h1>Bonsoir Sam</h1><p>Lundi 9 novembre</p></div><div class="hero__me">S</div></div>
+        <p class="cap"><b>Nuit</b>, le texte passe en blanc</p>
+      </div>
+    </div>
+  </figure>
+
+</main>
+
+<script>
+  // Draws the iPhone status bars (time, signal, wi-fi, battery). Not part of the app.
+  const ICONS = '<svg width="18" height="12" viewBox="0 0 18 12" fill="currentColor"><rect x="0" y="8" width="3" height="4" rx="1"/><rect x="5" y="5.5" width="3" height="6.5" rx="1"/><rect x="10" y="3" width="3" height="9" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1"/></svg>'
+    + '<svg width="16" height="12" viewBox="0 0 16 12" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M1.5 4.2a9.4 9.4 0 0 1 13 0M4 7a5.8 5.8 0 0 1 8 0"/><circle cx="8" cy="9.8" r="1" fill="currentColor"/></svg>'
+    + '<svg width="27" height="13" viewBox="0 0 27 13"><rect x=".5" y=".5" width="23" height="12" rx="3.5" fill="none" stroke="currentColor" opacity=".45"/><rect x="2" y="2" width="18" height="9" rx="2" fill="currentColor"/><path d="M25 4.5v4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" opacity=".45"/></svg>';
+  // Screen 10 shows screen 9 behind its sheet.
+  document.querySelectorAll("[data-copy-of]").forEach((el) => {
+    const from = document.getElementById(el.dataset.copyOf);
+    el.replaceWith(from.querySelector(".page").cloneNode(true), from.querySelector(".tabbar").cloneNode(true));
+  });
+  document.querySelectorAll(".status").forEach((bar) => {
+    const time = bar.closest(".phone").dataset.time || "9:41";
+    bar.innerHTML = `<span>${time}</span><span class="status__icons">${ICONS}</span>`;
+  });
+</script>
+</body>
+</html>
