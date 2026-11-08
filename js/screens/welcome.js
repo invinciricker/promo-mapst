@@ -112,7 +112,6 @@ export function showWelcome({ onDone = () => {} } = {}) {
   }
 
   function finish() {
-    saveName();
     setWelcomeDone(true);
     // Remove the welcome's own steps from the history, then give « back » to the app.
     const extra = step;
@@ -150,7 +149,8 @@ export function showWelcome({ onDone = () => {} } = {}) {
     } else if (t.closest("[data-prev]")) {
       history.back();
     } else if (t.closest("[data-skip]")) {
-      input.value = "";
+      // « Passer »: nothing is saved (a name saved before stays as it is).
+      input.blur();
       if (withInstall) show(2); else finish();
     } else if (t.closest("[data-done]")) {
       finish();

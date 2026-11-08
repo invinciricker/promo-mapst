@@ -6,7 +6,7 @@
                                 relecture » (and « Rapport de relecture » while it is
                                 on); « Installer l'appli » when not installed;
                                 « À propos du planning »; « Ce que l'appli garde »; the
-                                footer text
+                                footer text, and « Revoir la bienvenue »
      #accueil/profil/planning   À propos du planning: source, dates, corrections, notes
      #accueil/profil/donnees    Ce que l'appli garde, and « Effacer ma progression »
    ===================================================================================== */
@@ -15,7 +15,7 @@ import { esc, icon, setHTML, isInstalled } from "../core/dom.js";
 import { parseISO, dayNumber, MONTHS } from "../core/dates.js";
 import { FOOTER, APP_VERSION } from "../core/texts.js";
 import { data } from "../core/data.js";
-import { push, navbarHTML, registerModal } from "../core/nav.js";
+import { push, navbarHTML, registerModal, refreshPages } from "../core/nav.js";
 import { openSheet } from "../core/sheet.js";
 import { showToast } from "../core/toast.js";
 import { firstName, setFirstName, initial, NAME_MAX } from "../core/user.js";
@@ -24,6 +24,7 @@ import { countEvents } from "../planning/personal.js";
 import { hasProgress, resetProgress } from "../reviser/progress.js";
 import { isRelectureOn, setRelectureOn, relectureSummary } from "../reviser/relecture.js";
 import { openInstallSheet } from "./install.js";
+import { showWelcome } from "./welcome.js";
 
 /** « 1er octobre 2026 » */
 const longFR = (iso) => {
@@ -87,6 +88,7 @@ export function mountProfil(el) {
 
         <p class="footer-note">${esc(FOOTER)}</p>
         <p class="footer-note profil__version">Version : ${esc(APP_VERSION)}</p>
+        <p class="profil__welcome"><button type="button" class="btn btn--small btn--plain" data-welcome>Revoir la bienvenue</button></p>
       </div>`);
 
     // « Mode relecture »: app.js hears the change and rebuilds Réviser.
@@ -107,6 +109,7 @@ export function mountProfil(el) {
     else if (t.closest("[data-install]")) openInstallSheet();
     else if (t.closest("[data-about]")) push("accueil/profil/planning");
     else if (t.closest("[data-stored]")) push("accueil/profil/donnees");
+    else if (t.closest("[data-welcome]")) showWelcome({ onDone: () => refreshPages() });
   });
   const onName = () => draw();
   window.addEventListener("prenom-change", onName);

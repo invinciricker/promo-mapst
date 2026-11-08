@@ -562,6 +562,22 @@ try:
         page.locator("[data-install]").click()
         page.wait_for_selector(".sheet-layer.is-open")
         check("Installer l’appli: the steps in a sheet", "?installer" in page.url and "Installer l’appli" in page.locator(".sheet").inner_text())
+        page.go_back()
+        page.wait_for_timeout(600)
+        page.locator(f"{VISIBLE} [data-welcome]").click()
+        page.wait_for_selector(".welcome")
+        page.wait_for_timeout(500)
+        check("« Revoir la bienvenue » shows the welcome again", page.locator(".wl-intro:not([hidden])").count() == 1)
+        page.locator("[data-next]").click()
+        page.wait_for_timeout(400)
+        check("… with the saved name in the field", page.locator(".wl-name").input_value() == "Alex")
+        page.locator("[data-skip]").click()
+        page.wait_for_timeout(400)
+        page.locator("[data-done]").click()
+        page.wait_for_timeout(800)
+        check("… « Passer » keeps the name, and it comes back to Profil",
+              page.locator(".welcome").count() == 0 and visible_path(page) == "accueil/profil"
+              and norm(page.locator(f"{VISIBLE} .me-big h1").inner_text()) == "Alex")
         ctx.close()
 
         # ================================================================ 6. Dark mode, small phone, laptop

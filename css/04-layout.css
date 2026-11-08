@@ -57,6 +57,7 @@
   transition: background-color .2s, box-shadow .2s;
 }
 .navbar.is-stuck {
+  background: var(--bg);                                         /* older iPhones */
   background: color-mix(in srgb, var(--bg) 86%, transparent);
   -webkit-backdrop-filter: saturate(180%) blur(18px);
   backdrop-filter: saturate(180%) blur(18px);
@@ -102,6 +103,7 @@
   z-index: 30;
   height: calc(var(--tabbar) + env(safe-area-inset-bottom, 0px));
   padding: 7px max(18px, env(safe-area-inset-right, 0px)) env(safe-area-inset-bottom, 0px) max(18px, env(safe-area-inset-left, 0px));
+  background: var(--surface);                                    /* older iPhones */
   background: color-mix(in srgb, var(--surface) 90%, transparent);
   -webkit-backdrop-filter: saturate(180%) blur(20px);
   backdrop-filter: saturate(180%) blur(20px);

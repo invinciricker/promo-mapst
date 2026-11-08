@@ -144,6 +144,8 @@ button.slot:active { opacity: .6; }
 .me-big h1 { margin: 12px 0 2px; font: 800 22px/1.2 var(--font); }
 .me-big__link { padding: 4px 8px; border: 0; background: none; color: var(--accueil); font: 650 13px/1.4 var(--font); }
 .profil__version { margin-top: 6px; }
+.profil__welcome { display: flex; justify-content: center; margin-top: 4px; }
+.profil__welcome .btn { color: var(--accueil); }
 .page-title--pushed { margin: 6px 0 14px; }
 .stored__lead { margin: -4px 4px 12px; }
 .stored__note { margin-top: 14px; }

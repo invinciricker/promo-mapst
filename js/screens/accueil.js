@@ -171,8 +171,26 @@ export function mountAccueil(el, query = new URLSearchParams()) {
   }
 
   // ---------------------------------------------------------------------------------
+  let lastHero = "";
+
+  /** Draws the page. The window is drawn again only when it changes (no flash). */
   function draw(now = new Date()) {
-    setHTML(el, `<div class="page__body accueil">${heroHTML(now)}${todayHTML(now)}${reviseHTML(now)}</div>`);
+    const hero = heroHTML(now);
+    const body = el.querySelector(".accueil");
+    if (body && hero === lastHero) {
+      swap(body.querySelector(".today"), todayHTML(now));
+      swap(body.querySelector(".revise"), reviseHTML(now));
+      return;
+    }
+    lastHero = hero;
+    setHTML(el, `<div class="page__body accueil">${hero}${todayHTML(now)}${reviseHTML(now)}</div>`);
+  }
+
+  /** Replaces one card by its new version. */
+  function swap(node, html) {
+    const box = document.createElement("div");
+    setHTML(box, html);
+    if (node && box.firstElementChild) node.replaceWith(box.firstElementChild);
   }
 
   el.addEventListener("click", (event) => {
