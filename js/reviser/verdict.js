@@ -20,10 +20,10 @@ export function verdictHTML(q) {
   const v = verdictFor(q);
   const pressed = (name) => String(Boolean(v && v.v === name));
   return `<div class="verdict" data-verdict-box role="group" aria-label="Relecture de la question ${esc(q.id)}">
-      <p class="verdict__label">${icon("clipboard", "icon--s")}<span>Relecture : cette question est-elle juste ?</span></p>
+      <p class="verdict__label">${icon("eye", "icon--s")}<span>Relecture : cette question est-elle juste ?</span></p>
       <div class="verdict__btns">
-        <button type="button" class="verdict__btn verdict__btn--ok" data-verdict="juste" aria-pressed="${pressed("juste")}">${icon("check")}Juste</button>
-        <button type="button" class="verdict__btn verdict__btn--fix" data-verdict="corriger" aria-pressed="${pressed("corriger")}">${icon("edit")}À corriger</button>
+        <button type="button" class="verdict__btn verdict__btn--ok" data-verdict="juste" aria-pressed="${pressed("juste")}">${icon("check", "icon--s")}Juste</button>
+        <button type="button" class="verdict__btn verdict__btn--fix" data-verdict="corriger" aria-pressed="${pressed("corriger")}">${icon("edit", "icon--s")}À corriger</button>
       </div>
       ${v && v.v === "corriger" ? `<p class="verdict__note">${v.note ? `Ta note : « ${esc(v.note)} »` : "Sans note."}
         <button type="button" class="verdict__edit" data-verdict="corriger">Modifier</button></p>` : ""}
@@ -54,7 +54,8 @@ export function openNoteSheet(q, onChange = () => {}) {
   const v = verdictFor(q);
   const sheet = openSheet({
     title: "À corriger",
-    body: `<p class="sheet-text"><span class="badge">${esc(q.id)}</span> ${esc(shortText(q.text, 140))}</p>
+    address: ["note", q.id],
+    body: `<p class="sheet-text"><span class="tag tone-lavande">${esc(q.id)}</span> ${esc(shortText(q.text, 140))}</p>
       <label class="field">
         <span class="field__label">Ce qui ne va pas (facultatif)</span>
         <input class="input" type="text" data-note maxlength="${NOTE_MAX}" autocomplete="off" enterkeyhint="done"
@@ -62,7 +63,7 @@ export function openNoteSheet(q, onChange = () => {}) {
       </label>
       <p class="sheet-hint">Une ligne suffit. Elle sera dans le rapport à coller dans Claude chat.</p>
       <div class="sheet__actions">
-        <button type="button" class="btn btn--primary btn--block" data-save>${icon("edit")}Enregistrer « À corriger »</button>
+        <button type="button" class="btn btn--primary btn--block" data-save>Enregistrer « À corriger »</button>
         ${v ? `<button type="button" class="btn btn--plain btn--block" data-clear>Retirer mon avis</button>` : ""}
       </div>`,
   });

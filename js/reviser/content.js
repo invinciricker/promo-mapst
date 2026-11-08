@@ -1,14 +1,18 @@
 /* =====================================================================================
    content.js: turns content/themes.json and content/questions.json into what Réviser
-   shows: for each theme, its lessons (« Leçon 1, 2, 3… ») and their questions.
+   shows: for each theme, its lessons (« Leçon 1, 2, 3… ») and their questions, and the
+   colour and icon of each theme.
 
    Who sees which question (the "status" of each question, see CLAUDE.md):
-     "verifie"    checked by the owner: everyone sees it. A lesson appears once it has
-                  at least MIN_CHECKED of them, so nobody gets a half-empty lesson.
+     "verifie"    checked by the owner.
+     "brouillon"  written by Claude chat, not checked yet. Since 7 Nov 2026 everyone sees
+                  them like "verifie" ones (the owner checks them later in Relecture).
+                  A lesson appears once it has at least MIN_QUESTIONS of these two,
+                  so nobody gets a half-empty lesson.
      "exemple"    sample content: everyone sees it, with an « Exemple » badge.
-     "brouillon"  written but not checked yet: only shown in « Mode relecture », with an
-                  « À vérifier » badge. In that mode every lesson is shown and open.
-   A missing or unknown status counts as "brouillon": nothing unchecked reaches the class.
+   In « Mode relecture » (Profil), every lesson is shown and open, and the "brouillon"
+   questions get an « À vérifier » badge and the « Juste / À corriger » buttons.
+   A missing or unknown status counts as "brouillon".
 
    A question that is broken (a missing field, a wrong index...) is skipped, so one
    mistake in the file never breaks the app. The list of skipped questions is written in
@@ -18,8 +22,24 @@
 export const TYPES = ["qcm", "saisie", "paires"];
 export const STATUSES = ["brouillon", "verifie", "exemple"];
 
-/** A lesson is shown to everyone once it has this many checked ("verifie") questions. */
-export const MIN_CHECKED = 5;
+/** A lesson is shown once it has this many "verifie" or "brouillon" questions. */
+export const MIN_QUESTIONS = 5;
+
+/**
+ * The colour of each theme follows its place in themes.json (docs/design/README.md):
+ * a new theme gets the next colour and the default icon, with no change to the code.
+ */
+const THEME_TONES = ["bougainvillier", "soleil", "lavande", "turquoise", "azur", "olivier"];
+const THEME_ICONS = {
+  "anatomie-mouvement": "figure",
+  "filieres-energetiques": "battery",
+  "publics": "users",
+  "entretien-corporel": "dumbbell",
+  "role-educateur": "shield",
+  "fiche-de-seance": "clipboard",
+};
+export const themeTone = (index) => THEME_TONES[(index - 1) % THEME_TONES.length];
+export const themeIcon = (id) => THEME_ICONS[id] || "bolt";
 
 /** « [EXEMPLE] » at the start of a question marks sample content (see CLAUDE.md). */
 const EXAMPLE_MARK = /^\s*\[EXEMPLE\]\s*/i;
@@ -65,7 +85,7 @@ function cleanQuestion(raw, problems) {
     lesson,
     type: raw.type,
     status,
-    draft: status === "brouillon",          // shown only in « Mode relecture »
+    draft: status === "brouillon",          // not checked yet: « À vérifier » in Relecture
     text: raw.question.replace(EXAMPLE_MARK, "").trim(),
     example: status === "exemple" || EXAMPLE_MARK.test(raw.question),
     hint: asText(raw.hint),
@@ -115,9 +135,9 @@ function lessonTitles(theme) {
  * Builds the content of Réviser.
  *   themes        content of content/themes.json
  *   rawQuestions  content of content/questions.json
- *   relecture     true in « Mode relecture » (unchecked questions shown, every lesson open)
+ *   relecture     true in « Mode relecture » (every lesson shown and open)
  * Returns {
- *   themes: [{ id, title, index, lessons, questionCount }]   what is shown, in order
+ *   themes: [{ id, title, index, tone, icon, lessons, questionCount }]   in order
  *     each lesson: { key, theme, number, title, label, questions, draftCount }
  *   theme(id), lesson(key), question(id)   only what is shown (null otherwise)
  *   lessonLabel(themeId, number)           « Os et articulations », or « Leçon 2 »
@@ -157,15 +177,12 @@ export function createReviserContent(themes, rawQuestions, { relecture = false }
     const lessons = [];
     for (const number of numbers) {
       const inLesson = mine.filter((q) => q.lesson === number);
-      let questions;
-      if (relecture) {
-        questions = inLesson;                                   // everything, to check it
-      } else {
-        const checked = inLesson.filter((q) => q.status === "verifie").length;
+      if (!relecture) {
+        const real = inLesson.filter((q) => q.status === "verifie" || q.status === "brouillon").length;
         const samples = inLesson.some((q) => q.status === "exemple");
-        if (checked < MIN_CHECKED && !samples) continue;        // not ready for the class yet
-        questions = inLesson.filter((q) => q.status === "verifie" || q.status === "exemple");
+        if (real < MIN_QUESTIONS && !samples) continue;         // not ready for the class yet
       }
+      const questions = inLesson;
       const titles = titlesByTheme.get(theme.id);
       const lesson = {
         key: `${theme.id}:${number}`,       // to find the lesson again (never saved)
@@ -184,6 +201,8 @@ export function createReviserContent(themes, rawQuestions, { relecture = false }
       id: theme.id,
       title: theme.title.trim(),
       index: i + 1,
+      tone: themeTone(i + 1),             // its colour: "bougainvillier", "soleil"...
+      icon: themeIcon(theme.id),          // its icon (index.html: #i-figure...)
       lessons,
       questionCount: lessons.reduce((sum, l) => sum + l.questions.length, 0),
     };

@@ -1,11 +1,12 @@
 /* =====================================================================================
-   parts.js: small pieces of HTML shared by the 4 views of the planning
-   (a half-day card, a row, a banner, a countdown, the legend...).
+   parts.js: small pieces of HTML shared by the planning and Accueil
+   (a half-day row, the list of a day, a key date, a countdown, the colour legend...).
    ===================================================================================== */
 
 import { esc, icon } from "../core/dom.js";
-import { at, hour, duration, minutes, parseISO, toISO, daysBetween, countdown, capitalize,
-  longDate, shortDate, MONTHS_SHORT, dayMonth } from "../core/dates.js";
+import { at, clock, minutes, parseISO, toISO, addDays, daysBetween, countdown, capitalize,
+  longDate, MONTHS_SHORT, dayMonth } from "../core/dates.js";
+import { openSheet } from "../core/sheet.js";
 import { personalOn } from "./personal.js";
 
 /** Class half-days + personal events of a day, in time order. */
@@ -32,162 +33,156 @@ export function itemState(item, now) {
   return { now: now >= start && now < end, past: end <= now };
 }
 
-/** "Cours", "Centre de loisirs"... */
+/** "Cours", "Ville de Nice", "Perso"... */
 export function kindOf(model, item) {
   if (item.kind === "perso") return item.repeat === "weekly" ? "Perso · chaque semaine"
     : item.repeat === "monthly" ? "Perso · chaque mois" : "Perso";
   return model.category(item.cat).label;
 }
 
-/** Place and trainers, with their icons. */
-export function metaHTML(item) {
-  const parts = [];
-  if (item.place) parts.push(`<span>${icon("pin")}${esc(item.place)}</span>`);
-  if (item.who) parts.push(`<span>${icon("user")}${esc(item.who)}</span>`);
-  return parts.length ? `<span class="meta">${parts.join("")}</span>` : "";
+/** « Structures AnimaNice, Ville de Nice »: where, and with whom. */
+export function placeWho(item) {
+  return [item.place, item.who].filter(Boolean).join(", ");
 }
 
-/** What to do when the item is tapped (open details, or edit a personal event). */
-function actionAttr(item) {
+/** What a tap on the item does: details of a half-day, or the form of a personal event. */
+export function actionAttr(item) {
   return item.kind === "perso" ? `data-edit-event="${esc(item.eventId)}"` : `data-open-slot="${esc(item.id)}"`;
 }
 
-const checkBadge = () => `<span class="badge badge--warn">${icon("alert")}À vérifier</span>`;
+export const checkTag = () => `<span class="tag tone-citron">À vérifier</span>`;
 
-/** A half-day as a big card (Jour view). */
-export function slotCard(model, item, now) {
+/**
+ * A half-day as a row of a list (Planning): hours on the left, the colour bar,
+ * the title and where, and › when it opens.
+ */
+export function slotRowHTML(model, item, now) {
   const st = itemState(item, now);
-  const cls = [`slot cat-${item.cat}`, st.now && "slot--now", st.past && "slot--past", item.free && "slot--free"]
-    .filter(Boolean).join(" ");
+  const end = itemEnd(item);
   const time = item.start
-    ? `${hour(item.start)}${itemEnd(item) ? `<small>${hour(itemEnd(item))}</small>` : ""}`
-    : `Jour<small>entier</small>`;
-  const kind = `${esc(kindOf(model, item))}${st.now ? ` <span class="badge badge--solid">En cours</span>` : ""}${item.check ? " " + checkBadge() : ""}`;
+    ? `${clock(item.start)}${end ? `<span>${clock(end)}</span>` : ""}`
+    : `Jour<span>entier</span>`;
+  const sub = item.free ? (item.note || "") : placeWho(item);
   const inner = `
-      <span class="slot__time">${time}</span>
-      <span class="slot__bar" aria-hidden="true"></span>
-      <span class="slot__body">
-        <span class="slot__kind">${kind}</span>
-        <span class="slot__title">${esc(item.title)}</span>
-        ${metaHTML(item)}
-        ${item.free && item.note ? `<span class="meta">${esc(item.note)}</span>` : ""}
+      <span class="row__time">${time}</span>
+      <span class="slot-bar" aria-hidden="true"></span>
+      <span class="row__main">
+        <span class="row__title">${esc(item.title)}${st.now ? ` <span class="tag tone-turquoise">En cours</span>` : ""}${item.check ? " " + checkTag() : ""}</span>
+        ${sub ? `<span class="row__sub">${esc(sub)}</span>` : ""}
       </span>`;
-  if (item.free) return `<div class="${cls}">${inner}<span></span></div>`;
-  return `<button type="button" class="${cls}" ${actionAttr(item)}>${inner}
-      <span class="slot__end">${icon("right")}</span></button>`;
-}
-
-/** A half-day as a compact row (Semaine view, day under the month). */
-export function slotRow(model, item, now) {
-  const st = itemState(item, now);
-  const cls = [`wrow cat-${item.cat}`, st.past && "wrow--past", item.free && "wrow--free"].filter(Boolean).join(" ");
-  const time = item.start
-    ? `${hour(item.start)}${itemEnd(item) ? `<small>${hour(itemEnd(item))}</small>` : ""}`
-    : `Jour`;
-  const meta = [item.place, item.who].filter(Boolean).join(" · ");
-  const inner = `
-      <span class="wrow__time">${time}</span>
-      <span class="wrow__bar" aria-hidden="true"></span>
-      <span class="wrow__body">
-        <span class="wrow__title">${esc(item.kind === "perso" ? item.title : item.short || item.title)}${st.now ? ` <span class="badge badge--solid">En cours</span>` : ""}</span>
-        ${meta ? `<span class="wrow__meta">${esc(meta)}</span>` : ""}
-        ${item.check ? `<span>${checkBadge()}</span>` : ""}
-      </span>`;
+  const cls = `row pl-row cat-${esc(item.cat)}${st.past ? " is-past" : ""}${item.free ? " is-free" : ""}`;
   if (item.free) return `<div class="${cls}">${inner}</div>`;
-  return `<button type="button" class="${cls}" ${actionAttr(item)} aria-label="${esc(`${item.start ? hour(item.start) : "Journée"}, ${item.title}`)}">${inner}</button>`;
+  return `<button type="button" class="${cls}" ${actionAttr(item)}>${inner}${icon("right", "chev")}</button>`;
 }
 
-/** Row between two half-days: « Pause déjeuner · 1 h ». */
-export function gapRow(previous, next) {
-  const gap = minutes(next.start) - minutes(itemEnd(previous));
-  if (gap < 30) return "";
-  const lunch = minutes(itemEnd(previous)) <= 13 * 60 && minutes(next.start) >= 12 * 60 + 30;
-  return `<div class="gap-row">${icon(lunch ? "coffee" : "clock")}${lunch ? "Pause déjeuner" : "Pause"} · ${duration(gap)}</div>`;
+/**
+ * A half-day as a line of the « Aujourd'hui » card (Accueil): the colour bar, the title
+ * and where, then the hour and ›.
+ */
+export function slotLineHTML(item, { time = "" } = {}) {
+  const shown = time || (item.start ? clock(item.start) : "");
+  return `<button type="button" class="slot cat-${esc(item.cat)}" ${actionAttr(item)}>
+      <span class="slot-bar" aria-hidden="true"></span>
+      <span class="row__main"><span class="row__title">${esc(item.title)}${item.check ? " " + checkTag() : ""}</span>
+        ${item.place ? `<span class="row__sub">${esc(item.place)}</span>` : ""}</span>
+      ${shown ? `<span class="slot__time">${esc(shown)}</span>` : ""}
+      ${icon("right", "chev")}
+    </button>`;
 }
 
-/** The list of a day: cards (Jour) or rows (Semaine), with the pauses in between. */
-export function dayItemsHTML(model, iso, now, { compact = false } = {}) {
-  const items = itemsOfDay(model, iso);
-  let html = "";
-  let previous = null;
-  for (const item of items) {
-    if (!compact && previous && previous.start && item.start) html += gapRow(previous, item);
-    html += compact ? slotRow(model, item, now) : slotCard(model, item, now);
-    if (item.start) previous = item;
-  }
-  return { html, count: items.length };
-}
-
-/** Coloured banners at the top of a day: public holiday, holidays, key dates. */
-export function dayBanners(model, iso, todayIso) {
+/** Days off and important dates of a day, as lines above its half-days. */
+export function dayNotesHTML(model, iso, todayIso) {
   const day = model.day(iso);
   let html = "";
-  if (day.holiday) {
-    html += banner("libre", "sun", "Férié", `${day.holiday} · pas de formation`, true);
-  } else if (day.vacation) {
-    html += banner("libre", "sun", "Vacances", `${day.vacation} · pas de formation`, true);
-  }
+  if (day.holiday) html += noteLine("libre", "sun", `${day.holiday}, férié`, "Pas de formation");
+  else if (day.vacation) html += noteLine("libre", "sun", day.vacation, "Pas de formation");
   for (const k of day.keyDates) {
-    if (k.kind === "conge") continue;                         // already shown above
+    if (k.kind === "conge") continue;                         // already said above
     if (k.end && k.date !== iso && k.kind !== "epreuve") continue; // periods: first day only
     const left = daysBetween(parseISO(todayIso), parseISO(k.date));
     const parts = [];
-    if (left >= 0) parts.push(countdown(left));
-    if (k.end) parts.push(`jusqu’au ${dayMonth(parseISO(k.end))}`);
-    if (k.note) parts.push(k.note);
-    const iconName = k.kind === "dossier" ? "flag" : k.kind === "epreuve" ? "award" : "layers";
-    html += banner(k.cat, iconName, k.title, parts.join(" · "));
+    if (k.end) parts.push(`Jusqu’au ${dayMonth(parseISO(k.end))}`);
+    if (k.note) parts.push("À confirmer");
+    const iconName = k.kind === "dossier" || k.kind === "epreuve" ? "flag" : "cal";
+    html += noteLine(k.cat, iconName, k.title, parts.join(" · "),
+      (k.kind === "epreuve" || k.kind === "dossier") && left >= 0 ? countdownChip(k.date, todayIso) : "");
   }
   return html;
 }
 
-function banner(cat, iconName, title, text, off = false) {
-  return `<div class="banner cat-${cat}${off ? " banner--off" : ""}">
-      <span class="banner__icon">${icon(iconName)}</span>
-      <div class="banner__body"><p class="banner__title">${esc(title)}</p>${text ? `<p class="banner__text">${esc(text)}</p>` : ""}</div>
+function noteLine(cat, iconName, title, text, end = "") {
+  return `<div class="row pl-note cat-${esc(cat)}">
+      <span class="tile-icon">${icon(iconName, "icon--s")}</span>
+      <span class="row__main"><span class="row__title">${esc(title)}</span>${text ? `<span class="row__sub">${esc(text)}</span>` : ""}</span>
+      ${end}
     </div>`;
 }
 
-/** Countdown chip: « J-12 » (filled colour when it is within a week). */
-export function countdownChip(dateIso, todayIso) {
-  const left = daysBetween(parseISO(todayIso), parseISO(dateIso));
-  return `<span class="countdown${left >= 0 && left <= 7 ? " countdown--soon" : ""}">${esc(countdown(left))}</span>`;
+/**
+ * The list of a day (Semaine and Mois): its notes, its half-days and personal events.
+ * A day without class says so in one line, with a link to the next class day.
+ */
+export function dayListHTML(model, iso, now) {
+  const todayIso = toISO(now);
+  const notes = dayNotesHTML(model, iso, todayIso);
+  const rows = itemsOfDay(model, iso).map((item) => slotRowHTML(model, item, now)).join("");
+  if (rows || notes) return `<div class="list pl-day">${notes}${rows}</div>`;
+  const next = nextClassDay(model, iso);
+  return `<p class="pl-empty">${[0, 6].includes(parseISO(iso).getDay()) ? "Week-end, pas de formation." : "Pas de formation ce jour-là."}
+      ${next ? `<button type="button" class="pl-empty__link" data-select-day="${next}">Prochain cours : ${esc(longDate(parseISO(next)))}${icon("right", "icon--xs")}</button>` : ""}</p>`;
 }
 
-/** One important date in a list. */
-export function keyDateRow(k, todayIso) {
+/** The next day (after iso) with a class half-day, or null. */
+export function nextClassDay(model, iso) {
+  let d = addDays(parseISO(iso), 1);
+  for (let i = 0; i < 200 && model.inRange(d); i++, d = addDays(d, 1)) {
+    if (model.day(toISO(d)).slots.some((s) => !s.free)) return toISO(d);
+  }
+  return null;
+}
+
+/** Countdown chip: « J-12 » (or « Demain », « Aujourd’hui »). */
+export function countdownChip(dateIso, todayIso) {
+  const left = daysBetween(parseISO(todayIso), parseISO(dateIso));
+  return `<span class="chip chip--s tone-bougainvillier num">${esc(countdown(left).replace("J-", "J‑"))}</span>`;
+}
+
+/** One important date, for the « Dates clés » page. */
+export function keyDateRowHTML(k, todayIso) {
   const d = parseISO(k.date);
   const past = (k.end || k.date) < todayIso;
   const ongoing = !past && k.date < todayIso;
-  const sub = [capitalize(shortDate(d)) + (k.end ? ` → ${shortDate(parseISO(k.end))}` : "")];
-  if (k.note) sub.push("à confirmer");
-  const chip = past ? `<span class="countdown">Passé</span>`
-    : ongoing ? `<span class="countdown countdown--soon">En cours</span>` : countdownChip(k.date, todayIso);
-  return `<button type="button" class="kdate cat-${esc(k.cat)}${past ? " kdate--past" : ""}" data-goto-day="${esc(k.date)}">
-      <span class="kdate__date"><span class="kdate__day">${d.getDate()}</span><span class="kdate__month">${esc(MONTHS_SHORT[d.getMonth()].replace(".", ""))}</span></span>
-      <span class="kdate__body"><span class="kdate__title">${esc(k.title)}</span><br><span class="kdate__sub">${esc(sub.join(" · "))}</span></span>
-      ${chip}
+  const exam = k.kind === "epreuve" || k.kind === "dossier";
+  const sub = [];
+  if (k.end) sub.push(`Jusqu’au ${longDate(parseISO(k.end)).replace(/^\S+ /, "")}`);
+  const end = past ? "" : ongoing ? `<span class="chip chip--s tone-turquoise">En cours</span>`
+    : exam ? countdownChip(k.date, todayIso) : "";
+  // « Retour au CAL : environnement, puis APEN » -> « Retour au CAL » and, under it, the rest.
+  const cut = k.title.indexOf(" : ");
+  const title = cut > 0 ? k.title.slice(0, cut) : k.title;
+  if (cut > 0) sub.unshift(capitalize(k.title.slice(cut + 3)));
+  return `<button type="button" class="row kd-row cat-${esc(k.cat)}${past ? " is-past" : ""}" data-goto-day="${esc(k.date)}">
+      <span class="datebox"><b>${d.getDate()}</b><small>${esc(MONTHS_SHORT[d.getMonth()])}</small></span>
+      <span class="row__main"><span class="row__title">${esc(title)}</span>
+        ${sub.length || k.note ? `<span class="row__sub">${esc(sub.join(" · "))}${k.note ? `${sub.length ? " " : ""}<span class="tag tone-citron">À confirmer</span>` : ""}</span>` : ""}</span>
+      ${end}
     </button>`;
 }
 
-/** The colour legend. */
-export function legendHTML(model) {
-  const items = ["cours", "prepa", "centre", "epreuve", "libre", "perso"].map((id) => {
+/** The colour legend, in a sheet (button « Couleurs »). */
+export function openLegendSheet(model) {
+  const rows = ["cours", "prepa", "centre", "epreuve", "libre", "perso"].map((id) => {
     const c = model.category(id);
-    return `<span class="legend__item cat-${id}"><span class="pebble" aria-hidden="true"></span><span><b>${esc(c.name)}</b> · ${esc(c.label.toLowerCase())}</span></span>`;
+    return `<div class="row row--top cat-${id}"><span class="legend-dot" aria-hidden="true"></span>
+        <span class="row__main"><span class="row__title">${esc(c.name)} · ${esc(c.label)}</span><span class="row__sub">${esc(c.desc)}</span></span></div>`;
+  }).join("");
+  openSheet({
+    title: "Couleurs",
+    address: "couleurs",
+    body: `<p class="sheet-text">Chaque demi-journée a la couleur de son activité. Les noms viennent de Nice.</p>
+      <div class="list">${rows}</div>
+      <p class="sheet-hint" style="margin-top:0">Dans la semaine, un point par demi-journée sous chaque jour. Dans le mois, un petit point rose : une épreuve ou un dossier.</p>`,
   });
-  items.push(`<span class="legend__item"><span class="legend__school" aria-hidden="true"></span><span>Vacances scolaires</span></span>`);
-  items.push(`<span class="legend__item cat-epreuve"><span class="legend__dot" aria-hidden="true"></span><span>Épreuve, dossier</span></span>`);
-  return `<div class="card legend">${items.join("")}</div>`;
-}
-
-/** Text of the line under the date: « Semaine 8 sur 36 · MSP 1 · Ville de Nice » */
-export function contextLine(model, iso) {
-  const day = model.day(iso);
-  const parts = [];
-  if (day.week) parts.push(`Semaine ${day.week} sur ${model.totalWeeks}`);
-  if (day.stage) parts.push(day.stage.title);
-  return { text: parts.join(" · "), cat: day.stage ? day.stage.cat : null };
 }
 
 /** « Vendredi 6 novembre » */

@@ -17,7 +17,7 @@
    ===================================================================================== */
 
 // Change this name only to force every phone to throw away its copy and start fresh.
-const CACHE = "promo-mapst-v1";
+const CACHE = "promo-mapst-v2";
 
 // The files of the app itself.
 const APP_FILES = [
@@ -31,23 +31,26 @@ const APP_FILES = [
   "css/06-screens.css",
   "css/07-reviser.css",
   "js/app.js",
+  "js/core/data.js",
   "js/core/dates.js",
   "js/core/dom.js",
+  "js/core/nav.js",
   "js/core/offline.js",
-  "js/core/router.js",
   "js/core/sheet.js",
   "js/core/storage.js",
+  "js/core/sun.js",
   "js/core/texts.js",
   "js/core/toast.js",
+  "js/core/user.js",
+  "js/planning/dates-cles.js",
   "js/planning/details.js",
   "js/planning/event-form.js",
   "js/planning/export.js",
   "js/planning/model.js",
-  "js/planning/now-card.js",
   "js/planning/parts.js",
   "js/planning/personal.js",
   "js/planning/planning.js",
-  "js/planning/view-day.js",
+  "js/planning/today.js",
   "js/planning/view-month.js",
   "js/planning/view-week.js",
   "js/planning/view-year.js",
@@ -60,10 +63,15 @@ const APP_FILES = [
   "js/reviser/reviser.js",
   "js/reviser/sound.js",
   "js/reviser/verdict.js",
-  "js/screens/infos.js",
+  "js/screens/accueil.js",
   "js/screens/install.js",
+  "js/screens/profil.js",
   "js/screens/relecture.js",
-  "js/screens/soon.js",
+  "js/screens/welcome.js",
+  "img/baie-aube.svg",
+  "img/baie-jour.svg",
+  "img/baie-couchant.svg",
+  "img/baie-nuit.svg",
   "icons/icon.svg",
   "icons/icon-192.png",
   "icons/apple-touch-icon.png",

@@ -3,24 +3,31 @@
 
    How a lesson goes:
      1. The questions come in a random order (and the choices of a QCM too).
-     2. The person answers, taps « Vérifier », and sees straight away if it is right,
-        with a one-sentence explanation (and « Approfondir » when a study page exists).
+     2. The person answers, taps « Vérifier », and sees straight away if it is right:
+        the feedback rises from the bottom, turquoise when right and bougainvillier when
+        wrong, with a one-sentence explanation and the source (and « Approfondir » when a
+        study page exists, from Phase 5).
      3. A wrong answer costs one of the 3 lives, and the question comes back at the end
         of the lesson. Losing all 3 lives restarts the lesson.
      4. When every question has been answered right, the lesson is finished: XP, série,
         a little celebration.
-   In « Mes erreurs » there are no lives, and a wrong answer simply stays to review.
+   A lesson left in the middle (×) is kept: « Continuer » starts again where it stopped
+   (with the lives and XP it had). In « Mes erreurs » there are no lives, and a wrong
+   answer simply stays to review; leaving it asks first.
 
-   « Mode relecture »: an unchecked question ("brouillon") shows an « À vérifier » badge
-   and its id; after the answer, the letters A, B, C, D of the file appear on the choices
-   (so a note can say « la réponse C ») and the buttons « Juste / À corriger » (verdict.js).
+   « Mode relecture » (Profil): a question not checked yet ("brouillon") shows an
+   « À vérifier » badge and its id; after the answer, the letters A, B, C, D of the file
+   appear on the choices (so a note can say « la réponse C ») and the buttons
+   « Juste / À corriger » (verdict.js).
 
    Every answer is saved straight away (progress.js), so a mistake goes into
    « Mes erreurs » even if the lesson is left before the end.
+   The lesson has its own address (#…?lecon=anatomie-mouvement-1, see js/core/nav.js).
    ===================================================================================== */
 
 import { esc, icon, setHTML } from "../core/dom.js";
 import { openSheet, hasOpenSheet } from "../core/sheet.js";
+import { openModal, closeModal, forgetModal } from "../core/nav.js";
 import { checkTyped } from "./answer.js";
 import { recordAnswer, XP } from "./progress.js";
 import { verdictHTML, handleVerdictTap } from "./verdict.js";
@@ -49,14 +56,20 @@ const plural = (n, one, many) => `${n} ${n > 1 ? many : one}`;
  *   title       « Anatomie et mouvement » (the theme, shown on the end screen)
  *   heading     « Leçon 1 · Os et articulations » (shown at the top of the lesson)
  *   questions   the questions (from content.js)
+ *   address     [key, value] of the lesson: ["lecon", "anatomie-mouvement-1"]
  *   review      true for « Mes erreurs »: no lives, nothing comes back at the end
+ *   relecture   true in « Mode relecture »: badges and verdicts on "brouillon" questions
+ *   run         a lesson left in the middle (progress.js lessonRun): it continues
+ *   onProgress  function(run) after each answer, to keep the lesson (progress.js saveRun)
+ *   onLost      function() when all the lives are lost
  *   onFinish    function(result) called when everything is answered; it saves the
  *               session and returns { xp, xpTotal, streak, streakGrew } for the end screen
  *   onClose     function() called once the player is closed
  *   canStudy    function(studyId): true if a study page exists (« Approfondir »)
  *   onStudy     function(studyId): opens that study page
  */
-export function openPlayer({ title, heading = "", questions, review = false, onFinish, onClose,
+export function openPlayer({ title, heading = "", questions, address = ["lecon", ""], review = false,
+  relecture = false, run = null, onProgress = () => {}, onLost = () => {}, onFinish, onClose,
   canStudy = () => false, onStudy = () => {} }) {
   if (current) current.destroy();
 
@@ -67,18 +80,18 @@ export function openPlayer({ title, heading = "", questions, review = false, onF
   root.setAttribute("aria-label", review ? "Révision de tes erreurs" : `Leçon : ${heading || title}`);
   setHTML(root, `
     <div class="player__top">
-      <button type="button" class="icon-btn player__close" data-close aria-label="Quitter">${icon("close")}</button>
+      <button type="button" class="icon-btn player__close" data-close aria-label="Quitter">${icon("x")}</button>
       <div class="player__bar" role="progressbar" aria-label="Avancement" aria-valuemin="0"><i></i></div>
       ${review
-        ? `<span class="player__tag">${icon("repeat", "icon--s")}Mes erreurs</span>`
-        : `<span class="player__lives" aria-live="polite"><svg class="icon icon--heart" aria-hidden="true"><use href="#i-heart"/></svg><b></b></span>`}
+        ? `<span class="player__tag">${icon("repeat", "icon--xs")}Mes erreurs</span>`
+        : `<span class="player__lives" aria-live="polite">${icon("heart", "icon--fill")}<b></b></span>`}
     </div>
     ${heading ? `<p class="player__heading">${esc(heading)}</p>` : ""}
     <div class="player__stage"><div class="player__inner"></div></div>
     <div class="player__bottom">
       <div class="player__feedback" aria-live="assertive"></div>
       <div class="player__actions">
-        <button type="button" class="btn btn--primary btn--block btn--big" data-main disabled>Vérifier</button>
+        <button type="button" class="btn btn--primary btn--block" data-main disabled>Vérifier</button>
       </div>
     </div>`);
   document.getElementById("layers").appendChild(root);
@@ -94,27 +107,32 @@ export function openPlayer({ title, heading = "", questions, review = false, onF
   let session;              // the state of the lesson, see start()
   let ui = {};              // the state of the question on screen
   let closing = false;
-  const historyId = `player-${Date.now()}`;
+  const showRelecture = (q) => relecture && q.draft;
 
   // ---------------------------------------------------------------------------------
   // Start (and restart after losing all the lives)
   // ---------------------------------------------------------------------------------
-  function start() {
+  function start(from = null) {
+    const done = new Set(from ? from.right : []);
+    const missed = new Set(from ? from.missed : []);
     session = {
-      queue: shuffle(questions).map((q) => ({ q, firstTry: true })),
+      queue: shuffle(questions.filter((q) => !done.has(q.id))).map((q) => ({ q, firstTry: !missed.has(q.id) })),
       total: questions.length,
-      right: 0,              // questions answered right (at least once)
-      firstTryIds: [],       // questions answered right the first time
-      mistakes: 0,
-      answered: 0,
-      lives: LIVES,
-      xp: 0,
+      right: done.size,                          // questions answered right (at least once)
+      rightIds: [...done],
+      firstTryIds: from ? from.first.slice() : [],   // questions answered right the first time
+      missedIds: [...missed],                    // answered wrong, not right yet
+      mistakes: from ? from.mistakes : 0,
+      answered: 0,                               // answers given since the player opened
+      lives: from ? from.lives : LIVES,
+      xp: from ? from.xp : 0,
       phase: "question",     // "question", "feedback", "lost" or "done"
     };
     bar.setAttribute("aria-valuemax", String(session.total));
     updateBar();
     updateLives(false);
-    showQuestion();
+    if (session.queue.length) showQuestion();
+    else showDone();
   }
 
   function updateBar() {
@@ -122,7 +140,7 @@ export function openPlayer({ title, heading = "", questions, review = false, onF
     // In « Mes erreurs », every answer moves it on (nothing comes back).
     const progress = review ? session.answered : session.right;
     const share = session.total ? progress / session.total : 0;
-    bar.firstElementChild.style.width = `${Math.max(share * 100, 4)}%`;
+    bar.firstElementChild.style.width = `${Math.max(share * 100, 3)}%`;
     bar.setAttribute("aria-valuenow", String(progress));
   }
 
@@ -139,6 +157,18 @@ export function openPlayer({ title, heading = "", questions, review = false, onF
     }
   }
 
+  /** What « Continuer » needs to start again here later. */
+  function runState() {
+    return {
+      right: session.rightIds.slice(),
+      first: session.firstTryIds.slice(),
+      missed: session.missedIds.slice(),
+      lives: session.lives,
+      xp: session.xp,
+      mistakes: session.mistakes,
+    };
+  }
+
   // ---------------------------------------------------------------------------------
   // Questions
   // ---------------------------------------------------------------------------------
@@ -146,13 +176,13 @@ export function openPlayer({ title, heading = "", questions, review = false, onF
     const button = actions.querySelector("[data-main]");
     button.textContent = label;
     button.disabled = !enabled;
-    button.className = `btn btn--block btn--big btn--${tone}`;
+    button.className = `btn btn--block ${tone === "bad" ? "btn--bad" : "btn--primary"}`;
   }
 
-  function kindHTML(q, label, iconName) {
-    return `<div class="q-kind"><p class="q-kind__type">${icon(iconName, "icon--s")}<span>${esc(label)}</span></p>
-      ${q.draft ? `<span class="badge badge--warn badge--id" title="Pas encore vérifiée : elle peut contenir des erreurs">${icon("alert")}À vérifier · ${esc(q.id)}</span>` : ""}
-      ${q.example ? `<span class="badge badge--warn" title="Question d’exemple, pas encore vérifiée">Exemple</span>` : ""}</div>`;
+  function kindHTML(q, label) {
+    return `<div class="q-kind"><span class="q-kind__type">${esc(label)}</span>
+      ${showRelecture(q) ? `<span class="tag tone-citron q-kind__id" title="Pas encore vérifiée : elle peut contenir des erreurs">À vérifier · ${esc(q.id)}</span>` : ""}
+      ${q.example ? `<span class="tag tone-citron" title="Question d’exemple">Exemple</span>` : ""}</div>`;
   }
 
   function showQuestion() {
@@ -168,20 +198,19 @@ export function openPlayer({ title, heading = "", questions, review = false, onF
       ui.order = shuffle(q.choices.map((_, i) => i));
       ui.selected = new Set();
       ui.multi = q.correct.length > 1;
-      body = kindHTML(q, ui.multi ? "Plusieurs réponses possibles" : "Une seule bonne réponse",
-        ui.multi ? "layers" : "check")
+      body = kindHTML(q, ui.multi ? "Plusieurs réponses possibles" : "Une seule bonne réponse")
         + `<h2 class="q-text" tabindex="-1">${esc(q.text)}</h2>
-        <div class="choices${ui.multi ? " is-multi" : ""}" role="group" aria-label="Réponses">${ui.order.map((index, position) => `
+        <div class="choices${ui.multi ? " is-multi" : ""}" role="group" aria-label="Réponses">${ui.order.map((index) => `
           <button type="button" class="choice" data-choice="${index}" aria-pressed="false">
-            <span class="choice__key" aria-hidden="true">${ui.multi ? icon("check", "icon--s") : position + 1}</span>
             <span class="choice__text">${esc(q.choices[index])}</span>
+            <span class="choice__mark" aria-hidden="true"></span>
           </button>`).join("")}
         </div>`;
       setMain("Vérifier", { enabled: false });
     } else if (q.type === "saisie") {
-      body = kindHTML(q, "Écris ta réponse", "sparkles")
+      body = kindHTML(q, "Écris ta réponse")
         + `<h2 class="q-text" tabindex="-1">${esc(q.text)}</h2>
-        <input class="input q-input" type="text" data-typed placeholder="Ta réponse" aria-label="Ta réponse"
+        <input class="input input--big q-input" type="text" data-typed placeholder="Ta réponse" aria-label="Ta réponse"
           autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" enterkeyhint="done">
         ${q.hint ? `<button type="button" class="hint-btn" data-hint aria-expanded="false">${icon("bulb", "icon--s")}Indice</button>
           <p class="hint-box" hidden>${esc(q.hint)}</p>` : ""}`;
@@ -193,7 +222,7 @@ export function openPlayer({ title, heading = "", questions, review = false, onF
       ui.picked = null;
       ui.matched = 0;
       ui.wrongMatches = 0;
-      body = kindHTML(q, `Associe les ${q.pairs.length} paires`, "layers")
+      body = kindHTML(q, `Associe les ${q.pairs.length} paires`)
         + `<h2 class="q-text" tabindex="-1">${esc(q.text)}</h2>
         <div class="pairs" data-pairs>${lefts.map((left, row) => `
           <button type="button" class="pair pair--left" data-side="0" data-pair="${left}" aria-pressed="false">${esc(q.pairs[left][0])}</button>
@@ -338,16 +367,17 @@ export function openPlayer({ title, heading = "", questions, review = false, onF
         if (isCorrect && chosen) b.classList.add("is-right");
         else if (isCorrect) b.classList.add("is-missed");
         else if (chosen) b.classList.add("is-wrong");
-        // The little box: the letter of the file in Relecture (« la réponse C »),
+        else b.classList.add("is-dim");
+        // The round mark: the letter of the file in Relecture (« la réponse C »),
         // otherwise ✓ for a right choice and × for a wrong one.
-        const key = b.querySelector(".choice__key");
-        if (q.draft) { key.textContent = LETTERS[index]; b.classList.add("is-lettered"); }
-        else if (isCorrect) key.innerHTML = icon("check", "icon--s");
-        else if (chosen) key.innerHTML = icon("close", "icon--s");
+        const mark = b.querySelector(".choice__mark");
+        if (showRelecture(q)) { mark.textContent = LETTERS[index]; b.classList.add("is-lettered"); }
+        else if (isCorrect) mark.innerHTML = icon("check");
+        else if (chosen) mark.innerHTML = icon("x");
         b.classList.add("is-checked");
       });
-      if (!right) {
-        const good = q.correct.map((i) => (q.draft ? `${LETTERS[i]}. ${q.choices[i]}` : q.choices[i]));
+      if (!right && showRelecture(q)) {
+        const good = q.correct.map((i) => `${LETTERS[i]}. ${q.choices[i]}`);
         note = good.length > 1 ? `Les bonnes réponses : ${good.join(" · ")}` : `La bonne réponse : ${good[0]}`;
       }
     } else if (q.type === "saisie") {
@@ -374,12 +404,15 @@ export function openPlayer({ title, heading = "", questions, review = false, onF
 
     if (right) {
       session.right++;
+      session.rightIds.push(q.id);
+      session.missedIds = session.missedIds.filter((id) => id !== q.id);
       if (review) session.xp += XP.review;
       else if (item.firstTry) { session.xp += XP.firstTry; session.firstTryIds.push(q.id); }
       else session.xp += XP.corrected;
       playRight();
     } else {
       session.mistakes++;
+      if (!session.missedIds.includes(q.id)) session.missedIds.push(q.id);
       if (!review) {
         session.lives--;
         updateLives(true);
@@ -391,31 +424,35 @@ export function openPlayer({ title, heading = "", questions, review = false, onF
       qBox.classList.add("is-shaking");
     }
     updateBar();
+    if (!review) {
+      if (session.lives > 0) onProgress(runState());
+      else onLost();
+    }
     showFeedback(right, note);
   }
 
   /** In Relecture, what the owner needs to check besides the explanation. */
   function relectureExtrasHTML(q) {
-    if (!q.draft || q.type !== "saisie") return "";
+    if (!showRelecture(q) || q.type !== "saisie") return "";
     return `<p class="feedback__extra"><b>Réponses acceptées :</b> ${q.answers.map(esc).join(" · ")}</p>
-      ${q.hint ? `<p class="feedback__extra"><b>Indice :</b> ${esc(q.hint)}</p>` : `<p class="feedback__extra"><b>Indice :</b> aucun</p>`}`;
+      <p class="feedback__extra"><b>Indice :</b> ${q.hint ? esc(q.hint) : "aucun"}</p>`;
   }
 
   function showFeedback(right, note) {
     const q = ui.q;
     const titles = right ? ["Bonne réponse !", "Bien joué !", "Exact !", "Parfait !"] : ["Pas tout à fait", "Raté, pas grave", "Presque !"];
     const title = titles[Math.floor(Math.random() * titles.length)];
-    const comeBack = !right && !review && session.lives > 0 ? "<p class=\"feedback__again\">Cette question reviendra à la fin de la leçon.</p>" : "";
+    const comeBack = !right && !review && session.lives > 0 ? `<p class="feedback__again">Cette question reviendra à la fin de la leçon.</p>` : "";
     setHTML(feedbackEl, `
-      <div class="feedback anim-fade-up">
-        <p class="feedback__title">${icon(right ? "check" : "close")}<span>${title}</span></p>
+      <div class="feedback">
+        <p class="feedback__head"><span class="feedback__icon">${icon(right ? "check" : "x")}</span><span>${title}</span></p>
         ${note ? `<p class="feedback__note">${esc(note)}</p>` : ""}
         ${q.explanation ? `<p class="feedback__text">${esc(q.explanation)}</p>` : ""}
         ${relectureExtrasHTML(q)}
-        ${q.source ? `<p class="feedback__source">Source : ${esc(q.source)}</p>` : ""}
+        ${q.source ? `<p class="feedback__source">${esc(q.source)}</p>` : ""}
         ${comeBack}
-        ${q.study && canStudy(q.study) ? `<button type="button" class="btn btn--small btn--secondary" data-study>${icon("etudier")}Approfondir</button>` : ""}
-        ${q.draft ? `<div class="verdict-slot" data-verdict-slot>${verdictHTML(q)}</div>` : ""}
+        ${q.study && canStudy(q.study) ? `<button type="button" class="btn btn--small btn--soft tone-lavande" data-study>${icon("book")}Approfondir</button>` : ""}
+        ${showRelecture(q) ? `<div class="verdict-slot" data-verdict-slot>${verdictHTML(q)}</div>` : ""}
       </div>`);
     feedbackEl.scrollTop = 0;
     bottom.classList.add("has-feedback", right ? "is-right" : "is-wrong");
@@ -425,13 +462,13 @@ export function openPlayer({ title, heading = "", questions, review = false, onF
 
   feedbackEl.addEventListener("click", (event) => {
     const q = ui.q;
-    if (q && q.draft && handleVerdictTap(event, q, () => {
+    if (q && showRelecture(q) && handleVerdictTap(event, q, () => {
       const slot = feedbackEl.querySelector("[data-verdict-slot]");
       if (slot && ui.q === q) setHTML(slot, verdictHTML(q));
     })) return;
     if (!event.target.closest("[data-study]")) return;
     const id = q.study;
-    requestClose({ force: true }).then(() => onStudy(id));
+    close().then(() => onStudy(id));
   });
 
   // ---------------------------------------------------------------------------------
@@ -453,13 +490,13 @@ export function openPlayer({ title, heading = "", questions, review = false, onF
     setHTML(feedbackEl, "");
     setHTML(inner, `
       <div class="player-end player-end--lost anim-fade-up">
-        <div class="player-end__art" aria-hidden="true"><svg class="icon"><use href="#i-heart"/></svg></div>
+        <div class="player-end__art" aria-hidden="true">${icon("heart", "icon--fill")}</div>
         <h2 class="player-end__title">Plus de vies</h2>
         <p class="player-end__text">Ce n’est pas grave : relis bien les explications, puis recommence la leçon.
           Les questions ratées t’attendent aussi dans « Mes erreurs ».</p>
       </div>`);
     setHTML(actions, `
-      <button type="button" class="btn btn--primary btn--block btn--big" data-restart>${icon("repeat")}Recommencer la leçon</button>
+      <button type="button" class="btn btn--primary btn--block" data-restart>${icon("repeat")}Recommencer la leçon</button>
       <button type="button" class="btn btn--plain btn--block" data-close>Quitter</button>`);
   }
 
@@ -490,7 +527,7 @@ export function openPlayer({ title, heading = "", questions, review = false, onF
     setHTML(feedbackEl, "");
     setHTML(inner, `
       <div class="player-end anim-fade-up">
-        <div class="player-end__art player-end__art--win" aria-hidden="true"><svg class="icon"><use href="#i-award"/></svg></div>
+        <div class="player-end__art player-end__art--win" aria-hidden="true">${icon("award")}</div>
         <h2 class="player-end__title">${review ? "Révision terminée !" : "Leçon terminée !"}</h2>
         <p class="player-end__text">${esc(lead)}</p>
         <div class="end-stats">
@@ -498,10 +535,10 @@ export function openPlayer({ title, heading = "", questions, review = false, onF
           <div class="end-stat end-stat--acc"><b>${accuracy} %</b><span>${review ? "de bonnes réponses" : "du premier coup"}</span></div>
           <div class="end-stat end-stat--streak${summary.streakGrew ? " is-new" : ""}"><b>${summary.streak}</b><span>${summary.streak > 1 ? "jours de série" : "jour de série"}</span></div>
         </div>
-        ${summary.streakGrew ? `<p class="streak-note">${icon("flame")}${summary.streak > 1 ? `Ta série passe à ${summary.streak} jours !` : "Ta série commence aujourd’hui !"}</p>` : ""}
+        ${summary.streakGrew ? `<p class="streak-note">${icon("flame", "icon--fill")}${summary.streak > 1 ? `Ta série passe à ${summary.streak} jours !` : "Ta série commence aujourd’hui !"}</p>` : ""}
         <p class="player-end__title-small">${esc(heading ? `${title} · ${heading}` : title)}</p>
       </div>`);
-    setHTML(actions, `<button type="button" class="btn btn--primary btn--block btn--big" data-close>Continuer</button>`);
+    setHTML(actions, `<button type="button" class="btn btn--primary btn--block" data-close>Continuer</button>`);
     playWin();
     launchConfetti(root);
     actions.querySelector("[data-close]").focus({ preventScroll: true });
@@ -513,7 +550,7 @@ export function openPlayer({ title, heading = "", questions, review = false, onF
   root.addEventListener("click", (event) => {
     if (event.target.closest("[data-close]")) requestClose();
     else if (event.target.closest("[data-restart]")) {
-      setHTML(actions, `<button type="button" class="btn btn--primary btn--block btn--big" data-main disabled>Vérifier</button>`);
+      setHTML(actions, `<button type="button" class="btn btn--primary btn--block" data-main disabled>Vérifier</button>`);
       start();
     } else if (event.target.closest("[data-main]")) {
       if (session.phase === "question") check();
@@ -535,81 +572,79 @@ export function openPlayer({ title, heading = "", questions, review = false, onF
   }
   document.addEventListener("keydown", onKey);
 
-  /** In the middle of a lesson, ask before leaving. */
-  function requestClose({ force = false } = {}) {
-    const inProgress = session.answered > 0 && (session.phase === "question" || session.phase === "feedback");
-    if (force || !inProgress) return close();
-    return new Promise((resolve) => {
-      const sheet = openSheet({
-        title: review ? "Arrêter la révision ?" : "Quitter la leçon ?",
-        body: `<p class="sheet-text">${review
-          ? "Tes réponses sont déjà enregistrées. Les XP de cette révision seront perdus."
-          : "Ta progression dans cette leçon sera perdue. Les erreurs déjà faites restent dans « Mes erreurs »."}</p>
-          <div class="sheet__actions">
-            <button type="button" class="btn btn--primary btn--block" data-stay>${review ? "Continuer la révision" : "Continuer la leçon"}</button>
-            <button type="button" class="btn btn--danger btn--block" data-leave>Quitter</button>
-          </div>`,
-      });
-      sheet.body.addEventListener("click", (event) => {
-        if (event.target.closest("[data-stay]")) sheet.close().then(resolve);
-        else if (event.target.closest("[data-leave]")) sheet.close().then(() => close()).then(resolve);
-      });
+  /** A review in progress asks before stopping (its XP would be lost). A lesson is kept. */
+  const mustAsk = () => review && session.answered > 0 && (session.phase === "question" || session.phase === "feedback");
+
+  function requestClose() {
+    if (mustAsk()) askToLeave();
+    else close();
+  }
+
+  function askToLeave() {
+    const sheet = openSheet({
+      title: "Arrêter la révision ?",
+      address: "arreter",
+      body: `<p class="sheet-text">Tes réponses sont déjà enregistrées. Les XP de cette révision seront perdus.</p>
+        <div class="sheet__actions">
+          <button type="button" class="btn btn--primary btn--block" data-stay>Continuer la révision</button>
+          <button type="button" class="btn btn--danger btn--block" data-leave>Arrêter</button>
+        </div>`,
+    });
+    sheet.body.addEventListener("click", (event) => {
+      if (event.target.closest("[data-stay]")) sheet.close();
+      else if (event.target.closest("[data-leave]")) sheet.close().then(() => close());
     });
   }
 
-  // The « back » button of Android (or of the browser) asks to leave too.
-  history.pushState({ playerId: historyId }, "");
-  function onPop() {
-    if (closing) return;
-    if (history.state && history.state.playerId === historyId) return;  // a sheet above closed
-    if (hasOpenSheet()) return;
-    const inProgress = session.answered > 0 && (session.phase === "question" || session.phase === "feedback");
-    if (inProgress) {
-      history.pushState({ playerId: historyId }, "");   // stay, and ask
-      requestClose();
-    } else {
-      finishClose();
-    }
-  }
-  window.addEventListener("popstate", onPop);
+  // The lesson is a "modal" of nav.js: it has its address, and « back » closes it.
+  const modal = openModal({
+    key: address[0],
+    value: address[1] || "",
+    close: () => finishClose(),
+    beforePop: () => !mustAsk(),
+    onRefuse: () => askToLeave(),
+  });
 
+  /** Closes the player through the history (like « back »). */
   function close() {
     return new Promise((resolve) => {
       if (closing) return resolve();
-      closing = true;
-      if (history.state && history.state.playerId === historyId) {
-        const done = () => { window.removeEventListener("popstate", done); finishClose(); resolve(); };
-        window.addEventListener("popstate", done);
-        history.back();
-      } else {
-        finishClose();
-        resolve();
-      }
+      waiting.push(resolve);
+      closeModal(modal);
     });
   }
+  const waiting = [];
 
   function finishClose() {
+    if (closing) return;
     closing = true;
+    forgetModal(modal);
     destroy();
     if (onClose) onClose();
+    waiting.splice(0).forEach((resolve) => resolve());
   }
 
   function destroy() {
     closing = true;
     document.removeEventListener("keydown", onKey);
-    window.removeEventListener("popstate", onPop);
     document.documentElement.classList.remove("has-player");
+    const app = document.getElementById("app");
+    if (app) app.inert = false;
     root.classList.remove("is-open");
-    setTimeout(() => root.remove(), 380);
+    setTimeout(() => root.remove(), 420);
     if (current && current.root === root) current = null;
   }
 
   // ---- Go ----------------------------------------------------------------------------
   document.documentElement.classList.add("has-player");
   current = { root, destroy };
-  start();
-  requestAnimationFrame(() => root.classList.add("is-open"));
-  return { close: () => requestClose({ force: true }) };
+  start(run);
+  requestAnimationFrame(() => {
+    root.classList.add("is-open");
+    const app = document.getElementById("app");
+    setTimeout(() => { if (app && current && current.root === root) app.inert = true; }, 420);
+  });
+  return { close };
 }
 
 /** Is a lesson open now? (app.js waits before refreshing the content) */

@@ -1,11 +1,11 @@
 /* =====================================================================================
    relecture.js: the « Mode relecture », to check the questions before the class sees them.
 
-   New questions arrive with the status "brouillon": classmates don't see them. The owner
-   switches on « Mode relecture » in Infos, plays the lessons, and after each unchecked
-   question taps « Juste » or « À corriger » (with an optional note). The « Rapport de
-   relecture » (js/screens/relecture.js) turns these verdicts into a short text to paste
-   into Claude chat, which fixes or validates the questions (see docs/PLAN.md).
+   New questions arrive with the status "brouillon" (since 7 Nov 2026 everyone sees them).
+   The owner switches on « Mode relecture » in Profil, plays the lessons, and after each
+   unchecked question taps « Juste » or « À corriger » (with an optional note). The
+   « Rapport de relecture » (js/screens/relecture.js) turns these verdicts into a short text
+   to paste into Claude chat, which fixes or validates the questions (see docs/PLAN.md).
 
    Saved on the phone only:
      "promo-mapst:relecture-mode"  true when the mode is on
