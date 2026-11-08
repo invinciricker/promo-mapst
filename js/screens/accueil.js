@@ -115,10 +115,12 @@ export function mountAccueil(el, query = new URLSearchParams()) {
           </div>
         </div>` : "";
 
+    // In time order: what comes next today, then today's personal events, then later days.
+    const personalPart = personal ? `<div class="today__part"><div class="today__label">Pour toi aujourd’hui</div>${personal}</div>` : "";
+    const nextIsToday = (st.kind === "now" || st.kind === "next") && st.after && st.after.iso === toISO(now);
     return `<section class="card today" aria-label="Aujourd’hui">
         ${top}
-        ${personal ? `<div class="today__part"><div class="today__label">Pour toi aujourd’hui</div>${personal}</div>` : ""}
-        ${nextPart}
+        ${nextIsToday ? nextPart + personalPart : personalPart + nextPart}
         ${deadline}
       </section>`;
   }

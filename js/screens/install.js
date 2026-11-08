@@ -38,14 +38,14 @@ export async function promptInstall() {
 /** The steps for this phone (iPhone, Android, or both on a computer). */
 export function installStepsHTML() {
   const iphone = `<ol class="steps">
-      <li>Ouvre ce lien dans Safari.</li>
-      <li>Touche le bouton Partager ${icon("share", "icon--inline")} en bas de l’écran.</li>
-      <li>Choisis « Sur l’écran d’accueil », puis « Ajouter ».</li>
+      <li><span>Ouvre ce lien dans Safari.</span></li>
+      <li><span>Touche le bouton Partager ${icon("share", "icon--inline")} en bas de l’écran.</span></li>
+      <li><span>Choisis « Sur l’écran d’accueil », puis « Ajouter ».</span></li>
     </ol>`;
   const android = `<ol class="steps">
-      <li>Ouvre ce lien dans Chrome.</li>
-      <li>Touche le menu ${icon("more", "icon--inline")} en haut à droite.</li>
-      <li>Choisis « Installer l’application » (ou « Ajouter à l’écran d’accueil »).</li>
+      <li><span>Ouvre ce lien dans Chrome.</span></li>
+      <li><span>Touche le menu ${icon("more", "icon--inline")} en haut à droite.</span></li>
+      <li><span>Choisis « Installer l’application » (ou « Ajouter à l’écran d’accueil »).</span></li>
     </ol>`;
   if (isIOS()) return `<p class="steps__title">Sur iPhone</p>${iphone}`;
   if (isAndroid()) return `<p class="steps__title">Sur Android</p>${android}`;

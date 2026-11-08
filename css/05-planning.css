@@ -210,6 +210,7 @@
 .copy-field__url { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font: var(--t-small); color: var(--ink-2); }
 .steps { counter-reset: step; display: flex; flex-direction: column; gap: 9px; }
 .steps li { counter-increment: step; display: flex; gap: 10px; align-items: flex-start; font: var(--t-small); color: var(--ink-2); }
+.steps li > span { padding-top: 2px; }
 .steps li::before {
   content: counter(step);
   width: 22px;

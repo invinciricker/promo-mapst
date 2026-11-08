@@ -3,7 +3,8 @@ Test of the offline mode and of « content without code » (sw.js), in Chromium:
   - after a first visit, the app opens without internet, with Réviser and the planning;
   - a content file that no code lists (like a future study page) works offline once
     it has been opened;
-  - when a content file changes on the website, the app uses it at the next opening.
+  - when a content file changes on the website, the app uses it at the next opening
+    (here, a theme added to content/themes.json, which also gets its colour by itself).
 
     python3 tests/test_offline.py [<repo folder>]
 
@@ -37,7 +38,7 @@ def free_port():
 
 
 site = Path(tempfile.mkdtemp(prefix="promo-mapst-site-"))
-for item in ("index.html", "manifest.webmanifest", "sw.js", "css", "js", "content", "icons", "vendor"):
+for item in ("index.html", "manifest.webmanifest", "sw.js", "css", "js", "content", "icons", "img", "vendor"):
     source = REPO / item
     if source.is_dir():
         shutil.copytree(source, site / item)
@@ -55,16 +56,19 @@ try:
     with sync_playwright() as p:
         browser = p.chromium.launch(executable_path=os.environ.get("CHROME_PATH") or None)
         ctx = browser.new_context(viewport={"width": 390, "height": 844}, service_workers="allow", locale="fr-FR")
+        # Skip the welcome: a first name is already saved.
+        ctx.add_init_script("localStorage.setItem('promo-mapst:bienvenue', 'true'); localStorage.setItem('promo-mapst:prenom', '\"Sam\"');")
         page = ctx.new_page()
         errors = []
         page.on("pageerror", lambda e: errors.append(str(e)))
+        VISIBLE = ".panel:not([hidden]) .page:not([hidden])"
 
         # First visit: sw.js installs and saves the app.
         page.goto(BASE + "#reviser")
-        page.wait_for_selector(".rv-hero")
+        page.wait_for_selector(f"{VISIBLE} .rv-next")
         page.evaluate("navigator.serviceWorker.ready")
         page.reload()                                     # now the page goes through sw.js
-        page.wait_for_selector(".rv-hero")
+        page.wait_for_selector(f"{VISIBLE} .rv-next")
         check("sw.js controls the page", page.evaluate("Boolean(navigator.serviceWorker.controller)"))
         body = page.evaluate("fetch('content/extra-test.json').then(r => r.text())")
         check("a content file not listed anywhere loads", "sans toucher au code" in body)
@@ -73,26 +77,34 @@ try:
         # Without internet.
         ctx.set_offline(True)
         page.reload()
-        page.wait_for_selector(".rv-hero", timeout=15000)
-        check("offline: the app opens on Réviser", page.locator(".rv-theme").count() == 6)
+        page.wait_for_selector(f"{VISIBLE} .rv-next", timeout=15000)
+        check("offline: the app opens on Réviser", page.locator(f"{VISIBLE} .rv-tile").count() == 6)
         page.goto(BASE + "#planning")
-        page.wait_for_selector(".now", timeout=15000)
-        check("offline: the planning works", page.locator(".now").count() == 1)
+        page.reload()
+        page.wait_for_selector(f"{VISIBLE} .wk-strip", timeout=15000)
+        check("offline: the planning works", page.locator(f"{VISIBLE} .wk-day").count() == 7)
+        page.goto(BASE + "#accueil")
+        page.reload()
+        page.wait_for_selector(f"{VISIBLE} .hero__img", timeout=15000)
+        page.wait_for_timeout(500)
+        check("offline: Accueil and its picture of the bay", page.evaluate(
+            f"document.querySelector('{VISIBLE} .hero__img').naturalWidth > 0"))
         body = page.evaluate("fetch('content/extra-test.json').then(r => r.ok ? r.text() : 'erreur ' + r.status).catch(e => 'erreur ' + e)")
         check("offline: the unlisted content file comes from the saved copy", "sans toucher au code" in body)
 
         # Back online, the content changed on the website: used at the next opening.
         ctx.set_offline(False)
-        questions = json.loads((site / "content" / "questions.json").read_text(encoding="utf-8"))
-        for q in questions:
-            if q["id"].startswith("fds-1-"):
-                q["status"] = "verifie"
-        (site / "content" / "questions.json").write_text(json.dumps(questions, ensure_ascii=False), encoding="utf-8")
+        themes = json.loads((site / "content" / "themes.json").read_text(encoding="utf-8"))
+        themes.append({"id": "nouveau-theme", "title": "Un thème ajouté sans toucher au code"})
+        (site / "content" / "themes.json").write_text(json.dumps(themes, ensure_ascii=False), encoding="utf-8")
         page.goto(BASE + "#reviser")
         page.reload()
-        page.wait_for_selector(".rv-hero")
+        page.wait_for_selector(f"{VISIBLE} .rv-next")
         page.wait_for_timeout(300)
-        check("online again: new content is used straight away", page.locator(".rv-theme:not(.is-soon)").count() == 1)
+        check("online again: new content is used straight away",
+              page.locator(f"{VISIBLE} .rv-tile").count() == 7 and "Un thème ajouté sans toucher au code" in page.locator(f"{VISIBLE} .rv-grid").inner_text())
+        check("a new theme gets the next colour, with no change to the code",
+              "tone-bougainvillier" in page.locator(f"{VISIBLE} .rv-tile").nth(6).get_attribute("class"))
         check("no page errors", not errors)
         browser.close()
 finally:

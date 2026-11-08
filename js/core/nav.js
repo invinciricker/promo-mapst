@@ -336,7 +336,8 @@ window.addEventListener("popstate", async (event) => {
     nav.modals.pop();
     modal.close();
   }
-  if (target.query && [...target.query.keys()].some((key) => key in nav.openers) && !nav.modals.length) {
+  const modalParam = nav.modals.length ? null : [...target.query].find(([key]) => key in nav.openers);
+  if (modalParam && state) {
     // A modal in the address that isn't open (the browser's « forward »): just the page.
     const plain = new URLSearchParams([...target.query].filter(([key]) => !(key in nav.openers)));
     history.replaceState(history.state, "", pageURL(target.path, plain));
@@ -385,6 +386,8 @@ window.addEventListener("popstate", async (event) => {
     nav.level = levelOf(target);
     const top = topEntry();
     write("replaceState", nav.level, top ? top.url : "#" + target.path);
+    // A typed address of a sheet (#planning?seance=…): the sheet opens over its page.
+    if (modalParam) nav.openers[modalParam[0]](modalParam[1]);
   }
 });
 

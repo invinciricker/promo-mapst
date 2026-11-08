@@ -573,7 +573,8 @@ export function openPlayer({ title, heading = "", questions, address = ["lecon",
   document.addEventListener("keydown", onKey);
 
   /** A review in progress asks before stopping (its XP would be lost). A lesson is kept. */
-  const mustAsk = () => review && session.answered > 0 && (session.phase === "question" || session.phase === "feedback");
+  let leaving = false;        // « Arrêter » was confirmed: close without asking again
+  const mustAsk = () => !leaving && review && session.answered > 0 && (session.phase === "question" || session.phase === "feedback");
 
   function requestClose() {
     if (mustAsk()) askToLeave();
@@ -592,7 +593,10 @@ export function openPlayer({ title, heading = "", questions, address = ["lecon",
     });
     sheet.body.addEventListener("click", (event) => {
       if (event.target.closest("[data-stay]")) sheet.close();
-      else if (event.target.closest("[data-leave]")) sheet.close().then(() => close());
+      else if (event.target.closest("[data-leave]")) {
+        leaving = true;
+        sheet.close().then(() => close());
+      }
     });
   }
 

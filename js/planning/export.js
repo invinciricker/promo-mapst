@@ -27,7 +27,7 @@ export function openExportSheet() {
         <p class="row__sub">Abonnement au planning : il se met à jour tout seul.</p></div>
       </div>
       <a class="btn btn--primary btn--block btn--medium" href="${esc(webcalLink)}">${icon("cal-add")}Ajouter à Calendrier</a>
-      <ol class="steps"><li>Touche le bouton ci-dessus.</li><li>Choisis « S’abonner », puis « Ajouter ».</li></ol>
+      <ol class="steps"><li><span>Touche le bouton ci-dessus.</span></li><li><span>Choisis « S’abonner », puis « Ajouter ».</span></li></ol>
     </div>`;
 
   const google = `
@@ -40,11 +40,11 @@ export function openExportSheet() {
       <div class="copy-field"><span class="copy-field__url">${esc(httpsLink)}</span>
         <button type="button" class="btn btn--small btn--soft" data-copy>${icon("copy")}Copier</button></div>
       <ol class="steps">
-        <li>Copie le lien ci-dessus et envoie-le toi (par message ou par mail).</li>
-        <li>Sur un ordinateur, ouvre calendar.google.com.</li>
-        <li>À gauche, à côté de « Autres agendas », clique sur « + », puis « À partir de l’URL ».</li>
-        <li>Colle le lien, puis clique sur « Ajouter l’agenda ».</li>
-        <li>Sur ton téléphone, dans l’appli Google Agenda : Menu › Paramètres › Promo MAPST › active « Synchroniser ».</li>
+        <li><span>Copie le lien ci-dessus et envoie-le toi (par message ou par mail).</span></li>
+        <li><span>Sur un ordinateur, ouvre calendar.google.com.</span></li>
+        <li><span>À gauche, à côté de « Autres agendas », clique sur « + », puis « À partir de l’URL ».</span></li>
+        <li><span>Colle le lien, puis clique sur « Ajouter l’agenda ».</span></li>
+        <li><span>Sur ton téléphone, dans l’appli Google Agenda : Menu › Paramètres › Promo MAPST › active « Synchroniser ».</span></li>
       </ol>
     </div>`;
 

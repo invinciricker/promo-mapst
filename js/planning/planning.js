@@ -276,7 +276,7 @@ export function mountPlanning(el) {
   draw();
   controller = {
     showDay(iso) {
-      state.view = state.view === "annee" ? "semaine" : state.view;
+      if (state.view === "annee") state.view = "semaine";
       state.selected = toISO(model().clamp(parseISO(iso)));
       save("planning-view", state.view);
       placeThumb();
@@ -357,6 +357,7 @@ function enableSwipe(node, onStep) {
 registerModal("seance", (id) => {
   const slot = data.model && data.model.slotById(id);
   if (!slot) return false;
+  if (currentPage().path === "planning") showPlanningDay(slot.iso);   // the planning shows its day, under the sheet
   openSlotDetails(data.model, slot);
   return true;
 });
