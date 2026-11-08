@@ -1,46 +1,41 @@
 /* =====================================================================================
    install.js: helps people add the app to their home screen.
-   - Android (Chrome): the browser can show its own « Installer » window.
+   - Android (Chrome): the browser can show its own « Installer » window (the button).
    - iPhone (Safari): there is no such window, so we explain the 3 taps.
+   Used by the welcome (its last step, in a browser only) and by Profil › Installer l'appli.
    ===================================================================================== */
 
-import { icon, isIOS, isAndroid, isInstalled } from "../core/dom.js";
-import { load, save } from "../core/storage.js";
+import { icon, isIOS, isAndroid } from "../core/dom.js";
 import { openSheet } from "../core/sheet.js";
+import { registerModal } from "../core/nav.js";
 
 let installPrompt = null;   // the Android window, kept for when the person taps « Installer »
 
 window.addEventListener("beforeinstallprompt", (event) => {
   event.preventDefault();          // we show our own button instead of the browser banner
   installPrompt = event;
+  window.dispatchEvent(new CustomEvent("install-ready"));
 });
 window.addEventListener("appinstalled", () => {
   installPrompt = null;
-  save("install-hint-dismissed", true);
 });
 
-/** Should the small « Installe l'appli » card be shown? (phones only, not yet installed) */
-export function shouldShowInstallHint() {
-  return !isInstalled() && (isIOS() || isAndroid()) && !load("install-hint-dismissed", false);
+/** Can the browser install the app with one tap (Android, Chrome on a laptop)? */
+export function canPromptInstall() {
+  return Boolean(installPrompt);
 }
 
-export function dismissInstallHint() {
-  save("install-hint-dismissed", true);
+/** Opens the browser's « Installer » window. Returns true if the app was installed. */
+export async function promptInstall() {
+  if (!installPrompt) return false;
+  const prompt = installPrompt;
+  prompt.prompt();
+  const choice = await prompt.userChoice.catch(() => null);
+  installPrompt = null;
+  return Boolean(choice && choice.outcome === "accepted");
 }
 
-export function installHintHTML() {
-  return `<div class="card install-card">
-      <span class="install-card__icon">${icon("phone")}</span>
-      <div class="install-card__body">
-        <p class="install-card__title">Installe l’appli</p>
-        <p class="install-card__text">Sur ton écran d’accueil, elle s’ouvre en un geste, même sans internet.</p>
-        <button type="button" class="btn btn--primary btn--small" data-install>Comment faire ?</button>
-      </div>
-      <button type="button" class="icon-btn install-card__close" data-install-dismiss aria-label="Ne plus afficher">${icon("close")}</button>
-    </div>`;
-}
-
-/** Steps for this phone (used in the sheet and in Infos). */
+/** The steps for this phone (iPhone, Android, or both on a computer). */
 export function installStepsHTML() {
   const iphone = `<ol class="steps">
       <li><span>Ouvre ce lien dans Safari.</span></li>
@@ -49,26 +44,26 @@ export function installStepsHTML() {
     </ol>`;
   const android = `<ol class="steps">
       <li><span>Ouvre ce lien dans Chrome.</span></li>
-      <li><span>Touche le menu ${icon("more", "icon--inline icon--dots")} en haut à droite.</span></li>
+      <li><span>Touche le menu ${icon("more", "icon--inline")} en haut à droite.</span></li>
       <li><span>Choisis « Installer l’application » (ou « Ajouter à l’écran d’accueil »).</span></li>
     </ol>`;
-  if (isIOS()) return `<p class="option__title">Sur iPhone</p>${iphone}`;
-  if (isAndroid()) return `<p class="option__title">Sur Android</p>${android}`;
-  return `<p class="option__title">Sur iPhone</p>${iphone}<p class="option__title">Sur Android</p>${android}`;
+  if (isIOS()) return `<p class="steps__title">Sur iPhone</p>${iphone}`;
+  if (isAndroid()) return `<p class="steps__title">Sur Android</p>${android}`;
+  return `<p class="steps__title">Sur iPhone</p>${iphone}<p class="steps__title">Sur Android</p>${android}`;
 }
 
+/** The sheet « Installer l'appli » (Profil). */
 export function openInstallSheet() {
-  const canPrompt = Boolean(installPrompt);
   const body = `
-    <p class="option__text" style="font-size:15px">L’appli s’ajoute à ton écran d’accueil comme les autres. Elle marche aussi sans internet, et se met à jour toute seule.</p>
-    ${canPrompt ? `<button type="button" class="btn btn--primary btn--block" data-install-now>${icon("download")}Installer maintenant</button>` : ""}
-    <div class="option">${installStepsHTML()}</div>`;
-  const sheet = openSheet({ title: "Installer Promo MAPST", body });
+    <p class="sheet-text">L’appli s’ajoute à ton écran d’accueil comme les autres. Elle marche aussi sans internet, et se met à jour toute seule.</p>
+    ${canPromptInstall() ? `<button type="button" class="btn btn--primary btn--block" data-install-now>${icon("download")}Installer maintenant</button>` : ""}
+    <div class="steps-box">${installStepsHTML()}</div>`;
+  const sheet = openSheet({ title: "Installer l’appli", body, address: "installer" });
   sheet.body.addEventListener("click", async (event) => {
-    if (!event.target.closest("[data-install-now]") || !installPrompt) return;
-    installPrompt.prompt();
-    await installPrompt.userChoice.catch(() => null);
-    installPrompt = null;
+    if (!event.target.closest("[data-install-now]")) return;
+    await promptInstall();
     sheet.close();
   });
 }
+
+registerModal("installer", () => { openInstallSheet(); return true; });

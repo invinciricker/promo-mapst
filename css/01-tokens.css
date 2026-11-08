@@ -1,10 +1,15 @@
 /* =====================================================================================
-   01-tokens.css: the design choices of the app, in one place.
+   01-tokens.css: the design choices of the app, in one place ("design tokens").
 
-   Change a value here and it changes everywhere. Light mode comes first; the block
-   "prefers-color-scheme: dark" at the bottom is used when the phone is in dark mode.
-   Every text colour was checked against its background so it stays readable (contrast
-   of at least 4.5:1, the accessibility standard).
+   The values come from docs/design/mockups.html (Phase 3, « nouveau look »): change a
+   value here and it changes everywhere. Light mode comes first; the block
+   "prefers-color-scheme: dark" below is used when the phone is in dark mode.
+
+   Each colour comes in three:
+     --X        fills: bars, dots, progress, rings
+     --X-ink    text and icons in that colour, and filled buttons in that colour
+                (with --on-accent text). Reads at 4.5:1 or more on white and on --X-tint.
+     --X-tint   soft backgrounds: chips, icon tiles, the active tab
    ===================================================================================== */
 
 /* The font of the app, stored in vendor/fonts (one file holds every weight). */
@@ -17,117 +22,114 @@
 }
 
 :root {
-  /* ---- CAPA Sports colours ---------------------------------------------------- */
-  --navy: #103550;        /* header and tab bar */
-  --turquoise: #00E6BF;   /* main buttons, correct answers */
-  --orange: #F09000;      /* streak and XP (Réviser) */
-  --blue: #1070B0;        /* Azur: the courses */
+  color-scheme: light dark;
 
-  /* ---- Backgrounds and text (light mode) ------------------------------------- */
-  --bg: #F2F5F8;          /* behind everything */
-  --surface: #FFFFFF;     /* cards and sheets */
-  --surface-2: #F5F7FA;   /* boxes inside cards, inputs */
-  --fill: #E7ECF1;        /* tracks, segmented control, round buttons */
-  --thumb: #FFFFFF;       /* moving part of the segmented control */
-  --line: rgba(16, 53, 80, 0.10);     /* thin separators */
-  --text: #0D2232;        /* main text */
-  --text-2: #485C6F;      /* secondary text */
-  --text-3: #5F7184;      /* small hints */
-  --link: #0F69A6;
-  --danger: #C4302B;
-  --ok-ink: #007A66;      /* "turquoise" for text: real turquoise is too light on white */
-  --warn-soft: #FFF0D6;  --warn-ink: #8A4E00;   /* « à vérifier » notes */
-  --line-strong: rgba(16, 53, 80, 0.16);       /* borders of the answer buttons (Réviser) */
+  /* ---- Surfaces and text: bright; CAPA navy is the text colour, not a background ---- */
+  --bg: #F3F7FA;            /* behind everything */
+  --surface: #FFFFFF;       /* cards, sheets, the tab bar */
+  --surface-2: #EDF3F7;     /* boxes inside cards, tracks, inputs */
+  --line: #E1E9F0;          /* thin separators */
+  --ink: #103550;           /* text (CAPA navy) */
+  --ink-2: #4F6680;         /* secondary text */
+  --ink-3: #60738A;         /* hints, inactive tabs */
+  --on-accent: #FFFFFF;     /* text and icons on a filled --X-ink background */
+  --scrim: rgba(16, 53, 80, .42);   /* the veil behind a sheet */
 
-  /* Réviser: right answers (turquoise), wrong answers and lives (red) */
-  --good-soft: rgba(0, 230, 191, 0.16);  --good-panel: #DCF8F2;
-  --bad: #C4302B;  --on-bad: #FFFFFF;
-  --bad-soft: rgba(196, 48, 43, 0.09);   --bad-panel: #FDE9E8;
-  --heart: #E5484D;
+  /* ---- The Nice palette ------------------------------------------------------------ */
+  --azur: #1070B0;           --azur-ink: #1070B0;           --azur-tint: #E5F1FA;
+  --turquoise: #00E6BF;      --turquoise-ink: #007A65;      --turquoise-tint: #DCFAF2;
+  --soleil: #F09000;         --soleil-ink: #9A5800;         --soleil-tint: #FFF1DC;
+  --lavande: #7766EE;        --lavande-ink: #5B49D6;        --lavande-tint: #EEECFE;
+  --bougainvillier: #E0437C; --bougainvillier-ink: #BE2C62; --bougainvillier-tint: #FDE7EF;
+  --olivier: #3E9762;        --olivier-ink: #2E7A4E;        --olivier-tint: #E3F4E9;
+  --galet: #8E9BA8;          --galet-ink: #5A6B7C;          --galet-tint: #EEF1F4;
+  --citron: #E7B416;         --citron-ink: #7A5D00;         --citron-tint: #FFF5D3;
 
-  /* Header (top) and tab bar (bottom) */
-  --appbar-1: #0D2E46;  --appbar-2: #103550;  --appbar-3: #15476C;
-  --on-navy: #FFFFFF;
-  --on-navy-2: rgba(255, 255, 255, 0.78);
-  --tabbar-bg: rgba(16, 53, 80, 0.94);
+  /* The main button is always turquoise with navy text, in both modes. */
+  --btn: #00E6BF;
+  --on-btn: #103550;
 
-  /* Buttons */
-  --primary: var(--turquoise);
-  --on-primary: #062B3D;
-  --inverse: #0D2232;  --on-inverse: #FFFFFF;   /* dark pill (« Aujourd’hui », messages) */
+  /* One colour per mode: the active tab, the back buttons and the links inside it. */
+  --accueil: var(--soleil-ink);      --accueil-tint: var(--soleil-tint);
+  --reviser: var(--turquoise-ink);   --reviser-tint: var(--turquoise-tint);
+  --etudier: var(--lavande-ink);     --etudier-tint: var(--lavande-tint);   /* Phase 5 */
+  --planning: var(--azur-ink);       --planning-tint: var(--azur-tint);
 
-  /* Shadows (only in light mode; dark mode uses a thin outline instead) */
-  --shadow-1: 0 1px 2px rgba(16, 53, 80, 0.05), 0 4px 16px rgba(16, 53, 80, 0.06);
-  --shadow-2: 0 2px 6px rgba(16, 53, 80, 0.06), 0 18px 44px rgba(16, 53, 80, 0.16);
-  --scrim: rgba(7, 22, 34, 0.42);   /* dark veil behind a sheet */
+  /* ---- Type: one family, a small scale, weights 500 to 800 ------------------------ */
+  --font: "Plus Jakarta Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --t-hero: 800 40px/1.05 var(--font);      /* the welcome screen only */
+  --t-display: 800 26px/1.15 var(--font);   /* page titles */
+  --t-title: 700 17px/1.3 var(--font);      /* card and section titles */
+  --t-body: 500 15px/1.45 var(--font);
+  --t-strong: 650 15px/1.35 var(--font);    /* list rows */
+  --t-small: 500 13px/1.4 var(--font);
+  --t-micro: 650 11px/1.3 var(--font);      /* weekday letters, lesson numbers */
 
-  /* ---- Planning categories (named after Nice) ----------------------------------
-     solid: dots, bars, pebbles   soft: tinted backgrounds   ink: text on soft or white
-     on: text written on the solid colour                                               */
-  --azur: #1070B0;     --azur-soft: #E3EFF9;     --azur-ink: #0C5C93;     --azur-on: #FFFFFF;
-  --lavande: #6F55D0;  --lavande-soft: #EDE9FB;  --lavande-ink: #5640B4;  --lavande-on: #FFFFFF;
-  --olivier: #2A7F50;  --olivier-soft: #E1F2E8;  --olivier-ink: #1F6840;  --olivier-on: #FFFFFF;
-  --bougain: #CC2F7D;  --bougain-soft: #FBE5F0;  --bougain-ink: #A82264;  --bougain-on: #FFFFFF;
-  --galet: #828F9E;    --galet-soft: #ECEFF3;    --galet-ink: #4F5C69;    --galet-on: #0D2232;
-  --citron: #F2C200;   --citron-soft: #FFF4C7;   --citron-ink: #6E5500;   --citron-on: #2B2100;
-
-  /* ---- Sizes ------------------------------------------------------------------- */
-  --font: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  --radius-s: 10px;
-  --radius-m: 14px;
-  --radius-l: 20px;
-  --radius-xl: 28px;
-  --pad: 20px;              /* space on the left and right of the screen */
-  --tabbar-h: 64px;         /* height of the bottom bar (without the iPhone home bar) */
-  --rail-w: 104px;          /* width of the side bar on a laptop */
-  --ease: cubic-bezier(0.2, 0.8, 0.2, 1);   /* the soft "springy" curve of the animations */
+  /* ---- Shape: the bigger the surface, the rounder ---------------------------------- */
+  --r-sheet: 28px;
+  --r-hero: 24px;
+  --r-card: 20px;
+  --r-tile: 16px;
+  --r-control: 12px;
+  --r-pill: 999px;
+  --shadow: 0 1px 2px rgba(16, 53, 80, .05), 0 10px 28px -14px rgba(16, 53, 80, .28);
+  --shadow-up: 0 -12px 30px -18px rgba(16, 53, 80, .35);   /* sheets and the lesson feedback */
+  --gutter: 16px;                    /* space on the left and right of the screen */
+  --tabbar: 54px;                    /* height of the tab bar, without the iPhone home bar */
+  --rail: 96px;                      /* width of the side rail on a laptop */
+  --column: 640px;                   /* width of the content column on a laptop */
+  --ease: cubic-bezier(.2, .8, .2, 1);       /* soft, "springy" curve for most movements */
+  --ease-page: cubic-bezier(.32, .72, 0, 1); /* the iPhone curve for pages and sheets */
 }
 
-/* ---- Dark mode: used automatically when the phone is in dark mode ------------------ */
+/* ---- Dark mode: used automatically when the phone is in dark mode ------------------- */
 @media (prefers-color-scheme: dark) {
   :root {
-    --bg: #08141D;
-    --surface: #102130;
-    --surface-2: #15293A;
-    --fill: #1D3447;
-    --thumb: #2B4559;
-    --line: rgba(255, 255, 255, 0.08);
-    --text: #ECF2F7;
-    --text-2: #A9B8C6;
-    --text-3: #8C9CAD;
-    --link: #62B6F2;
-    --danger: #FF8178;
-    --ok-ink: #3FF0CF;
-    --warn-soft: rgba(240, 144, 0, 0.16);  --warn-ink: #FFC56B;
-    --line-strong: rgba(255, 255, 255, 0.14);
-
-    --good-soft: rgba(0, 230, 191, 0.14);  --good-panel: #0B302E;
-    --bad: #FF8178;  --on-bad: #2A0705;
-    --bad-soft: rgba(255, 129, 120, 0.14); --bad-panel: #351818;
-    --heart: #FF6369;
-
-    --appbar-1: #061723;  --appbar-2: #0A2538;  --appbar-3: #0E3350;
-    --tabbar-bg: rgba(12, 39, 59, 0.92);
-    --inverse: #ECF2F7;  --on-inverse: #0D2232;
-
-    --shadow-1: 0 0 0 1px rgba(255, 255, 255, 0.05);
-    --shadow-2: 0 0 0 1px rgba(255, 255, 255, 0.07), 0 18px 44px rgba(0, 0, 0, 0.5);
-    --scrim: rgba(0, 0, 0, 0.6);
-
-    --azur-soft: rgba(16, 112, 176, 0.24);    --azur-ink: #8DC7F4;
-    --lavande-soft: rgba(111, 85, 208, 0.26); --lavande-ink: #C4B7F8;
-    --olivier-soft: rgba(42, 127, 80, 0.30);  --olivier-ink: #8FDEB1;
-    --bougain-soft: rgba(204, 47, 125, 0.26); --bougain-ink: #F8A6CD;
-    --galet-soft: rgba(138, 151, 166, 0.18);  --galet-ink: #BAC5D0;
-    --citron-soft: rgba(242, 194, 0, 0.16);   --citron-ink: #F6D85E;
+    --bg: #0B1A28;
+    --surface: #132637;
+    --surface-2: #1B3146;
+    --line: #23394E;
+    --ink: #EAF2F8;
+    --ink-2: #A9BCCC;
+    --ink-3: #7F98AD;
+    --on-accent: #0B1A28;
+    --scrim: rgba(0, 0, 0, .55);
+    --azur: #3D9AE0;           --azur-ink: #7CC0F2;           --azur-tint: rgba(61, 154, 224, .18);
+    --turquoise: #00E6BF;      --turquoise-ink: #41EDCF;      --turquoise-tint: rgba(0, 230, 191, .14);
+    --soleil: #FF9F1C;         --soleil-ink: #FFB95C;         --soleil-tint: rgba(255, 159, 28, .16);
+    --lavande: #8F82FF;        --lavande-ink: #B4ABFF;        --lavande-tint: rgba(143, 130, 255, .18);
+    --bougainvillier: #FF5C93; --bougainvillier-ink: #FF8FB5; --bougainvillier-tint: rgba(255, 92, 147, .16);
+    --olivier: #4FBF7F;        --olivier-ink: #86DAA8;        --olivier-tint: rgba(79, 191, 127, .16);
+    --galet: #8E9BA8;          --galet-ink: #B9C4CF;          --galet-tint: rgba(142, 155, 168, .16);
+    --citron: #F5CF4A;         --citron-ink: #F8DA74;         --citron-tint: rgba(245, 207, 74, .15);
+    --shadow: 0 1px 2px rgba(0, 0, 0, .3), 0 12px 28px -16px rgba(0, 0, 0, .7);
+    --shadow-up: 0 -12px 30px -16px rgba(0, 0, 0, .7);
   }
 }
 
-/* Category hooks: add class "cat-cours" (etc.) to an element and its children can use
-   var(--c), var(--soft), var(--ink) and var(--on). */
-.cat-cours   { --c: var(--azur);    --soft: var(--azur-soft);    --ink: var(--azur-ink);    --on: var(--azur-on); }
-.cat-prepa   { --c: var(--lavande); --soft: var(--lavande-soft); --ink: var(--lavande-ink); --on: var(--lavande-on); }
-.cat-centre  { --c: var(--olivier); --soft: var(--olivier-soft); --ink: var(--olivier-ink); --on: var(--olivier-on); }
-.cat-epreuve { --c: var(--bougain); --soft: var(--bougain-soft); --ink: var(--bougain-ink); --on: var(--bougain-on); }
-.cat-libre   { --c: var(--galet);   --soft: var(--galet-soft);   --ink: var(--galet-ink);   --on: var(--galet-on); }
-.cat-perso   { --c: var(--citron);  --soft: var(--citron-soft);  --ink: var(--citron-ink);  --on: var(--citron-on); }
+/* ---- Colour hooks ---------------------------------------------------------------------
+   Put class "tone-olivier" (etc.) on an element: it and its children can use
+   var(--c), var(--c-ink) and var(--c-tint). The planning categories and the Réviser
+   themes use them, so a new colour needs no new CSS rule anywhere else.            */
+.tone-azur           { --c: var(--azur);           --c-ink: var(--azur-ink);           --c-tint: var(--azur-tint); }
+.tone-turquoise      { --c: var(--turquoise);      --c-ink: var(--turquoise-ink);      --c-tint: var(--turquoise-tint); }
+.tone-soleil         { --c: var(--soleil);         --c-ink: var(--soleil-ink);         --c-tint: var(--soleil-tint); }
+.tone-lavande        { --c: var(--lavande);        --c-ink: var(--lavande-ink);        --c-tint: var(--lavande-tint); }
+.tone-bougainvillier { --c: var(--bougainvillier); --c-ink: var(--bougainvillier-ink); --c-tint: var(--bougainvillier-tint); }
+.tone-olivier        { --c: var(--olivier);        --c-ink: var(--olivier-ink);        --c-tint: var(--olivier-tint); }
+.tone-galet          { --c: var(--galet);          --c-ink: var(--galet-ink);          --c-tint: var(--galet-tint); }
+.tone-citron         { --c: var(--citron);         --c-ink: var(--citron-ink);         --c-tint: var(--citron-tint); }
+
+/* The planning categories (content/planning.json) and their Nice colours. */
+.cat-cours   { --c: var(--azur);           --c-ink: var(--azur-ink);           --c-tint: var(--azur-tint); }
+.cat-prepa   { --c: var(--lavande);        --c-ink: var(--lavande-ink);        --c-tint: var(--lavande-tint); }
+.cat-centre  { --c: var(--olivier);        --c-ink: var(--olivier-ink);        --c-tint: var(--olivier-tint); }
+.cat-epreuve { --c: var(--bougainvillier); --c-ink: var(--bougainvillier-ink); --c-tint: var(--bougainvillier-tint); }
+.cat-libre   { --c: var(--galet);          --c-ink: var(--galet-ink);          --c-tint: var(--galet-tint); }
+.cat-perso   { --c: var(--citron);         --c-ink: var(--citron-ink);         --c-tint: var(--citron-tint); }
+
+/* The colour of each mode (active tab, back buttons). */
+.mode-accueil  { --mode: var(--accueil);  --mode-tint: var(--accueil-tint); }
+.mode-reviser  { --mode: var(--reviser);  --mode-tint: var(--reviser-tint); }
+.mode-etudier  { --mode: var(--etudier);  --mode-tint: var(--etudier-tint); }
+.mode-planning { --mode: var(--planning); --mode-tint: var(--planning-tint); }

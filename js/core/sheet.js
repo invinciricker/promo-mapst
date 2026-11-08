@@ -1,41 +1,44 @@
 /* =====================================================================================
    sheet.js: the panels that slide up from the bottom of the screen ("bottom sheets").
 
-   openSheet({ title, body }) shows one and returns { el, body, close }.
-   A sheet closes with the × button, a tap on the dark veil, the Escape key, a swipe
-   down on its top part, or the Android "back" button (thanks to the browser history).
+   openSheet({ title, body, address }) shows one and returns { el, body, close }.
+   A sheet closes with its × button, a tap on the veil, the Escape key, a swipe down on
+   its top part, or the back button of the phone.
+   Each sheet has its own address (see js/core/nav.js): address ["seance", "2026-11-09-am"]
+   writes #planning?seance=2026-11-09-am while it is open.
    ===================================================================================== */
 
 import { $, esc, icon, setHTML } from "./dom.js";
+import { openModal, closeModal, replaceModal, forgetModal } from "./nav.js";
 
-const stack = [];     // sheets currently open (the last one is on top)
+const stack = [];     // sheets open now (the last one is on top)
 let counter = 0;
 
 /**
  * Opens a sheet.
- *   title       text of the title
- *   body        HTML text (or an element) for the content
- *   className   extra class for the sheet
- *   replaceTop  true: replaces the sheet already open instead of stacking (used when one
- *               sheet leads to another, e.g. details -> edit)
- *   onClose     function called once the sheet is closed
+ *   title      text of the title (in the head, next to ×)
+ *   head       HTML for the head instead of the title (a coloured chip, for example)
+ *   body       HTML text (or an element) for the content
+ *   className  extra class for the sheet (a colour: "cat-cours"...)
+ *   address    [key, value] or key: the address of the sheet (?key=value)
+ *   replace    a sheet already open that this one replaces (details -> edit form):
+ *              no new step in the history
+ *   onClose    function called once the sheet is closed
  */
-export function openSheet({ title = "", body = "", className = "", replaceTop = false, onClose = null } = {}) {
-  const previous = stack[stack.length - 1];
-  const reuseHistory = replaceTop && previous && !previous.closed;
-  if (reuseHistory) finishClose(previous, { instant: true });
-
+export function openSheet({ title = "", head = "", body = "", className = "", address = "feuille",
+  replace = null, onClose = null } = {}) {
+  const [key, value = ""] = Array.isArray(address) ? address : [address, ""];
   const id = `sheet-${++counter}`;
   const layer = document.createElement("div");
   layer.className = "sheet-layer";
   setHTML(layer, `
     <div class="sheet-backdrop" data-sheet-close></div>
-    <div class="sheet ${esc(className)}" role="dialog" aria-modal="true" aria-labelledby="${id}-title" tabindex="-1">
+    <div class="sheet ${esc(className)}" role="dialog" aria-modal="true" ${title ? `aria-labelledby="${id}-title"` : ""} tabindex="-1">
       <div class="sheet__top">
         <div class="sheet__grabber" aria-hidden="true"></div>
         <div class="sheet__head">
-          <h2 class="sheet__title" id="${id}-title">${esc(title)}</h2>
-          <button type="button" class="icon-btn" data-sheet-close aria-label="Fermer">${icon("close")}</button>
+          <div class="sheet__head-start">${head || `<h2 class="sheet__title" id="${id}-title">${esc(title)}</h2>`}</div>
+          <button type="button" class="icon-btn icon-btn--soft" data-sheet-close aria-label="Fermer">${icon("x")}</button>
         </div>
       </div>
       <div class="sheet__body"></div>
@@ -45,22 +48,22 @@ export function openSheet({ title = "", body = "", className = "", replaceTop = 
   if (typeof body === "string") setHTML(bodyEl, body);
   else if (body) bodyEl.appendChild(body);
 
-  $("#layers").appendChild(layer);
-  const entry = {
-    id, layer, sheet, onClose,
-    returnFocus: reuseHistory ? previous.returnFocus : document.activeElement,
-    closed: false, waiting: [],
-  };
-  stack.push(entry);
+  const entry = { id, layer, sheet, onClose, closed: false, waiting: [], modal: null,
+    returnFocus: replace && replace.entry ? replace.entry.returnFocus : document.activeElement };
 
-  // A history step, so that the "back" button of Android closes the sheet.
-  if (reuseHistory) {
-    history.replaceState({ sheetId: id }, "");
+  if (replace && replace.entry && !replace.entry.closed && replace.entry.modal) {
+    // Takes the place of the sheet open now: same step in the history, new address.
+    entry.modal = replace.entry.modal;
+    entry.modal.close = () => finishClose(entry);
+    replaceModal(entry.modal, { key, value });
+    replace.entry.modal = null;
+    finishClose(replace.entry, { instant: true });
   } else {
-    history.pushState({ sheetId: id }, "");
+    entry.modal = openModal({ key, value, close: () => finishClose(entry) });
   }
-  entry.inHistory = true;
 
+  $("#layers").appendChild(layer);
+  stack.push(entry);
   layer.addEventListener("click", (event) => {
     if (event.target.closest("[data-sheet-close]")) closeSheet(entry);
   });
@@ -73,7 +76,8 @@ export function openSheet({ title = "", body = "", className = "", replaceTop = 
     sheet.focus({ preventScroll: true });
   });
 
-  return { el: sheet, body: bodyEl, close: () => closeSheet(entry) };
+  const handle = { el: sheet, body: bodyEl, entry, close: () => closeSheet(entry) };
+  return handle;
 }
 
 /** Closes a sheet (the top one if none is given). Returns a promise, done once closed. */
@@ -81,18 +85,9 @@ export function closeSheet(entry = stack[stack.length - 1]) {
   return new Promise((resolve) => {
     if (!entry || entry.closed) return resolve();
     entry.waiting.push(resolve);
-    const state = history.state;
-    if (entry.inHistory && state && state.sheetId === entry.id) {
-      history.back();           // "popstate" below finishes the job
-    } else {
-      finishClose(entry);
-    }
+    if (entry.modal) closeModal(entry.modal);     // through the history (like « back »)
+    else finishClose(entry);
   });
-}
-
-/** Closes every open sheet (used when the screen changes). */
-export function closeAllSheets() {
-  while (stack.length) finishClose(stack[stack.length - 1], { instant: true });
 }
 
 export function hasOpenSheet() {
@@ -102,12 +97,13 @@ export function hasOpenSheet() {
 function finishClose(entry, { instant = false } = {}) {
   if (entry.closed) return;
   entry.closed = true;
+  if (entry.modal) forgetModal(entry.modal);
   stack.splice(stack.indexOf(entry), 1);
   if (instant) {
     entry.layer.remove();
   } else {
     entry.layer.classList.remove("is-open");
-    setTimeout(() => entry.layer.remove(), 450);
+    setTimeout(() => entry.layer.remove(), 460);
   }
   if (!stack.length) document.documentElement.classList.remove("has-sheet");
   if (!instant && entry.returnFocus && entry.returnFocus.focus && document.contains(entry.returnFocus)) {
@@ -116,12 +112,6 @@ function finishClose(entry, { instant = false } = {}) {
   if (entry.onClose) entry.onClose();
   entry.waiting.forEach((resolve) => resolve());
 }
-
-// Back button (or history.back() above): close the sheet on top.
-window.addEventListener("popstate", () => {
-  const top = stack[stack.length - 1];
-  if (top) finishClose(top);
-});
 
 // Escape key closes the sheet on top; Tab stays inside the sheet.
 document.addEventListener("keydown", (event) => {
@@ -160,8 +150,7 @@ function enableDragToClose(entry) {
   handle.addEventListener("pointermove", (event) => {
     if (!dragging) return;
     lastY = event.clientY;
-    const dy = Math.max(0, lastY - startY);
-    entry.sheet.style.transform = `translateY(${dy}px)`;
+    entry.sheet.style.transform = `translateY(${Math.max(0, lastY - startY)}px)`;
   });
   const end = () => {
     if (!dragging) return;

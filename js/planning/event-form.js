@@ -12,12 +12,14 @@ import { getEvent, saveEvent, deleteEvent } from "./personal.js";
 /**
  * openEventForm({ eventId })        changes an existing event
  * openEventForm({ date: "2026-11-17" })  adds a new one on that day
+ * Its address is #…?evenement=<id> (or ?evenement=nouveau).
  */
-export function openEventForm({ eventId = null, date = null, replaceTop = false } = {}) {
+export function openEventForm({ eventId = null, date = null } = {}) {
   const existing = eventId ? getEvent(eventId) : null;
+  if (eventId && !existing) return false;          // an event deleted since (old address)
 
   const body = `
-    <form class="sheet__body" novalidate>
+    <form class="ev-form" novalidate>
       <label class="field">
         <span class="field__label">Quoi</span>
         <input class="input" name="ev-title" type="text" maxlength="80" autocomplete="off"
@@ -29,7 +31,7 @@ export function openEventForm({ eventId = null, date = null, replaceTop = false 
       </label>
       <label class="switch-row">
         <span>Toute la journée</span>
-        <span class="switch"><input type="checkbox" name="ev-allday" role="switch"><span class="switch__track"></span></span>
+        <span class="switch"><input type="checkbox" name="ev-allday" role="switch" aria-label="Toute la journée"><span class="switch__track"></span></span>
       </label>
       <div class="fields-2" data-times>
         <label class="field"><span class="field__label">Début</span><input class="input" name="ev-start" type="time"></label>
@@ -53,13 +55,18 @@ export function openEventForm({ eventId = null, date = null, replaceTop = false 
       </label>
       <p class="form-msg" role="alert"></p>
       <div class="sheet__actions">
-        <button type="submit" class="btn btn--primary btn--block">${icon("check")}Enregistrer</button>
-        ${existing ? `<button type="button" class="btn btn--danger btn--block" data-delete>${icon("trash")}Supprimer</button>` : ""}
+        <button type="submit" class="btn btn--primary btn--block">Enregistrer</button>
+        ${existing ? `<button type="button" class="btn btn--danger btn--block" data-delete>${icon("trash", "icon--s")}<span>Supprimer</span></button>` : ""}
       </div>
-      <p class="footer">Enregistré sur ce téléphone seulement, en couleur Citron.</p>
+      <p class="sheet-hint">Enregistré sur ce téléphone seulement, en couleur Citron.</p>
     </form>`;
 
-  const sheet = openSheet({ title: existing ? "Modifier l’événement" : "Nouvel événement", body, className: "cat-perso", replaceTop });
+  const sheet = openSheet({
+    title: existing ? "Modifier l’événement" : "Nouvel événement",
+    body,
+    className: "cat-perso",
+    address: ["evenement", existing ? existing.id : "nouveau"],
+  });
   const form = sheet.body.querySelector("form");
   const field = (name) => form.elements.namedItem(name);
   const message = form.querySelector(".form-msg");
@@ -115,7 +122,7 @@ export function openEventForm({ eventId = null, date = null, replaceTop = false 
       // First tap: asks to confirm. Second tap: deletes.
       if (!deleteButton.classList.contains("is-armed")) {
         deleteButton.classList.add("is-armed");
-        deleteButton.lastChild.textContent = "Confirmer la suppression";
+        deleteButton.querySelector("span").textContent = "Confirmer la suppression";
         return;
       }
       deleteEvent(existing.id);
@@ -124,6 +131,7 @@ export function openEventForm({ eventId = null, date = null, replaceTop = false 
     });
   }
 
-  // On a phone, open the keyboard only for a new event.
-  if (!existing) setTimeout(() => field("ev-title").focus({ preventScroll: true }), 420);
+  // On a laptop, the cursor goes straight into the title of a new event.
+  if (!existing && window.matchMedia("(pointer: fine)").matches) setTimeout(() => field("ev-title").focus({ preventScroll: true }), 420);
+  return true;
 }

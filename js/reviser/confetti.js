@@ -1,10 +1,10 @@
 /* =====================================================================================
-   confetti.js: a burst of confetti in CAPA Sports' colours at the end of a lesson.
+   confetti.js: a burst of confetti in the colours of Nice at the end of a lesson.
    Drawn on a <canvas> for 2 seconds, then removed. People who asked their phone for less
    motion don't get it.
    ===================================================================================== */
 
-const COLOURS = ["#00E6BF", "#F09000", "#1070B0", "#FFFFFF", "#FFC94D"];
+const COLOURS = ["#00E6BF", "#F09000", "#1070B0", "#E0437C", "#7766EE", "#E7B416"];   // the Nice palette
 
 export function launchConfetti(host = document.body) {
   if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;

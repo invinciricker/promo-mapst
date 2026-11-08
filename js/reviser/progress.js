@@ -15,6 +15,9 @@
      done      the questions answered right in a finished lesson:
                2 = right the first time, 1 = right after a mistake (the best result is kept)
      cards     the questions answered wrong, for « Mes erreurs » (see below)
+     runs      the lessons started and left before the end, to « Continuer » them later
+               (by lesson, with the ids of the questions already answered right; ids that
+               are no longer in the lesson are ignored)
      lastTheme the theme played last, so « Continuer » goes back to it
 
    A lesson is « terminée » when all its questions are in "done". If new questions are
@@ -44,7 +47,7 @@ export const XP = {
 };
 
 const today = () => toISO(new Date());
-const blank = () => ({ v: 1, xp: 0, days: {}, done: {}, cards: {}, lastTheme: null });
+const blank = () => ({ v: 1, xp: 0, days: {}, done: {}, cards: {}, runs: {}, lastTheme: null });
 const isMap = (value) => Boolean(value) && typeof value === "object" && !Array.isArray(value);
 
 let state = null;
@@ -55,7 +58,7 @@ function read() {
     state = blank();
     if (isMap(saved) && saved.v === 1) {
       if (Number.isFinite(saved.xp) && saved.xp > 0) state.xp = Math.round(saved.xp);
-      for (const field of ["days", "done", "cards"]) if (isMap(saved[field])) state[field] = saved[field];
+      for (const field of ["days", "done", "cards", "runs"]) if (isMap(saved[field])) state[field] = saved[field];
       if (typeof saved.lastTheme === "string") state.lastTheme = saved.lastTheme;
     }
   }
@@ -121,6 +124,61 @@ export function lessonInfo(lesson) {
 }
 
 /**
+ * A lesson started and left before the end (null if none): what was already done.
+ *   right   ids answered right in this run        first   the ones right the first time
+ *   missed  ids answered wrong, not right yet      lives, xp, mistakes   as when it was left
+ */
+export function lessonRun(lesson) {
+  const run = read().runs[lesson.key];
+  if (!isMap(run)) return null;
+  const ids = new Set(lesson.questions.map((q) => q.id));
+  const keep = (list) => (Array.isArray(list) ? [...new Set(list)].filter((id) => ids.has(id)) : []);
+  const right = keep(run.right);
+  const missed = keep(run.missed).filter((id) => !right.includes(id));
+  if (!right.length && !missed.length) return null;
+  const lives = Number.isInteger(run.lives) ? Math.min(3, Math.max(1, run.lives)) : 3;
+  return {
+    right,
+    first: keep(run.first).filter((id) => right.includes(id)),
+    missed,
+    lives,
+    xp: Number.isFinite(run.xp) && run.xp > 0 ? Math.round(run.xp) : 0,
+    mistakes: Number.isInteger(run.mistakes) && run.mistakes > 0 ? run.mistakes : 0,
+  };
+}
+
+/** Saves where a lesson stands, after each answer (so it can be continued later). */
+export function saveRun(lesson, run) {
+  read().lastTheme = lesson.theme;
+  state.runs[lesson.key] = {
+    right: run.right, first: run.first, missed: run.missed,
+    lives: run.lives, xp: run.xp, mistakes: run.mistakes, day: today(),
+  };
+  write();
+}
+
+/** The lesson is finished, or lost (all the lives): the next time starts from the beginning. */
+export function clearRun(lesson) {
+  if (!read().runs[lesson.key]) return;
+  delete state.runs[lesson.key];
+  write();
+}
+
+/**
+ * What the ring of a lesson shows: { answered, total, verb }
+ *   verb « Commencer » (nothing yet), « Continuer » (started, or new questions),
+ *   « Refaire » (finished).
+ */
+export function lessonRing(lesson) {
+  const info = lessonInfo(lesson);
+  const run = lessonRun(lesson);
+  if (run) return { answered: run.right.length, total: info.total, verb: "Continuer", run };
+  if (info.complete) return { answered: info.total, total: info.total, verb: "Refaire", run: null };
+  if (info.started) return { answered: info.done, total: info.total, verb: "Continuer", run: null };
+  return { answered: 0, total: info.total, verb: "Commencer", run: null };
+}
+
+/**
  * A lesson can be played if it is the first of its theme, if the one before was
  * finished, or in « Mode relecture » (every lesson is open there).
  */
@@ -130,15 +188,29 @@ export function isUnlocked(theme, lesson, relecture = false) {
   return position <= 0 || lessonInfo(theme.lessons[position - 1]).started;
 }
 
-/** { done, total, share }: lessons « terminées » in a theme, and the share of its questions done. */
+/**
+ * Where a theme stands: { done, total, share, started }
+ *   done, total  lessons « terminées », and all its lessons
+ *   share        the share of its questions answered right (lessons left in the middle count)
+ *   started      at least one question answered
+ */
 export function themeProgress(theme) {
-  const infos = theme.lessons.map(lessonInfo);
-  const questions = infos.reduce((sum, info) => sum + info.total, 0);
-  const answered = infos.reduce((sum, info) => sum + info.done, 0);
+  const doneMap = read().done;
+  let questions = 0;
+  let answered = 0;
+  let complete = 0;
+  for (const lesson of theme.lessons) {
+    const run = lessonRun(lesson);
+    const inRun = new Set(run ? run.right : []);
+    questions += lesson.questions.length;
+    answered += lesson.questions.filter((q) => doneMap[q.id] || inRun.has(q.id)).length;
+    if (lessonInfo(lesson).complete) complete++;
+  }
   return {
-    done: infos.filter((info) => info.complete).length,
+    done: complete,
     total: theme.lessons.length,
     share: questions ? answered / questions : 0,
+    started: answered > 0,
   };
 }
 
@@ -201,7 +273,7 @@ export function recordAnswer(questionId, right, { firstTry = true, review = fals
 
 /**
  * Called when a lesson or a review is finished (not when it is left or lost).
- *   result: { kind: "lesson" | "review", themeId, xp, questionIds, firstTryIds }
+ *   result: { kind: "lesson" | "review", themeId, lessonKey, xp, questionIds, firstTryIds }
  *     questionIds  the questions of the lesson (all answered right by now)
  *     firstTryIds  the ones answered right the first time
  * Returns what the end screen shows: { xp, xpTotal, streak, streakGrew }.
@@ -223,13 +295,14 @@ export function finishSession(result) {
     }
   }
   if (result.themeId) s.lastTheme = result.themeId;
+  if (result.lessonKey) delete s.runs[result.lessonKey];
   write();
 
   const after = streak();
   return { xp: result.xp, xpTotal: s.xp, streak: after.count, streakGrew: !before.doneToday };
 }
 
-/** Erases everything Réviser saved on this phone (button in Infos). */
+/** Erases everything Réviser saved on this phone (Profil › Ce que l’appli garde). */
 export function resetProgress() {
   state = blank();
   remove(KEY);
@@ -238,5 +311,5 @@ export function resetProgress() {
 /** Is there any progress at all? (to show or hide the reset button) */
 export function hasProgress() {
   const s = read();
-  return s.xp > 0 || Object.keys(s.cards).length > 0 || Object.keys(s.done).length > 0;
+  return s.xp > 0 || Object.keys(s.cards).length > 0 || Object.keys(s.done).length > 0 || Object.keys(s.runs).length > 0;
 }

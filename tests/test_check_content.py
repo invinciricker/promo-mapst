@@ -86,7 +86,7 @@ check("typo collision is a warning", code == 0 and "« ostéoclastes » would be
 code, out = run(THEMES, [qcm("a-1", status="publie")])
 check("unknown status is a problem", code == 1 and "\"status\" must be" in out, out)
 code, out = run(THEMES, [qcm("a-1", status="brouillon")] * 1 + [qcm("a-2", status="verifie")])
-check("summary says hidden until 5 verifie", code == 0 and "hidden from the class until 5 are verifie" in out, out)
+check("summary says hidden until a lesson has 5 questions", code == 0 and "hidden from the class until it has 5 questions" in out, out)
 
 print("\n".join(f"{'PASS' if ok else 'FAIL'}  {name}" for name, ok in results))
 passed = sum(ok for _, ok in results)

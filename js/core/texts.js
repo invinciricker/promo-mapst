@@ -4,7 +4,8 @@
 
 export const APP_NAME = "Promo MAPST";
 
-/** Required at the bottom of every screen (see CLAUDE.md). */
-export const FOOTER = "Application non officielle créée par un stagiaire. En cas de doute, vérifie dans tes cours.";
+/** Shown at the bottom of Profil. Change it when you publish a new version. */
+export const APP_VERSION = "Phase 3 · 8 novembre 2026";
 
-export const footerHTML = () => `<p class="footer">${FOOTER}</p>`;
+/** Required by CLAUDE.md: on Profil, and at the bottom of the main pages. */
+export const FOOTER = "Application non officielle créée par un stagiaire. En cas de doute, vérifie dans tes cours.";

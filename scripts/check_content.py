@@ -4,13 +4,16 @@ Checks the content of Réviser before you publish it:
     python3 scripts/check_content.py
     python3 scripts/check_content.py path/to/content     (another folder, used by the tests)
 
-It reads content/themes.json and content/questions.json and prints:
+It reads content/themes.json, content/questions.json and content/planning-fixes.json, and prints:
   - every PROBLEM it finds (a missing field, a wrong index, an unknown theme, a gap in the
     lesson numbers, a hint that gives the answer...), with the id of the question;
   - WARNINGS: things to look at, which do not block (a lesson title without questions,
     a wrong answer that the « one typo » rule would accept...);
   - a summary: for each theme and lesson, how many questions, their status, and whether
-    the class can see the lesson yet.
+    the class can see the lesson yet (since 7 Nov 2026 everyone sees "brouillon" and
+    "verifie" questions; a lesson appears once it has 5 of them).
+  - the corrections of the planning (content/planning-fixes.json): their format, and
+    whether content/planning.json already has them.
 
 If there is at least one problem, it ends with an error: GitHub shows a red cross on the
 pull request (see .github/workflows/checks.yml) and the problems are in its log.
@@ -29,7 +32,7 @@ ROOT = Path(__file__).resolve().parent.parent
 CONTENT = Path(sys.argv[1]).resolve() if len(sys.argv) > 1 else ROOT / "content"
 TYPES = ("qcm", "saisie", "paires")
 STATUSES = ("brouillon", "verifie", "exemple")
-MIN_CHECKED = 5            # same rule as js/reviser/content.js: a lesson is shown with 5 "verifie"
+MIN_QUESTIONS = 5          # same rule as js/reviser/content.js: shown with 5 "verifie" or "brouillon"
 TYPO_MIN_LENGTH = 8        # same rule as js/reviser/answer.js: one typo forgiven from 8 letters
 problems = []
 warnings = []
@@ -345,10 +348,74 @@ for tid in theme_ids:
             count[q.get("status")] += 1
         detail = ", ".join(f"{count[s]} {s}" for s in STATUSES if count[s])
         title = titles.get(tid, {}).get(n)
-        shown = count["verifie"] >= MIN_CHECKED or count["exemple"] > 0
+        shown = count["verifie"] + count["brouillon"] >= MIN_QUESTIONS or count["exemple"] > 0
         size_note = "" if 8 <= len(items) <= 10 or count["exemple"] else "; the rule is 8 to 10 questions"
         print(f"    leçon {n}{f' « {title} »' if title else ''}: {len(items)} questions ({detail})"
-              f" - {'shown to the class' if shown else f'hidden from the class until {MIN_CHECKED} are verifie'}{size_note}")
+              f" - {'shown to the class' if shown else f'hidden from the class until it has {MIN_QUESTIONS} questions'}{size_note}")
+
+
+# ---- Corrections of the planning (content/planning-fixes.json) -------------------------------
+DATE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
+
+
+def check_planning_fixes():
+    """The format of each correction (CLAUDE.md), and whether planning.json already has it.
+    scripts/export_planning.py applies them; this only checks."""
+    path = CONTENT / "planning-fixes.json"
+    if not path.is_file():
+        return
+    doc = load("planning-fixes.json")
+    if doc is None:
+        return
+    fixes = doc.get("fixes") if isinstance(doc, dict) else None
+    if not isinstance(fixes, list):
+        problems.append('planning-fixes.json: must be { "about": ..., "fixes": [ ... ] }')
+        return
+    planning = None
+    if (CONTENT / "planning.json").is_file():
+        try:
+            planning = json.loads((CONTENT / "planning.json").read_text(encoding="utf-8"))
+        except json.JSONDecodeError:
+            problems.append("planning.json: not valid JSON")
+    ids = set()
+    for i, fix in enumerate(fixes):
+        where = f"planning-fixes.json, fix {i + 1}"
+        if not isinstance(fix, dict):
+            problems.append(f"{where}: is not an object {{...}}")
+            continue
+        if text(fix.get("id")):
+            where = f"planning-fixes.json, {fix['id']}"
+            if fix["id"] in ids:
+                problems.append(f"{where}: this id is used twice")
+            ids.add(fix["id"])
+        else:
+            problems.append(f"{where}: needs an \"id\"")
+        for field in ("added", "from", "to"):
+            if not DATE.match(str(fix.get(field, ""))):
+                problems.append(f"{where}: \"{field}\" must be a date like 2026-11-07")
+        if DATE.match(str(fix.get("from", ""))) and DATE.match(str(fix.get("to", ""))) and fix["from"] > fix["to"]:
+            problems.append(f"{where}: \"from\" is after \"to\"")
+        for field in ("match", "set"):
+            if not isinstance(fix.get(field), dict) or not fix[field]:
+                problems.append(f"{where}: \"{field}\" must list fields of a half-day, like {{ \"planning\": \"MSP 1\" }}")
+        if fix.get("stage") is not None and not (isinstance(fix["stage"], dict) and text(fix["stage"].get("title"))):
+            problems.append(f"{where}: \"stage\" needs a \"title\" and a \"text\"")
+        if fix.get("check") is not None and not (isinstance(fix["check"], dict) and text(fix["check"].get("title")) and text(fix["check"].get("text"))):
+            problems.append(f"{where}: \"check\" needs a \"title\" and a \"text\"")
+        if fix.get("category") is not None and not (isinstance(fix["category"], dict) and text(fix["category"].get("id")) and text(fix["category"].get("label"))):
+            problems.append(f"{where}: \"category\" needs an \"id\" and a \"label\"")
+        # Is it already in content/planning.json? (export_planning.py applies it)
+        if planning and isinstance(fix.get("match"), dict) and isinstance(fix.get("set"), dict) and fix["match"] and DATE.match(str(fix.get("from", ""))):
+            slots = [slot for key, day in planning.get("days", {}).items() if fix["from"] <= key <= str(fix.get("to", ""))
+                     for slot in day.get("slots", []) if all(slot.get(k) == v for k, v in fix["match"].items())]
+            if not slots:
+                warnings.append(f"{where}: no half-day of planning.json matches \"match\" between {fix['from']} and {fix.get('to')}")
+            elif any(slot.get(k) != v for slot in slots for k, v in fix["set"].items()):
+                warnings.append(f"{where}: not applied to planning.json yet (run scripts/export_planning.py)")
+    print(f"{len(fixes)} correction(s) of the planning (planning-fixes.json)")
+
+
+check_planning_fixes()
 
 if warnings:
     print(f"\n{len(warnings)} warning(s) (to look at, they do not block):")

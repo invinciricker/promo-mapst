@@ -1,88 +1,180 @@
 /* =====================================================================================
-   06-screens.css: the Réviser and Étudier screens (« Bientôt » for now) and Infos.
+   06-screens.css: the welcome (mockups 1 and 2), Accueil (3, 4 and 13), Profil (8),
+   its pages, and the « Rapport de relecture ».
+   Text written over the pictures of the bay is navy (white at night), whatever the mode
+   of the phone: it sits on the picture, not on the page.
    ===================================================================================== */
 
-/* ---- Big coloured card at the top of Réviser and Étudier ---------------------------- */
+/* ---- The welcome ------------------------------------------------------------------- */
+.welcome {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  overflow: hidden;
+  background: var(--bg);
+  padding-top: env(safe-area-inset-top, 0px);
+  transition: opacity .35s ease;
+}
+.welcome.is-leaving { opacity: 0; pointer-events: none; }
+.wl-step { position: absolute; inset: env(safe-area-inset-top, 0px) 0 0 0; display: flex; flex-direction: column; }
+
+/* 1. Bienvenue: the dawn scene, anchored at the bottom, fading into the page at the top */
+.wl-scene { position: absolute; inset: 0; background: linear-gradient(#A9D0F0, #F5D7E3 48%, #FFD6AD 84%); }
+.wl-scene svg, .wl-scene img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: 50% 100%; }
+.wl-scene:not(.is-ready) > * { opacity: 0; }
+.wl-scene.is-ready > * { animation: fade-in .4s ease both; }
+.wl-fade { position: absolute; inset: 0 0 auto 0; height: 90px; background: linear-gradient(var(--bg), transparent); }
+.wl-brand { position: absolute; left: 28px; right: 28px; top: 65px; }
+.wl-title { font: var(--t-hero); letter-spacing: -.035em; margin: 0 0 12px; color: #103550; animation: fade-up .8s var(--ease) .05s both; }
+.wl-sub { max-width: 300px; font: 500 17px/1.45 var(--font); color: #2E4D68; animation: fade-up .8s var(--ease) .2s both; }
+.wl-cta { position: absolute; left: 24px; right: 24px; bottom: calc(30px + env(safe-area-inset-bottom, 0px)); text-align: center; }
+.wl-note { margin: 12px 0 0; font: var(--t-small); color: #6A7B8B; }
+.wl-sun { animation: sun-rise .95s cubic-bezier(.2, .7, .2, 1) both; }
+@keyframes sun-rise { from { transform: translateY(26px); } to { transform: none; } }
+
+/* 2. and 3. Ton prénom, Installe l'appli */
+.wl-page {
+  overflow-y: auto;
+  padding: 4px max(var(--gutter), env(safe-area-inset-right, 0px)) calc(34px + env(safe-area-inset-bottom, 0px)) max(var(--gutter), env(safe-area-inset-left, 0px));
+}
+.wl-page > *, .wl-form { width: 100%; max-width: 560px; margin-left: auto; margin-right: auto; }
+.wl-head { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; min-height: 56px; }
+.wl-head > :last-child { justify-self: end; }
+.wl-steps { display: flex; gap: 6px; }
+.wl-steps i { width: 22px; height: 5px; border-radius: 3px; background: var(--line); }
+.wl-steps i.on { background: var(--turquoise-ink); }
+.wl-skip { padding: 8px 0 8px 8px; border: 0; background: none; color: var(--ink-2); font: 650 13px/1.4 var(--font); }
+.mini-sky { width: 64px; height: 64px; margin: 30px 0 22px; border-radius: 20px; overflow: hidden; box-shadow: var(--shadow); }
+.mini-sky img { width: 100%; height: 100%; object-fit: cover; object-position: 60% 66%; }
+.mini-sky--icon img { object-position: 50% 50%; }
+.wl-lead { margin: 8px 0 0; }
+.wl-form { display: flex; flex: 1; flex-direction: column; }
+.wl-name { margin-top: 24px; }
+.wl-page .note { margin-top: 16px; }
+.wl-install-now:not(:empty) { margin-top: 22px; }
+.wl-page .steps-box { margin-top: 16px; }
+.wl-bottom { margin-top: auto; padding-top: 24px; }
+.wl-page .wl-bottom .btn:not(.btn--primary) { background: var(--surface); box-shadow: var(--shadow); }
+
+/* ---- Accueil: a window onto the Baie des Anges --------------------------------------- */
+/* The window keeps the same shape at every width (aspect-ratio), so the crop is always
+   the same: sky for the greeting, the hills, then a strip of sea. The palm stays out. */
 .hero {
   position: relative;
+  aspect-ratio: 358 / 220;
+  margin: 8px 0 14px;
+  border-radius: var(--r-hero);
   overflow: hidden;
-  padding: 22px 20px 20px;
-  border-radius: 26px;
-  color: #fff;
-  background: linear-gradient(150deg, #154A70 0%, #103550 55%, #0B2A40 100%);
-  box-shadow: var(--shadow-2);
+  background: #A9DCFA;
   isolation: isolate;
 }
-.hero::before {               /* coloured light in the corner */
-  content: "";
+.hero--aube { background: #F5D7E3; }
+.hero--couchant { background: #E59A86; }
+.hero--nuit { background: #14365A; }
+.hero__img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: 50% 54%; }
+.hero__hello { position: absolute; left: 18px; top: 16px; right: 64px; }
+.hero__hello h1 { margin: 0 0 5px; font: 800 28px/1.1 var(--font); letter-spacing: -.03em; color: #103550; overflow-wrap: anywhere; }
+.hero__hello p { font: 650 14px/1.3 var(--font); color: #24506F; }
+.hero__me {
   position: absolute;
-  inset: 0;
-  z-index: -1;
-  background: radial-gradient(90% 80% at 100% 0%, var(--hero-glow, rgba(0, 230, 191, 0.38)), transparent 62%);
+  right: 14px;
+  top: 14px;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: rgba(255, 255, 255, .85);
+  color: #103550;
+  font: 800 15px/1 var(--font);
+  transition: transform .15s var(--ease);
 }
-.hero--reviser { --hero-glow: rgba(240, 144, 0, 0.5); }
-.hero--etudier { --hero-glow: rgba(0, 230, 191, 0.42); }
-.hero__art { position: absolute; right: -14px; top: -14px; width: 116px; height: 116px; z-index: -1; }
-.hero__badge {
-  display: inline-flex;
+.hero__me:active { transform: scale(.92); }
+.hero--nuit .hero__hello h1, .hero--nuit .hero__hello p { color: #fff; }
+.hero--nuit .hero__hello p { opacity: .85; }
+.hero--nuit .hero__me { background: rgba(255, 255, 255, .16); color: #fff; }
+.hero--couchant .hero__hello p { color: #4A2F4F; }
+
+/* « Aujourd'hui » */
+.today { padding: 16px; }
+.today__top { display: flex; gap: 12px; align-items: center; }
+.today__part { margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--line); }
+.today__label { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; font: 650 13px/1.4 var(--font); color: var(--ink-3); }
+.slot {
+  display: flex;
   align-items: center;
-  gap: 6px;
-  padding: 5px 11px;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.16);
-  font-size: 12px;
-  font-weight: 800;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
+  gap: 12px;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-align: left;
 }
-.hero__badge .icon { width: 14px; height: 14px; }
-.hero__title { margin-top: 14px; max-width: 13ch; font-size: 27px; line-height: 1.12; font-weight: 800; letter-spacing: -0.03em; }
-.hero__text { margin-top: 10px; max-width: 34ch; color: rgba(255, 255, 255, 0.86); font-size: 15px; font-weight: 500; }
+.slot + .slot { margin-top: 12px; }
+button.slot:active { opacity: .6; }
+.slot .slot-bar { min-height: 36px; }
+.slot__time { font: 700 15px/1.2 var(--font); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.slot--static .tile-icon { width: 34px; height: 34px; }
+.today__progress { margin-top: 12px; }
+.today__progress .bar { height: 6px; }
+.today__legend { display: flex; justify-content: space-between; gap: 8px; margin-top: 6px; font: var(--t-small); color: var(--ink-3); font-variant-numeric: tabular-nums; }
+.today__legend b { color: var(--c-ink); font-weight: 700; }
+.live-dot { position: relative; width: 8px; height: 8px; flex: none; border-radius: 50%; background: var(--c); }
+.live-dot::after { content: ""; position: absolute; inset: 0; border-radius: 50%; background: var(--c); animation: ping 1.8s ease-out infinite; }
 
-/* ---- What is coming (small tiles) ---------------------------------------------------- */
-.features { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
-@media (min-width: 640px) { .features { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
-.feature { display: flex; flex-direction: column; gap: 10px; padding: 16px; }
-.feature__icon {
-  width: 38px; height: 38px;
-  border-radius: 12px;
-  display: grid; place-items: center;
-  background: var(--soft);
+/* « Réviser » */
+.revise { margin-top: 14px; padding: 16px; }
+.revise__stats { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-bottom: 14px; }
+.revise__lesson { display: flex; align-items: center; gap: 14px; margin-bottom: 14px; }
+.revise__lesson:last-child { margin-bottom: 0; }
+.revise__btn { height: 46px; }
+.rv-nudge { flex: 1; min-width: 160px; }
+
+/* ---- Profil ------------------------------------------------------------------------- */
+.me-big { display: flex; flex-direction: column; align-items: center; margin: 4px 0 18px; text-align: center; }
+.me-big__avatar { position: relative; width: 76px; height: 76px; border-radius: 50%; overflow: hidden; box-shadow: var(--shadow); background: #A9DCFA; }
+.me-big__avatar img { width: 100%; height: 100%; object-fit: cover; object-position: 62% 60%; }
+.me-big__avatar b { position: absolute; inset: 0; display: grid; place-items: center; font: 800 30px/1 var(--font); color: #103550; }
+.me-big__avatar b .icon { width: 30px; height: 30px; }
+.me-big__avatar--nuit b { color: #fff; }
+.me-big h1 { margin: 12px 0 2px; font: 800 22px/1.2 var(--font); }
+.me-big__link { padding: 4px 8px; border: 0; background: none; color: var(--accueil); font: 650 13px/1.4 var(--font); }
+.profil__version { margin-top: 6px; }
+.profil__welcome { display: flex; justify-content: center; margin-top: 4px; }
+.profil__welcome .btn { color: var(--accueil); }
+.page-title--pushed { margin: 6px 0 14px; }
+.stored__lead { margin: -4px 4px 12px; }
+.stored__note { margin-top: 14px; }
+.stored__reset { margin-top: 16px; }
+
+/* ---- Rapport de relecture ------------------------------------------------------------- */
+.rl-head { display: flex; flex-direction: column; gap: 12px; padding: 16px; }
+.rl-head__count { color: var(--ink-2); font: var(--t-body); }
+.rl-head__count b { margin-right: 2px; color: var(--ink); font: 800 24px/1 var(--font); }
+.rl-head .bar { height: 6px; }
+.rl-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.rl-help { color: var(--ink-3); font: var(--t-small); text-align: center; text-wrap: balance; }
+.rl-off { margin-top: 14px; }
+.rl-item .row__main { display: flex; flex-direction: column; align-items: flex-start; gap: 4px; }
+.rl-item__note { color: var(--citron-ink); font-weight: 650; }
+.rl-preview {
+  margin: 0;
+  padding: 14px 16px;
+  border-radius: var(--r-tile);
+  background: var(--surface);
+  box-shadow: var(--shadow);
   color: var(--ink);
+  font: 600 13px/1.55 var(--font);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  -webkit-user-select: text;
+  user-select: text;
 }
-.feature__icon .icon { width: 20px; height: 20px; }
-.feature__title { font-weight: 800; font-size: 15px; line-height: 1.25; }
-.feature__text { font-size: 13.5px; color: var(--text-2); font-weight: 600; }
-/* colours of the tiles */
-.tone-turquoise { --soft: rgba(0, 230, 191, 0.16); --ink: var(--ok-ink); }
-.tone-orange { --soft: rgba(240, 144, 0, 0.16); --ink: var(--warn-ink); }
-.tone-blue { --soft: var(--azur-soft); --ink: var(--azur-ink); }
-.tone-lavande { --soft: var(--lavande-soft); --ink: var(--lavande-ink); }
-
-/* ---- List of themes ------------------------------------------------------------------ */
-.theme-num {
-  width: 34px; height: 34px; flex: none;
-  border-radius: 11px;
-  display: grid; place-items: center;
-  background: var(--fill);
-  font-weight: 800;
-  font-size: 14px;
-  font-variant-numeric: tabular-nums;
-}
-.list__row.is-focus { background: rgba(0, 230, 191, 0.10); }
-.list__row.is-focus .theme-num { background: var(--primary); color: var(--on-primary); }
-
-/* ---- Infos --------------------------------------------------------------------------- */
-.infos-intro { display: flex; align-items: center; gap: 16px; padding: 18px; }
-.infos-intro__logo { width: 60px; height: 60px; flex: none; border-radius: 16px; box-shadow: var(--shadow-1); }
-.infos-intro__name { font-size: 20px; font-weight: 800; letter-spacing: -0.02em; }
-.infos-intro__text { color: var(--text-2); font-size: 14px; font-weight: 600; }
-.legend-list .list__row { align-items: flex-start; }
-.legend-list .pebble { width: 20px; height: 18px; margin-top: 2px; }
-.prose { display: flex; flex-direction: column; gap: 10px; padding: 16px 18px; font-size: 15px; }
-.prose p { color: var(--text-2); font-weight: 500; }
-.prose b { color: var(--text); font-weight: 800; }
-.prose ul { display: flex; flex-direction: column; gap: 6px; }
-.prose li { display: grid; grid-template-columns: 18px minmax(0, 1fr); gap: 8px; color: var(--text-2); font-weight: 600; }
-.prose li .icon { width: 18px; height: 18px; margin-top: 2px; color: var(--ok-ink); }
-.platform-tabs { margin-bottom: 4px; }
+.rl-clear { margin-top: 16px; }
+.rl-empty { padding: 20px; }
+.rl-empty .icon { color: var(--turquoise-ink); }
+.section-title .small { margin-left: 6px; font-weight: 500; }

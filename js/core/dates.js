@@ -73,6 +73,12 @@ export function hour(hhmm) {
   return `${Number(h)}h${m === "00" ? "" : m}`;
 }
 
+/** "09:30" -> "9:30", "13:00" -> "13:00" (how the new look writes hours) */
+export function clock(hhmm) {
+  const [h, m] = String(hhmm).split(":");
+  return `${Number(h)}:${m}`;
+}
+
 /** 80 -> "1 h 20", 35 -> "35 min" */
 export function duration(totalMinutes) {
   const m = Math.max(0, Math.round(totalMinutes));

@@ -3,10 +3,12 @@
   Promo MAPST: the one and only page of the app.
 
   How the app is built (no framework, no build step):
-    - this file holds the frame of the app: the header, the 4 screens and the tab bar;
-    - css/   decides how it looks (colours and fonts are in css/01-tokens.css);
+    - this file holds the frame of the app: the icons, the tab bar and one empty
+      "panel" per tab; the pages are drawn inside by the code;
+    - css/   decides how it looks (colours, font and sizes are in css/01-tokens.css);
     - js/    decides how it works (js/app.js starts everything);
-    - content/ holds the texts and data (the planning, the themes...);
+    - content/ holds the texts and data (the planning, the questions...);
+    - img/   the illustrations (« la Baie »);
     - sw.js  keeps a copy of the app on the phone so it works offline.
   The README explains every folder in plain English.
 -->
@@ -15,14 +17,17 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Promo MAPST</title>
-  <meta name="description" content="Réviser, étudier et suivre le planning du BPJEPS MAPST (CAPA Sports, Nice, 2026-2027). Application non officielle.">
+  <meta name="description" content="Réviser et suivre le planning du BPJEPS MAPST (CAPA Sports, Nice, 2026-2027). Application non officielle.">
 
-  <!-- Light or dark: the app follows the setting of the phone. -->
+  <!-- Light or dark: the app follows the setting of the phone. The bars of the phone take
+       the colour of the page background. -->
   <meta name="color-scheme" content="light dark">
-  <meta name="theme-color" content="#0D2E46" media="(prefers-color-scheme: light)">
-  <meta name="theme-color" content="#071824" media="(prefers-color-scheme: dark)">
+  <meta name="theme-color" content="#F3F7FA" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0B1A28" media="(prefers-color-scheme: dark)">
 
-  <!-- Installable app: name, icons, and full screen once added to the home screen. -->
+  <!-- Installable app: name, icons, and full screen once added to the home screen.
+       Status bar "default": a dark clock on a light bar, and the app starts below it
+       (docs/design/README.md explains why). -->
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
   <link rel="icon" href="icons/icon-192.png" type="image/png" sizes="192x192">
@@ -30,7 +35,22 @@
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-title" content="Promo MAPST">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+
+  <!-- iPhone launch images (the welcome screen), made by scripts/make_launch_images.cjs. -->
+  <!-- launch-images:start -->
+  <link rel="apple-touch-startup-image" href="icons/launch/launch-1320x2868.png" media="(device-width: 440px) and (device-height: 956px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
+  <link rel="apple-touch-startup-image" href="icons/launch/launch-1290x2796.png" media="(device-width: 430px) and (device-height: 932px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
+  <link rel="apple-touch-startup-image" href="icons/launch/launch-1284x2778.png" media="(device-width: 428px) and (device-height: 926px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
+  <link rel="apple-touch-startup-image" href="icons/launch/launch-1260x2736.png" media="(device-width: 420px) and (device-height: 912px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
+  <link rel="apple-touch-startup-image" href="icons/launch/launch-1242x2688.png" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
+  <link rel="apple-touch-startup-image" href="icons/launch/launch-828x1792.png" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
+  <link rel="apple-touch-startup-image" href="icons/launch/launch-1206x2622.png" media="(device-width: 402px) and (device-height: 874px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
+  <link rel="apple-touch-startup-image" href="icons/launch/launch-1179x2556.png" media="(device-width: 393px) and (device-height: 852px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
+  <link rel="apple-touch-startup-image" href="icons/launch/launch-1170x2532.png" media="(device-width: 390px) and (device-height: 844px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
+  <link rel="apple-touch-startup-image" href="icons/launch/launch-1125x2436.png" media="(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
+  <link rel="apple-touch-startup-image" href="icons/launch/launch-750x1334.png" media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
+  <!-- launch-images:end -->
 
   <!-- The font is stored in the app itself (vendor/fonts), so it also works offline. -->
   <link rel="preload" href="vendor/fonts/plus-jakarta-sans.woff2" as="font" type="font/woff2" crossorigin>
@@ -45,96 +65,90 @@
   <link rel="stylesheet" href="css/07-reviser.css">
 </head>
 <body>
-  <!-- Icons: drawn once here, then reused everywhere with <svg><use href="#i-name"/></svg>. -->
+  <!-- Icons: drawn once here (24 × 24, round strokes), then reused everywhere with
+       <svg><use href="#i-name"/></svg> (see icon() in js/core/dom.js). -->
   <svg width="0" height="0" style="position:absolute" aria-hidden="true">
     <defs>
-      <symbol id="i-reviser" viewBox="0 0 24 24"><path d="M13.2 2.5 4.6 13.4a.6.6 0 0 0 .5 1h5.7l-1.2 7.1 8.6-10.9a.6.6 0 0 0-.5-1h-5.7z"/></symbol>
-      <symbol id="i-etudier" viewBox="0 0 24 24"><path d="M2.5 5h5.8A3.7 3.7 0 0 1 12 8.7V20a2.8 2.8 0 0 0-2.8-2.8H2.5z"/><path d="M21.5 5h-5.8A3.7 3.7 0 0 0 12 8.7V20a2.8 2.8 0 0 1 2.8-2.8h6.7z"/></symbol>
-      <symbol id="i-planning" viewBox="0 0 24 24"><rect x="3" y="4.5" width="18" height="16.5" rx="3.5"/><path d="M3 9.5h18M8 2.5v4M16 2.5v4"/><path d="M7.5 13.5h.01M12 13.5h.01M16.5 13.5h.01M7.5 17h.01M12 17h.01"/></symbol>
-      <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.5"/><path d="M12 16.5v-5M12 8h.01"/></symbol>
-      <symbol id="i-left" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></symbol>
-      <symbol id="i-right" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></symbol>
-      <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
-      <symbol id="i-close" viewBox="0 0 24 24"><path d="M17 7 7 17M7 7l10 10"/></symbol>
-      <symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 21s-6.5-5.6-6.5-11a6.5 6.5 0 0 1 13 0c0 5.4-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.4"/></symbol>
-      <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.8"/><path d="M4.5 20.5a7.5 7.5 0 0 1 15 0"/></symbol>
-      <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.5"/><path d="M12 7v5l3.2 2"/></symbol>
-      <symbol id="i-alert" viewBox="0 0 24 24"><path d="M10.3 4.2 2.6 17.6A2 2 0 0 0 4.3 20.5h15.4a2 2 0 0 0 1.7-2.9L13.7 4.2a2 2 0 0 0-3.4 0z"/><path d="M12 9.5v4M12 17h.01"/></symbol>
-      <symbol id="i-export" viewBox="0 0 24 24"><rect x="3" y="4.5" width="18" height="16.5" rx="3.5"/><path d="M3 9.5h18M8 2.5v4M16 2.5v4M12 12.5v5.5M9.5 15.5 12 18l2.5-2.5"/></symbol>
-      <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 3.5v11M7.5 10 12 14.5 16.5 10M4.5 20h15"/></symbol>
-      <symbol id="i-copy" viewBox="0 0 24 24"><rect x="8.5" y="8.5" width="12" height="12" rx="2.5"/><path d="M15.5 8.5V6A2.5 2.5 0 0 0 13 3.5H6A2.5 2.5 0 0 0 3.5 6v7A2.5 2.5 0 0 0 6 15.5h2.5"/></symbol>
+      <!-- The tabs -->
+      <symbol id="i-home" viewBox="0 0 24 24"><path d="M4 10.4 12 4l8 6.4V19a1.6 1.6 0 0 1-1.6 1.6H15v-5.4H9v5.4H5.6A1.6 1.6 0 0 1 4 19z"/></symbol>
+      <symbol id="i-bolt" viewBox="0 0 24 24"><path d="M13.2 2.8 5 13.4h6.1L10.2 21 18.4 10.4h-6.1z"/></symbol>
+      <symbol id="i-book" viewBox="0 0 24 24"><path d="M2.8 5.2h5.8A3.4 3.4 0 0 1 12 8.6v11a2.6 2.6 0 0 0-2.6-2.6H2.8z"/><path d="M21.2 5.2h-5.8A3.4 3.4 0 0 0 12 8.6v11a2.6 2.6 0 0 1 2.6-2.6h6.6z"/></symbol>
+      <symbol id="i-cal" viewBox="0 0 24 24"><rect x="3.2" y="4.6" width="17.6" height="16.2" rx="3.6"/><path d="M3.2 9.6h17.6M8 2.8v3.6M16 2.8v3.6"/></symbol>
+      <!-- Moving around -->
+      <symbol id="i-left" viewBox="0 0 24 24"><path d="m14.5 18-6-6 6-6"/></symbol>
+      <symbol id="i-right" viewBox="0 0 24 24"><path d="m9.5 18 6-6-6-6"/></symbol>
+      <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5.5v13M5.5 12h13"/></symbol>
+      <symbol id="i-x" viewBox="0 0 24 24"><path d="M6.5 6.5l11 11M17.5 6.5l-11 11"/></symbol>
       <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5"/></symbol>
-      <symbol id="i-lock" viewBox="0 0 24 24"><rect x="4.5" y="10.5" width="15" height="10.5" rx="2.8"/><path d="M8 10.5V7.8a4 4 0 0 1 8 0v2.7"/></symbol>
-      <symbol id="i-today" viewBox="0 0 24 24"><circle cx="12" cy="12" r="7.5"/><circle cx="12" cy="12" r="2.6"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22"/></symbol>
-      <symbol id="i-trash" viewBox="0 0 24 24"><path d="M4 7h16M9.5 7V4.5h5V7M6.5 7l1 13h9l1-13"/></symbol>
-      <symbol id="i-repeat" viewBox="0 0 24 24"><path d="M17 2.5 20.5 6 17 9.5"/><path d="M3.5 11V9.5A3.5 3.5 0 0 1 7 6h13.5"/><path d="M7 21.5 3.5 18 7 14.5"/><path d="M20.5 13v1.5A3.5 3.5 0 0 1 17 18H3.5"/></symbol>
-      <symbol id="i-sparkles" viewBox="0 0 24 24"><path d="M10 3.5 11.8 8l4.5 1.8-4.5 1.8L10 16l-1.8-4.4L3.7 9.8 8.2 8z"/><path d="M18 14l.9 2.1 2.1.9-2.1.9L18 20l-.9-2.1-2.1-.9 2.1-.9z"/></symbol>
-      <symbol id="i-phone" viewBox="0 0 24 24"><rect x="6.5" y="2.5" width="11" height="19" rx="2.8"/><path d="M11 18.5h2"/></symbol>
-      <symbol id="i-share" viewBox="0 0 24 24"><path d="M12 3.5v11M8 7.5l4-4 4 4"/><path d="M6 11H5.5A1.5 1.5 0 0 0 4 12.5v7A1.5 1.5 0 0 0 5.5 21h13a1.5 1.5 0 0 0 1.5-1.5v-7a1.5 1.5 0 0 0-1.5-1.5H18"/></symbol>
-      <symbol id="i-more" viewBox="0 0 24 24"><path d="M12 5h.01M12 12h.01M12 19h.01"/></symbol>
-      <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M4.6 4.6l1.4 1.4M18 18l1.4 1.4M2.5 12h2M19.5 12h2M4.6 19.4 6 18M18 6l1.4-1.4"/></symbol>
-      <symbol id="i-award" viewBox="0 0 24 24"><circle cx="12" cy="9" r="5.5"/><path d="M8.6 13.4 7.5 21l4.5-2.6 4.5 2.6-1.1-7.6"/></symbol>
-      <symbol id="i-coffee" viewBox="0 0 24 24"><path d="M4.5 9.5h12v4a5 5 0 0 1-5 5h-2a5 5 0 0 1-5-5z"/><path d="M16.5 11h1.3a2.3 2.3 0 0 1 0 4.6h-1.6M8 3v3M12 3v3"/></symbol>
-      <symbol id="i-flag" viewBox="0 0 24 24"><path d="M5 21V4.5M5 4.5h11.5l-2 4 2 4H5"/></symbol>
-      <symbol id="i-layers" viewBox="0 0 24 24"><path d="m12 3 9 5-9 5-9-5z"/><path d="m3 13 9 5 9-5"/></symbol>
+      <symbol id="i-play" viewBox="0 0 24 24"><path d="M8.5 5.8v12.4l10-6.2z" fill="currentColor"/></symbol>
       <!-- Réviser -->
-      <symbol id="i-flame" viewBox="0 0 24 24"><path d="M12 2.8c.6 3 2.6 4.6 4.1 6.4 1.4 1.7 2.4 3.4 2.4 5.6a6.5 6.5 0 0 1-13 0c0-2.4 1.2-4.2 2.6-5.6.3 1.4 1 2.4 2 2.8C9.6 9 10.2 5.4 12 2.8z"/><path d="M12 21.3a3 3 0 0 1-3-3c0-1.6 1.2-2.7 3-4.5 1.8 1.8 3 2.9 3 4.5a3 3 0 0 1-3 3z"/></symbol>
-      <symbol id="i-heart" viewBox="0 0 24 24"><path d="M12 20.6s-7.8-4.6-9.2-9.6C1.9 7.6 4 4.4 7.3 4.4c2 0 3.6 1.1 4.7 2.7 1.1-1.6 2.7-2.7 4.7-2.7 3.3 0 5.4 3.2 4.5 6.6-1.4 5-9.2 9.6-9.2 9.6z"/></symbol>
+      <symbol id="i-flame" viewBox="0 0 24 24"><path d="M12 2.8c.6 3 2.6 4.6 4.1 6.4 1.4 1.7 2.4 3.4 2.4 5.6a6.5 6.5 0 0 1-13 0c0-2.4 1.2-4.2 2.6-5.6.3 1.4 1 2.4 2 2.8C9.6 9 10.2 5.4 12 2.8z"/></symbol>
+      <symbol id="i-heart" viewBox="0 0 24 24"><path d="M12 20.4s-8-4.7-8-10.6a4.4 4.4 0 0 1 8-2.6 4.4 4.4 0 0 1 8 2.6c0 5.9-8 10.6-8 10.6z"/></symbol>
+      <symbol id="i-repeat" viewBox="0 0 24 24"><path d="M17 2.5 20.5 6 17 9.5"/><path d="M3.5 11V9.5A3.5 3.5 0 0 1 7 6h13.5"/><path d="M7 21.5 3.5 18 7 14.5"/><path d="M20.5 13v1.5A3.5 3.5 0 0 1 17 18H3.5"/></symbol>
+      <symbol id="i-lock" viewBox="0 0 24 24"><rect x="4.6" y="10.4" width="14.8" height="10.6" rx="2.8"/><path d="M8 10.4V7.8a4 4 0 0 1 8 0v2.6"/></symbol>
+      <symbol id="i-award" viewBox="0 0 24 24"><circle cx="12" cy="9" r="5.5"/><path d="M8.6 13.4 7.5 21l4.5-2.6 4.5 2.6-1.1-7.6"/></symbol>
       <symbol id="i-bulb" viewBox="0 0 24 24"><path d="M9 18.5h6M10 21.5h4"/><path d="M12 2.8a6.2 6.2 0 0 0-3.8 11.1c.7.6 1.1 1.4 1.1 2.3v.3h5.4v-.3c0-.9.4-1.7 1.1-2.3A6.2 6.2 0 0 0 12 2.8z"/></symbol>
       <symbol id="i-volume" viewBox="0 0 24 24"><path d="M4.5 9.5h3l4.5-4v13l-4.5-4h-3z"/><path d="M15.5 9a4.2 4.2 0 0 1 0 6M18.2 6.5a8 8 0 0 1 0 11"/></symbol>
       <symbol id="i-mute" viewBox="0 0 24 24"><path d="M4.5 9.5h3l4.5-4v13l-4.5-4h-3z"/><path d="m16 9.5 5 5M21 9.5l-5 5"/></symbol>
-      <!-- Relecture -->
-      <symbol id="i-edit" viewBox="0 0 24 24"><path d="M4 20h4L19.3 8.7a2.6 2.6 0 0 0-3.7-3.7L4.3 16.3z"/><path d="m13.8 6.8 3.7 3.7"/></symbol>
+      <!-- The themes of Réviser (a new theme gets i-bolt) -->
+      <symbol id="i-figure" viewBox="0 0 24 24"><circle cx="12" cy="4.8" r="2.1"/><path d="M6 9.4 12 11l6-1.6M12 11v4.6M12 15.6 8.6 21M12 15.6l3.4 5.4"/></symbol>
+      <symbol id="i-battery" viewBox="0 0 24 24"><rect x="2.6" y="7" width="16.4" height="10" rx="2.6"/><path d="M21.4 10.4v3.2M11.6 8.8 9.4 12.3h3.2l-2.2 3.5"/></symbol>
+      <symbol id="i-users" viewBox="0 0 24 24"><circle cx="9" cy="8.4" r="3.2"/><path d="M3.2 19.6a5.8 5.8 0 0 1 11.6 0"/><circle cx="17.2" cy="9.6" r="2.4"/><path d="M15.8 14.6a4.6 4.6 0 0 1 5 5"/></symbol>
+      <symbol id="i-dumbbell" viewBox="0 0 24 24"><path d="M6.6 7.6v8.8M17.4 7.6v8.8M3.6 9.8v4.4M20.4 9.8v4.4M6.6 12h10.8"/></symbol>
+      <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3.2 5.2 5.8v5.6c0 4.4 2.9 7.6 6.8 9.2 3.9-1.6 6.8-4.8 6.8-9.2V5.8z"/><path d="m9.2 12 2 2 3.8-3.9"/></symbol>
       <symbol id="i-clipboard" viewBox="0 0 24 24"><path d="M9 4.5H7.3A2.3 2.3 0 0 0 5 6.8v12.4a2.3 2.3 0 0 0 2.3 2.3h9.4a2.3 2.3 0 0 0 2.3-2.3V6.8a2.3 2.3 0 0 0-2.3-2.3H15"/><rect x="9" y="2.8" width="6" height="3.6" rx="1.2"/><path d="m9 13.6 2.2 2.2 4-4.2"/></symbol>
+      <!-- Planning -->
+      <symbol id="i-cal-add" viewBox="0 0 24 24"><path d="M20.8 11.6V8.2a3.6 3.6 0 0 0-3.6-3.6H6.8a3.6 3.6 0 0 0-3.6 3.6v9a3.6 3.6 0 0 0 3.6 3.6h5"/><path d="M3.2 9.6h17.6M8 2.8v3.6M16 2.8v3.6M18 14.6v6.4M14.8 17.8h6.4"/></symbol>
+      <symbol id="i-flag" viewBox="0 0 24 24"><path d="M5.5 21V4.4M5.5 4.4h11.6l-2.1 4 2.1 4H5.5"/></symbol>
+      <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M4.6 4.6 6 6M18 18l1.4 1.4M2.5 12h2M19.5 12h2M4.6 19.4 6 18M18 6l1.4-1.4"/></symbol>
+      <symbol id="i-moon" viewBox="0 0 24 24"><path d="M19.6 14.4A7.8 7.8 0 0 1 9.6 4.4a7.8 7.8 0 1 0 10 10z"/></symbol>
+      <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.6"/><path d="M12 7.6V12l3 2"/></symbol>
+      <symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 21s-6.4-6.1-6.4-11a6.4 6.4 0 0 1 12.8 0c0 4.9-6.4 11-6.4 11z"/><circle cx="12" cy="10" r="2.3"/></symbol>
+      <symbol id="i-person" viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.6"/><path d="M5 20.4a7 7 0 0 1 14 0"/></symbol>
+      <symbol id="i-swatch" viewBox="0 0 24 24"><circle cx="8.2" cy="9" r="4.4"/><circle cx="15.8" cy="9" r="4.4"/><circle cx="12" cy="15.6" r="4.4"/></symbol>
+      <symbol id="i-gift" viewBox="0 0 24 24"><rect x="3.6" y="8.4" width="16.8" height="4.4" rx="1.4"/><path d="M5.2 12.8v6.4a1.6 1.6 0 0 0 1.6 1.6h10.4a1.6 1.6 0 0 0 1.6-1.6v-6.4M12 8.4v12.4M12 8.4C10.6 5 7 4.6 7 6.6S10 8.4 12 8.4zM12 8.4c1.4-3.4 5-3.8 5-1.8s-3 1.8-5 1.8z"/></symbol>
+      <!-- Profil, notes, sharing -->
+      <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.6"/><path d="M12 11v5.2M12 7.9v.1"/></symbol>
+      <symbol id="i-phone" viewBox="0 0 24 24"><rect x="6.6" y="2.8" width="10.8" height="18.4" rx="2.8"/><path d="M10.6 17.8h2.8"/></symbol>
+      <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2.6 12S6 5.6 12 5.6 21.4 12 21.4 12 18 18.4 12 18.4 2.6 12 2.6 12z"/><circle cx="12" cy="12" r="2.8"/></symbol>
+      <symbol id="i-edit" viewBox="0 0 24 24"><path d="M4 20h4L19.3 8.7a2.6 2.6 0 0 0-3.7-3.7L4.3 16.3z"/><path d="m13.8 6.8 3.7 3.7"/></symbol>
+      <symbol id="i-copy" viewBox="0 0 24 24"><rect x="8.5" y="8.5" width="12" height="12" rx="2.5"/><path d="M15.5 8.5V6A2.5 2.5 0 0 0 13 3.5H6A2.5 2.5 0 0 0 3.5 6v7A2.5 2.5 0 0 0 6 15.5h2.5"/></symbol>
+      <symbol id="i-trash" viewBox="0 0 24 24"><path d="M4 7h16M9.5 7V4.5h5V7M6.5 7l1 13h9l1-13"/></symbol>
+      <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 3.5v11M7.5 10 12 14.5 16.5 10M4.5 20h15"/></symbol>
+      <symbol id="i-share" viewBox="0 0 24 24"><path d="M12 3.5v11M8 7.5l4-4 4 4"/><path d="M6 11H5.5A1.5 1.5 0 0 0 4 12.5v7A1.5 1.5 0 0 0 5.5 21h13a1.5 1.5 0 0 0 1.5-1.5v-7a1.5 1.5 0 0 0-1.5-1.5H18"/></symbol>
+      <symbol id="i-more" viewBox="0 0 24 24"><path d="M12 5h.01M12 12h.01M12 19h.01"/></symbol>
+      <symbol id="i-alert" viewBox="0 0 24 24"><path d="M10.3 4.2 2.6 17.6A2 2 0 0 0 4.3 20.5h15.4a2 2 0 0 0 1.7-2.9L13.7 4.2a2 2 0 0 0-3.4 0z"/><path d="M12 9.5v4M12 17h.01"/></symbol>
     </defs>
   </svg>
 
-  <!-- The coloured header: today's date and the title of the screen. -->
-  <header class="appbar" id="appbar">
-    <div class="appbar__glow" aria-hidden="true"></div>
-    <div class="appbar__inner wrap">
-      <div class="appbar__text">
-        <p class="appbar__date" id="appbar-date"></p>
-        <h1 class="appbar__title" id="appbar-title">Promo MAPST</h1>
+  <div class="app" id="app">
+    <!-- One panel per tab. The pages are drawn inside by js/core/nav.js. -->
+    <main class="panels">
+      <section class="panel mode-accueil" data-tab="accueil" aria-label="Accueil"></section>
+      <section class="panel mode-reviser" data-tab="reviser" aria-label="Réviser" hidden></section>
+      <section class="panel mode-planning" data-tab="planning" aria-label="Planning" hidden></section>
+    </main>
+
+    <!-- The tab bar (a side rail on a laptop). Étudier comes back here in Phase 5. -->
+    <nav class="tabbar" aria-label="Modes de l’appli">
+      <div class="tabbar__inner" role="tablist">
+        <button type="button" class="tab mode-accueil" role="tab" data-tab="accueil" aria-selected="true">
+          <span class="tab__icon"><svg class="icon" aria-hidden="true"><use href="#i-home"/></svg></span><span class="tab__label">Accueil</span>
+        </button>
+        <button type="button" class="tab mode-reviser" role="tab" data-tab="reviser" aria-selected="false">
+          <span class="tab__icon"><svg class="icon" aria-hidden="true"><use href="#i-bolt"/></svg></span><span class="tab__label">Réviser</span>
+        </button>
+        <button type="button" class="tab mode-planning" role="tab" data-tab="planning" aria-selected="false">
+          <span class="tab__icon"><svg class="icon" aria-hidden="true"><use href="#i-cal"/></svg></span><span class="tab__label">Planning</span>
+        </button>
       </div>
-      <button type="button" class="icon-btn icon-btn--glass" id="btn-infos" aria-label="Infos sur l’appli">
-        <svg class="icon"><use href="#i-info"/></svg>
-      </button>
-    </div>
-  </header>
-
-  <!-- Small bar that appears at the top when you scroll down. -->
-  <div class="topbar" id="topbar" aria-hidden="true">
-    <span class="topbar__title" id="topbar-title"></span>
+    </nav>
   </div>
-
-  <!-- The 4 screens. Only one is visible at a time (see js/core/router.js). -->
-  <main class="screens">
-    <section class="screen" id="screen-reviser" data-screen="reviser" aria-labelledby="tab-reviser" hidden></section>
-    <section class="screen" id="screen-etudier" data-screen="etudier" aria-labelledby="tab-etudier" hidden></section>
-    <section class="screen" id="screen-planning" data-screen="planning" aria-labelledby="tab-planning" hidden></section>
-    <section class="screen" id="screen-infos" data-screen="infos" aria-label="Infos" hidden></section>
-  </main>
-
-  <!-- The bottom bar with the 3 modes (on a laptop it becomes a side bar). -->
-  <nav class="tabbar" aria-label="Modes de l’appli">
-    <div class="tabbar__inner" role="tablist">
-      <button type="button" class="tab" role="tab" id="tab-reviser" data-tab="reviser" aria-controls="screen-reviser">
-        <span class="tab__icon"><svg class="icon"><use href="#i-reviser"/></svg></span><span class="tab__label">Réviser</span>
-      </button>
-      <button type="button" class="tab" role="tab" id="tab-etudier" data-tab="etudier" aria-controls="screen-etudier">
-        <span class="tab__icon"><svg class="icon"><use href="#i-etudier"/></svg></span><span class="tab__label">Étudier</span>
-      </button>
-      <button type="button" class="tab" role="tab" id="tab-planning" data-tab="planning" aria-controls="screen-planning">
-        <span class="tab__icon"><svg class="icon"><use href="#i-planning"/></svg></span><span class="tab__label">Planning</span>
-      </button>
-    </div>
-  </nav>
 
   <!-- Message shown when the app cannot start at all (very old browser). -->
   <noscript><p class="noscript">Promo MAPST a besoin de JavaScript pour fonctionner.</p></noscript>
 
-  <!-- Bottom sheets (details, forms...) and small messages are added here by the code. -->
+  <!-- Sheets, the lesson screen, the welcome and small messages are added here by the code. -->
   <div id="layers"></div>
 
   <script type="module" src="js/app.js"></script>

@@ -20,25 +20,25 @@ export function openExportSheet() {
   const ios = isIOS();
 
   const apple = `
-    <div class="option">
+    <div class="option tone-azur">
       <div class="option__head">
-        <span class="list__icon tone-blue">${icon("repeat")}</span>
-        <div><p class="option__title">iPhone, iPad ou Mac</p>
-        <p class="option__text">Abonnement au planning : il se met à jour tout seul.</p></div>
+        <span class="tile-icon">${icon("repeat", "icon--s")}</span>
+        <div><p class="row__title">iPhone, iPad ou Mac</p>
+        <p class="row__sub">Abonnement au planning : il se met à jour tout seul.</p></div>
       </div>
-      <a class="btn btn--primary btn--block" href="${esc(webcalLink)}">${icon("export")}Ajouter à Calendrier</a>
+      <a class="btn btn--primary btn--block btn--medium" href="${esc(webcalLink)}">${icon("cal-add")}Ajouter à Calendrier</a>
       <ol class="steps"><li><span>Touche le bouton ci-dessus.</span></li><li><span>Choisis « S’abonner », puis « Ajouter ».</span></li></ol>
     </div>`;
 
   const google = `
-    <div class="option">
+    <div class="option tone-turquoise">
       <div class="option__head">
-        <span class="list__icon tone-turquoise">${icon("repeat")}</span>
-        <div><p class="option__title">Google Agenda (Android)</p>
-        <p class="option__text">Abonnement au planning : il se met à jour tout seul (en quelques heures).</p></div>
+        <span class="tile-icon">${icon("repeat", "icon--s")}</span>
+        <div><p class="row__title">Google Agenda (Android)</p>
+        <p class="row__sub">Abonnement au planning : il se met à jour tout seul (en quelques heures).</p></div>
       </div>
       <div class="copy-field"><span class="copy-field__url">${esc(httpsLink)}</span>
-        <button type="button" class="btn btn--secondary btn--small" data-copy>${icon("copy")}Copier</button></div>
+        <button type="button" class="btn btn--small btn--soft" data-copy>${icon("copy")}Copier</button></div>
       <ol class="steps">
         <li><span>Copie le lien ci-dessus et envoie-le toi (par message ou par mail).</span></li>
         <li><span>Sur un ordinateur, ouvre calendar.google.com.</span></li>
@@ -49,24 +49,24 @@ export function openExportSheet() {
     </div>`;
 
   const download = `
-    <div class="option">
+    <div class="option tone-lavande">
       <div class="option__head">
-        <span class="list__icon tone-lavande">${icon("download")}</span>
-        <div><p class="option__title">Fichier .ics</p>
-        <p class="option__text">Une copie du planning d’aujourd’hui, à importer une fois. S’il change, il faudra recommencer.</p></div>
+        <span class="tile-icon">${icon("download", "icon--s")}</span>
+        <div><p class="row__title">Fichier .ics</p>
+        <p class="row__sub">Une copie du planning d’aujourd’hui, à importer une fois. S’il change, il faudra recommencer.</p></div>
       </div>
-      <a class="btn btn--secondary btn--block" href="content/planning.ics"
+      <a class="btn btn--block btn--medium" href="content/planning.ics"
         ${ios ? 'target="_blank" rel="noopener"' : 'download="promo-mapst-planning.ics"'}>${icon("download")}Télécharger planning.ics</a>
     </div>`;
 
   // The option for this phone comes first.
   const options = isAndroid() ? [google, apple, download] : ios ? [apple, google, download] : [google, apple, download];
   const body = `
-    <p class="option__text" style="font-size:15px">Ajoute toute la formation dans l’agenda de ton téléphone. Tes événements perso n’y sont pas : ils restent dans l’appli.</p>
+    <p class="sheet-text">Ajoute toute la formation dans l’agenda de ton téléphone. Tes événements perso n’y sont pas : ils restent dans l’appli.</p>
     ${options.join("")}
-    <p class="footer">Appli non officielle : en cas de doute, vérifie dans tes cours.</p>`;
+    <p class="sheet-hint" style="margin-top:0">Appli non officielle : en cas de doute, vérifie dans tes cours.</p>`;
 
-  const sheet = openSheet({ title: "Ajouter à ton agenda", body });
+  const sheet = openSheet({ title: "Ajouter à ton agenda", body, address: "agenda" });
   sheet.body.addEventListener("click", async (event) => {
     if (!event.target.closest("[data-copy]")) return;
     const ok = await copyText(httpsLink);

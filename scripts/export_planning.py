@@ -14,11 +14,17 @@ WHAT IT DOES
     names, contacts, addresses, the personal stage, personal events. Trainers appear as
     initials only. Nothing else is ever copied from the private repository (no PDF, no photo).
 
+    Then it applies the corrections of content/planning-fixes.json (written by Claude
+    chat, see CLAUDE.md « Content formats »): when the official planning is wrong for the
+    whole class, the correction lives there, so a new export never undoes it.
+
 HOW TO RUN IT (from the folder of this repository)
     python3 scripts/export_planning.py ../Claude-timetable-artefact
 
     The path is where you cloned the private repository. Without a path, the script looks
     for a folder called Claude-timetable-artefact next to this repository.
+    If nothing changed since the last export, the files stay exactly the same (even the
+    export date), so running it twice never makes a difference.
 
 SAFETY NET
     Before writing anything, the script searches its own output for personal data it knows
@@ -40,6 +46,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent          # this repository
 OUT_JSON = ROOT / "content" / "planning.json"
 OUT_ICS = ROOT / "content" / "planning.ics"
+FIXES = ROOT / "content" / "planning-fixes.json"
 
 # Date of the official planning PDF the private planning.json was parsed from.
 # Change it (or pass --planning-date) when you export a newer planning.
@@ -454,6 +461,105 @@ def holiday_checks(hidden_by_holiday):
 
 
 # --------------------------------------------------------------------------------------
+# Corrections for the whole class (content/planning-fixes.json)
+# --------------------------------------------------------------------------------------
+
+DATE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
+
+
+def load_fixes(path=FIXES):
+    """Reads content/planning-fixes.json; stops with a clear message if it is malformed.
+    Format (CLAUDE.md): { "about", "fixes": [ { id, added, from, to, match, set,
+    and optional stage, check, category, why } ] }"""
+    if not path.is_file():
+        return []
+    try:
+        doc = json.loads(path.read_text(encoding="utf-8"))
+    except json.JSONDecodeError as error:
+        fail(f"{path.name} is not valid JSON (line {error.lineno}: {error.msg}).")
+    fixes = doc.get("fixes") if isinstance(doc, dict) else None
+    if not isinstance(fixes, list):
+        fail(f'{path.name} must be {{ "about": ..., "fixes": [ ... ] }}.')
+    problems, ids = [], set()
+    for i, fix in enumerate(fixes):
+        where = f"fix {i + 1}" + (f" ({fix.get('id')})" if isinstance(fix, dict) and fix.get("id") else "")
+        if not isinstance(fix, dict):
+            problems.append(f"{where}: not an object")
+            continue
+        if not fix.get("id") or fix["id"] in ids:
+            problems.append(f"{where}: needs an id, different from the others")
+        ids.add(fix.get("id"))
+        for field in ("added", "from", "to"):
+            if not DATE.match(str(fix.get(field, ""))):
+                problems.append(f"{where}: \"{field}\" must be a date like 2026-11-07")
+        if DATE.match(str(fix.get("from", ""))) and DATE.match(str(fix.get("to", ""))) and fix["from"] > fix["to"]:
+            problems.append(f"{where}: \"from\" is after \"to\"")
+        for field in ("match", "set"):
+            if not isinstance(fix.get(field), dict) or not fix[field]:
+                problems.append(f"{where}: \"{field}\" must list the fields of a half-day, like {{ \"planning\": \"MSP 1\" }}")
+        stage, check, category = fix.get("stage"), fix.get("check"), fix.get("category")
+        if stage is not None and not (isinstance(stage, dict) and stage.get("title") and "text" in stage):
+            problems.append(f"{where}: \"stage\" needs a title and a text")
+        if check is not None and not (isinstance(check, dict) and check.get("title") and check.get("text")):
+            problems.append(f"{where}: \"check\" needs a title and a text")
+        if category is not None and not (isinstance(category, dict) and category.get("id") and category.get("label")):
+            problems.append(f"{where}: \"category\" needs an id and a label")
+    if problems:
+        fail(f"{path.name} does not look right:\n  " + "\n  ".join(problems))
+    return fixes
+
+
+def apply_fixes(data, fixes):
+    """Applies the corrections to the class planning (in place). Applying them twice
+    changes nothing, so it is safe on a planning that already has them.
+    Returns a report: one line per correction."""
+    report = []
+    categories = {c["id"]: c for c in data.get("categories", [])}
+    for fix in fixes:
+        changed = 0
+        for key in sorted(data.get("days", {})):
+            if not fix["from"] <= key <= fix["to"]:
+                continue
+            for slot in data["days"][key].get("slots", []):
+                if all(slot.get(field) == value for field, value in fix["match"].items()):
+                    if any(slot.get(field) != value for field, value in fix["set"].items()):
+                        changed += 1
+                    slot.update(fix["set"])
+        line = f"{fix['id']}: {changed} half-day(s) corrected from {fix['from']} to {fix['to']}"
+        matching = sum(1 for key, day in data.get("days", {}).items() if fix["from"] <= key <= fix["to"]
+                       for slot in day.get("slots", []) if all(slot.get(f) == v for f, v in fix["match"].items()))
+        if not matching:
+            line += " (WARNING: no half-day matches: check \"match\" and the dates)"
+        if fix.get("stage"):
+            stage = next((st for st in data.get("stages", []) if st["start"] == fix["from"]), None)
+            if stage:
+                stage["title"], stage["text"] = fix["stage"]["title"], fix["stage"].get("text", "")
+            else:
+                line += f" (WARNING: no stage of the year starts on {fix['from']})"
+        if fix.get("check"):
+            check = {k: fix["check"][k] for k in ("title", "text", "date") if fix["check"].get(k)}
+            if not any(c.get("title") == check["title"] and c.get("date") == check.get("date") for c in data.setdefault("checks", [])):
+                data["checks"].append(check)
+        if fix.get("category"):
+            category = categories.get(fix["category"]["id"])
+            if category:
+                category["label"] = fix["category"]["label"]
+                if fix["category"].get("desc"):
+                    category["desc"] = fix["category"]["desc"]
+            else:
+                line += f" (WARNING: no category \"{fix['category']['id']}\")"
+        source = data.setdefault("source", {})
+        if fix["added"] > source.get("corrections", ""):
+            source["corrections"] = fix["added"]
+        report.append(line)
+    # The notes with a date come first, in date order (the app shows them in their week).
+    checks = data.get("checks", [])
+    data["checks"] = sorted((c for c in checks if c.get("date")), key=lambda c: c["date"]) + \
+        [c for c in checks if not c.get("date")]
+    return report
+
+
+# --------------------------------------------------------------------------------------
 # Calendar file (.ics)
 # --------------------------------------------------------------------------------------
 
@@ -567,7 +673,15 @@ def main():
 
     planning = json.loads(planning_file.read_text(encoding="utf-8"))
     content = json.loads(content_file.read_text(encoding="utf-8"))
+    fixes = load_fixes()
     words, phrases = personal_tokens(content)
+    # A place written in content/planning-fixes.json is already public (« AnimaNice », the
+    # class-wide stage APEC), so the final check of the output lets it through. The notes
+    # and stages taken from content.json are still sorted with the full list (a private
+    # note about one person's AnimaNice stays out). Names of people are never let through.
+    public = norm(json.dumps(fixes, ensure_ascii=False))
+    allowed = sorted(p for p in phrases if p and p in public)
+    output_phrases = {p for p in phrases if p not in allowed}
     dropped = []
 
     days, weeks, unknown_topics, who_seen, hidden_by_holiday = build(planning, content, args.planning_date)
@@ -609,11 +723,24 @@ def main():
         "days": dict(sorted(days.items())),
     }
 
+    fix_report = apply_fixes(data, fixes)
+
+    # Nothing changed since the last export: keep its date, so the files stay identical.
+    if OUT_JSON.is_file():
+        try:
+            previous = json.loads(OUT_JSON.read_text(encoding="utf-8"))
+            same = dict(previous, source=dict(previous.get("source", {}), exported=None)) == \
+                dict(data, source=dict(data["source"], exported=None))
+            if same and previous.get("source", {}).get("exported"):
+                data["source"]["exported"] = previous["source"]["exported"]
+        except (json.JSONDecodeError, AttributeError):
+            pass
+
     text_json = json.dumps(data, ensure_ascii=False, indent=1) + "\n"
     text_ics = build_ics(data, categories)
 
     # Safety net: search the output for anything personal.
-    found = find_personal(text_json, words, phrases) + find_personal(text_ics, words, phrases)
+    found = find_personal(text_json, words, output_phrases) + find_personal(text_ics, words, output_phrases)
     if found:
         fail("personal data found in the output:\n  " + "\n  ".join(sorted(set(found))))
 
@@ -633,6 +760,12 @@ def main():
         print("Left out (personal):")
         for d in dropped:
             print("   ", d)
+    if fix_report:
+        print("Corrections (content/planning-fixes.json):")
+        for line in fix_report:
+            print("   ", line)
+    if allowed:
+        print("Allowed because content/planning-fixes.json already says it:", ", ".join(allowed))
     if args.check:
         print("\n--check: nothing written.")
         return
