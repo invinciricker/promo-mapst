@@ -1,6 +1,6 @@
 # Phase 4: « Une vraie appli »
 
-Written by Claude chat on 12 Nov 2026. This is the whole brief for the phase: every design decision is already taken here and in `docs/design/prototype.html`. Build exactly this. If something is missing or contradictory, take the simplest option that matches the prototype and list it in the pull request under « Choix faits »; don't stop to ask.
+Written by Claude chat on 12 Nov 2026, revised the same evening after the owner tried the prototype (Accueil stripped down, Cours as a path of chapters, bigger day cards in Planning, a sea that really moves). This is the whole brief for the phase: every design decision is already taken here and in `docs/design/prototype.html`. Build exactly this. If something is missing or contradictory, take the simplest option that matches the prototype and list it in the pull request under « Choix faits »; don't stop to ask.
 
 ## Why
 
@@ -54,51 +54,44 @@ The owner tested Phase 3 on his iPhone: it still feels like a website, and Accue
 
 ## 4. Accueil
 
-Rebuild it as in the prototype. It is one fixed screen, no scrolling.
+Rebuild it as in the prototype. One fixed screen, no scrolling, and almost nothing on it: the picture, the greeting, « le mot », « En ce moment ».
 
-- **The sky.** The SVG goes **inline** (fetch `img/baie-<ciel>.svg`, insert it, remove `width`/`height`, set `preserveAspectRatio="xMidYMax slice"`), so its parts can move. `docs/design/baie-*.svg` changed (clouds, and classes on the moving parts): copy the four again into `img/`. Which sky: `js/core/sun.js`, unchanged. When the sky changes while the app is open, cross-fade (900 ms). `#accueil?ciel=` still forces one.
-- **The living scene**: the `b-…` animations of block 5, running only while Accueil is the visible tab and the page is visible (`document.visibilityState`).
-- **Opening**: the class `is-opening` (block 5) once per launch of the app, removed after 2.2 s. Coming back to the tab later uses the normal tab transition.
-- **Top left**: « Bonjour Sam » / « Bonsoir Sam » (from 18:00, as today; each word in its own `span` with `--i`), the date, then:
-  - app **installed**: « Le savais-tu ? » (see below);
-  - app **not installed**: the pill « Installer l'appli » instead (see « Installing »).
-- **Top right**: the round button with the initial, in glass. It opens Profil.
+- **The sky.** The SVG goes **inline** (fetch `img/baie-<ciel>.svg`, insert it, remove `width`/`height`, set `preserveAspectRatio="xMidYMax slice"`), so its parts can move. `docs/design/baie-*.svg` changed (clouds, rows of crests on the sea, classes on the moving parts): copy the four again into `img/`. Which sky: `js/core/sun.js`, unchanged. When the sky changes while the app is open, cross-fade (900 ms). `#accueil?ciel=` still forces one.
+- **The living scene** (block 5, copy the rules and the keyframes as they are). It must read as a short film on a loop, with three speeds: the clouds drift slowly across and come back on the other side, the boat sails a little faster, and the sea is the fastest (each row of crests `b-swell` slides by exactly one crest, `--s`, in `--t` seconds; both are written on the element by `baie.py`). Runs only while Accueil is the visible tab and the page is visible.
+- **Opening**: the class `is-opening` (block 5) once per launch of the app, removed after 2.2 s.
+- **Top left**: « Bonjour Sam » / « Bonsoir Sam » (from 18:00; each word in its own `span` with `--i`), the date, and, only while the app isn't installed, the pill « Installer l'appli ». **Top right**: the round glass button with the initial, which opens Profil.
 - **Text colour on the sky**: navy at aube and jour, white at couchant and nuit (the `data-ciel` rules of block 5). Glass is light, and dark at night.
-- **The dock**, from top to bottom:
-  1. The card `.now`, with what `js/planning/today.js` already works out. One card, these states:
+- **The dock**, just above the tab bar, two things only:
+  1. **« Le mot »** (`.mot`): one short line in barely-there glass. Data: `content/mots.json` (the owner's lines: motivation, things heard in class) and `content/savais-tu.json` (course facts). If `mots` has lines, alternate: one mot, one fact; if it is empty, facts only. The small label above the text is the mot's `label` (default « Le mot du jour », with « · author » when `by` is set) or « Le savais-tu ? » for a fact. Start at an index that depends on the date; change every 9 s (8.6 s shown, 0.4 s fade); words arrive one by one (`.mot .w`). Tapping a fact opens its theme in Réviser; tapping a mot does nothing. It stops while Accueil isn't visible. Reduced motion: one line, no rotation.
+  2. **« En ce moment »** (`.now`), with what `js/planning/today.js` already works out:
      | State | Label (left) | Right | Title, place | Bar |
      |---|---|---|---|---|
      | a half-day is on | « En ce moment » with the pulsing dot | « encore 2 h 15 » | its title, its place | progress, with start and end times |
      | next half-day is today | « Ensuite » | « à 13:00 » | title, place | none |
      | today's classes are over | « Fini pour aujourd'hui » | « demain 9:00 » (or the day's name) | the next half-day's title, place | none |
      | no class today | « Week-end », the holiday's or the day off's name | « lundi 9:00 » | the next half-day's title, place | none |
-     Under it, at most one extra line, in this order of priority: an épreuve or dossier within 14 days (« Dossier BC3 à rendre · J-5 »), else today's personal event (« Aussi aujourd'hui : Dentiste, 18:00 », and « +1 » if there are more). Tapping the card opens the details of that half-day, as today. The dot and the bar take the category colour.
-  2. Two tiles `.go`:
-     - **Réviser**: « Leçon 1, 4 sur 10 » while a lesson is under way; « Commencer » before the first one; « Garde ta série ce soir » after 18:00 when no lesson was done today and the série is running; « Tout est à jour » when everything is done. It opens the lesson to continue directly (or Réviser when there is none).
-     - **Cours**: « Nouveau : <title> » when a document was added in the last 7 days, else « 12 documents », else « Bientôt » when there are none. It opens the Cours tab.
-- **Removed from Accueil**: the XP and série chips, the lesson ring, the « Ensuite » second half-day. They live in Réviser and Planning.
+     Under it, at most one extra line, in this order of priority: an épreuve or dossier within 14 days (« Dossier BC3 à rendre · J-5 »), else today's personal event (« Aussi aujourd'hui : Dentiste, 18:00 », and « +1 » if there are more). Tapping the card opens the details of that half-day. The dot and the bar take the category colour.
+- **Removed from Accueil**: the XP and série chips, the lesson ring, the Réviser card, any shortcut to another tab (the tab bar does that).
 - Phones less than 720 px tall: the rule in block 5 lifts the horizon. On a laptop the sky fills the content column, full height.
-
-### « Le savais-tu ? »
-
-- Data: `content/savais-tu.json` (format in `CLAUDE.md`). Start at an index that depends on the date, so everyone sees the same first fact that day; then one fact every 9 s (8.6 s shown, 0.4 s fade), words arriving one by one (`.fact .w`, block 5).
-- Tapping it opens that theme in Réviser.
-- It stops while Accueil isn't the visible tab. With reduced motion: one fact, no rotation.
 
 ## 5. Cours (the new tab)
 
-Address `#cours`. Mode class `m-cours`.
+Address `#cours`. Mode class `m-cours`. The owner's idea: classmates shouldn't have to open the course documents. Cours is the programme as a **path of chapters, in the order of the year**, each tagged with its bloc de compétences; the documents are a button inside each chapter. The fun lessons themselves (« fiches ») arrive in Phase 6.
 
-- Data: `content/documents.json` (format in `CLAUDE.md`). Today its list is empty: Claude chat fills it when the owner shares the class's Drive folder. The tab is always in the bar.
-- Header: « Cours », « Les documents de la formation, rangés par thème. », and the search field only when there are 8 documents or more (it filters by title, ignoring capitals and accents).
-- Body: one section per theme, in the order of `themes.json`, then « Général » for documents whose theme is `"general"`. Themes without documents are not shown. Section title: the theme's title and « 3 documents ».
-- A row: the kind in a small coloured square (`pdf` → « PDF », `diapo` → « DIAPO », `tableur` → « XLS », `doc` → « DOC », `video` → « VIDÉO », `lien` → « LIEN »; the colour of its theme, galet for « Général »), the title, the note under it when there is one, the tag « Nouveau » for 7 days after `added`. It opens `url` in the browser (`target="_blank" rel="noopener"`).
-- If `folder` is set: a last row « Ouvrir le dossier complet ».
-- Empty: a centred book icon in a lavande tile, « Les documents arrivent bientôt. », nothing else.
-- Links to it: in a half-day's details, « Voir les documents » under « Réviser ce thème » when that theme has documents; at the bottom of a theme's page in Réviser, a row « Documents du thème ». « Étudier ce thème » stays hidden (Phase 6).
+- Data: `content/parcours.json` (blocs and chapters, in order) and `content/documents.json` (formats in `CLAUDE.md`).
+- First screen, as in the prototype: header with « Cours », the sentence, and the filter chips `.filters`: « Tout », then one per bloc that has at least one chapter (its `short`). A filter hides the other chapters; the numbers stay those of the full path.
+- Body: the path `.path`. One `.chap` per chapter: its number in the path, « Septembre · BC3 » (`when` and the bloc's `short`), title, `resume`, then pills:
+  - when the chapter has a `theme`: « Quiz 7/10 » (questions answered right in that theme, over its total; « Quiz » alone before the first one). It opens that theme in Réviser.
+  - when it has documents: « 3 documents ».
+  - « Fiche bientôt » (grey), always, until Phase 6.
+  Chapter colours: the colour of its theme in Réviser; without a theme, the next colour of the same list.
+- A chapter opens a page (`#cours/<id>`, `.topbar--page`): title, « when · bloc title », the `resume`; a main button « Réviser ce chapitre » (when it has a theme); then « Documents » as a list: the kind in a small coloured square (`pdf` → « PDF », `diapo` → « DIAPO », `tableur` → « XLS », `doc` → « DOC », `video` → « VIDÉO », `lien` → « LIEN »), the title, the note under it, « Nouveau » for 7 days after `added`. A document opens `url` in the browser (`target="_blank" rel="noopener"`). No documents yet: « Les documents de ce chapitre arrivent bientôt. »
+- At the end of the path: a row « Tous les documents » (`#cours/documents`: every document, grouped by chapter, then « Général » for `"chapitre": "general"`, with a search field from 8 documents), shown only when there is at least one document; and « Ouvrir le dossier Drive » when `folder` is set.
+- Links to it: in a half-day's details, « Voir le chapitre » under « Réviser ce thème » when a chapter has that theme. « Étudier ce thème » stays hidden.
 
 ## 6. Réviser
 
+- A row « Documents du chapitre » at the bottom of a theme's page, when a chapter has that theme.
 - First screen as in the prototype: header `.hd` with « Réviser », the série and XP chips (`.gchip`), and the glass card `.gcard`: the lesson to continue (ring, title, « Continuer la leçon » / « Commencer », play button). When everything is done: the card says « Tout est à jour » with a check instead of the play button.
 - Body: the row « Mes erreurs » **only when there are some**; then « Thèmes » with the tinted tiles (block 6: wash of the theme colour, big faint icon).
 - Theme page and Rapport de relecture: `.topbar--page`. Their content: unchanged.
@@ -108,15 +101,21 @@ Address `#cours`. Mode class `m-cours`.
 ## 7. Planning
 
 - Header `.hd.hd--lift`: « Planning », « Aujourd'hui » (`.gchip`) and « + » (`.gbtn`), the segmented control `.gseg`, then the label of the period with the two arrows (« 9 – 15 novembre », « Novembre 2026 », « 2026 – 2027 »).
-- Semaine: the week strip is a white card that straddles the header (`.body--lift`). Mois: the month grid does the same. Année: no straddling card (`.hd` without `hd--lift`, `.body` without `body--lift`).
+- **Semaine**, from top to bottom, as in the prototype:
+  1. The strip `.days`: one card `.dcard` per day, half on the header, sliding sideways with snap; the chosen day is `.on` (blue, raised) and is brought to the middle. A card shows « jeu. », the date, a label, and two small bars for the morning and the afternoon in their category colours (one bar missing = that half is free). The label: the `short` of the day's first half-day; the holiday's or day off's short name (« Férié », « Vacances »); « Repos » on a week-end without class. Days without class are `.off`. Tapping a card chooses the day; swiping the list below still changes the day, and the arrows the week.
+  2. The title: « Aujourd'hui » with the date small on the right (or the day's name, « Jeudi 12 novembre », when it isn't today).
+  3. The half-days as cards `.slot` (time, colour bar, title, place); the one that is on gets `.is-now`: the tag « En cours », « encore 2 h 15 » and a thin progress bar. A day without class says so in one card, with the link to the next class day.
+  4. The citron banner of the week, when there is one.
+  5. « Dates clés », then « Ajouter à ton agenda ».
+- Mois: the month grid is a white card that straddles the header (`.body--lift`). Année: nothing straddles (`.hd` without `hd--lift`).
 - « Couleurs »: only in Mois and Année, as a small chip above the grid, on the right.
-- Everything else (banners, the day's list, Dates clés, « Ajouter à ton agenda », details, swipes) unchanged.
+- Details, sheets, Dates clés: unchanged.
 
 ## 8. Installing
 
 Apple gives websites no way to install themselves: on iPhone the person has to do it from Safari's menu. So the app guides them as well as it can.
 
-- **Where**: the pill on Accueil while the app isn't installed (it has a small × that hides it for 7 days; « Le savais-tu ? » shows meanwhile), the last step of the welcome, and Profil › « Installer l'appli ». All three open the same sheet.
+- **Where**: the pill on Accueil while the app isn't installed, the last step of the welcome, and Profil › « Installer l'appli ». All three open the same sheet.
 - **iPhone, in Safari**: the three steps of the prototype's sheet, word for word. On iPad, « en haut » instead of « en bas ».
 - **iPhone, in another browser** (Chrome, Firefox, Edge: `CriOS`, `FxiOS`, `EdgiOS` in the user agent): step 1 becomes « Touche le bouton Partager de ton navigateur. ».
 - **Inside another app's browser** (user agent contains `Instagram`, `FBAN`, `FBAV`, `Snapchat`, `TikTok`, `Line/`, `LinkedInApp` or `WhatsApp`): the sheet says first « Ouvre ce lien dans Safari pour installer l'appli. » with a button « Copier le lien », then the steps.
@@ -144,8 +143,8 @@ The owner can't read long technical texts, so:
 
 ## 11. Checks and tests
 
-- `scripts/check_content.py`: also check `content/documents.json` (each document: `id` unique, `theme` in `themes.json` or `"general"`, `title`, `kind` in the list above, `url` starting with `https://`, `added` a date; `folder` empty or an `https://` address) and `content/savais-tu.json` (`id` unique, `theme` exists, `text` 100 characters at most, `question` an existing question id when present).
-- Tests: update them for the four tabs, the new Accueil states, Cours (empty, and with a temporary list of 9 documents to see the search), the install sheet for iPhone Safari, an in-app browser and Android. Screenshots at 390 × 844, light and dark, of: Accueil at the four skies, Cours, Réviser, Planning (Semaine, Mois), a theme page, a lesson, the install sheet.
+- `scripts/check_content.py`: also check `content/parcours.json` (bloc and chapter ids unique, each chapter's `bloc` exists, its `theme` exists when present, `title`, `when`, `resume`), `content/mots.json` (`text` 110 characters at most), `content/documents.json` (each document: `id` unique, `chapitre` in `parcours.json` or `"general"`, `title`, `kind` in the list above, `url` starting with `https://`, `added` a date; `folder` empty or an `https://` address) and `content/savais-tu.json` (`id` unique, `theme` exists, `text` 100 characters at most, `question` an existing question id when present).
+- Tests: update them for the four tabs, the new Accueil states (with and without mots), Cours (the path, a filter, a chapter with and without documents, and a temporary list of 9 documents to see the search), the install sheet for iPhone Safari, an in-app browser and Android. Screenshots at 390 × 844, light and dark, of: Accueil at the four skies, Cours, Réviser, Planning (Semaine, Mois), a theme page, a lesson, the install sheet.
 - Run everything before the pull request.
 
 ## Don't change

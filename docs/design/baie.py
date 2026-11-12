@@ -2,7 +2,8 @@
 Promenade, with the Colline du Château on the left, the sea, the pebbles, two blue chairs
 and a palm tree. One SVG per moment of the day: aube, jour, couchant, nuit.
 The moving parts carry a class, so the app can animate them when the SVG is inline:
-b-star, b-glow, b-sun, b-cloud, b-glit (glitter on the sea), b-boat, b-wave, b-fronds.
+b-star, b-glow, b-sun, b-cloud, b-glit (glitter on the sea), b-swell (rows of crests, far to
+near), b-boat, b-wave, b-fronds.
 Usage: python3 baie.py OUT_DIR"""
 import math, os, random, sys
 
@@ -117,6 +118,13 @@ def scene(name, p):
         w = max(3, (26 - i * .8) * rnd.uniform(.35, 1))
         x = sx - w / 2 + rnd.uniform(-spread, spread)
         o.append(f'<rect class="b-glit" x="{x:.1f}" y="{y:.1f}" width="{w:.1f}" height="1.6" rx=".8" fill="{p["glitter"]}" opacity="{max(.08, .85 - i * .03):.2f}"/>')
+    # The swell: rows of small crests. Each row is wider than the picture and slides by exactly one
+    # crest (--s) in a loop, so the movement never jumps. Near rows are bigger and faster than far ones.
+    for row, (dy, step, rise, op, secs) in enumerate(((16, 26, 1.2, .18, 9.0), (38, 34, 1.6, .22, 7.2), (64, 44, 2.0, .26, 5.6),
+                                                      (94, 56, 2.5, .3, 4.4), (126, 70, 3.0, .34, 3.4))):
+        y = HZ + dy
+        d = " ".join(f"M{x},{y} q{step * .25:.1f},-{rise} {step * .5:.1f},0" for x in range(-step * 2 + (row % 2) * (step // 2), W + step * 2, step))
+        o.append(f'<path class="b-swell" style="--s:{step}px;--t:{secs}s" d="{d}" stroke="#fff" stroke-width="{.9 + row * .12:.2f}" fill="none" stroke-linecap="round" opacity="{op}"/>')
     bx, by = 128, HZ + 26
     o.append(f'<g class="b-boat"><path d="M{bx},{by} L{bx + 9},{by} L{bx + 7.5},{by + 3} L{bx + 1.5},{by + 3}Z" fill="{p["front"]}" opacity=".85"/>'
              f'<path d="M{bx + 4.6},{by - 13} L{bx + 4.6},{by - 1} L{bx + 10},{by - 1}Z" fill="#fff" opacity=".92"/>'

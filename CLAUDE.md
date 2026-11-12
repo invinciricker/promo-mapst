@@ -4,8 +4,8 @@
 A free web app called « Promo MAPST », for the trainees of my BPJEPS MAPST course (multi-activités physiques ou sportives pour tous) at CAPA Sports in Nice, 14 Sept 2026 → 4 June 2027. My classmates use it almost only as an app installed on their phone (iPhone and Android): they open a link and add it to their home screen. It is hosted on GitHub Pages from this public repository.
 
 Four tabs in a floating bar at the bottom:
-1. Accueil: the home. The Baie des Anges full screen, what's on now, and two ways out (Réviser, Cours).
-2. Cours: the course documents, by theme, linked from the class's Google Drive (since Phase 4). The study pages join it in Phase 6.
+1. Accueil: the home. The Baie des Anges full screen and moving, one short line, and what's on now. Nothing else.
+2. Cours: the programme as a path of chapters in the order of the year, by bloc de compétences; each chapter leads to its quiz and to its documents on the class's Google Drive (since Phase 4). The fun lessons (« fiches ») join it in Phase 6.
 3. Réviser: Duolingo-style quizzes on the course.
 4. Planning: the course timetable by week, month and year.
 
@@ -47,7 +47,9 @@ Bright, colourful and alive: it should feel like a good app from the App Store, 
 Claude chat writes the content in these exact formats, so keep them. If you need to change one, ask me first.
 - content/themes.json: a list of { "id", "title" } in display order, with optional "lessons": a list of { "n", "title" }.
 - content/questions.json: a list of questions with id, theme, lesson (number), type ("qcm", "saisie" or "paires"), question, hint, explanation, study (optional), source and status ("brouillon": not checked by me yet; "verifie": checked; "exemple": sample). Everyone sees "brouillon" and "verifie" questions. A qcm also has choices (list) and correct (list of indexes); a saisie has answers (accepted answers, main one first); a paires has pairs (list of [left, right]). Ids never change.
-- content/documents.json (Phase 4): { "about", "folder", "documents" }. "folder" is the address of the class's Drive folder, or empty. Each document has id, theme (a theme id, or "general"), title, kind ("pdf", "diapo", "tableur", "doc", "video" or "lien"), url (https), added (date), and an optional note (one short line).
+- content/parcours.json (Phase 4): { "about", "blocs": [{ id, short, title }], "chapitres": [{ id, title, bloc, when, theme (a Réviser theme id, optional), resume }] }, chapters in the order of the year.
+- content/mots.json (Phase 4): { "about", "mots": [{ "text", "label" (optional), "by" (optional) }] }: my short lines for Accueil; text is 110 characters at most.
+- content/documents.json (Phase 4): { "about", "folder", "documents" }. "folder" is the address of the class's Drive folder, or empty. Each document has id, chapitre (a chapter id, or "general"), title, kind ("pdf", "diapo", "tableur", "doc", "video" or "lien"), url (https), added (date), and an optional note (one short line).
 - content/savais-tu.json (Phase 4): a list of { "id", "theme", "text", "question" }: the short facts shown on Accueil. text is 100 characters at most; question is the id of the question it comes from (optional).
 - content/planning.json and content/planning.ics: built by scripts/export_planning.py from my private repository; content/planning-themes.json maps the planning's topics to the themes.
 - content/planning-fixes.json: { "about", "fixes": [ … ] }: corrections to the official planning, applied by the export script on every run. Each fix has id, added, from and to (dates), match (the fields a half-day must have), set (the fields that replace them), and optional stage, check, category and why.
@@ -57,7 +59,7 @@ Claude chat writes the content in these exact formats, so keep them. If you need
 1. App shell, Planning, publishing on GitHub Pages. Done.
 2. Réviser. Done.
 3. Nouveau look: Accueil, the welcome, the new design. Done.
-4. Une vraie appli: four tabs with Cours, the full-screen home, glass, motion, installing. **Now: docs/phases/phase-4.md.**
+4. Une vraie appli: four tabs with Cours (the path of chapters), the full-screen living home, glass, motion, installing. **Now: docs/phases/phase-4.md.**
 5. Comptes, classement et questions de la promo. Draft: docs/phases/phase-5.md.
 6. Les fiches (study pages, inside Cours). Draft: docs/phases/phase-6.md.
 

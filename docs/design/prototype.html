@@ -5,7 +5,7 @@
   block of this file goes in the app. The CSS here is meant to be copied, not re-invented.
 
   What works: the 4 tabs and their transitions, the floating glass tab bar, the living home
-  (sky by time of day, entrance, « Le savais-tu ? »), the coloured tab headers that shrink on
+  (sky by time of day, moving sea, boat and clouds, entrance, « le mot »), the coloured tab headers that shrink on
   scroll, one pushed page (tap a theme in Réviser), the install sheet (tap « Installer l'appli »).
   Try a sky with ?ciel=aube | jour | couchant | nuit, and the installed look with &installe. On a computer it shows inside a phone frame.
 
@@ -171,20 +171,23 @@ svg.i--s { width: 18px; height: 18px; } svg.i--xs { width: 15px; height: 15px; s
 .home__hello span { display: inline-block; }
 .home__date { font: 650 15px/1.3 var(--font); color: var(--on-sky-2); margin: 6px 0 0; }
 .home__me { width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; font: 800 16px/1 var(--font); color: var(--on-glass); }
-/* « Le savais-tu ? »: one course fact at a time, its words arriving one by one. */
-.fact { margin: 16px 0 0; max-width: 270px; font: 550 14px/1.42 var(--font); color: var(--on-sky-2); min-height: 60px; }
-.fact b { display: block; font: 750 12px/1.2 var(--font); color: var(--on-sky); margin-bottom: 3px; }
-.fact .w { display: inline-block; opacity: 0; transform: translateY(8px); filter: blur(4px); animation: word 520ms var(--ease-out) forwards; animation-delay: calc(var(--n) * 38ms); }
-.fact.is-out { opacity: 0; transition: opacity 400ms; }
+/* « Le mot »: one short line above the card (a sentence the owner added, or a course fact).
+   Barely-there glass, so it never fights the picture. Its words arrive one by one. */
+.mot { margin: 0; padding: 12px 15px 13px; border-radius: 20px; font: 600 14.5px/1.42 var(--font); color: var(--on-glass); min-height: 74px;
+       background: color-mix(in srgb, var(--glass) 42%, transparent); -webkit-backdrop-filter: blur(10px) saturate(150%); backdrop-filter: blur(10px) saturate(150%);
+       box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--glass-line) 55%, transparent); transition: opacity 400ms; }
+.mot small { display: block; font: 700 11.5px/1.2 var(--font); color: var(--on-glass-2); margin-bottom: 4px; }
+.mot .w { display: inline-block; opacity: 0; transform: translateY(8px); filter: blur(4px); animation: word 520ms var(--ease-out) forwards; animation-delay: calc(var(--n) * 38ms); }
+.mot.is-out { opacity: 0; }
 @keyframes word { to { opacity: 1; transform: none; filter: none; } }
 
 .glass { background: var(--glass); -webkit-backdrop-filter: var(--glass-blur); backdrop-filter: var(--glass-blur);
          box-shadow: var(--glass-shadow), inset 0 0 0 1px var(--glass-line); color: var(--on-glass); }
-/* The dock: what's on now, then two ways out. It sits just above the tab bar. */
+/* The dock: the word of the moment, then what's on now. Nothing else. It sits just above the tab bar. */
 .home__dock { position: absolute; left: var(--gutter); right: var(--gutter); bottom: calc(var(--tabbar-space) - 2px); display: grid; gap: 10px; }
-/* Not installed yet: this pill takes the place of « Le savais-tu ? ». Installed: it is never shown. */
+/* Not installed yet: a pill under the date. Installed: it is never shown. */
 .install { display: inline-flex; align-items: center; gap: 8px; height: 40px; margin-top: 16px; padding: 0 10px 0 13px; border-radius: 20px; font: 700 13.5px/1 var(--font); }
-.app:not(.is-installed) .fact, .app.is-installed .install { display: none; }
+.app.is-installed .install { display: none; }
 .now { display: block; padding: 15px 16px 14px; border-radius: 24px; }
 .now__label { display: flex; align-items: center; gap: 7px; font: 700 12.5px/1 var(--font); color: var(--on-glass-2); }
 .now__label b { margin-left: auto; font: 750 13px/1 var(--font); color: var(--on-glass); }
@@ -195,29 +198,31 @@ svg.i--s { width: 18px; height: 18px; } svg.i--xs { width: 15px; height: 15px; s
 .now__bar { height: 5px; border-radius: 3px; background: color-mix(in srgb, var(--on-glass) 14%, transparent); margin-top: 12px; overflow: hidden; }
 .now__bar i { display: block; height: 100%; width: 24%; border-radius: 3px; background: var(--olivier); }
 .now__times { display: flex; justify-content: space-between; margin-top: 6px; font: 600 12px/1 var(--font); color: var(--on-glass-2); font-variant-numeric: tabular-nums; }
-.home__go { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-.go { display: flex; align-items: center; gap: 11px; padding: 12px 12px 12px 13px; border-radius: 22px; min-height: 66px; }
-.go__icon { width: 40px; height: 40px; border-radius: 14px; display: grid; place-items: center; flex: none; color: #fff; }
-.go b { display: block; font: 750 15px/1.2 var(--font); }
-.go small { display: block; font: 550 12px/1.25 var(--font); color: var(--on-glass-2); margin-top: 2px; }
 
-/* The living scene (classes come from docs/design/baie.py). Only while Accueil is on screen. */
+/* The living scene (classes come from docs/design/baie.py). Only while Accueil is on screen.
+   Three speeds, as outside: the clouds drift slowly, the boat sails a little faster, the sea is the
+   fastest (and its near rows faster than its far ones). Everything loops without a jump:
+   a cloud or the boat leaves on one side and comes back on the other; a row of crests slides by
+   exactly one crest. The negative delays start each thing where it is drawn. */
+.home.is-on .b-cloud  { animation: drift 150s linear infinite; animation-delay: -75s; }
+.home.is-on .b-cloud:nth-of-type(2n) { animation-duration: 210s; animation-delay: -105s; }
+.home.is-on .b-cloud:nth-of-type(3n) { animation-duration: 120s; animation-delay: -60s; }
+.home.is-on .b-boat   { animation: sail 110s linear infinite; animation-delay: -44s; }
+.home.is-on .b-swell  { animation: swell var(--t) linear infinite; }
+.home.is-on .b-wave   { animation: wave 2.8s ease-in-out infinite alternate; }
+.home.is-on .b-glit   { animation: glit 2.2s ease-in-out infinite alternate; }
+.home.is-on .b-glit:nth-of-type(3n)   { animation-delay: -.8s; animation-duration: 1.7s; }
+.home.is-on .b-glit:nth-of-type(3n+1) { animation-delay: -1.5s; animation-duration: 2.9s; }
 .home.is-on .b-glow   { animation: glow 7s ease-in-out infinite alternate; }
-.home.is-on .b-glit   { animation: glit 3.4s ease-in-out infinite alternate; }
-.home.is-on .b-glit:nth-of-type(3n)   { animation-delay: -1.1s; animation-duration: 2.6s; }
-.home.is-on .b-glit:nth-of-type(3n+1) { animation-delay: -2.3s; animation-duration: 4.1s; }
-.home.is-on .b-boat   { animation: boat 46s ease-in-out infinite alternate; }
-.home.is-on .b-cloud  { animation: cloud 80s linear infinite alternate; }
-.home.is-on .b-cloud:nth-of-type(2n) { animation-duration: 110s; animation-direction: alternate-reverse; }
-.home.is-on .b-wave   { animation: wave 5.5s ease-in-out infinite alternate; }
-.home.is-on .b-fronds { animation: fronds 6.5s ease-in-out infinite alternate; }
+.home.is-on .b-fronds { animation: fronds 5s ease-in-out infinite alternate; }
 .home.is-on .b-star:nth-of-type(4n) { animation: glit 2.8s ease-in-out infinite alternate; }
+@keyframes drift  { from { transform: translateX(-430px); } to { transform: translateX(430px); } }
+@keyframes sail   { from { transform: translateX(-200px); } to { transform: translateX(300px); } }
+@keyframes swell  { to { transform: translateX(calc(var(--s) * -1)); } }
+@keyframes wave   { from { transform: translateX(-9px); } to { transform: translateX(9px); } }
+@keyframes glit   { from { opacity: .1; } }
 @keyframes glow   { from { transform: scale(1); opacity: .86; } to { transform: scale(1.09); opacity: 1; } }
-@keyframes glit   { from { opacity: .12; } }
-@keyframes boat   { from { transform: translate(-10px, 0); } 50% { transform: translate(8px, -1px); } to { transform: translate(26px, 0); } }
-@keyframes cloud  { from { transform: translateX(-16px); } to { transform: translateX(22px); } }
-@keyframes wave   { from { transform: translateX(-7px); } to { transform: translateX(7px); } }
-@keyframes fronds { from { transform: rotate(-1.4deg); } to { transform: rotate(1.8deg); } }
+@keyframes fronds { from { transform: rotate(-1.6deg); } to { transform: rotate(2.2deg); } }
 
 /* Opening the app: the picture settles, the sun comes up, the words and the glass follow. Once. */
 .home.is-opening .home__sky svg { animation: sky-in 1300ms var(--ease-out) both; }
@@ -240,7 +245,7 @@ svg.i--s { width: 18px; height: 18px; } svg.i--xs { width: 15px; height: 15px; s
 .hd::before { width: 260px; height: 260px; right: -90px; top: -120px; background: radial-gradient(closest-side, rgba(255, 255, 255, .26), transparent); }
 .hd::after  { width: 220px; height: 220px; left: -80px; bottom: -130px; background: radial-gradient(closest-side, rgba(255, 255, 255, .16), transparent); }
 .hd > * { position: relative; z-index: 1; }
-.hd--lift { padding-bottom: 76px; }
+.hd--lift { padding-bottom: 96px; }
 .hd__row { display: flex; align-items: center; justify-content: space-between; gap: 10px; min-height: 44px; }
 .hd__title { font: 800 30px/1.1 var(--font); letter-spacing: -.03em; margin: 0; }
 .hd__sub { font: 550 14px/1.4 var(--font); opacity: .88; margin: 4px 0 0; }
@@ -302,14 +307,26 @@ svg.i--s { width: 18px; height: 18px; } svg.i--xs { width: 15px; height: 15px; s
 .ring { width: 46px; height: 46px; flex: none; }
 .play { width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; background: #fff; color: var(--mode-deep); flex: none; box-shadow: 0 6px 16px -6px rgba(0, 0, 0, .35); }
 
-/* Planning: the week strip is a white card half on the header. */
-.week { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; padding: 10px 6px 8px; }
-.day { display: flex; flex-direction: column; align-items: center; gap: 5px; }
-.day small { font: 650 11px/1.3 var(--font); color: var(--ink-3); }
-.day b { width: 40px; height: 40px; border-radius: 14px; display: grid; place-items: center; font: 750 16px/1 var(--font); font-variant-numeric: tabular-nums; transition: background var(--t-base), color var(--t-base), transform 380ms var(--ease-spring); }
-.day.off b { color: var(--ink-3); font-weight: 600; }
-.day.on b { background: var(--azur-ink); color: var(--on-accent); transform: scale(1.06); }
-.dots { display: flex; gap: 3px; height: 6px; } .dots i { width: 6px; height: 6px; border-radius: 50%; background: var(--c); }
+/* Planning: one card per day, half on the header. Each says the day, the date and what's on;
+   two small bars show the morning and the afternoon. The strip slides sideways; today is centred. */
+.days { display: flex; gap: 8px; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; margin: -78px calc(var(--gutter) * -1) 6px; padding: 8px var(--gutter) 16px; }
+.days::-webkit-scrollbar { display: none; }
+.dcard { flex: 0 0 70px; height: 112px; padding: 11px 6px 10px; border-radius: 22px; display: flex; flex-direction: column; align-items: center; text-align: center; scroll-snap-align: center;
+         background: var(--surface); box-shadow: var(--shadow); transition: transform 380ms var(--ease-spring), background var(--t-base), box-shadow var(--t-base); }
+.dcard small { font: 650 11.5px/1 var(--font); color: var(--ink-3); }
+.dcard b { font: 800 23px/1.1 var(--font); letter-spacing: -.02em; margin-top: 4px; font-variant-numeric: tabular-nums; }
+.dcard span { font: 650 10.5px/1.2 var(--font); color: var(--ink-2); margin-top: 4px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.halves { margin-top: auto; display: flex; gap: 3px; height: 4px; } .halves i { width: 19px; height: 4px; border-radius: 2px; background: var(--c, var(--line)); }
+.dcard.on { color: #fff; background: linear-gradient(160deg, #2B95DA, #0A5489); transform: translateY(-6px) scale(1.05); box-shadow: 0 16px 26px -12px rgba(10, 84, 137, .75); }
+.dcard.on small, .dcard.on span { color: rgba(255, 255, 255, .88); } .dcard.on .halves i { background: #fff; }
+.dcard.off { background: color-mix(in srgb, var(--surface) 72%, transparent); box-shadow: none; } .dcard.off b, .dcard.off span { color: var(--ink-3); }
+/* The day's half-days on a little time line. */
+.slots { position: relative; display: grid; gap: 10px; }
+.slot { display: flex; gap: 12px; align-items: stretch; padding: 14px 14px 14px 12px; border-radius: 20px; background: var(--surface); box-shadow: var(--shadow); }
+.slot__when { width: 46px; flex: none; font: 750 14px/1.25 var(--font); font-variant-numeric: tabular-nums; text-align: right; }
+.slot__when span { display: block; font: 500 12.5px/1.3 var(--font); color: var(--ink-3); }
+.slot.is-now { background: linear-gradient(150deg, color-mix(in srgb, var(--c) 15%, var(--surface)), var(--surface) 75%); box-shadow: var(--shadow), inset 0 0 0 1.5px color-mix(in srgb, var(--c) 45%, transparent); }
+.slot__bar { height: 4px; border-radius: 2px; margin-top: 9px; background: color-mix(in srgb, var(--c) 18%, var(--surface-2)); overflow: hidden; } .slot__bar i { display: block; height: 100%; width: 24%; background: var(--c); border-radius: 2px; }
 .weekhead { display: flex; align-items: center; justify-content: space-between; margin-top: 12px; font: 700 16px/1 var(--font); }
 .banner { display: flex; gap: 10px; align-items: flex-start; margin: 0 0 14px; padding: 12px 14px; border-radius: 16px; background: var(--citron-tint); font: 500 13px/1.4 var(--font); color: var(--ink-2); }
 .banner b { color: var(--ink); font-weight: 700; }
@@ -317,7 +334,21 @@ svg.i--s { width: 18px; height: 18px; } svg.i--xs { width: 15px; height: 15px; s
 .row__time span { display: block; font: 500 13px/1.3 var(--font); color: var(--ink-3); }
 .slot-bar { width: 4px; align-self: stretch; border-radius: 2px; flex: none; background: var(--c); }
 
-/* Cours: one row per document. The square says what kind of file it is. */
+/* Cours: the programme as a path. One card per chapter, in the order of the year, on a line. */
+.filters { display: flex; gap: 8px; margin-top: 14px; overflow-x: auto; scrollbar-width: none; }
+.filters span { flex: none; height: 34px; padding: 0 14px; border-radius: 17px; display: grid; place-items: center; font: 700 13px/1 var(--font); color: #fff; background: var(--glass-on-color); box-shadow: inset 0 0 0 1px var(--glass-on-color-line); }
+.filters span.on { background: #fff; color: var(--mode-deep); box-shadow: 0 2px 8px rgba(0, 0, 0, .14); }
+.path { position: relative; display: grid; gap: 12px; }
+.path::before { content: ""; position: absolute; left: 21px; top: 30px; bottom: 30px; border-left: 2px dashed var(--line); }
+.chap { position: relative; display: flex; gap: 12px; align-items: flex-start; }
+.chap__n { position: relative; z-index: 1; width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; flex: none; margin-top: 10px; font: 800 16px/1 var(--font);
+           background: var(--c-ink); color: var(--on-accent); box-shadow: 0 0 0 5px var(--bg); }
+.chap__card { flex: 1; min-width: 0; padding: 14px 14px 13px; border-radius: 20px; box-shadow: var(--shadow); background: linear-gradient(155deg, color-mix(in srgb, var(--c) 14%, var(--surface)), var(--surface) 70%); }
+.chap__when { font: 650 12px/1.2 var(--font); color: var(--c-ink); }
+.chap__title { font: 750 16px/1.25 var(--font); margin: 3px 0 2px; }
+.chap__acts { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+.pill { display: inline-flex; align-items: center; gap: 5px; height: 28px; padding: 0 10px; border-radius: 14px; font: 700 12px/1 var(--font); background: var(--c-tint); color: var(--c-ink); }
+.pill--soon { background: var(--surface-2); color: var(--ink-3); }
 .doc-kind { width: 40px; height: 46px; border-radius: 10px; display: grid; place-items: center; flex: none; font: 800 10px/1 var(--font); letter-spacing: .02em; background: var(--c-tint); color: var(--c-ink); }
 
 /* ======================================================================================
@@ -338,7 +369,7 @@ svg.i--s { width: 18px; height: 18px; } svg.i--xs { width: 15px; height: 15px; s
 .btn { display: flex; align-items: center; justify-content: center; height: 48px; border-radius: 15px; font: 700 16px/1 var(--font); background: var(--btn); color: var(--on-btn); width: 100%; margin-top: 20px; }
 
 /* Calm phones: no movement, everything is simply there. */
-@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition-duration: 1ms !important; } .fact .w { opacity: 1; transform: none; filter: none; } }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition-duration: 1ms !important; } .mot .w { opacity: 1; transform: none; filter: none; } }
 
 /* ======================================================================================
    8. ONLY FOR THIS PROTOTYPE: a phone frame on a computer, with fake safe areas and a fake clock.
@@ -390,23 +421,19 @@ svg.i--s { width: 18px; height: 18px; } svg.i--xs { width: 15px; height: 15px; s
       <div>
         <h1 class="home__hello"><span style="--i:0">Bonjour</span> <span style="--i:1">Sam</span></h1>
         <p class="home__date">Jeudi 12 novembre</p>
-        <p class="fact" aria-live="off"></p>
         <button class="install glass tap" data-open-sheet><svg class="i i--s"><use href="#phone"/></svg>Installer l’appli<svg class="i i--xs"><use href="#right"/></svg></button>
       </div>
       <button class="home__me glass tap" aria-label="Profil">S</button>
     </header>
     <div class="home__dock">
-      <a class="now glass tap" style="--i:0" data-go="planning">
+      <p class="mot" style="--i:0" aria-live="off"></p>
+      <a class="now glass tap" style="--i:1" data-go="planning">
         <div class="now__label"><i class="pulse"></i>En ce moment<b>encore 2&nbsp;h&nbsp;15</b></div>
         <div class="now__title">Stage APEC · AnimaNice</div>
         <div class="now__place">Structures AnimaNice</div>
         <div class="now__bar"><i></i></div>
         <div class="now__times"><span>13:00</span><span>16:00</span></div>
       </a>
-      <div class="home__go" style="--i:1">
-        <a class="go glass tap" data-go="reviser"><span class="go__icon" style="background:linear-gradient(150deg,#00B595,#007A65)"><svg class="i"><use href="#bolt"/></svg></span><span><b>Réviser</b><small>Leçon 1, 4 sur 10</small></span></a>
-        <a class="go glass tap" data-go="cours"><span class="go__icon" style="background:linear-gradient(150deg,#8F7CF8,#5B49D6)"><svg class="i"><use href="#book"/></svg></span><span><b>Cours</b><small>12 documents</small></span></a>
-      </div>
     </div>
   </section>
 
@@ -415,24 +442,16 @@ svg.i--s { width: 18px; height: 18px; } svg.i--xs { width: 15px; height: 15px; s
     <div class="topbar">Cours</div>
     <header class="hd">
       <div class="hd__row"><h1 class="hd__title">Cours</h1></div>
-      <p class="hd__sub">Les documents de la formation, rangés par thème.</p>
-      <div class="gsearch"><svg class="i i--s"><use href="#search"/></svg>Chercher un document</div>
+      <p class="hd__sub">Le programme dans l’ordre de l’année. Chaque étape a son quiz et ses documents.</p>
+      <div class="filters"><span class="on">Tout</span><span>BC1</span><span>BC2</span><span>BC3</span><span>Transversal</span></div>
     </header>
     <div class="body">
-      <h2 class="section-title rise" style="--i:0;margin-top:4px">Anatomie et mouvement <small>3 documents</small></h2>
-      <div class="list rise" style="--i:1">
-        <a class="row tap"><span class="doc-kind c-bougainvillier">PDF</span><div class="row__main"><div class="row__title">Anatomie du mouvement</div><div class="small muted">Le cours complet</div></div><svg class="i i--s chev"><use href="#right"/></svg></a>
-        <a class="row tap"><span class="doc-kind c-bougainvillier">PDF</span><div class="row__main"><div class="row__title">Les muscles</div><div class="small muted">Planches à connaître</div></div><svg class="i i--s chev"><use href="#right"/></svg></a>
-        <a class="row tap"><span class="doc-kind c-bougainvillier">PDF</span><div class="row__main"><div class="row__title">Récapitulatif des principaux mouvements <span class="tag c-turquoise">Nouveau</span></div></div><svg class="i i--s chev"><use href="#right"/></svg></a>
-      </div>
-      <h2 class="section-title rise" style="--i:2">Filières énergétiques <small>1 document</small></h2>
-      <div class="list rise" style="--i:3">
-        <a class="row tap"><span class="doc-kind c-soleil">DIAPO</span><div class="row__main"><div class="row__title">Les filières énergétiques</div><div class="small muted">Le diaporama du cours</div></div><svg class="i i--s chev"><use href="#right"/></svg></a>
-      </div>
-      <h2 class="section-title rise" style="--i:4">La fiche de séance <small>3 documents</small></h2>
-      <div class="list rise" style="--i:5">
-        <a class="row tap"><span class="doc-kind c-olivier">PDF</span><div class="row__main"><div class="row__title">La fiche de séance</div><div class="small muted">Leçon du 15 septembre</div></div><svg class="i i--s chev"><use href="#right"/></svg></a>
-        <a class="row tap"><span class="doc-kind c-olivier">XLS</span><div class="row__main"><div class="row__title">Fiche de séance type</div><div class="small muted">Le modèle à remplir</div></div><svg class="i i--s chev"><use href="#right"/></svg></a>
+      <div class="path">
+        <a class="chap tap rise c-olivier" style="--i:0"><span class="chap__n">1</span><div class="chap__card"><div class="chap__when">Septembre · BC3</div><div class="chap__title">La fiche de séance</div><div class="small muted">Construire une séance, de l’objectif au bilan.</div><div class="chap__acts"><span class="pill"><svg class="i i--xs"><use href="#bolt"/></svg>Quiz 7/10</span><span class="pill"><svg class="i i--xs"><use href="#book"/></svg>3 documents</span><span class="pill pill--soon">Fiche bientôt</span></div></div></a>
+        <a class="chap tap rise c-bougainvillier" style="--i:1"><span class="chap__n">2</span><div class="chap__card"><div class="chap__when">Septembre · BC3</div><div class="chap__title">Anatomie et mouvement</div><div class="small muted">Os, articulations, muscles : comment le corps bouge.</div><div class="chap__acts"><span class="pill"><svg class="i i--xs"><use href="#bolt"/></svg>Quiz 4/20</span><span class="pill"><svg class="i i--xs"><use href="#book"/></svg>3 documents</span><span class="pill pill--soon">Fiche bientôt</span></div></div></a>
+        <a class="chap tap rise c-soleil" style="--i:2"><span class="chap__n">3</span><div class="chap__card"><div class="chap__when">Septembre · BC3</div><div class="chap__title">Filières énergétiques</div><div class="small muted">D’où vient l’énergie de l’effort.</div><div class="chap__acts"><span class="pill"><svg class="i i--xs"><use href="#bolt"/></svg>Quiz 10/10</span><span class="pill"><svg class="i i--xs"><use href="#book"/></svg>1 document</span><span class="pill pill--soon">Fiche bientôt</span></div></div></a>
+        <a class="chap tap rise c-azur" style="--i:3"><span class="chap__n">4</span><div class="chap__card"><div class="chap__when">Septembre · Transversal</div><div class="chap__title">Rôle et obligations de l’éducateur</div><div class="small muted">Ce que la loi attend de toi.</div><div class="chap__acts"><span class="pill"><svg class="i i--xs"><use href="#bolt"/></svg>Quiz</span><span class="pill"><svg class="i i--xs"><use href="#book"/></svg>2 documents</span><span class="pill pill--soon">Fiche bientôt</span></div></div></a>
+        <a class="chap tap rise c-turquoise" style="--i:4"><span class="chap__n">5</span><div class="chap__card"><div class="chap__when">Octobre · BC3</div><div class="chap__title">Activités d’entretien corporel</div><div class="small muted">Forme, santé, bien-être : les pratiques et leurs publics.</div><div class="chap__acts"><span class="pill"><svg class="i i--xs"><use href="#bolt"/></svg>Quiz</span><span class="pill"><svg class="i i--xs"><use href="#book"/></svg>1 document</span><span class="pill pill--soon">Fiche bientôt</span></div></div></a>
       </div>
     </div>
   </section>
@@ -472,23 +491,23 @@ svg.i--s { width: 18px; height: 18px; } svg.i--xs { width: 15px; height: 15px; s
       <div class="gseg"><span class="on">Semaine</span><span>Mois</span><span>Année</span></div>
       <div class="weekhead"><span>9 – 15 novembre</span><span style="display:flex;gap:14px"><svg class="i i--s"><use href="#left"/></svg><svg class="i i--s"><use href="#right"/></svg></span></div>
     </header>
-    <div class="body body--lift">
-      <div class="card week rise" style="--i:0">
-        <div class="day"><small>L</small><b>9</b><span class="dots c-olivier"><i></i><i></i></span></div>
-        <div class="day"><small>M</small><b>10</b><span class="dots c-olivier"><i></i><i></i></span></div>
-        <div class="day"><small>M</small><b>11</b><span class="dots c-galet"><i></i></span></div>
-        <div class="day on"><small>J</small><b>12</b><span class="dots c-olivier"><i></i><i></i></span></div>
-        <div class="day"><small>V</small><b>13</b><span class="dots"><i style="background:var(--olivier)"></i><i style="background:var(--galet)"></i></span></div>
-        <div class="day off"><small>S</small><b>14</b><span class="dots"></span></div>
-        <div class="day off"><small>D</small><b>15</b><span class="dots"></span></div>
+    <div class="body">
+      <div class="days rise" style="--i:0">
+        <a class="dcard tap c-olivier"><small>lun.</small><b>9</b><span>Stage APEC</span><div class="halves"><i></i><i></i></div></a>
+        <a class="dcard tap c-olivier"><small>mar.</small><b>10</b><span>Stage APEC</span><div class="halves"><i></i><i></i></div></a>
+        <a class="dcard tap off"><small>mer.</small><b>11</b><span>Férié</span><div class="halves"></div></a>
+        <a class="dcard tap on"><small>jeu.</small><b>12</b><span>Stage APEC</span><div class="halves"><i></i><i></i></div></a>
+        <a class="dcard tap c-olivier"><small>ven.</small><b>13</b><span>Stage APEC</span><div class="halves"><i></i><i style="--c:var(--galet)"></i></div></a>
+        <a class="dcard tap off"><small>sam.</small><b>14</b><span>Repos</span><div class="halves"></div></a>
+        <a class="dcard tap off"><small>dim.</small><b>15</b><span>Repos</span><div class="halves"></div></a>
       </div>
-      <div class="banner rise" style="--i:1"><svg class="i i--s" style="color:var(--citron-ink);margin-top:1px"><use href="#info"/></svg><span><b>Du 2 au 20 novembre</b>&nbsp;: stage APEC dans les AnimaNice. Tes horaires exacts sont sur ton planning de stage.</span></div>
-      <h2 class="section-title rise" style="--i:2;margin-top:0">Jeudi 12 novembre <small>Aujourd’hui</small></h2>
-      <div class="list rise c-olivier" style="--i:3">
-        <a class="row tap"><div class="row__time">9:00<span>12:00</span></div><span class="slot-bar"></span><div class="row__main"><div class="row__title">Stage APEC · AnimaNice</div><div class="small muted">Structures AnimaNice, Ville de Nice</div></div><svg class="i i--s chev"><use href="#right"/></svg></a>
-        <a class="row tap"><div class="row__time">13:00<span>16:00</span></div><span class="slot-bar"></span><div class="row__main"><div class="row__title">Stage APEC · AnimaNice <span class="tag c-olivier">En cours</span></div><div class="small muted">Structures AnimaNice, Ville de Nice</div></div><svg class="i i--s chev"><use href="#right"/></svg></a>
+      <h2 class="section-title rise" style="--i:1;margin-top:0">Aujourd’hui <small>jeudi 12 novembre</small></h2>
+      <div class="slots rise c-olivier" style="--i:2">
+        <a class="slot tap"><div class="slot__when">9:00<span>12:00</span></div><span class="slot-bar"></span><div class="row__main"><div class="row__title">Stage APEC · AnimaNice</div><div class="small muted">Structures AnimaNice, Ville de Nice</div></div><svg class="i i--s chev" style="align-self:center"><use href="#right"/></svg></a>
+        <a class="slot tap is-now"><div class="slot__when">13:00<span>16:00</span></div><span class="slot-bar"></span><div class="row__main"><div class="row__title">Stage APEC · AnimaNice <span class="tag c-olivier">En cours</span></div><div class="small muted">Structures AnimaNice, encore 2&nbsp;h&nbsp;15</div><div class="slot__bar"><i></i></div></div><svg class="i i--s chev" style="align-self:center"><use href="#right"/></svg></a>
       </div>
-      <div class="list rise" style="--i:4;margin-top:14px">
+      <div class="banner rise" style="--i:3;margin-top:14px"><svg class="i i--s" style="color:var(--citron-ink);margin-top:1px"><use href="#info"/></svg><span><b>Du 2 au 20 novembre</b>&nbsp;: stage APEC dans les AnimaNice. Tes horaires exacts sont sur ton planning de stage.</span></div>
+      <div class="list rise" style="--i:4;margin-top:0">
         <a class="row tap c-bougainvillier"><span class="tile-icon"><svg class="i i--s"><use href="#flag"/></svg></span><div class="row__main"><div class="row__title">Dates clés</div><div class="small muted">Prochaine&nbsp;: dossier BC3, 15&nbsp;mars</div></div><svg class="i i--s chev"><use href="#right"/></svg></a>
       </div>
     </div>
@@ -583,20 +602,23 @@ if (params.has("installe") || matchMedia("(display-mode: standalone)").matches |
 setSky(["aube", "jour", "couchant", "nuit"].includes(asked) ? asked : "aube");
 setTimeout(() => home.classList.remove("is-opening"), 2200);
 
-// « Le savais-tu ? »: content/savais-tu.json in the app. One fact, 9 seconds, then the next.
-const FACTS = [
-  "Les réserves d’ATP tiennent 2 à 3 secondes d’effort maximal.",
-  "Le corps compte environ 600 muscles, près de 40 % de la masse d’un adulte.",
-  "Les courbatures arrivent 24 à 48 heures après un effort inhabituel.",
-  "Un objectif de séance commence toujours par un verbe d’action.",
+// « Le mot »: content/mots.json (the owner's lines) first, then content/savais-tu.json. 9 seconds each.
+const MOTS = [
+  { label: "Le mot du jour", text: "On ne progresse pas en restant dans ce qu’on sait déjà faire." },
+  { label: "Le savais-tu ?", text: "Les réserves d’ATP tiennent 2 à 3 secondes d’effort maximal." },
+  { label: "Entendu en cours", text: "Une séance sans objectif, c’est une récréation." },
+  { label: "Le savais-tu ?", text: "Un objectif de séance commence toujours par un verbe d’action." },
 ];
-const fact = home.querySelector(".fact"); let f = 0;
-function showFact() {
-  fact.classList.remove("is-out");
-  fact.innerHTML = "<b>Le savais-tu ?</b>" + FACTS[f % FACTS.length].split(" ").map((w, n) => `<span class="w" style="--n:${n}">${w}</span>`).join(" ");
-  f += 1; setTimeout(() => fact.classList.add("is-out"), 8600);
+const mot = home.querySelector(".mot"); let f = 0;
+function showMot() {
+  const m = MOTS[f % MOTS.length]; f += 1;
+  mot.classList.remove("is-out");
+  mot.innerHTML = `<small>${m.label}${m.by ? " · " + m.by : ""}</small>` + m.text.split(" ").map((w, n) => `<span class="w" style="--n:${n}">${w}</span>`).join(" ");
+  setTimeout(() => mot.classList.add("is-out"), 8600);
 }
-setTimeout(() => { showFact(); setInterval(showFact, 9000); }, 1500);
+setTimeout(() => { showMot(); setInterval(showMot, 9000); }, 1500);
+// Planning: bring today's card to the middle of the strip.
+document.querySelector(".dcard.on")?.scrollIntoView({ inline: "center", block: "nearest" });
 </script>
 </body>
 </html>
