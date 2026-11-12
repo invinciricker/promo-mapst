@@ -1,0 +1,140 @@
+[
+ {
+  "id": "st-01",
+  "theme": "anatomie-mouvement",
+  "text": "Le corps compte environ 600 muscles : près de 40 % de la masse d’un adulte.",
+  "question": "anat-2-10"
+ },
+ {
+  "id": "st-02",
+  "theme": "anatomie-mouvement",
+  "text": "206 : c’est le nombre d’os du squelette adulte.",
+  "question": "anat-2-10"
+ },
+ {
+  "id": "st-03",
+  "theme": "anatomie-mouvement",
+  "text": "Un os sollicité régulièrement devient plus dense : c’est la loi de Wolff.",
+  "question": "anat-1-03"
+ },
+ {
+  "id": "st-04",
+  "theme": "anatomie-mouvement",
+  "text": "La rotule est le plus gros os sésamoïde du corps.",
+  "question": "anat-1-06"
+ },
+ {
+  "id": "st-05",
+  "theme": "anatomie-mouvement",
+  "text": "Les courbatures arrivent 24 à 48 heures après un effort inhabituel.",
+  "question": "anat-2-09"
+ },
+ {
+  "id": "st-06",
+  "theme": "anatomie-mouvement",
+  "text": "En gainage, le muscle travaille sans changer de longueur : c’est l’isométrique.",
+  "question": "anat-2-04"
+ },
+ {
+  "id": "st-07",
+  "theme": "anatomie-mouvement",
+  "text": "Le tendon relie le muscle à l’os, le ligament relie deux os.",
+  "question": "anat-2-05"
+ },
+ {
+  "id": "st-08",
+  "theme": "filieres-energetiques",
+  "text": "Les réserves d’ATP tiennent 2 à 3 secondes d’effort maximal.",
+  "question": "fil-1-02"
+ },
+ {
+  "id": "st-09",
+  "theme": "filieres-energetiques",
+  "text": "Les trois filières énergétiques fonctionnent toujours ensemble : une seule domine.",
+  "question": "fil-1-04"
+ },
+ {
+  "id": "st-10",
+  "theme": "filieres-energetiques",
+  "text": "Le lactate n’est pas un déchet : le cœur, le cerveau et les muscles le recyclent.",
+  "question": "fil-1-08"
+ },
+ {
+  "id": "st-11",
+  "theme": "filieres-energetiques",
+  "text": "Sans oxygène, un glucose donne 2 ATP. Avec, environ 30.",
+  "question": "fil-1-07"
+ },
+ {
+  "id": "st-12",
+  "theme": "filieres-energetiques",
+  "text": "Les mitochondries sont les centrales énergétiques du muscle.",
+  "question": "fil-1-10"
+ },
+ {
+  "id": "st-13",
+  "theme": "publics",
+  "text": "Maslow publie sa théorie des besoins en 1943.",
+  "question": "pub-1-04"
+ },
+ {
+  "id": "st-14",
+  "theme": "publics",
+  "text": "Motivation intrinsèque : le plaisir de l’activité elle-même.",
+  "question": "pub-1-05"
+ },
+ {
+  "id": "st-15",
+  "theme": "entretien-corporel",
+  "text": "L’entretien corporel vise la forme et la santé, pas la performance.",
+  "question": "ent-1-01"
+ },
+ {
+  "id": "st-16",
+  "theme": "entretien-corporel",
+  "text": "Inactivité et sédentarité sont deux notions différentes, qui peuvent se cumuler.",
+  "question": "ent-1-02"
+ },
+ {
+  "id": "st-17",
+  "theme": "entretien-corporel",
+  "text": "La méthode Pilates repose sur 8 principes, dont la respiration et le centrage.",
+  "question": "ent-1-09"
+ },
+ {
+  "id": "st-18",
+  "theme": "role-educateur",
+  "text": "La carte professionnelle se renouvelle tous les 5 ans.",
+  "question": "role-1-02"
+ },
+ {
+  "id": "st-19",
+  "theme": "role-educateur",
+  "text": "Encadrer contre rémunération sans le diplôme requis : 1 an de prison et 15 000 € d’amende.",
+  "question": "role-1-04"
+ },
+ {
+  "id": "st-20",
+  "theme": "fiche-de-seance",
+  "text": "Un objectif de séance commence toujours par un verbe d’action.",
+  "question": "fds-1-03"
+ },
+ {
+  "id": "st-21",
+  "theme": "fiche-de-seance",
+  "text": "Un critère de réussite se compte : il est quantifiable.",
+  "question": "fds-1-07"
+ },
+ {
+  "id": "st-22",
+  "theme": "fiche-de-seance",
+  "text": "La mise en train dure entre 15 et 30 minutes.",
+  "question": "fds-1-02"
+ },
+ {
+  "id": "st-23",
+  "theme": "fiche-de-seance",
+  "text": "Compte 2 à 3 minutes pour chaque transition dans ta séance.",
+  "question": "fds-1-08"
+ }
+]

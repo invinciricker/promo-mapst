@@ -1,13 +1,32 @@
 # How Promo MAPST is built
 
-Kept up to date by Claude chat. Last update: 7 Nov 2026.
+Kept up to date by Claude chat. Last update: 12 Nov 2026.
+
+## In plain words (start here)
+
+The app is a folder of files stored on GitHub. GitHub also serves that folder as a website, and that website is the app your classmates open.
+
+- **You** say what you want, test on your phone, and press the button that publishes.
+- **Claude chat** (the conversation in your « BPJEPS MAPST » Project) is the architect: it decides how things should look and work, draws a working model, and writes the questions and texts from your course files. It then writes a brief: a to-do list precise enough that nobody has to guess.
+- **Claude Code** is the builder: it reads the brief and writes the code. You start it by pasting a short message that Claude chat gives you.
+
+What happens to a change, every time:
+1. Claude chat puts its work on a **branch**: a separate copy of the folder, so nothing breaks while it's being worked on.
+2. A **pull request** is the proposal « put this branch into the real app ». GitHub runs automatic checks on it: a green tick means the content files are sound.
+3. You **merge** it: the proposal is accepted, and a minute or two later the app on everyone's phone updates by itself.
+
+Where to look when you want to know what's going on:
+- this file, « Decisions » at the bottom: what was decided and when;
+- `docs/phases/`: the brief of each phase, the current one first;
+- `docs/design/prototype.html`: the working model of the look;
+- each pull request starts with « En bref »: a few plain sentences on what it changes.
 
 ## Who does what
 
 | Who | Writes | Never touches |
 |---|---|---|
-| **Claude chat**, in the owner's claude.ai Project « BPJEPS MAPST » (it holds the course files) | `content/` (questions, study pages, diagrams, themes, planning data), `docs/`, the phase specs in `CLAUDE.md`, the prompts for Claude Code | Code |
-| **Claude Code**, at claude.ai/code | All code: `index.html`, `css/`, `js/`, `sw.js`, the manifest, `scripts/`, `tests/`, `.github/`, `vendor/`, `README.md`, and « État » at the bottom of `CLAUDE.md` | `content/`, `docs/` |
+| **Claude chat**, in the owner's claude.ai Project « BPJEPS MAPST » (it holds the course files) | The decisions and the design: `docs/design/` (prototype, mockups, illustration), the brief of each phase in `docs/phases/`, `content/` (questions, documents list, facts, planning data), the rest of `docs/`, `CLAUDE.md`, the prompts for Claude Code | App code |
+| **Claude Code**, at claude.ai/code | All code: `index.html`, `css/`, `js/`, `sw.js`, the manifest, `scripts/`, `tests/`, `.github/`, `vendor/`, `img/`, the table in `README.md`, `docs/TECH.md`, and « État » at the bottom of `CLAUDE.md` | `content/`, the rest of `docs/` |
 | **The owner** (the trainee who runs this repository) | Decisions, testing on their phone, Relecture of the questions, merging | — |
 
 Claude Code never needs the course files: everything it needs is in this repository.
@@ -23,7 +42,7 @@ Claude Code never needs the course files: everything it needs is in this reposit
 ## How the work flows
 
 ### A phase (new features)
-1. Claude chat prepares a branch `chat/phase-N`: content, the updated spec in `CLAUDE.md`, these docs.
+1. Claude chat prepares a branch `chat/phase-N`: a working prototype in `docs/design/`, the brief in `docs/phases/phase-N.md`, the content, these docs. All the decisions are taken there, so that Claude Code only has to build (and can run on a cheaper model).
 2. The owner starts a fresh Claude Code session on `promo-mapst` and pastes the short prompt Claude chat gives them.
 3. Claude Code merges `chat/phase-N` into its own branch, builds, tests, updates « État » and opens one pull request.
 4. The owner tests on their phone and merges. GitHub Pages publishes within a minute or two.
@@ -50,7 +69,8 @@ When the official planning is wrong for the whole class (an email from CAPA, a c
 ## Saving usage
 
 Claude chat and Claude Code use the same Pro allowance.
-- Claude Code never reads course files, and its prompts stay short: the brief is `CLAUDE.md`.
+- Claude Code never reads course files, and its prompts stay short: the brief is `docs/phases/phase-N.md`, and `CLAUDE.md` stays small (it is read at every step).
+- The thinking happens once, in Claude chat. Claude Code gets a prototype to copy and a brief with no open questions, so a session can run on Sonnet instead of the most expensive model.
 - Content updates skip Claude Code.
 - `docs/CONTENT.md` records which course files have been used and for what, so nothing is read twice.
 - The first time Claude chat reads a scanned file (photos of pages), it saves the text as a doc in the claude.ai Project.
@@ -68,3 +88,14 @@ Claude chat and Claude Code use the same Pro allowance.
 - **7 Nov 2026** · The 70 `brouillon` questions go live for everyone as they are; the owner will check them later in Relecture.
 - **7 Nov 2026** · Planning: from 2 to 20 Nov the class is on the stage APEC in the AnimaNice (CAPA's email of 30 Oct), not « MSP 1 au centre de loisirs » as the official planning says. Kept in `content/planning-fixes.json`.
 - **7 Nov 2026** · « Infos » becomes « Profil », opened from Accueil.
+- **12 Nov 2026** · After testing Phase 3 on his iPhone, the owner finds it still feels like a website. Phase 4 becomes « Une vraie appli »: four tabs (Accueil, Cours, Réviser, Planning) in a floating glass bar; a full-screen home with the bay, one glass card and two shortcuts; a coloured header per tab; movement between tabs; a guided install. Target: `docs/design/prototype.html`, brief: `docs/phases/phase-4.md`.
+- **12 Nov 2026** · « Étudier » becomes **Cours**: first the course documents, linked from a Google Drive folder shared with the class; the study pages (« fiches ») join it in Phase 6.
+- **12 Nov 2026** · XP and série leave Accueil for Réviser. Accueil shows a course fact that changes (« Le savais-tu ? »).
+- **12 Nov 2026** · The iPhone status bar goes back to `black-translucent` (the app draws under the clock), so the top of every screen is coloured.
+- **12 Nov 2026** · Phase order: 4 Une vraie appli, 5 Comptes, classement et questions de la promo, 6 Les fiches.
+- **12 Nov 2026** · Words for humans: `README.md` is short; the technical guide moves to `docs/TECH.md`; pull requests start with « En bref »; `CLAUDE.md` is cut to the essentials and the old briefs move to `docs/phases/`.
+
+## Decisions waiting for the owner
+
+- **The class's Drive folder.** The Cours tab needs one Google Drive folder with the course documents. Share it with your classmates' Google addresses (« Restricted », not « Anyone with the link »): the links will sit in this public repository, and with restricted sharing they open only for the class. Then give the folder's link to Claude chat, which writes `content/documents.json`.
+- **Answers by Claude inside the app.** Asking a question and getting an answer from Claude, based on the course files, needs two things the app doesn't have: an Anthropic API key (paid per question, a few cents a day for a class, separate from the Claude subscription) and a small server to keep that key secret (the app's code is public). Phase 5 therefore starts without it: questions are saved with the name of who asked, you answer them (with Claude chat's help if you like), and everyone sees the answers. The automatic first answer can be added later if you decide to pay for it.
