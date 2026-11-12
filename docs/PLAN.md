@@ -94,6 +94,10 @@ Claude chat and Claude Code use the same Pro allowance.
 - **12 Nov 2026** · The iPhone status bar goes back to `black-translucent` (the app draws under the clock), so the top of every screen is coloured.
 - **12 Nov 2026** · Phase order: 4 Une vraie appli, 5 Comptes, classement et questions de la promo, 6 Les fiches.
 - **12 Nov 2026** · Words for humans: `README.md` is short; the technical guide moves to `docs/TECH.md`; pull requests start with « En bref »; `CLAUDE.md` is cut to the essentials and the old briefs move to `docs/phases/`.
+- **12 Nov 2026 (evening)** · After trying the prototype: Accueil keeps only the moving picture, one short line (« le mot »: the owner's quotes, or course facts) and « En ce moment »; no shortcuts. The sea, the boat and the clouds move at three speeds, in a loop.
+- **12 Nov 2026 (evening)** · Cours is not a shelf of documents: it is the programme as a path of chapters in the order of the year, tagged by bloc de compétences. Documents are a button inside a chapter. The fun lessons come in Phase 6.
+- **12 Nov 2026 (evening)** · Planning, Semaine: bigger day cards (day, date, what's on, morning and afternoon), then « Aujourd'hui », then Dates clés.
+- **12 Nov 2026 (evening)** · Questions from classmates stay in Phase 5 (they need accounts to know who asks). Free version: the owner answers. Entry points: a button at the top of Cours and in each chapter, not on Accueil.
 
 ## Decisions waiting for the owner
 

@@ -1,0 +1,75 @@
+{
+ "about": "The course as a path, in the order of the year: what the Cours tab shows. Written by Claude chat. A chapter may link a Réviser theme (theme) and has its documents in documents.json.",
+ "blocs": [
+  {
+   "id": "bc1",
+   "short": "BC1",
+   "title": "Projets d’animation"
+  },
+  {
+   "id": "bc2",
+   "short": "BC2",
+   "title": "Valoriser la structure, communiquer"
+  },
+  {
+   "id": "bc3",
+   "short": "BC3",
+   "title": "Séances et cycles pédagogiques"
+  },
+  {
+   "id": "transversal",
+   "short": "Transversal",
+   "title": "Compléments transversaux"
+  }
+ ],
+ "chapitres": [
+  {
+   "id": "fiche-de-seance",
+   "title": "La fiche de séance",
+   "bloc": "bc3",
+   "when": "Septembre",
+   "theme": "fiche-de-seance",
+   "resume": "Construire une séance, de l’objectif au bilan."
+  },
+  {
+   "id": "anatomie-mouvement",
+   "title": "Anatomie et mouvement",
+   "bloc": "bc3",
+   "when": "Septembre",
+   "theme": "anatomie-mouvement",
+   "resume": "Os, articulations, muscles : comment le corps bouge."
+  },
+  {
+   "id": "filieres-energetiques",
+   "title": "Filières énergétiques",
+   "bloc": "bc3",
+   "when": "Septembre",
+   "theme": "filieres-energetiques",
+   "resume": "D’où vient l’énergie de l’effort."
+  },
+  {
+   "id": "role-educateur",
+   "title": "Rôle et obligations de l’éducateur sportif",
+   "bloc": "transversal",
+   "when": "Septembre",
+   "theme": "role-educateur",
+   "resume": "Ce que la loi attend de toi."
+  },
+  {
+   "id": "entretien-corporel",
+   "title": "Activités d’entretien corporel",
+   "bloc": "bc3",
+   "when": "Octobre",
+   "theme": "entretien-corporel",
+   "resume": "Forme, santé, bien-être : les pratiques et leurs publics."
+  },
+  {
+   "id": "publics",
+   "title": "Les publics et leurs caractéristiques",
+   "bloc": "bc3",
+   "when": "Janvier",
+   "theme": "publics",
+   "resume": "À chaque âge et à chaque public, ses besoins."
+  }
+ ]
+}

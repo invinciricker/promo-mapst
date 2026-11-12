@@ -16,7 +16,7 @@ A draft, kept from the original brief (it was « Phase 4 » until 12 Nov 2026) w
 
 ## Questions de la promo (new, 12 Nov 2026)
 The owner wants classmates to be able to ask a question about the course from the app, to see who asked what, and to add his own answers.
-- « Poser une question » : a third, full-width glass tile on Accueil, and a button in Cours. A question is a short text (500 characters at most) with an optional theme. It needs an account.
+- « Poser une question » : a glass button at the top of Cours and a row at the bottom of each chapter (the question then carries that chapter). Not on Accueil, which stays bare. The questions can be about anything, in plain language. A question is a short text (500 characters at most) with an optional theme. It needs an account.
 - Questions are saved in Firestore with the username and the date. Everyone signed in sees the list « Questions de la promo », newest first, with « En attente » or « Répondu ». « Moi aussi » adds a +1.
 - The owner's account is marked as admin by hand in the Firebase console. He sees « À répondre », writes or edits answers, and can delete a question.
 - Security rules: only signed-in members of the class read and write; only the admin answers and deletes.

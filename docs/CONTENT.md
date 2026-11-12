@@ -70,3 +70,12 @@ Empty on 12 Nov 2026: waiting for the owner's Drive folder (see « Decisions wai
 ## « Le savais-tu ? » (`content/savais-tu.json`)
 
 23 short facts for Accueil, written on 12 Nov 2026. Each one restates the explanation of an existing question (its id is in `question`), so it has the same source and goes through the same Relecture: if a question is corrected, correct its fact too.
+
+## The path of the Cours tab (`content/parcours.json`)
+
+Six chapters on 12 Nov 2026, one per Réviser theme, ordered by the first date their topic appears in the planning (fiche de séance 15 Sept, anatomie and filières 22 Sept, rôle 24 Sept, entretien corporel 5 Oct, publics 25 Jan). Blocs from the livret d'accueil (BC1 projets d'animation, BC2 valorisation et communication, BC3 séances et cycles, plus the transversal complements). The bloc of each chapter is Claude chat's reading, to be confirmed by the owner.
+
+## « Le mot » (`content/mots.json`)
+
+Empty on 12 Nov 2026: the owner sends his lines (motivation, things heard in class) to Claude chat, which adds them. Trainers are named by initials only.
+
