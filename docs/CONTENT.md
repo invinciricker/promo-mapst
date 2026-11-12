@@ -1,7 +1,7 @@
 # Content log
 
 Kept by Claude chat. Read this before writing new content, so that no course file is read twice.
-Last update: 7 Nov 2026.
+Last update: 12 Nov 2026.
 
 ## Course files
 
@@ -62,3 +62,11 @@ Corrections for the whole class go in `content/planning-fixes.json`; personal de
 | Added | Dates | Correction | Source |
 |---|---|---|---|
 | 7 Nov 2026 | 2–20 Nov 2026 | « MSP 1 au centre de loisirs » → « Stage APEC · AnimaNice » (Wednesdays stay at the centre de loisirs) | CAPA's email to the class, 30 Oct 2026; Ville de Nice, 3 Nov 2026 |
+
+## Documents of the Cours tab (`content/documents.json`)
+
+Empty on 12 Nov 2026: waiting for the owner's Drive folder (see « Decisions waiting for the owner » in `docs/PLAN.md`). When the link arrives, Claude chat lists the folder and writes one entry per document: theme, a clear French title (not the file name), kind, link, date added. Personal papers (attestation, contract, fiche de renseignement) never go in.
+
+## « Le savais-tu ? » (`content/savais-tu.json`)
+
+23 short facts for Accueil, written on 12 Nov 2026. Each one restates the explanation of an existing question (its id is in `question`), so it has the same source and goes through the same Relecture: if a question is corrected, correct its fact too.

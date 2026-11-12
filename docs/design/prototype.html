@@ -1,0 +1,602 @@
+<!doctype html>
+<!--
+  Promo MAPST · Phase 4 « Une vraie appli »: a working prototype of the new shell.
+  Written by Claude chat on 12 Nov 2026. Read docs/phases/phase-4.md first: it says where each
+  block of this file goes in the app. The CSS here is meant to be copied, not re-invented.
+
+  What works: the 4 tabs and their transitions, the floating glass tab bar, the living home
+  (sky by time of day, entrance, « Le savais-tu ? »), the coloured tab headers that shrink on
+  scroll, one pushed page (tap a theme in Réviser), the install sheet (tap « Installer l'appli »).
+  Try a sky with ?ciel=aube | jour | couchant | nuit, and the installed look with &installe. On a computer it shows inside a phone frame.
+
+  Open it through a local server from the repository root:
+      python3 -m http.server 8000   then   http://localhost:8000/docs/design/prototype.html
+-->
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Promo MAPST, prototype</title>
+<style>
+@font-face { font-family: "Plus Jakarta Sans"; src: url("../../vendor/fonts/plus-jakarta-sans.woff2") format("woff2"); font-weight: 200 800; }
+
+/* ======================================================================================
+   1. TOKENS. Same as Phase 3 (css/01-tokens.css), plus the block « new in Phase 4 ».
+   ====================================================================================== */
+:root {
+  --bg: #F3F7FA; --surface: #FFFFFF; --surface-2: #EDF3F7; --line: #E1E9F0;
+  --ink: #103550; --ink-2: #4F6680; --ink-3: #60738A; --on-accent: #FFFFFF;
+  --scrim: rgba(16, 53, 80, .42);
+  --azur: #1070B0;           --azur-ink: #1070B0;           --azur-tint: #E5F1FA;
+  --turquoise: #00E6BF;      --turquoise-ink: #007A65;      --turquoise-tint: #DCFAF2;
+  --soleil: #F09000;         --soleil-ink: #9A5800;         --soleil-tint: #FFF1DC;
+  --lavande: #7766EE;        --lavande-ink: #5B49D6;        --lavande-tint: #EEECFE;
+  --bougainvillier: #E0437C; --bougainvillier-ink: #BE2C62; --bougainvillier-tint: #FDE7EF;
+  --olivier: #3E9762;        --olivier-ink: #2E7A4E;        --olivier-tint: #E3F4E9;
+  --galet: #8E9BA8;          --galet-ink: #5A6B7C;          --galet-tint: #EEF1F4;
+  --citron: #E7B416;         --citron-ink: #7A5D00;         --citron-tint: #FFF5D3;
+  --btn: #00E6BF; --on-btn: #103550;
+  --font: "Plus Jakarta Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --r-sheet: 28px; --r-card: 20px; --r-tile: 18px; --r-control: 12px; --r-pill: 999px;
+  --shadow: 0 1px 2px rgba(16, 53, 80, .05), 0 10px 28px -14px rgba(16, 53, 80, .28);
+  --gutter: 16px;
+
+  /* ---------- new in Phase 4 ---------- */
+  /* One gradient per tab: the header of the tab, the bar of its pages, the status bar behind the clock.
+     The top of each gradient is dark enough for the white clock of the iPhone (3:1 or more). */
+  --grad-accueil:  linear-gradient(168deg, #8A4B00 0%, #C97A00 55%, #F0A93A 100%);   /* Profil and its pages */
+  --grad-cours:    linear-gradient(168deg, #5140CC 0%, #7362EC 52%, #A898FF 100%);
+  --grad-reviser:  linear-gradient(168deg, #006553 0%, #00977C 52%, #25CDAE 100%);
+  --grad-planning: linear-gradient(168deg, #0A5489 0%, #1070B0 50%, #49A4E2 100%);
+  --top-accueil: #8A4B00; --top-cours: #5140CC; --top-reviser: #006553; --top-planning: #0A5489;   /* theme-color on Android */
+  /* Glass: translucent surfaces that blur what is behind them. */
+  --glass: rgba(255, 255, 255, .62);
+  --glass-strong: rgba(255, 255, 255, .78);
+  --glass-line: rgba(255, 255, 255, .72);
+  --glass-blur: blur(22px) saturate(170%);
+  --glass-shadow: 0 12px 34px -14px rgba(16, 53, 80, .42);
+  --on-glass: #103550; --on-glass-2: #3D566E;
+  /* Glass on a coloured header (white text). */
+  --glass-on-color: rgba(255, 255, 255, .2);
+  --glass-on-color-line: rgba(255, 255, 255, .28);
+  /* Motion: three durations, two curves. Nothing else. */
+  --t-fast: 160ms; --t-base: 260ms; --t-slow: 520ms;
+  --ease-out: cubic-bezier(.2, .8, .2, 1);          /* things arriving */
+  --ease-spring: cubic-bezier(.3, 1.45, .45, 1);    /* things that land with a little bounce */
+  /* Safe areas of the phone (the frame below fakes them on a computer). */
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --tabbar-h: 62px;
+  --tabbar-gap: max(10px, calc(var(--safe-bottom) - 8px));     /* space under the floating bar */
+  --tabbar-space: calc(var(--tabbar-h) + var(--tabbar-gap) + 14px);  /* room to leave at the end of every page */
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0B1A28; --surface: #132637; --surface-2: #1B3146; --line: #23394E;
+    --ink: #EAF2F8; --ink-2: #A9BCCC; --ink-3: #7F98AD; --on-accent: #0B1A28;
+    --scrim: rgba(0, 0, 0, .55);
+    --azur: #3D9AE0;           --azur-ink: #7CC0F2;           --azur-tint: rgba(61, 154, 224, .18);
+    --turquoise: #00E6BF;      --turquoise-ink: #41EDCF;      --turquoise-tint: rgba(0, 230, 191, .14);
+    --soleil: #FF9F1C;         --soleil-ink: #FFB95C;         --soleil-tint: rgba(255, 159, 28, .16);
+    --lavande: #8F82FF;        --lavande-ink: #B4ABFF;        --lavande-tint: rgba(143, 130, 255, .18);
+    --bougainvillier: #FF5C93; --bougainvillier-ink: #FF8FB5; --bougainvillier-tint: rgba(255, 92, 147, .16);
+    --olivier: #4FBF7F;        --olivier-ink: #86DAA8;        --olivier-tint: rgba(79, 191, 127, .16);
+    --galet: #8E9BA8;          --galet-ink: #B9C4CF;          --galet-tint: rgba(142, 155, 168, .16);
+    --citron: #F5CF4A;         --citron-ink: #F8DA74;         --citron-tint: rgba(245, 207, 74, .15);
+    --shadow: 0 1px 2px rgba(0, 0, 0, .3), 0 12px 28px -16px rgba(0, 0, 0, .7);
+    --grad-accueil:  linear-gradient(168deg, #4F2B00 0%, #7A4A00 55%, #A86A12 100%);
+    --grad-cours:    linear-gradient(168deg, #2E2385 0%, #4A3BB8 55%, #6A5AD8 100%);
+    --grad-reviser:  linear-gradient(168deg, #00382E 0%, #005E4E 55%, #008A72 100%);
+    --grad-planning: linear-gradient(168deg, #06304F 0%, #0B4C7C 55%, #1670AE 100%);
+    --top-accueil: #4F2B00; --top-cours: #2E2385; --top-reviser: #00382E; --top-planning: #06304F;
+  }
+}
+
+/* ======================================================================================
+   2. APP FEEL. These few rules are what stops it feeling like a web page.
+   ====================================================================================== */
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+html, body { height: 100%; margin: 0; overflow: hidden; overscroll-behavior: none; background: var(--bg); }
+body { font: 500 15px/1.45 var(--font); color: var(--ink); -webkit-font-smoothing: antialiased;
+       -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; touch-action: manipulation; }
+button, a { font: inherit; color: inherit; text-decoration: none; border: 0; background: none; padding: 0; text-align: inherit; cursor: pointer; }
+/* Everything you can tap answers the finger at once. */
+.tap { transition: transform var(--t-fast) var(--ease-out), opacity var(--t-fast); }
+.tap:active { transform: scale(.965); opacity: .9; }
+svg.i { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round; flex: none; }
+svg.i--s { width: 18px; height: 18px; } svg.i--xs { width: 15px; height: 15px; stroke-width: 2.2; } svg.i--fill { fill: currentColor; stroke: none; }
+
+/* The app fills the screen and never scrolls as a whole: each view scrolls inside. */
+.app { position: fixed; inset: 0; overflow: hidden; background: var(--bg); }
+.view { position: absolute; inset: 0; overflow-y: auto; overscroll-behavior: contain; -webkit-overflow-scrolling: touch;
+        visibility: hidden; scrollbar-width: none; }
+.view::-webkit-scrollbar { display: none; }
+.view.is-on { visibility: visible; }
+
+/* ======================================================================================
+   3. CHANGING TAB. The new view comes from the side of its tab; its blocks follow one by one.
+   ====================================================================================== */
+.view.is-entering { animation: view-in var(--t-base) var(--ease-out) both; }
+.view.is-leaving  { visibility: visible; animation: view-out var(--t-fast) ease-in both; pointer-events: none; }
+@keyframes view-in  { from { opacity: 0; transform: translateX(calc(var(--dir, 1) * 26px)); } }
+@keyframes view-out { to   { opacity: 0; transform: translateX(calc(var(--dir, 1) * -14px)); } }
+/* Blocks marked .rise come up one after the other (set --i: 0, 1, 2… in order). */
+.view.is-entering .rise { animation: rise var(--t-slow) var(--ease-out) both; animation-delay: calc(60ms + var(--i, 0) * 45ms); }
+@keyframes rise { from { opacity: 0; transform: translateY(14px); } }
+
+/* ======================================================================================
+   4. THE TAB BAR. A glass capsule that floats over the page; a « lens » slides under the icons.
+   ====================================================================================== */
+.tabbar { position: absolute; left: 12px; right: 12px; bottom: var(--tabbar-gap); height: var(--tabbar-h); z-index: 20;
+          display: grid; grid-template-columns: repeat(4, 1fr); padding: 6px; border-radius: 31px;
+          background: var(--glass-strong); -webkit-backdrop-filter: var(--glass-blur); backdrop-filter: var(--glass-blur);
+          box-shadow: 0 14px 34px -12px rgba(16, 53, 80, .38), 0 2px 6px rgba(16, 53, 80, .08), inset 0 0 0 1px var(--glass-line); }
+.tabbar__lens { position: absolute; top: 6px; bottom: 6px; left: 6px; width: calc((100% - 12px) / 4); border-radius: 25px;
+                background: var(--lens, var(--soleil-tint)); transform: translateX(calc(var(--at, 0) * 100%));
+                transition: transform 420ms var(--ease-spring), background-color var(--t-base); }
+.tab { position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px;
+       font: 650 10.5px/1.1 var(--font); color: var(--ink-3); transition: color var(--t-base); }
+.tab svg { transition: transform 420ms var(--ease-spring); }
+.tab.is-on { color: var(--c); }
+.tab.is-on svg { transform: translateY(-1px) scale(1.08); }
+.tab:active svg { transform: scale(.88); }
+.app[data-tab="accueil"][data-ciel="nuit"] .tabbar { --glass-strong: rgba(12, 30, 48, .72); --glass-line: rgba(255, 255, 255, .12); }
+.app[data-tab="accueil"][data-ciel="nuit"] .tab:not(.is-on) { color: rgba(255, 255, 255, .7); }
+.app[data-tab="accueil"][data-ciel="nuit"] .tabbar__lens { background: rgba(255, 255, 255, .14); }
+.app[data-tab="accueil"][data-ciel="nuit"] .tab.is-on { color: #FFD28A; }
+@media (prefers-color-scheme: dark) { .tabbar { --glass-strong: rgba(19, 38, 55, .78); --glass-line: rgba(255, 255, 255, .1); } }
+
+/* ======================================================================================
+   5. ACCUEIL. The bay fills the screen; everything else is glass floating on it.
+   ====================================================================================== */
+.home { overflow: hidden; color: var(--on-sky); --on-sky: #103550; --on-sky-2: #24506F; }
+/* The picture: anchored at the bottom, 23 % taller than the screen, so the horizon sits above the cards. */
+.home__sky { position: absolute; inset: 0; overflow: hidden; background: #BFE1F7; }
+.home__sky svg { position: absolute; left: 0; bottom: 0; width: 100%; height: 123%; display: block; }
+@media (max-height: 720px) { .home__sky svg { height: 140%; } }   /* small phones: lift the horizon above the cards */
+.home__sky .old { transition: opacity 900ms ease; }        /* cross-fade when the sky changes */
+/* A soft shade at the top so the white clock of the iPhone stays readable on a pale sky. */
+.home__shade { position: absolute; inset: 0 0 auto 0; height: 150px; pointer-events: none;
+               background: linear-gradient(rgba(16, 53, 80, .34), rgba(16, 53, 80, 0)); }
+.home[data-ciel="couchant"], .home[data-ciel="nuit"] { --on-sky: #FFFFFF; --on-sky-2: rgba(255, 255, 255, .86); }
+.home[data-ciel="couchant"] .home__shade { height: 260px; background: linear-gradient(rgba(34, 22, 70, .5), rgba(34, 22, 70, 0)); }
+.home[data-ciel="nuit"] .home__shade { background: none; }
+/* Night: dark glass, white text. */
+.home[data-ciel="nuit"] { --glass: rgba(9, 26, 44, .52); --glass-line: rgba(255, 255, 255, .14); --on-glass: #FFFFFF; --on-glass-2: rgba(255, 255, 255, .78); }
+
+.home__top { position: absolute; left: 22px; right: 18px; top: calc(var(--safe-top) + 18px); display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
+.home__hello { font: 800 34px/1.08 var(--font); letter-spacing: -.035em; margin: 0; }
+.home__hello span { display: inline-block; }
+.home__date { font: 650 15px/1.3 var(--font); color: var(--on-sky-2); margin: 6px 0 0; }
+.home__me { width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; font: 800 16px/1 var(--font); color: var(--on-glass); }
+/* « Le savais-tu ? »: one course fact at a time, its words arriving one by one. */
+.fact { margin: 16px 0 0; max-width: 270px; font: 550 14px/1.42 var(--font); color: var(--on-sky-2); min-height: 60px; }
+.fact b { display: block; font: 750 12px/1.2 var(--font); color: var(--on-sky); margin-bottom: 3px; }
+.fact .w { display: inline-block; opacity: 0; transform: translateY(8px); filter: blur(4px); animation: word 520ms var(--ease-out) forwards; animation-delay: calc(var(--n) * 38ms); }
+.fact.is-out { opacity: 0; transition: opacity 400ms; }
+@keyframes word { to { opacity: 1; transform: none; filter: none; } }
+
+.glass { background: var(--glass); -webkit-backdrop-filter: var(--glass-blur); backdrop-filter: var(--glass-blur);
+         box-shadow: var(--glass-shadow), inset 0 0 0 1px var(--glass-line); color: var(--on-glass); }
+/* The dock: what's on now, then two ways out. It sits just above the tab bar. */
+.home__dock { position: absolute; left: var(--gutter); right: var(--gutter); bottom: calc(var(--tabbar-space) - 2px); display: grid; gap: 10px; }
+/* Not installed yet: this pill takes the place of « Le savais-tu ? ». Installed: it is never shown. */
+.install { display: inline-flex; align-items: center; gap: 8px; height: 40px; margin-top: 16px; padding: 0 10px 0 13px; border-radius: 20px; font: 700 13.5px/1 var(--font); }
+.app:not(.is-installed) .fact, .app.is-installed .install { display: none; }
+.now { display: block; padding: 15px 16px 14px; border-radius: 24px; }
+.now__label { display: flex; align-items: center; gap: 7px; font: 700 12.5px/1 var(--font); color: var(--on-glass-2); }
+.now__label b { margin-left: auto; font: 750 13px/1 var(--font); color: var(--on-glass); }
+.pulse { width: 8px; height: 8px; border-radius: 50%; background: var(--olivier); box-shadow: 0 0 0 0 color-mix(in srgb, var(--olivier) 60%, transparent); animation: pulse 2.2s infinite; }
+@keyframes pulse { 70% { box-shadow: 0 0 0 8px transparent; } 100% { box-shadow: 0 0 0 0 transparent; } }
+.now__title { font: 750 18px/1.25 var(--font); letter-spacing: -.01em; margin: 9px 0 1px; }
+.now__place { font: 500 13.5px/1.3 var(--font); color: var(--on-glass-2); }
+.now__bar { height: 5px; border-radius: 3px; background: color-mix(in srgb, var(--on-glass) 14%, transparent); margin-top: 12px; overflow: hidden; }
+.now__bar i { display: block; height: 100%; width: 24%; border-radius: 3px; background: var(--olivier); }
+.now__times { display: flex; justify-content: space-between; margin-top: 6px; font: 600 12px/1 var(--font); color: var(--on-glass-2); font-variant-numeric: tabular-nums; }
+.home__go { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.go { display: flex; align-items: center; gap: 11px; padding: 12px 12px 12px 13px; border-radius: 22px; min-height: 66px; }
+.go__icon { width: 40px; height: 40px; border-radius: 14px; display: grid; place-items: center; flex: none; color: #fff; }
+.go b { display: block; font: 750 15px/1.2 var(--font); }
+.go small { display: block; font: 550 12px/1.25 var(--font); color: var(--on-glass-2); margin-top: 2px; }
+
+/* The living scene (classes come from docs/design/baie.py). Only while Accueil is on screen. */
+.home.is-on .b-glow   { animation: glow 7s ease-in-out infinite alternate; }
+.home.is-on .b-glit   { animation: glit 3.4s ease-in-out infinite alternate; }
+.home.is-on .b-glit:nth-of-type(3n)   { animation-delay: -1.1s; animation-duration: 2.6s; }
+.home.is-on .b-glit:nth-of-type(3n+1) { animation-delay: -2.3s; animation-duration: 4.1s; }
+.home.is-on .b-boat   { animation: boat 46s ease-in-out infinite alternate; }
+.home.is-on .b-cloud  { animation: cloud 80s linear infinite alternate; }
+.home.is-on .b-cloud:nth-of-type(2n) { animation-duration: 110s; animation-direction: alternate-reverse; }
+.home.is-on .b-wave   { animation: wave 5.5s ease-in-out infinite alternate; }
+.home.is-on .b-fronds { animation: fronds 6.5s ease-in-out infinite alternate; }
+.home.is-on .b-star:nth-of-type(4n) { animation: glit 2.8s ease-in-out infinite alternate; }
+@keyframes glow   { from { transform: scale(1); opacity: .86; } to { transform: scale(1.09); opacity: 1; } }
+@keyframes glit   { from { opacity: .12; } }
+@keyframes boat   { from { transform: translate(-10px, 0); } 50% { transform: translate(8px, -1px); } to { transform: translate(26px, 0); } }
+@keyframes cloud  { from { transform: translateX(-16px); } to { transform: translateX(22px); } }
+@keyframes wave   { from { transform: translateX(-7px); } to { transform: translateX(7px); } }
+@keyframes fronds { from { transform: rotate(-1.4deg); } to { transform: rotate(1.8deg); } }
+
+/* Opening the app: the picture settles, the sun comes up, the words and the glass follow. Once. */
+.home.is-opening .home__sky svg { animation: sky-in 1300ms var(--ease-out) both; }
+.home.is-opening .b-sun, .home.is-opening .b-glow { animation: sun-up 1500ms var(--ease-out) both; }
+.home.is-opening .home__hello span { animation: rise 700ms var(--ease-out) both; animation-delay: calc(250ms + var(--i) * 90ms); }
+.home.is-opening .home__date, .home.is-opening .home__me, .home.is-opening .install { animation: rise 600ms var(--ease-out) 480ms both; }
+.home.is-opening .home__dock > * { animation: land 760ms var(--ease-spring) both; animation-delay: calc(520ms + var(--i) * 90ms); }
+.home.is-opening ~ .tabbar { animation: land 760ms var(--ease-spring) 380ms both; }
+@keyframes sky-in { from { transform: scale(1.07); opacity: .4; } }
+@keyframes sun-up { from { transform: translateY(34px); } }
+@keyframes land   { from { opacity: 0; transform: translateY(34px) scale(.97); } }
+
+/* ======================================================================================
+   6. THE OTHER TABS. A coloured header (it carries the title and the main control),
+      then the content on a rounded sheet that overlaps it.
+   ====================================================================================== */
+.hd { position: relative; padding: calc(var(--safe-top) + 14px) var(--gutter) 46px; color: #fff; overflow: hidden; background: var(--grad); }
+/* Two soft lights in the header: cheap, and it stops the colour looking flat. */
+.hd::before, .hd::after { content: ""; position: absolute; border-radius: 50%; pointer-events: none; }
+.hd::before { width: 260px; height: 260px; right: -90px; top: -120px; background: radial-gradient(closest-side, rgba(255, 255, 255, .26), transparent); }
+.hd::after  { width: 220px; height: 220px; left: -80px; bottom: -130px; background: radial-gradient(closest-side, rgba(255, 255, 255, .16), transparent); }
+.hd > * { position: relative; z-index: 1; }
+.hd--lift { padding-bottom: 76px; }
+.hd__row { display: flex; align-items: center; justify-content: space-between; gap: 10px; min-height: 44px; }
+.hd__title { font: 800 30px/1.1 var(--font); letter-spacing: -.03em; margin: 0; }
+.hd__sub { font: 550 14px/1.4 var(--font); opacity: .88; margin: 4px 0 0; }
+.gchip { display: inline-flex; align-items: center; gap: 5px; height: 32px; padding: 0 12px 0 10px; border-radius: 16px; font: 700 13px/1 var(--font);
+         background: var(--glass-on-color); box-shadow: inset 0 0 0 1px var(--glass-on-color-line); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); color: #fff; }
+.gbtn { width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center; background: #fff; color: var(--mode-deep); }
+.gcard { margin-top: 16px; padding: 14px; border-radius: 22px; display: flex; align-items: center; gap: 13px;
+         background: var(--glass-on-color); box-shadow: inset 0 0 0 1px var(--glass-on-color-line); -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px); }
+.gseg { margin-top: 14px; display: grid; grid-template-columns: repeat(3, 1fr); height: 38px; padding: 3px; border-radius: 13px; background: rgba(255, 255, 255, .18); box-shadow: inset 0 0 0 1px var(--glass-on-color-line); }
+.gseg span { display: grid; place-items: center; border-radius: 10px; font: 650 13px/1 var(--font); color: rgba(255, 255, 255, .9); }
+.gseg span.on { background: #fff; color: var(--mode-deep); font-weight: 750; box-shadow: 0 2px 8px rgba(0, 0, 0, .14); }
+.gsearch { margin-top: 14px; display: flex; align-items: center; gap: 9px; height: 42px; padding: 0 14px; border-radius: 14px; font: 550 15px/1 var(--font); color: rgba(255, 255, 255, .88);
+           background: var(--glass-on-color); box-shadow: inset 0 0 0 1px var(--glass-on-color-line); }
+/* The sheet that carries the content. */
+.body { position: relative; z-index: 2; margin-top: -26px; min-height: 60%; padding: 18px var(--gutter) var(--tabbar-space); background: var(--bg); border-radius: var(--r-sheet) var(--r-sheet) 0 0; }
+.body--lift { padding-top: 0; }            /* when a card straddles the header (Planning) */
+.body--lift > :first-child { transform: translateY(-34px); margin-bottom: -22px; }
+/* The small bar that stays at the top once the big header has scrolled away. It also colours the status bar. */
+.topbar { position: absolute; inset: 0 0 auto 0; z-index: 15; height: calc(var(--safe-top) + 44px); padding-top: var(--safe-top); background: var(--grad); color: #fff;
+          display: flex; align-items: center; justify-content: center; font: 750 16px/1 var(--font); opacity: 0; pointer-events: none; transition: opacity var(--t-fast); }
+.topbar.is-on { opacity: 1; }
+.topbar--page { opacity: 1; pointer-events: auto; justify-content: flex-start; padding-left: 8px; }   /* pages opened from a tab */
+.topbar--page a { display: inline-flex; align-items: center; gap: 1px; font: 650 16px/1 var(--font); }
+/* --mode-deep is the colour of text and icons on the white controls of a header (same in light and dark). */
+.m-accueil  { --grad: var(--grad-accueil);  --mode-ink: var(--soleil-ink);    --mode-tint: var(--soleil-tint);    --mode-deep: #8A4B00; }
+.m-cours    { --grad: var(--grad-cours);    --mode-ink: var(--lavande-ink);   --mode-tint: var(--lavande-tint);   --mode-deep: #5140CC; }
+.m-reviser  { --grad: var(--grad-reviser);  --mode-ink: var(--turquoise-ink); --mode-tint: var(--turquoise-tint); --mode-deep: #006553; }
+.m-planning { --grad: var(--grad-planning); --mode-ink: var(--azur-ink);      --mode-tint: var(--azur-tint);      --mode-deep: #0A5489; }
+
+/* ---------- pieces shared by the three tabs (as in Phase 3, slightly rounder) ---------- */
+.card { background: var(--surface); border-radius: var(--r-card); box-shadow: var(--shadow); }
+.list { background: var(--surface); border-radius: var(--r-card); box-shadow: var(--shadow); overflow: hidden; }
+.row { display: flex; align-items: center; gap: 12px; padding: 13px 14px 13px 16px; min-height: 58px; width: 100%; }
+.row + .row { border-top: 1px solid var(--line); }
+.row__main { flex: 1; min-width: 0; } .row__title { font: 650 15px/1.35 var(--font); }
+.small { font: 500 13px/1.4 var(--font); } .muted { color: var(--ink-2); } .faint { color: var(--ink-3); } .chev { color: var(--ink-3); }
+.tile-icon { width: 38px; height: 38px; border-radius: 12px; display: grid; place-items: center; flex: none; background: var(--c-tint); color: var(--c-ink); }
+.section-title { font: 700 17px/1.3 var(--font); margin: 22px 4px 10px; display: flex; align-items: baseline; justify-content: space-between; }
+.section-title small { font: 600 13px/1 var(--font); color: var(--ink-3); }
+.tag { display: inline-flex; align-items: center; height: 20px; padding: 0 7px; border-radius: 6px; font: 700 11px/1 var(--font); background: var(--c-tint); color: var(--c-ink); }
+.bar { height: 5px; border-radius: 3px; background: color-mix(in srgb, var(--c) 18%, var(--surface-2)); overflow: hidden; } .bar i { display: block; height: 100%; border-radius: 3px; background: var(--c); }
+.c-bougainvillier { --c: var(--bougainvillier); --c-ink: var(--bougainvillier-ink); --c-tint: var(--bougainvillier-tint); }
+.c-soleil { --c: var(--soleil); --c-ink: var(--soleil-ink); --c-tint: var(--soleil-tint); }
+.c-lavande { --c: var(--lavande); --c-ink: var(--lavande-ink); --c-tint: var(--lavande-tint); }
+.c-turquoise { --c: var(--turquoise); --c-ink: var(--turquoise-ink); --c-tint: var(--turquoise-tint); }
+.c-azur { --c: var(--azur); --c-ink: var(--azur-ink); --c-tint: var(--azur-tint); }
+.c-olivier { --c: var(--olivier); --c-ink: var(--olivier-ink); --c-tint: var(--olivier-tint); }
+.c-galet { --c: var(--galet); --c-ink: var(--galet-ink); --c-tint: var(--galet-tint); }
+.c-citron { --c: var(--citron); --c-ink: var(--citron-ink); --c-tint: var(--citron-tint); }
+
+/* Réviser: theme tiles washed with their colour, a big faint icon in the corner. */
+.grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.tile { position: relative; overflow: hidden; display: flex; flex-direction: column; min-height: 142px; padding: 14px; border-radius: var(--r-tile); box-shadow: var(--shadow);
+        background: linear-gradient(155deg, color-mix(in srgb, var(--c) 17%, var(--surface)) 0%, var(--surface) 72%); }
+.tile__ghost { position: absolute; right: -14px; bottom: -16px; width: 92px; height: 92px; color: var(--c); opacity: .16; stroke-width: 1.5; }
+.tile__title { font: 700 15px/1.3 var(--font); margin: 10px 0 0; }
+.tile__foot { margin-top: auto; padding-top: 12px; position: relative; }
+.tile__foot small { display: block; margin-top: 7px; font: 600 12px/1 var(--font); color: var(--ink-3); }
+.ring { width: 46px; height: 46px; flex: none; }
+.play { width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; background: #fff; color: var(--mode-deep); flex: none; box-shadow: 0 6px 16px -6px rgba(0, 0, 0, .35); }
+
+/* Planning: the week strip is a white card half on the header. */
+.week { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; padding: 10px 6px 8px; }
+.day { display: flex; flex-direction: column; align-items: center; gap: 5px; }
+.day small { font: 650 11px/1.3 var(--font); color: var(--ink-3); }
+.day b { width: 40px; height: 40px; border-radius: 14px; display: grid; place-items: center; font: 750 16px/1 var(--font); font-variant-numeric: tabular-nums; transition: background var(--t-base), color var(--t-base), transform 380ms var(--ease-spring); }
+.day.off b { color: var(--ink-3); font-weight: 600; }
+.day.on b { background: var(--azur-ink); color: var(--on-accent); transform: scale(1.06); }
+.dots { display: flex; gap: 3px; height: 6px; } .dots i { width: 6px; height: 6px; border-radius: 50%; background: var(--c); }
+.weekhead { display: flex; align-items: center; justify-content: space-between; margin-top: 12px; font: 700 16px/1 var(--font); }
+.banner { display: flex; gap: 10px; align-items: flex-start; margin: 0 0 14px; padding: 12px 14px; border-radius: 16px; background: var(--citron-tint); font: 500 13px/1.4 var(--font); color: var(--ink-2); }
+.banner b { color: var(--ink); font-weight: 700; }
+.row__time { width: 46px; flex: none; font: 700 14px/1.25 var(--font); font-variant-numeric: tabular-nums; }
+.row__time span { display: block; font: 500 13px/1.3 var(--font); color: var(--ink-3); }
+.slot-bar { width: 4px; align-self: stretch; border-radius: 2px; flex: none; background: var(--c); }
+
+/* Cours: one row per document. The square says what kind of file it is. */
+.doc-kind { width: 40px; height: 46px; border-radius: 10px; display: grid; place-items: center; flex: none; font: 800 10px/1 var(--font); letter-spacing: .02em; background: var(--c-tint); color: var(--c-ink); }
+
+/* ======================================================================================
+   7. PAGES AND SHEETS (the look only: js/core/nav.js already moves them).
+   ====================================================================================== */
+.page { position: absolute; inset: 0; z-index: 12; background: var(--bg); overflow-y: auto; transform: translateX(100%); transition: transform 380ms var(--ease-out); box-shadow: -18px 0 40px -24px rgba(16, 53, 80, .5); }
+.page.is-on { transform: none; }
+.page__body { padding: calc(var(--safe-top) + 44px + 18px) var(--gutter) var(--tabbar-space); }
+.scrim { position: absolute; inset: 0; z-index: 30; background: var(--scrim); opacity: 0; pointer-events: none; transition: opacity var(--t-base); }
+.sheet { position: absolute; inset: auto 0 0 0; z-index: 31; background: var(--surface); border-radius: var(--r-sheet) var(--r-sheet) 0 0; padding: 10px 20px calc(var(--safe-bottom) + 22px);
+         transform: translateY(105%); transition: transform 460ms var(--ease-spring); box-shadow: 0 -20px 40px -20px rgba(16, 53, 80, .4); }
+.sheet-open .scrim { opacity: 1; pointer-events: auto; } .sheet-open .sheet { transform: none; }
+.grabber { width: 38px; height: 5px; border-radius: 3px; background: var(--line); margin: 0 auto 16px; }
+.steps { margin: 16px 0 0; padding: 0; list-style: none; counter-reset: s; display: grid; gap: 12px; }
+.steps li { counter-increment: s; display: flex; gap: 12px; align-items: center; font: 600 15px/1.35 var(--font); }
+.steps li::before { content: counter(s); width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; flex: none; font: 800 14px/1 var(--font); background: var(--turquoise-tint); color: var(--turquoise-ink); }
+.kbd { display: inline-grid; place-items: center; min-width: 26px; height: 26px; padding: 0 5px; border-radius: 7px; background: var(--surface-2); color: var(--azur-ink); vertical-align: -6px; }
+.btn { display: flex; align-items: center; justify-content: center; height: 48px; border-radius: 15px; font: 700 16px/1 var(--font); background: var(--btn); color: var(--on-btn); width: 100%; margin-top: 20px; }
+
+/* Calm phones: no movement, everything is simply there. */
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition-duration: 1ms !important; } .fact .w { opacity: 1; transform: none; filter: none; } }
+
+/* ======================================================================================
+   8. ONLY FOR THIS PROTOTYPE: a phone frame on a computer, with fake safe areas and a fake clock.
+   ====================================================================================== */
+.fake-status { display: none; }
+@media (min-width: 600px) {
+  html, body { background: #D8E2EA; }
+  .app { position: relative; inset: auto; width: 390px; height: 844px; margin: 24px auto; border-radius: 44px; box-shadow: 0 40px 80px -30px rgba(16, 53, 80, .6); --safe-top: 47px; --safe-bottom: 34px; }
+  .fake-status { display: flex; position: absolute; inset: 0 0 auto 0; height: 47px; z-index: 40; padding: 6px 30px 0 38px; align-items: center; justify-content: space-between; font: 650 15px/1 var(--font); color: #fff; pointer-events: none; }
+  .fake-status::after { content: ""; position: absolute; left: 50%; top: 831px; width: 134px; height: 5px; margin-left: -67px; border-radius: 3px; background: currentColor; opacity: .55; }
+  .app[data-tab]:not([data-tab="accueil"]) .fake-status::after, .app[data-ciel="aube"] .fake-status::after, .app[data-ciel="jour"] .fake-status::after { background: #103550; }
+}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+  <symbol id="home" viewBox="0 0 24 24"><path d="M4 10.4 12 4l8 6.4V19a1.6 1.6 0 0 1-1.6 1.6H15v-5.4H9v5.4H5.6A1.6 1.6 0 0 1 4 19z"/></symbol>
+  <symbol id="bolt" viewBox="0 0 24 24"><path d="M13.2 2.8 5 13.4h6.1L10.2 21 18.4 10.4h-6.1z"/></symbol>
+  <symbol id="book" viewBox="0 0 24 24"><path d="M2.8 5.2h5.8A3.4 3.4 0 0 1 12 8.6v11a2.6 2.6 0 0 0-2.6-2.6H2.8z"/><path d="M21.2 5.2h-5.8A3.4 3.4 0 0 0 12 8.6v11a2.6 2.6 0 0 1 2.6-2.6h6.6z"/></symbol>
+  <symbol id="cal" viewBox="0 0 24 24"><rect x="3.2" y="4.6" width="17.6" height="16.2" rx="3.6"/><path d="M3.2 9.6h17.6M8 2.8v3.6M16 2.8v3.6"/></symbol>
+  <symbol id="left" viewBox="0 0 24 24"><path d="m14.5 18-6-6 6-6"/></symbol>
+  <symbol id="right" viewBox="0 0 24 24"><path d="m9.5 18 6-6-6-6"/></symbol>
+  <symbol id="plus" viewBox="0 0 24 24"><path d="M12 5.5v13M5.5 12h13"/></symbol>
+  <symbol id="x" viewBox="0 0 24 24"><path d="M6.5 6.5l11 11M17.5 6.5l-11 11"/></symbol>
+  <symbol id="flame" viewBox="0 0 24 24"><path d="M12 2.8c.6 3 2.6 4.6 4.1 6.4 1.4 1.7 2.4 3.4 2.4 5.6a6.5 6.5 0 0 1-13 0c0-2.4 1.2-4.2 2.6-5.6.3 1.4 1 2.4 2 2.8C9.6 9 10.2 5.4 12 2.8z"/></symbol>
+  <symbol id="repeat" viewBox="0 0 24 24"><path d="M17 2.5 20.5 6 17 9.5"/><path d="M3.5 11V9.5A3.5 3.5 0 0 1 7 6h13.5"/><path d="M7 21.5 3.5 18 7 14.5"/><path d="M20.5 13v1.5A3.5 3.5 0 0 1 17 18H3.5"/></symbol>
+  <symbol id="flag" viewBox="0 0 24 24"><path d="M5.5 21V4.4M5.5 4.4h11.6l-2.1 4 2.1 4H5.5"/></symbol>
+  <symbol id="play" viewBox="0 0 24 24"><path d="M8.5 5.8v12.4l10-6.2z" fill="currentColor"/></symbol>
+  <symbol id="info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.6"/><path d="M12 11v5.2M12 7.9v.1"/></symbol>
+  <symbol id="search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.6"/><path d="m16 16 4.4 4.4"/></symbol>
+  <symbol id="phone" viewBox="0 0 24 24"><rect x="6.6" y="2.8" width="10.8" height="18.4" rx="2.8"/><path d="M10.6 17.8h2.8"/></symbol>
+  <symbol id="share" viewBox="0 0 24 24"><path d="M12 14.6V3.4M8 7l4-3.8L16 7"/><path d="M8 10.4H6.6A1.8 1.8 0 0 0 4.8 12.2v6.6a1.8 1.8 0 0 0 1.8 1.8h10.8a1.8 1.8 0 0 0 1.8-1.8v-6.6a1.8 1.8 0 0 0-1.8-1.8H16"/></symbol>
+  <symbol id="dots" viewBox="0 0 24 24"><path d="M6 12h.1M12 12h.1M18 12h.1" stroke-width="3"/></symbol>
+  <symbol id="addbox" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="4"/><path d="M12 8.4v7.2M8.4 12h7.2"/></symbol>
+  <symbol id="figure" viewBox="0 0 24 24"><circle cx="12" cy="4.8" r="2.1"/><path d="M6 9.4 12 11l6-1.6M12 11v4.6M12 15.6 8.6 21M12 15.6l3.4 5.4"/></symbol>
+  <symbol id="battery" viewBox="0 0 24 24"><rect x="2.6" y="7" width="16.4" height="10" rx="2.6"/><path d="M21.4 10.4v3.2M11.6 8.8 9.4 12.3h3.2l-2.2 3.5"/></symbol>
+  <symbol id="users" viewBox="0 0 24 24"><circle cx="9" cy="8.4" r="3.2"/><path d="M3.2 19.6a5.8 5.8 0 0 1 11.6 0"/><circle cx="17.2" cy="9.6" r="2.4"/><path d="M15.8 14.6a4.6 4.6 0 0 1 5 5"/></symbol>
+  <symbol id="dumbbell" viewBox="0 0 24 24"><path d="M6.6 7.6v8.8M17.4 7.6v8.8M3.6 9.8v4.4M20.4 9.8v4.4M6.6 12h10.8"/></symbol>
+</defs></svg>
+
+<div class="app" data-tab="accueil" data-ciel="aube">
+  <div class="fake-status"><span>9:41</span><span>●●● ▮</span></div>
+
+  <!-- ============================ ACCUEIL ============================ -->
+  <section class="view home is-on is-opening" data-view="accueil" data-ciel="aube">
+    <div class="home__sky"></div>
+    <div class="home__shade"></div>
+    <header class="home__top">
+      <div>
+        <h1 class="home__hello"><span style="--i:0">Bonjour</span> <span style="--i:1">Sam</span></h1>
+        <p class="home__date">Jeudi 12 novembre</p>
+        <p class="fact" aria-live="off"></p>
+        <button class="install glass tap" data-open-sheet><svg class="i i--s"><use href="#phone"/></svg>Installer l’appli<svg class="i i--xs"><use href="#right"/></svg></button>
+      </div>
+      <button class="home__me glass tap" aria-label="Profil">S</button>
+    </header>
+    <div class="home__dock">
+      <a class="now glass tap" style="--i:0" data-go="planning">
+        <div class="now__label"><i class="pulse"></i>En ce moment<b>encore 2&nbsp;h&nbsp;15</b></div>
+        <div class="now__title">Stage APEC · AnimaNice</div>
+        <div class="now__place">Structures AnimaNice</div>
+        <div class="now__bar"><i></i></div>
+        <div class="now__times"><span>13:00</span><span>16:00</span></div>
+      </a>
+      <div class="home__go" style="--i:1">
+        <a class="go glass tap" data-go="reviser"><span class="go__icon" style="background:linear-gradient(150deg,#00B595,#007A65)"><svg class="i"><use href="#bolt"/></svg></span><span><b>Réviser</b><small>Leçon 1, 4 sur 10</small></span></a>
+        <a class="go glass tap" data-go="cours"><span class="go__icon" style="background:linear-gradient(150deg,#8F7CF8,#5B49D6)"><svg class="i"><use href="#book"/></svg></span><span><b>Cours</b><small>12 documents</small></span></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================ COURS ============================ -->
+  <section class="view m-cours" data-view="cours">
+    <div class="topbar">Cours</div>
+    <header class="hd">
+      <div class="hd__row"><h1 class="hd__title">Cours</h1></div>
+      <p class="hd__sub">Les documents de la formation, rangés par thème.</p>
+      <div class="gsearch"><svg class="i i--s"><use href="#search"/></svg>Chercher un document</div>
+    </header>
+    <div class="body">
+      <h2 class="section-title rise" style="--i:0;margin-top:4px">Anatomie et mouvement <small>3 documents</small></h2>
+      <div class="list rise" style="--i:1">
+        <a class="row tap"><span class="doc-kind c-bougainvillier">PDF</span><div class="row__main"><div class="row__title">Anatomie du mouvement</div><div class="small muted">Le cours complet</div></div><svg class="i i--s chev"><use href="#right"/></svg></a>
+        <a class="row tap"><span class="doc-kind c-bougainvillier">PDF</span><div class="row__main"><div class="row__title">Les muscles</div><div class="small muted">Planches à connaître</div></div><svg class="i i--s chev"><use href="#right"/></svg></a>
+        <a class="row tap"><span class="doc-kind c-bougainvillier">PDF</span><div class="row__main"><div class="row__title">Récapitulatif des principaux mouvements <span class="tag c-turquoise">Nouveau</span></div></div><svg class="i i--s chev"><use href="#right"/></svg></a>
+      </div>
+      <h2 class="section-title rise" style="--i:2">Filières énergétiques <small>1 document</small></h2>
+      <div class="list rise" style="--i:3">
+        <a class="row tap"><span class="doc-kind c-soleil">DIAPO</span><div class="row__main"><div class="row__title">Les filières énergétiques</div><div class="small muted">Le diaporama du cours</div></div><svg class="i i--s chev"><use href="#right"/></svg></a>
+      </div>
+      <h2 class="section-title rise" style="--i:4">La fiche de séance <small>3 documents</small></h2>
+      <div class="list rise" style="--i:5">
+        <a class="row tap"><span class="doc-kind c-olivier">PDF</span><div class="row__main"><div class="row__title">La fiche de séance</div><div class="small muted">Leçon du 15 septembre</div></div><svg class="i i--s chev"><use href="#right"/></svg></a>
+        <a class="row tap"><span class="doc-kind c-olivier">XLS</span><div class="row__main"><div class="row__title">Fiche de séance type</div><div class="small muted">Le modèle à remplir</div></div><svg class="i i--s chev"><use href="#right"/></svg></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================ RÉVISER ============================ -->
+  <section class="view m-reviser" data-view="reviser">
+    <div class="topbar">Réviser</div>
+    <header class="hd">
+      <div class="hd__row"><h1 class="hd__title">Réviser</h1>
+        <span style="display:flex;gap:6px"><span class="gchip"><svg class="i i--xs i--fill"><use href="#flame"/></svg>3 jours</span><span class="gchip"><svg class="i i--xs i--fill"><use href="#bolt"/></svg>120 XP</span></span></div>
+      <a class="gcard tap">
+        <svg class="ring" viewBox="0 0 46 46"><circle cx="23" cy="23" r="19" fill="none" stroke="rgba(255,255,255,.28)" stroke-width="5"/><circle cx="23" cy="23" r="19" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round" stroke-dasharray="47.8 119.4" transform="rotate(-90 23 23)"/><text x="23" y="27.5" text-anchor="middle" font-family="Plus Jakarta Sans" font-weight="800" font-size="12" fill="#fff">4/10</text></svg>
+        <div class="row__main"><div style="font:750 16px/1.25 var(--font)">Os et articulations</div><div class="small" style="opacity:.88">Continuer la leçon</div></div>
+        <span class="play"><svg class="i"><use href="#play"/></svg></span>
+      </a>
+    </header>
+    <div class="body">
+      <div class="list rise" style="--i:0">
+        <a class="row tap c-bougainvillier"><span class="tile-icon"><svg class="i i--s"><use href="#repeat"/></svg></span><div class="row__main"><div class="row__title">Mes erreurs</div><div class="small muted">4 questions à revoir</div></div><svg class="i i--s chev"><use href="#right"/></svg></a>
+      </div>
+      <h2 class="section-title rise" style="--i:1">Thèmes</h2>
+      <div class="grid">
+        <a class="tile tap rise c-bougainvillier" style="--i:2" data-push><svg class="i tile__ghost"><use href="#figure"/></svg><span class="tile-icon"><svg class="i i--s"><use href="#figure"/></svg></span><p class="tile__title">Anatomie et mouvement</p><div class="tile__foot"><div class="bar"><i style="width:20%"></i></div><small>Leçon 1 sur 2</small></div></a>
+        <a class="tile tap rise c-soleil" style="--i:3"><svg class="i tile__ghost"><use href="#battery"/></svg><span class="tile-icon"><svg class="i i--s"><use href="#battery"/></svg></span><p class="tile__title">Filières énergétiques</p><div class="tile__foot"><div class="bar"><i style="width:100%"></i></div><small>Terminé</small></div></a>
+        <a class="tile tap rise c-lavande" style="--i:4"><svg class="i tile__ghost"><use href="#users"/></svg><span class="tile-icon"><svg class="i i--s"><use href="#users"/></svg></span><p class="tile__title">Les publics et leurs caractéristiques</p><div class="tile__foot"><div class="bar"></div><small>1 leçon</small></div></a>
+        <a class="tile tap rise c-turquoise" style="--i:5"><svg class="i tile__ghost"><use href="#dumbbell"/></svg><span class="tile-icon"><svg class="i i--s"><use href="#dumbbell"/></svg></span><p class="tile__title">Activités d’entretien corporel</p><div class="tile__foot"><div class="bar"></div><small>1 leçon</small></div></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================ PLANNING ============================ -->
+  <section class="view m-planning" data-view="planning">
+    <div class="topbar">Planning</div>
+    <header class="hd hd--lift">
+      <div class="hd__row"><h1 class="hd__title">Planning</h1>
+        <span style="display:flex;gap:8px;align-items:center"><span class="gchip tap" style="padding:0 13px">Aujourd’hui</span><span class="gbtn tap"><svg class="i i--s" style="stroke-width:2.5"><use href="#plus"/></svg></span></span></div>
+      <div class="gseg"><span class="on">Semaine</span><span>Mois</span><span>Année</span></div>
+      <div class="weekhead"><span>9 – 15 novembre</span><span style="display:flex;gap:14px"><svg class="i i--s"><use href="#left"/></svg><svg class="i i--s"><use href="#right"/></svg></span></div>
+    </header>
+    <div class="body body--lift">
+      <div class="card week rise" style="--i:0">
+        <div class="day"><small>L</small><b>9</b><span class="dots c-olivier"><i></i><i></i></span></div>
+        <div class="day"><small>M</small><b>10</b><span class="dots c-olivier"><i></i><i></i></span></div>
+        <div class="day"><small>M</small><b>11</b><span class="dots c-galet"><i></i></span></div>
+        <div class="day on"><small>J</small><b>12</b><span class="dots c-olivier"><i></i><i></i></span></div>
+        <div class="day"><small>V</small><b>13</b><span class="dots"><i style="background:var(--olivier)"></i><i style="background:var(--galet)"></i></span></div>
+        <div class="day off"><small>S</small><b>14</b><span class="dots"></span></div>
+        <div class="day off"><small>D</small><b>15</b><span class="dots"></span></div>
+      </div>
+      <div class="banner rise" style="--i:1"><svg class="i i--s" style="color:var(--citron-ink);margin-top:1px"><use href="#info"/></svg><span><b>Du 2 au 20 novembre</b>&nbsp;: stage APEC dans les AnimaNice. Tes horaires exacts sont sur ton planning de stage.</span></div>
+      <h2 class="section-title rise" style="--i:2;margin-top:0">Jeudi 12 novembre <small>Aujourd’hui</small></h2>
+      <div class="list rise c-olivier" style="--i:3">
+        <a class="row tap"><div class="row__time">9:00<span>12:00</span></div><span class="slot-bar"></span><div class="row__main"><div class="row__title">Stage APEC · AnimaNice</div><div class="small muted">Structures AnimaNice, Ville de Nice</div></div><svg class="i i--s chev"><use href="#right"/></svg></a>
+        <a class="row tap"><div class="row__time">13:00<span>16:00</span></div><span class="slot-bar"></span><div class="row__main"><div class="row__title">Stage APEC · AnimaNice <span class="tag c-olivier">En cours</span></div><div class="small muted">Structures AnimaNice, Ville de Nice</div></div><svg class="i i--s chev"><use href="#right"/></svg></a>
+      </div>
+      <div class="list rise" style="--i:4;margin-top:14px">
+        <a class="row tap c-bougainvillier"><span class="tile-icon"><svg class="i i--s"><use href="#flag"/></svg></span><div class="row__main"><div class="row__title">Dates clés</div><div class="small muted">Prochaine&nbsp;: dossier BC3, 15&nbsp;mars</div></div><svg class="i i--s chev"><use href="#right"/></svg></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- A page opened from Réviser: the tab's colour stays behind the clock. -->
+  <section class="page m-reviser" data-page>
+    <div class="topbar topbar--page"><a class="tap" data-back><svg class="i"><use href="#left"/></svg>Réviser</a></div>
+    <div class="page__body">
+      <h1 style="font:800 26px/1.15 var(--font);letter-spacing:-.02em;margin:0">Anatomie et mouvement</h1>
+      <p class="small muted" style="margin:6px 0 0">2 leçons, 20 questions. Le chemin des leçons reste celui de la phase 3.</p>
+    </div>
+  </section>
+
+  <nav class="tabbar" style="--at:0">
+    <i class="tabbar__lens"></i>
+    <button class="tab is-on" data-tab="accueil" style="--c:var(--soleil-ink)" data-lens="var(--soleil-tint)"><svg class="i"><use href="#home"/></svg>Accueil</button>
+    <button class="tab" data-tab="cours" style="--c:var(--lavande-ink)" data-lens="var(--lavande-tint)"><svg class="i"><use href="#book"/></svg>Cours</button>
+    <button class="tab" data-tab="reviser" style="--c:var(--turquoise-ink)" data-lens="var(--turquoise-tint)"><svg class="i"><use href="#bolt"/></svg>Réviser</button>
+    <button class="tab" data-tab="planning" style="--c:var(--azur-ink)" data-lens="var(--azur-tint)"><svg class="i"><use href="#cal"/></svg>Planning</button>
+  </nav>
+
+  <!-- The install help, iPhone version. -->
+  <div class="scrim" data-close-sheet></div>
+  <div class="sheet" role="dialog" aria-label="Installer l’appli">
+    <div class="grabber"></div>
+    <h2 style="font:800 22px/1.2 var(--font);letter-spacing:-.02em;margin:0">Installer l’appli</h2>
+    <p class="muted" style="margin:6px 0 0">Sur iPhone, c’est Safari qui installe. Trois gestes&nbsp;:</p>
+    <ol class="steps">
+      <li><span>Touche <span class="kbd"><svg class="i i--s"><use href="#dots"/></svg></span> ou <span class="kbd"><svg class="i i--s"><use href="#share"/></svg></span> en bas de Safari, puis «&nbsp;Partager&nbsp;».</span></li>
+      <li><span>Fais défiler et touche <span class="kbd"><svg class="i i--s"><use href="#addbox"/></svg></span> «&nbsp;Sur l’écran d’accueil&nbsp;».</span></li>
+      <li><span>Touche «&nbsp;Ajouter&nbsp;». L’appli arrive avec tes autres applis.</span></li>
+    </ol>
+    <p class="small faint" style="margin:14px 0 0">Tu ne vois pas ces boutons&nbsp;? Tu es dans Instagram ou Snapchat&nbsp;: ouvre d’abord le lien dans Safari.</p>
+    <button class="btn tap" data-close-sheet>J’ai compris</button>
+  </div>
+</div>
+
+<script>
+// ---------------------------------------------------------------------------------------
+// Prototype script. The app already has all of this in js/core/nav.js, accueil.js, sun.js:
+// take the ideas (order of the tabs, the two classes, the lens), not the code.
+// ---------------------------------------------------------------------------------------
+const app = document.querySelector(".app");
+const ORDER = ["accueil", "cours", "reviser", "planning"];
+const views = Object.fromEntries([...document.querySelectorAll("[data-view]")].map((v) => [v.dataset.view, v]));
+const bar = document.querySelector(".tabbar");
+let current = "accueil";
+
+function go(tab) {
+  if (tab === current) { views[tab].scrollTo({ top: 0, behavior: "smooth" }); return; }
+  const from = views[current], to = views[tab];
+  const dir = ORDER.indexOf(tab) > ORDER.indexOf(current) ? 1 : -1;   // the new view comes from its tab's side
+  from.style.setProperty("--dir", dir); to.style.setProperty("--dir", dir);
+  from.classList.add("is-leaving"); from.classList.remove("is-on", "is-opening");
+  to.scrollTop = 0; to.classList.add("is-on", "is-entering");
+  from.addEventListener("animationend", () => from.classList.remove("is-leaving"), { once: true });
+  setTimeout(() => to.classList.remove("is-entering"), 900);
+  // the lens slides under the new icon and takes its colour
+  const btn = bar.querySelector(`[data-tab="${tab}"]`);
+  bar.querySelectorAll(".tab").forEach((b) => b.classList.toggle("is-on", b === btn));
+  bar.style.setProperty("--at", ORDER.indexOf(tab)); bar.style.setProperty("--lens", btn.dataset.lens);
+  current = tab; app.dataset.tab = tab;
+  if (navigator.vibrate) navigator.vibrate(8);                        // a tiny tick on Android
+}
+bar.addEventListener("click", (e) => { const b = e.target.closest(".tab"); if (b) go(b.dataset.tab); });
+document.addEventListener("click", (e) => {
+  const link = e.target.closest("[data-go]"); if (link) go(link.dataset.go);
+  if (e.target.closest("[data-push]")) document.querySelector("[data-page]").classList.add("is-on");
+  if (e.target.closest("[data-back]")) document.querySelector("[data-page]").classList.remove("is-on");
+  if (e.target.closest("[data-open-sheet]")) app.classList.add("sheet-open");
+  if (e.target.closest("[data-close-sheet]")) app.classList.remove("sheet-open");
+});
+
+// The small coloured bar appears once the big title has scrolled away.
+Object.values(views).forEach((v) => { const top = v.querySelector(".topbar"); if (top) v.addEventListener("scroll", () => top.classList.toggle("is-on", v.scrollTop > 64), { passive: true }); });
+
+// The sky: the SVG goes inline so that its parts can move. It is anchored at the bottom.
+const home = views.accueil, sky = home.querySelector(".home__sky");
+async function setSky(ciel) {
+  const text = await (await fetch(`baie-${ciel}.svg`)).text();
+  const old = sky.querySelector("svg");
+  sky.insertAdjacentHTML("beforeend", text);
+  const svg = sky.lastElementChild; svg.removeAttribute("width"); svg.removeAttribute("height");
+  svg.setAttribute("preserveAspectRatio", "xMidYMax slice"); svg.setAttribute("aria-hidden", "true");
+  if (old) { old.classList.add("old"); old.style.opacity = 0; setTimeout(() => old.remove(), 950); }
+  home.dataset.ciel = ciel; app.dataset.ciel = ciel;
+  home.querySelector(".home__hello span").textContent = ciel === "couchant" || ciel === "nuit" ? "Bonsoir" : "Bonjour";
+}
+const params = new URLSearchParams(location.search), asked = params.get("ciel");
+if (params.has("installe") || matchMedia("(display-mode: standalone)").matches || navigator.standalone) app.classList.add("is-installed");
+setSky(["aube", "jour", "couchant", "nuit"].includes(asked) ? asked : "aube");
+setTimeout(() => home.classList.remove("is-opening"), 2200);
+
+// « Le savais-tu ? »: content/savais-tu.json in the app. One fact, 9 seconds, then the next.
+const FACTS = [
+  "Les réserves d’ATP tiennent 2 à 3 secondes d’effort maximal.",
+  "Le corps compte environ 600 muscles, près de 40 % de la masse d’un adulte.",
+  "Les courbatures arrivent 24 à 48 heures après un effort inhabituel.",
+  "Un objectif de séance commence toujours par un verbe d’action.",
+];
+const fact = home.querySelector(".fact"); let f = 0;
+function showFact() {
+  fact.classList.remove("is-out");
+  fact.innerHTML = "<b>Le savais-tu ?</b>" + FACTS[f % FACTS.length].split(" ").map((w, n) => `<span class="w" style="--n:${n}">${w}</span>`).join(" ");
+  f += 1; setTimeout(() => fact.classList.add("is-out"), 8600);
+}
+setTimeout(() => { showFact(); setInterval(showFact, 9000); }, 1500);
+</script>
+</body>
+</html>

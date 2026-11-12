@@ -1,12 +1,18 @@
-# Design: the « nouveau look » (Phase 3)
+# Design
 
-Written by Claude chat on 7 Nov 2026, after the owner found the app crowded and too dark.
-This folder is the target for Phase 3. `CLAUDE.md` (« Nouveau look ») says what to build; this file says how it should look.
+Written by Claude chat. Two generations live here:
+
+- **`prototype.html` (Phase 4, 12 Nov 2026) is the reference for the frame of the app**: the floating tab bar, Accueil, the coloured headers of the tabs, glass, movement, the install sheet. It works: open it and tap. `docs/phases/phase-4.md` says where each part goes.
+- **`mockups.html` (Phase 3, 7 Nov 2026) stays the reference for the inside of the other screens**: the lesson path, a question, the sheets, Dates clés, Profil. Where the two disagree (the tab bar, Accueil, the top of each tab, the status bar), the prototype wins.
+
+The rest of this file is the Phase 3 text, still true except where marked.
 
 ## What's here
 
 | File | What it is |
 |---|---|
+| `prototype.html` | Phase 4: a working model of the app's frame, at phone size. `?ciel=aube` (or `jour`, `couchant`, `nuit`) forces a sky; `&installe` shows the installed look. |
+| `prototype.jpg` | A picture of it, to look at on GitHub from a phone. |
 | `mockups.html` | 11 phone screens at iPhone size (390 × 844), a colour and type panel, and the Accueil window at the four moments of the day. Real planning data and real questions. |
 | `mockups.jpg` | A picture of all of it, to look at on GitHub from a phone. Redo it when `mockups.html` changes. |
 | `baie-aube.svg`, `baie-jour.svg`, `baie-couchant.svg`, `baie-nuit.svg` | « La Baie », the app's illustration: the Baie des Anges from the Promenade, at dawn, by day, at sunset and at night. Drawn for the app, so free to use. |
@@ -56,6 +62,8 @@ Réviser theme colours, in the order of `content/themes.json`: bougainvillier, s
 
 ## The window onto the bay (Accueil)
 
+**Changed in Phase 4:** the bay now fills the whole screen (see the prototype). The rules for choosing the sky by the hour stay; the crop rules below now only apply to the round picture in Profil.
+
 - It keeps the shape 358 × 220 (`aspect-ratio`) at every width, with `object-fit: cover` and `object-position: 50% 54%`. That crop shows the sky (for the greeting), the hills, the horizon and a strip of sea, and keeps the palm out of view. On a laptop it simply grows with the column.
 - Which picture: the sky of Nice that day, from the real sunrise and sunset (43.70° N, 7.27° E):
   - aube: from 1 h before sunrise to 2 h after;
@@ -88,5 +96,7 @@ Sheets           details of a half-day, « Couleurs », confirmations (slide up 
 - Tapping the current tab again goes back to its first screen.
 
 ## Status bar
+
+**Changed in Phase 4:** the app goes back to `black-translucent` and draws under the clock; in exchange, the top of every screen is coloured (sky, header, or the small bar of a page). What follows was the Phase 3 choice.
 
 The app is light now, so on iPhone it uses `apple-mobile-web-app-status-bar-style` `default`: a dark clock on a light bar, and the app starts below it (the mockups show it that way). `black-translucent`, used until Phase 2, would put a white clock over the light pages, where it can't be read.
