@@ -115,3 +115,6 @@
   .page.home { left: calc(50% - (var(--column) + 2 * var(--gutter)) / 2); right: auto; width: calc(var(--column) + 2 * var(--gutter)); }
   .app.is-opening .tabbar { animation: none; }
 }
+
+/* Calm phones: the words of « le mot » are simply there. */
+@media (prefers-reduced-motion: reduce) { .mot .w { opacity: 1; transform: none; filter: none; } }

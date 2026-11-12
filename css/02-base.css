@@ -103,5 +103,4 @@ b, strong { font-weight: 700; }
     transition-duration: 1ms !important;
     scroll-behavior: auto !important;
   }
-  .mot .w { opacity: 1; transform: none; filter: none; }
 }
