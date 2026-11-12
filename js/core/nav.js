@@ -1,13 +1,18 @@
 /* =====================================================================================
    nav.js: getting around the app (it replaces router.js since Phase 3).
 
-   The app has 3 tabs: Accueil, Réviser, Planning (Étudier comes back in Phase 5).
+   The app has 4 tabs: Accueil, Cours, Réviser, Planning.
    Each tab is a pile of pages: its first page, and the pages opened from it, which
    slide in from the right with « ‹ Previous screen » at the top left:
 
        Accueil  ›  Profil  ›  Rapport de relecture
+       Cours    ›  Un chapitre, Tous les documents
        Réviser  ›  Un thème
        Planning ›  Dates clés
+
+   Changing tab (Phase 4): the new tab comes from the side of its place in the bar (from
+   the right when it is further right), the « lens » of the tab bar slides under its icon,
+   and the phone gives a tiny tick when it can. The look is in css/04-layout.css.
 
    Sheets (details of a half-day...) and the lesson screen open OVER a page: they are
    "modals" (js/core/sheet.js, js/reviser/player.js).
@@ -27,19 +32,22 @@
    (each tab remembers where you were). Each step stores its "level" (0 = #accueil).
 
    app.js gives nav.js one function, pageFor(path, element), that draws a page and
-   returns { title, onShow, refresh, destroy } (or null if the address is unknown).
+   returns { title, onShow, onActive, refresh, destroy } (or null if the address is
+   unknown). onActive(true / false) tells a page when it becomes, or stops being, the
+   page on screen (Accueil only moves its picture while it is).
    ===================================================================================== */
 
 import { isIOS, isInstalled } from "./dom.js";
+import { paintStatusBar } from "./statusbar.js";
 
-export const TABS = ["accueil", "reviser", "planning"];
+export const TABS = ["accueil", "cours", "reviser", "planning"];   // in the order of the tab bar
 export const HOME = "accueil";
 
 /** Old addresses that still work (links saved before Phase 3). */
 const ALIASES = [
   [/^infos\/relecture/, "accueil/profil/relecture"],
   [/^infos/, "accueil/profil"],
-  [/^etudier.*/, "accueil"],          // Étudier is hidden until Phase 5
+  [/^etudier.*/, "cours"],            // the study pages will live in Cours (Phase 6)
 ];
 
 const SWIPE_EDGE = 28;                 // a swipe that starts this close to the left edge goes back
@@ -57,6 +65,7 @@ const nav = {
   unwinding: null,        // set while rewinding the history (tab change)
   skipAnimation: false,   // the swipe already moved the page: don't animate it again
   busy: false,
+  shown: null,            // the entry (page) on screen now
   paused: false,          // the welcome screen handles « back » by itself
 };
 
@@ -127,7 +136,10 @@ function destroyEntry(entry) {
   entry.page.el.remove();
 }
 
-/** The navbar turns translucent with a small title once the page is scrolled. */
+/**
+ * The small coloured bar of a tab's first page appears once its big header has scrolled
+ * away; the bar of a page opened from a tab shows the page's title once it is scrolled.
+ */
 function watchScroll(el) {
   let ticking = false;
   el.addEventListener("scroll", () => {
@@ -135,8 +147,10 @@ function watchScroll(el) {
     ticking = true;
     requestAnimationFrame(() => {
       ticking = false;
-      const bar = el.querySelector(".navbar");
-      if (bar) bar.classList.toggle("is-stuck", el.scrollTop > 8);
+      const bar = el.querySelector(".topbar");
+      if (!bar) return;
+      if (bar.classList.contains("topbar--page")) bar.classList.toggle("is-stuck", el.scrollTop > 40);
+      else bar.classList.toggle("is-on", el.scrollTop > 64);
     });
   }, { passive: true });
 }
@@ -157,19 +171,46 @@ function settle(tab = nav.tab) {
   document.querySelectorAll(".page__veil").forEach((v) => v.remove());
 }
 
-function showTab(tab) {
+/**
+ * Shows the panel of a tab and moves the « lens » of the tab bar under its icon.
+ * With animate, the new panel comes from the side of its tab (classes is-entering and
+ * is-leaving, and --dir: 1 from the right, -1 from the left; css/04-layout.css).
+ */
+function showTab(tab, { animate = false } = {}) {
+  const before = nav.tab;
+  const move = animate && before && before !== tab && !reduceMotion();
+  const dir = TABS.indexOf(tab) > TABS.indexOf(before) ? 1 : -1;
   nav.tab = tab;
   document.querySelectorAll(".panel").forEach((panel) => {
     const on = panel.dataset.tab === tab;
+    const leaving = move && panel.dataset.tab === before;
     if (!on && !panel.hidden) {
       const top = topEntry(panel.dataset.tab);
       if (top) top.scroll = top.page.el.scrollTop;
     }
-    panel.hidden = !on;
+    clearTimeout(panel.moveTimer);
+    panel.classList.remove("is-entering", "is-leaving");
+    panel.classList.toggle("is-on", on);
+    panel.style.setProperty("--dir", dir);
+    if (leaving) {
+      // It stays on screen for the time of its short exit, then goes.
+      panel.classList.add("is-leaving");
+      panel.moveTimer = setTimeout(() => { panel.classList.remove("is-leaving"); panel.hidden = true; }, 170);
+    } else {
+      panel.hidden = !on;
+      if (on && move) {
+        panel.classList.add("is-entering");
+        panel.moveTimer = setTimeout(() => panel.classList.remove("is-entering"), 900);
+      }
+    }
   });
   document.querySelectorAll(".tab[data-tab]").forEach((button) => {
-    button.setAttribute("aria-selected", String(button.dataset.tab === tab));
+    const on = button.dataset.tab === tab;
+    button.setAttribute("aria-selected", String(on));
+    button.classList.toggle("is-on", on);
   });
+  const bar = document.querySelector(".tabbar");
+  if (bar) bar.style.setProperty("--at", TABS.indexOf(tab));
   settle(tab);
 }
 
@@ -178,6 +219,18 @@ function changed({ fresh = false } = {}) {
   const top = topEntry();
   if (!top) return;
   document.title = top.page.title ? `${top.page.title} · Promo MAPST` : "Promo MAPST";
+  // Where we are, for the styles (the tab bar at night) and the colour of the status bar.
+  const app = document.getElementById("app");
+  if (app) {
+    app.dataset.tab = nav.tab;
+    if (top.path === HOME) app.dataset.home = ""; else delete app.dataset.home;
+  }
+  paintStatusBar();
+  if (nav.shown !== top) {
+    if (nav.shown && nav.shown.page.onActive) nav.shown.page.onActive(false);
+    nav.shown = top;
+    if (top.page.onActive) top.page.onActive(true);
+  }
   if (top.page.onShow && !fresh) top.page.onShow();
   nav.onChange(top.path);
 }
@@ -258,7 +311,10 @@ export async function switchTab(tab, { push: path = null } = {}) {
   nav.busy = true;
   await closeAllModals();
   await rewind(nav.level);                     // back to the first step: #accueil
-  showTab(tab);
+  if (tab !== nav.tab && navigator.vibrate) {
+    try { navigator.vibrate(8); } catch (error) { /* not important */ }   // a tiny tick (Android)
+  }
+  showTab(tab, { animate: true });
   const s = stack(tab);
   if (!s.length) {
     const root = makePage(tab, tab, "#" + tab);
@@ -372,7 +428,7 @@ window.addEventListener("popstate", async (event) => {
     // Back from the first page of another tab: Accueil, at its first page.
     const home = stack(HOME);
     while (home.length > 1) destroyEntry(home.pop());
-    showTab(HOME);
+    showTab(HOME, { animate: true });
     if (!home.length) { const root = makePage(HOME, HOME, location.hash || "#accueil"); if (root) home.push(root); settle(); }
     changed();
   } else {
@@ -645,13 +701,16 @@ export function setPageQuery(query) {
   if (!nav.modals.length) write("replaceState", nav.level, top.url);
 }
 
-/** HTML of the bar of a pushed page: « ‹ Réviser », and the small title for scrolling. */
-export function navbarHTML(backLabel, title = "", end = "") {
+/**
+ * HTML of the bar of a page opened from a tab: « ‹ Réviser » on the colour of its tab,
+ * and the page's title once it is scrolled. Put it first in the page, before its
+ * <div class="page__body">.
+ */
+export function navbarHTML(backLabel, title = "") {
   const esc = (t) => String(t).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
-  return `<div class="navbar">
-      <button type="button" class="back" data-nav-back aria-label="Retour : ${esc(backLabel)}">
+  return `<div class="topbar topbar--page">
+      <button type="button" class="back tap" data-nav-back aria-label="Retour : ${esc(backLabel)}">
         <svg class="icon" aria-hidden="true"><use href="#i-left"/></svg><span>${esc(backLabel)}</span></button>
-      <span class="navbar__title" aria-hidden="true">${esc(title)}</span>
-      <span class="navbar__end">${end}</span>
+      <span class="topbar__title" aria-hidden="true">${esc(title)}</span>
     </div>`;
 }

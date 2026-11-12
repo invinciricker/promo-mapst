@@ -19,15 +19,15 @@
   <title>Promo MAPST</title>
   <meta name="description" content="Réviser et suivre le planning du BPJEPS MAPST (CAPA Sports, Nice, 2026-2027). Application non officielle.">
 
-  <!-- Light or dark: the app follows the setting of the phone. The bars of the phone take
-       the colour of the page background. -->
+  <!-- Light or dark: the app follows the setting of the phone. The status bar of Android
+       takes the colour of the top of the screen shown: the app changes this value as you
+       move around (js/core/statusbar.js). -->
   <meta name="color-scheme" content="light dark">
-  <meta name="theme-color" content="#F3F7FA" media="(prefers-color-scheme: light)">
-  <meta name="theme-color" content="#0B1A28" media="(prefers-color-scheme: dark)">
+  <meta name="theme-color" content="#0A5489">
 
   <!-- Installable app: name, icons, and full screen once added to the home screen.
-       Status bar "default": a dark clock on a light bar, and the app starts below it
-       (docs/design/README.md explains why). -->
+       Status bar "black-translucent": the app draws under the clock of the iPhone, which
+       is white. So the top of every screen is coloured (the sky, a header, a small bar). -->
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
   <link rel="icon" href="icons/icon-192.png" type="image/png" sizes="192x192">
@@ -35,7 +35,7 @@
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-title" content="Promo MAPST">
-  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
   <!-- iPhone launch images (the welcome screen), made by scripts/make_launch_images.cjs. -->
   <!-- launch-images:start -->
@@ -63,6 +63,8 @@
   <link rel="stylesheet" href="css/05-planning.css">
   <link rel="stylesheet" href="css/06-screens.css">
   <link rel="stylesheet" href="css/07-reviser.css">
+  <link rel="stylesheet" href="css/08-accueil.css">
+  <link rel="stylesheet" href="css/09-cours.css">
 </head>
 <body>
   <!-- Icons: drawn once here (24 × 24, round strokes), then reused everywhere with
@@ -117,31 +119,39 @@
       <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 3.5v11M7.5 10 12 14.5 16.5 10M4.5 20h15"/></symbol>
       <symbol id="i-share" viewBox="0 0 24 24"><path d="M12 3.5v11M8 7.5l4-4 4 4"/><path d="M6 11H5.5A1.5 1.5 0 0 0 4 12.5v7A1.5 1.5 0 0 0 5.5 21h13a1.5 1.5 0 0 0 1.5-1.5v-7a1.5 1.5 0 0 0-1.5-1.5H18"/></symbol>
       <symbol id="i-more" viewBox="0 0 24 24"><path d="M12 5h.01M12 12h.01M12 19h.01"/></symbol>
+      <symbol id="i-dots" viewBox="0 0 24 24"><path d="M6 12h.1M12 12h.1M18 12h.1" stroke-width="3"/></symbol>
+      <symbol id="i-addbox" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="4"/><path d="M12 8.4v7.2M8.4 12h7.2"/></symbol>
+      <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.6"/><path d="m16 16 4.4 4.4"/></symbol>
+      <symbol id="i-folder" viewBox="0 0 24 24"><path d="M3.4 7.2A2.2 2.2 0 0 1 5.6 5h3.6l2 2.4h7.2a2.2 2.2 0 0 1 2.2 2.2v7.2a2.2 2.2 0 0 1-2.2 2.2H5.6a2.2 2.2 0 0 1-2.2-2.2z"/></symbol>
       <symbol id="i-alert" viewBox="0 0 24 24"><path d="M10.3 4.2 2.6 17.6A2 2 0 0 0 4.3 20.5h15.4a2 2 0 0 0 1.7-2.9L13.7 4.2a2 2 0 0 0-3.4 0z"/><path d="M12 9.5v4M12 17h.01"/></symbol>
     </defs>
   </svg>
 
-  <div class="app" id="app">
+  <div class="app" id="app" data-tab="accueil">
     <!-- One panel per tab. The pages are drawn inside by js/core/nav.js. -->
     <main class="panels">
-      <section class="panel mode-accueil" data-tab="accueil" aria-label="Accueil"></section>
-      <section class="panel mode-reviser" data-tab="reviser" aria-label="Réviser" hidden></section>
-      <section class="panel mode-planning" data-tab="planning" aria-label="Planning" hidden></section>
+      <section class="panel m-accueil" data-tab="accueil" aria-label="Accueil"></section>
+      <section class="panel m-cours" data-tab="cours" aria-label="Cours" hidden></section>
+      <section class="panel m-reviser" data-tab="reviser" aria-label="Réviser" hidden></section>
+      <section class="panel m-planning" data-tab="planning" aria-label="Planning" hidden></section>
     </main>
 
-    <!-- The tab bar (a side rail on a laptop). Étudier comes back here in Phase 5. -->
-    <nav class="tabbar" aria-label="Modes de l’appli">
-      <div class="tabbar__inner" role="tablist">
-        <button type="button" class="tab mode-accueil" role="tab" data-tab="accueil" aria-selected="true">
-          <span class="tab__icon"><svg class="icon" aria-hidden="true"><use href="#i-home"/></svg></span><span class="tab__label">Accueil</span>
-        </button>
-        <button type="button" class="tab mode-reviser" role="tab" data-tab="reviser" aria-selected="false">
-          <span class="tab__icon"><svg class="icon" aria-hidden="true"><use href="#i-bolt"/></svg></span><span class="tab__label">Réviser</span>
-        </button>
-        <button type="button" class="tab mode-planning" role="tab" data-tab="planning" aria-selected="false">
-          <span class="tab__icon"><svg class="icon" aria-hidden="true"><use href="#i-cal"/></svg></span><span class="tab__label">Planning</span>
-        </button>
-      </div>
+    <!-- The tab bar: a glass capsule that floats at the bottom (a side rail on a laptop).
+         The « lens » slides under the icon of the tab shown. -->
+    <nav class="tabbar" aria-label="Onglets de l’appli" role="tablist">
+      <i class="tabbar__lens" aria-hidden="true"></i>
+      <button type="button" class="tab m-accueil is-on" role="tab" data-tab="accueil" aria-selected="true">
+        <span class="tab__icon"><svg class="icon" aria-hidden="true"><use href="#i-home"/></svg></span>Accueil
+      </button>
+      <button type="button" class="tab m-cours" role="tab" data-tab="cours" aria-selected="false">
+        <span class="tab__icon"><svg class="icon" aria-hidden="true"><use href="#i-book"/></svg></span>Cours
+      </button>
+      <button type="button" class="tab m-reviser" role="tab" data-tab="reviser" aria-selected="false">
+        <span class="tab__icon"><svg class="icon" aria-hidden="true"><use href="#i-bolt"/></svg></span>Réviser
+      </button>
+      <button type="button" class="tab m-planning" role="tab" data-tab="planning" aria-selected="false">
+        <span class="tab__icon"><svg class="icon" aria-hidden="true"><use href="#i-cal"/></svg></span>Planning
+      </button>
     </nav>
   </div>
 

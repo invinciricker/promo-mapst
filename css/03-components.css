@@ -372,7 +372,7 @@ input.input::-webkit-date-and-time-value { text-align: left; }
 .toast {
   position: fixed;
   left: 50%;
-  bottom: calc(var(--tabbar) + env(safe-area-inset-bottom, 0px) + 16px);
+  bottom: calc(var(--tabbar-space) + 4px);
   z-index: 70;
   display: flex;
   align-items: center;

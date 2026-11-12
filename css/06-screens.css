@@ -1,49 +1,59 @@
 /* =====================================================================================
-   06-screens.css: the welcome (mockups 1 and 2), Accueil (3, 4 and 13), Profil (8),
-   its pages, and the « Rapport de relecture ».
+   06-screens.css: the welcome (mockups 1 and 2), Profil (8), its pages, the « Rapport de
+   relecture » and the help to install the app. (Accueil is in 08-accueil.css.)
    Text written over the pictures of the bay is navy (white at night), whatever the mode
    of the phone: it sits on the picture, not on the page.
    ===================================================================================== */
 
 /* ---- The welcome ------------------------------------------------------------------- */
+/* It draws under the clock of the iPhone, like the rest of the app: the first step has
+   the sky (with the same shade as Accueil), the next ones a small coloured bar. */
 .welcome {
   position: fixed;
   inset: 0;
   z-index: 80;
   overflow: hidden;
   background: var(--bg);
-  padding-top: env(safe-area-inset-top, 0px);
-  transition: opacity .35s ease;
+  transition: opacity var(--t-base) ease;
 }
 .welcome.is-leaving { opacity: 0; pointer-events: none; }
-.wl-step { position: absolute; inset: env(safe-area-inset-top, 0px) 0 0 0; display: flex; flex-direction: column; }
+.wl-step { position: absolute; inset: 0; display: flex; flex-direction: column; }
 
-/* 1. Bienvenue: the dawn scene, anchored at the bottom, fading into the page at the top */
+/* 1. Bienvenue: the dawn scene, anchored at the bottom */
 .wl-scene { position: absolute; inset: 0; background: linear-gradient(#A9D0F0, #F5D7E3 48%, #FFD6AD 84%); }
 .wl-scene svg, .wl-scene img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: 50% 100%; }
 .wl-scene:not(.is-ready) > * { opacity: 0; }
-.wl-scene.is-ready > * { animation: fade-in .4s ease both; }
-.wl-fade { position: absolute; inset: 0 0 auto 0; height: 90px; background: linear-gradient(var(--bg), transparent); }
-.wl-brand { position: absolute; left: 28px; right: 28px; top: 65px; }
-.wl-title { font: var(--t-hero); letter-spacing: -.035em; margin: 0 0 12px; color: #103550; animation: fade-up .8s var(--ease) .05s both; }
-.wl-sub { max-width: 300px; font: 500 17px/1.45 var(--font); color: #2E4D68; animation: fade-up .8s var(--ease) .2s both; }
-.wl-cta { position: absolute; left: 24px; right: 24px; bottom: calc(30px + env(safe-area-inset-bottom, 0px)); text-align: center; }
+.wl-scene.is-ready > * { animation: fade-in 400ms ease both; }
+.wl-shade { position: absolute; inset: 0 0 auto 0; height: 150px; pointer-events: none; background: linear-gradient(rgba(16, 53, 80, .34), rgba(16, 53, 80, 0)); }
+.wl-brand { position: absolute; left: 28px; right: 28px; top: calc(var(--safe-top) + 34px); }
+.wl-title { font: var(--t-hero); letter-spacing: -.035em; margin: 0 0 12px; color: #103550; animation: fade-up 800ms var(--ease-out) 50ms both; }
+.wl-sub { max-width: 300px; font: 500 17px/1.45 var(--font); color: #2E4D68; animation: fade-up 800ms var(--ease-out) 200ms both; }
+.wl-cta { position: absolute; left: 24px; right: 24px; bottom: calc(30px + var(--safe-bottom)); text-align: center; }
 .wl-note { margin: 12px 0 0; font: var(--t-small); color: #6A7B8B; }
-.wl-sun { animation: sun-rise .95s cubic-bezier(.2, .7, .2, 1) both; }
+.wl-sun { animation: sun-rise 950ms var(--ease-out) both; }
 @keyframes sun-rise { from { transform: translateY(26px); } to { transform: none; } }
 
 /* 2. and 3. Ton prénom, Installe l'appli */
 .wl-page {
   overflow-y: auto;
-  padding: 4px max(var(--gutter), env(safe-area-inset-right, 0px)) calc(34px + env(safe-area-inset-bottom, 0px)) max(var(--gutter), env(safe-area-inset-left, 0px));
+  overscroll-behavior: contain;
+  padding: 0 max(var(--gutter), env(safe-area-inset-right, 0px)) calc(34px + var(--safe-bottom)) max(var(--gutter), env(safe-area-inset-left, 0px));
 }
 .wl-page > *, .wl-form { width: 100%; max-width: 560px; margin-left: auto; margin-right: auto; }
-.wl-head { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; min-height: 56px; }
+/* The bar of the steps: back, where we are, « Passer », on the amber of Accueil (white). */
+.wl-page > .wl-head {
+  position: sticky; top: 0; z-index: 2; flex: none;
+  display: grid; grid-template-columns: 1fr auto 1fr; align-items: center;
+  width: auto; max-width: none; height: calc(var(--safe-top) + 52px);
+  margin: 0 calc(-1 * max(var(--gutter), env(safe-area-inset-right, 0px))) 0 calc(-1 * max(var(--gutter), env(safe-area-inset-left, 0px)));
+  padding: var(--safe-top) 12px 0; background: var(--grad-accueil); color: #fff;
+}
 .wl-head > :last-child { justify-self: end; }
+.wl-head .icon-btn { width: 36px; height: 36px; background: var(--glass-on-color); box-shadow: inset 0 0 0 1px var(--glass-on-color-line); color: #fff; }
 .wl-steps { display: flex; gap: 6px; }
-.wl-steps i { width: 22px; height: 5px; border-radius: 3px; background: var(--line); }
-.wl-steps i.on { background: var(--turquoise-ink); }
-.wl-skip { padding: 8px 0 8px 8px; border: 0; background: none; color: var(--ink-2); font: 650 13px/1.4 var(--font); }
+.wl-steps i { width: 22px; height: 5px; border-radius: 3px; background: rgba(255, 255, 255, .28); }
+.wl-steps i.on { background: #fff; }
+.wl-skip { padding: 8px 4px 8px 8px; color: #fff; font: 650 13px/1.4 var(--font); }
 .mini-sky { width: 64px; height: 64px; margin: 30px 0 22px; border-radius: 20px; overflow: hidden; box-shadow: var(--shadow); }
 .mini-sky img { width: 100%; height: 100%; object-fit: cover; object-position: 60% 66%; }
 .mini-sky--icon img { object-position: 50% 50%; }
@@ -51,88 +61,9 @@
 .wl-form { display: flex; flex: 1; flex-direction: column; }
 .wl-name { margin-top: 24px; }
 .wl-page .note { margin-top: 16px; }
-.wl-install-now:not(:empty) { margin-top: 22px; }
-.wl-page .steps-box { margin-top: 16px; }
+.wl-install { display: flex; flex-direction: column; gap: 14px; margin-top: 20px; }
 .wl-bottom { margin-top: auto; padding-top: 24px; }
 .wl-page .wl-bottom .btn:not(.btn--primary) { background: var(--surface); box-shadow: var(--shadow); }
-
-/* ---- Accueil: a window onto the Baie des Anges --------------------------------------- */
-/* The window keeps the same shape at every width (aspect-ratio), so the crop is always
-   the same: sky for the greeting, the hills, then a strip of sea. The palm stays out. */
-.hero {
-  position: relative;
-  aspect-ratio: 358 / 220;
-  margin: 8px 0 14px;
-  border-radius: var(--r-hero);
-  overflow: hidden;
-  background: #A9DCFA;
-  isolation: isolate;
-}
-.hero--aube { background: #F5D7E3; }
-.hero--couchant { background: #E59A86; }
-.hero--nuit { background: #14365A; }
-.hero__img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: 50% 54%; }
-.hero__hello { position: absolute; left: 18px; top: 16px; right: 64px; }
-.hero__hello h1 { margin: 0 0 5px; font: 800 28px/1.1 var(--font); letter-spacing: -.03em; color: #103550; overflow-wrap: anywhere; }
-.hero__hello p { font: 650 14px/1.3 var(--font); color: #24506F; }
-.hero__me {
-  position: absolute;
-  right: 14px;
-  top: 14px;
-  width: 36px;
-  height: 36px;
-  padding: 0;
-  border: 0;
-  border-radius: 50%;
-  display: grid;
-  place-items: center;
-  background: rgba(255, 255, 255, .85);
-  color: #103550;
-  font: 800 15px/1 var(--font);
-  transition: transform .15s var(--ease);
-}
-.hero__me:active { transform: scale(.92); }
-.hero--nuit .hero__hello h1, .hero--nuit .hero__hello p { color: #fff; }
-.hero--nuit .hero__hello p { opacity: .85; }
-.hero--nuit .hero__me { background: rgba(255, 255, 255, .16); color: #fff; }
-.hero--couchant .hero__hello p { color: #4A2F4F; }
-
-/* « Aujourd'hui » */
-.today { padding: 16px; }
-.today__top { display: flex; gap: 12px; align-items: center; }
-.today__part { margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--line); }
-.today__label { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; font: 650 13px/1.4 var(--font); color: var(--ink-3); }
-.slot {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  width: 100%;
-  padding: 0;
-  border: 0;
-  background: none;
-  color: inherit;
-  font: inherit;
-  text-align: left;
-}
-.slot + .slot { margin-top: 12px; }
-button.slot:active { opacity: .6; }
-.slot .slot-bar { min-height: 36px; }
-.slot__time { font: 700 15px/1.2 var(--font); font-variant-numeric: tabular-nums; white-space: nowrap; }
-.slot--static .tile-icon { width: 34px; height: 34px; }
-.today__progress { margin-top: 12px; }
-.today__progress .bar { height: 6px; }
-.today__legend { display: flex; justify-content: space-between; gap: 8px; margin-top: 6px; font: var(--t-small); color: var(--ink-3); font-variant-numeric: tabular-nums; }
-.today__legend b { color: var(--c-ink); font-weight: 700; }
-.live-dot { position: relative; width: 8px; height: 8px; flex: none; border-radius: 50%; background: var(--c); }
-.live-dot::after { content: ""; position: absolute; inset: 0; border-radius: 50%; background: var(--c); animation: ping 1.8s ease-out infinite; }
-
-/* « Réviser » */
-.revise { margin-top: 14px; padding: 16px; }
-.revise__stats { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-bottom: 14px; }
-.revise__lesson { display: flex; align-items: center; gap: 14px; margin-bottom: 14px; }
-.revise__lesson:last-child { margin-bottom: 0; }
-.revise__btn { height: 46px; }
-.rv-nudge { flex: 1; min-width: 160px; }
 
 /* ---- Profil ------------------------------------------------------------------------- */
 .me-big { display: flex; flex-direction: column; align-items: center; margin: 4px 0 18px; text-align: center; }
@@ -178,3 +109,13 @@ button.slot:active { opacity: .6; }
 .rl-empty { padding: 20px; }
 .rl-empty .icon { color: var(--turquoise-ink); }
 .section-title .small { margin-left: 6px; font-weight: 500; }
+
+/* ---- The help to install the app (a sheet, and the last step of the welcome) -------------
+   .steps and .kbd come from docs/design/prototype.html, block 7. */
+.install-first { display: flex; flex-direction: column; align-items: flex-start; gap: 10px; padding: 14px; border-radius: 16px; background: var(--azur-tint); }
+.install-sheet .steps, .wl-install .steps { margin: 0; padding: 0; list-style: none; counter-reset: s; display: grid; gap: 12px; }
+.install-sheet .steps li, .wl-install .steps li { counter-increment: s; display: flex; gap: 12px; align-items: center; font: 600 15px/1.35 var(--font); color: var(--ink); }
+.install-sheet .steps li > span, .wl-install .steps li > span { padding-top: 0; }
+.install-sheet .steps li::before, .wl-install .steps li::before { content: counter(s); width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; flex: none; font: 800 14px/1 var(--font); background: var(--turquoise-tint); color: var(--turquoise-ink); box-shadow: none; }
+.kbd { display: inline-grid; place-items: center; min-width: 26px; height: 26px; padding: 0 5px; border-radius: 7px; background: var(--surface-2); color: var(--azur-ink); vertical-align: -6px; }
+.kbd .icon { display: block; }

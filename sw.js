@@ -17,7 +17,7 @@
    ===================================================================================== */
 
 // Change this name only to force every phone to throw away its copy and start fresh.
-const CACHE = "promo-mapst-v2";
+const CACHE = "promo-mapst-v3";
 
 // The files of the app itself.
 const APP_FILES = [
@@ -30,6 +30,8 @@ const APP_FILES = [
   "css/05-planning.css",
   "css/06-screens.css",
   "css/07-reviser.css",
+  "css/08-accueil.css",
+  "css/09-cours.css",
   "js/app.js",
   "js/core/data.js",
   "js/core/dates.js",
@@ -37,11 +39,14 @@ const APP_FILES = [
   "js/core/nav.js",
   "js/core/offline.js",
   "js/core/sheet.js",
+  "js/core/statusbar.js",
   "js/core/storage.js",
   "js/core/sun.js",
   "js/core/texts.js",
   "js/core/toast.js",
   "js/core/user.js",
+  "js/cours/content.js",
+  "js/cours/cours.js",
   "js/planning/dates-cles.js",
   "js/planning/details.js",
   "js/planning/event-form.js",
@@ -86,6 +91,10 @@ const CONTENT_FILES = [
   "content/themes.json",
   "content/planning-themes.json",
   "content/questions.json",
+  "content/parcours.json",
+  "content/documents.json",
+  "content/mots.json",
+  "content/savais-tu.json",
 ];
 
 const NETWORK_TIMEOUT = 4000;   // after 4 seconds without answer, use the saved copy

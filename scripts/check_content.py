@@ -4,7 +4,8 @@ Checks the content of Réviser before you publish it:
     python3 scripts/check_content.py
     python3 scripts/check_content.py path/to/content     (another folder, used by the tests)
 
-It reads content/themes.json, content/questions.json and content/planning-fixes.json, and prints:
+It reads content/themes.json, content/questions.json, content/planning-fixes.json and the
+four files of Phase 4 (parcours.json, documents.json, mots.json, savais-tu.json), and prints:
   - every PROBLEM it finds (a missing field, a wrong index, an unknown theme, a gap in the
     lesson numbers, a hint that gives the answer...), with the id of the question;
   - WARNINGS: things to look at, which do not block (a lesson title without questions,
@@ -14,6 +15,8 @@ It reads content/themes.json, content/questions.json and content/planning-fixes.
     "verifie" questions; a lesson appears once it has 5 of them).
   - the corrections of the planning (content/planning-fixes.json): their format, and
     whether content/planning.json already has them.
+  - Cours and Accueil (Phase 4): the path of chapters (parcours.json), the documents
+    (documents.json), the owner's lines (mots.json) and the facts (savais-tu.json).
 
 If there is at least one problem, it ends with an error: GitHub shows a red cross on the
 pull request (see .github/workflows/checks.yml) and the problems are in its log.
@@ -415,7 +418,156 @@ def check_planning_fixes():
     print(f"{len(fixes)} correction(s) of the planning (planning-fixes.json)")
 
 
+# ---- Cours and Accueil (Phase 4): parcours, documents, mots, savais-tu -------------------------
+DOC_KINDS = ("pdf", "diapo", "tableur", "doc", "video", "lien")
+MOT_MAX = 110              # characters of a line of mots.json
+FACT_MAX = 100             # characters of a fact of savais-tu.json
+
+
+def https(value):
+    return text(value) and value.strip().startswith("https://") and " " not in value.strip()
+
+
+def load_if_there(name):
+    """A file of Phase 4, or None when it does not exist (the made-up folders of the tests)."""
+    return load(name) if (CONTENT / name).is_file() else None
+
+
+def check_parcours():
+    """content/parcours.json: the blocs and the chapters. Returns the chapter ids (or None)."""
+    doc = load_if_there("parcours.json")
+    if doc is None:
+        return None
+    if not isinstance(doc, dict) or not isinstance(doc.get("blocs"), list) or not isinstance(doc.get("chapitres"), list):
+        problems.append('parcours.json: must be { "about": ..., "blocs": [ ... ], "chapitres": [ ... ] }')
+        return None
+    blocs = set()
+    for i, bloc in enumerate(doc["blocs"]):
+        where = f"parcours.json, bloc {i + 1}"
+        if not isinstance(bloc, dict) or not text(bloc.get("id")):
+            problems.append(f"{where}: needs an \"id\"")
+            continue
+        where = f"parcours.json, bloc {bloc['id']}"
+        if bloc["id"] in blocs:
+            problems.append(f"{where}: this id is used twice")
+        blocs.add(bloc["id"])
+        for field in ("short", "title"):
+            if not text(bloc.get(field)):
+                problems.append(f"{where}: needs a \"{field}\"")
+    chapters = set()
+    for i, chapter in enumerate(doc["chapitres"]):
+        where = f"parcours.json, chapter {i + 1}"
+        if not isinstance(chapter, dict) or not text(chapter.get("id")):
+            problems.append(f"{where}: needs an \"id\"")
+            continue
+        where = f"parcours.json, chapter {chapter['id']}"
+        if chapter["id"] in chapters:
+            problems.append(f"{where}: this id is used twice")
+        if chapter["id"] in ("documents", "general"):
+            problems.append(f"{where}: this id is kept for the app, choose another one")
+        chapters.add(chapter["id"])
+        for field in ("title", "when", "resume"):
+            if not text(chapter.get(field)):
+                problems.append(f"{where}: needs a \"{field}\"")
+        if chapter.get("bloc") not in blocs:
+            problems.append(f"{where}: unknown bloc « {chapter.get('bloc')} »")
+        if "theme" in chapter and chapter["theme"] not in theme_ids:
+            problems.append(f"{where}: unknown theme « {chapter['theme']} » (see themes.json)")
+    print(f"{len(chapters)} chapter(s) in {len(blocs)} bloc(s) (parcours.json)")
+    return chapters
+
+
+def check_documents(chapters):
+    """content/documents.json: the folder of the class and each document."""
+    doc = load_if_there("documents.json")
+    if doc is None:
+        return
+    if not isinstance(doc, dict) or not isinstance(doc.get("documents"), list):
+        problems.append('documents.json: must be { "about": ..., "folder": "", "documents": [ ... ] }')
+        return
+    folder = doc.get("folder", "")
+    if folder != "" and not https(folder):
+        problems.append("documents.json: \"folder\" must be empty or an address starting with https://")
+    ids = set()
+    for i, item in enumerate(doc["documents"]):
+        where = f"documents.json, document {i + 1}"
+        if not isinstance(item, dict) or not text(item.get("id")):
+            problems.append(f"{where}: needs an \"id\"")
+            continue
+        where = f"documents.json, {item['id']}"
+        if item["id"] in ids:
+            problems.append(f"{where}: this id is used twice")
+        ids.add(item["id"])
+        if not text(item.get("title")):
+            problems.append(f"{where}: needs a \"title\"")
+        if item.get("chapitre") != "general" and (chapters is None or item.get("chapitre") not in chapters):
+            problems.append(f"{where}: \"chapitre\" must be a chapter id of parcours.json, or \"general\"")
+        if item.get("kind") not in DOC_KINDS:
+            problems.append(f"{where}: \"kind\" must be one of {', '.join(DOC_KINDS)}")
+        if not https(item.get("url")):
+            problems.append(f"{where}: \"url\" must start with https://")
+        if not DATE.match(str(item.get("added", ""))):
+            problems.append(f"{where}: \"added\" must be a date like 2026-11-12")
+        if "note" in item and not text(item["note"]):
+            problems.append(f"{where}: \"note\" must be a short line of text (or leave it out)")
+    print(f"{len(ids)} document(s) (documents.json)")
+
+
+def check_mots():
+    """content/mots.json: the owner's short lines for Accueil."""
+    doc = load_if_there("mots.json")
+    if doc is None:
+        return
+    if not isinstance(doc, dict) or not isinstance(doc.get("mots"), list):
+        problems.append('mots.json: must be { "about": ..., "mots": [ ... ] }')
+        return
+    for i, mot in enumerate(doc["mots"]):
+        where = f"mots.json, line {i + 1}"
+        if not isinstance(mot, dict) or not text(mot.get("text")):
+            problems.append(f"{where}: needs a \"text\"")
+            continue
+        if len(mot["text"]) > MOT_MAX:
+            problems.append(f"{where}: \"text\" has {len(mot['text'])} characters, {MOT_MAX} at most")
+        for field in ("label", "by"):
+            if field in mot and not text(mot[field]):
+                problems.append(f"{where}: \"{field}\" must be a text (or leave it out)")
+    print(f"{len(doc['mots'])} line(s) for Accueil (mots.json)")
+
+
+def check_facts():
+    """content/savais-tu.json: the short facts shown on Accueil."""
+    facts = load_if_there("savais-tu.json")
+    if facts is None:
+        return
+    if not isinstance(facts, list):
+        problems.append("savais-tu.json: must be a list [ ... ] of facts")
+        return
+    question_ids = {q.get("id") for q in questions if isinstance(q, dict)}
+    ids = set()
+    for i, fact in enumerate(facts):
+        where = f"savais-tu.json, fact {i + 1}"
+        if not isinstance(fact, dict) or not text(fact.get("id")):
+            problems.append(f"{where}: needs an \"id\"")
+            continue
+        where = f"savais-tu.json, {fact['id']}"
+        if fact["id"] in ids:
+            problems.append(f"{where}: this id is used twice")
+        ids.add(fact["id"])
+        if fact.get("theme") not in theme_ids:
+            problems.append(f"{where}: unknown theme « {fact.get('theme')} » (see themes.json)")
+        if not text(fact.get("text")):
+            problems.append(f"{where}: needs a \"text\"")
+        elif len(fact["text"]) > FACT_MAX:
+            problems.append(f"{where}: \"text\" has {len(fact['text'])} characters, {FACT_MAX} at most")
+        if "question" in fact and fact["question"] not in question_ids:
+            problems.append(f"{where}: unknown question « {fact['question']} » (see questions.json)")
+    print(f"{len(ids)} fact(s) for Accueil (savais-tu.json)")
+
+
 check_planning_fixes()
+check_documents(check_parcours())
+check_mots()
+check_facts()
 
 if warnings:
     print(f"\n{len(warnings)} warning(s) (to look at, they do not block):")

@@ -189,8 +189,9 @@ export function isUnlocked(theme, lesson, relecture = false) {
 }
 
 /**
- * Where a theme stands: { done, total, share, started }
+ * Where a theme stands: { done, total, share, started, answered, questions }
  *   done, total  lessons « terminées », and all its lessons
+ *   answered, questions   its questions answered right, and all of them (« Quiz 7/10 » in Cours)
  *   share        the share of its questions answered right (lessons left in the middle count)
  *   started      at least one question answered
  */
@@ -209,6 +210,8 @@ export function themeProgress(theme) {
   return {
     done: complete,
     total: theme.lessons.length,
+    answered,
+    questions,
     share: questions ? answered / questions : 0,
     started: answered > 0,
   };

@@ -1,12 +1,14 @@
 /* =====================================================================================
    planning.js: the first page of the Planning tab. It puts the pieces together:
-     - « Planning », with « Aujourd'hui » and « + » (a personal event) at the top
-     - the Semaine / Mois / Année switch
-     - the view itself (view-week.js, view-month.js, view-year.js)
+     - the coloured header: « Planning », « Aujourd'hui » and « + » (a personal event),
+       the Semaine / Mois / Année switch, the label of the period with its two arrows
+     - the view itself (view-week.js, view-month.js, view-year.js), on the rounded sheet
+       under the header; in Semaine the day cards, in Mois the calendar, sit half on it
      - « Dates clés » (its own page, dates-cles.js) and « Ajouter à ton agenda » (export.js)
-   Semaine: arrows or a swipe on the strip change the week, a swipe on the list changes
-   the day. Mois: arrows or a swipe on the calendar change the month. On a laptop, the
-   keyboard arrows work too. The colour legend opens from the small « Couleurs » button.
+   Semaine: the arrows change the week, the strip of day cards slides sideways, a tap on
+   a card or a swipe on the list changes the day. Mois: arrows or a swipe on the calendar
+   change the month. On a laptop, the keyboard arrows work too. The colour legend opens
+   from the small « Couleurs » chip (Mois and Année).
    ===================================================================================== */
 
 import { $, $$, esc, icon, setHTML } from "../core/dom.js";
@@ -52,24 +54,21 @@ export function mountPlanning(el) {
   // ---------------------------------------------------------------------------------
   // Drawing
   // ---------------------------------------------------------------------------------
+  /** The label of the period (« 9 – 15 novembre », « Novembre 2026 », « 2026 – 2027 ») and its arrows. */
   function headHTML() {
     const m = model();
     if (state.view === "annee") {
-      return `<div class="weekhead"><div><b>${m.seasonStart.getFullYear()} – ${m.seasonEnd.getFullYear()}</b>
-          <p class="small muted">${esc(dayMonth(m.seasonStart))} → ${esc(dayMonth(m.seasonEnd))} · ${m.totalWeeks} semaines</p></div>
-          <span class="weekhead__end">${legendButton()}</span></div>`;
+      return `<span aria-live="polite">${m.seasonStart.getFullYear()} – ${m.seasonEnd.getFullYear()}</span>`;
     }
     const sel = parseISO(state.selected);
-    const title = state.view === "semaine" ? weekTitle(startOfWeek(sel)) : `${capitalize(MONTHS[sel.getMonth()])} ${sel.getFullYear()}`;
-    return `<div class="weekhead"><b aria-live="polite">${esc(title)}</b>
-        <span class="weekhead__end">${legendButton()}
-          <span class="arrows">
-            <button type="button" class="arrow" data-step="-1" aria-label="${state.view === "semaine" ? "Semaine précédente" : "Mois précédent"}"${canStep(-1) ? "" : " disabled"}>${icon("left", "icon--xs")}</button>
-            <button type="button" class="arrow" data-step="1" aria-label="${state.view === "semaine" ? "Semaine suivante" : "Mois suivant"}"${canStep(1) ? "" : " disabled"}>${icon("right", "icon--xs")}</button>
-          </span></span></div>`;
+    const week = state.view === "semaine";
+    const title = week ? weekTitle(startOfWeek(sel)) : `${capitalize(MONTHS[sel.getMonth()])} ${sel.getFullYear()}`;
+    return `<span aria-live="polite">${esc(title)}</span>
+        <span class="arrows">
+          <button type="button" class="arrow tap" data-step="-1" aria-label="${week ? "Semaine précédente" : "Mois précédent"}"${canStep(-1) ? "" : " disabled"}>${icon("left", "icon--s")}</button>
+          <button type="button" class="arrow tap" data-step="1" aria-label="${week ? "Semaine suivante" : "Mois suivant"}"${canStep(1) ? "" : " disabled"}>${icon("right", "icon--s")}</button>
+        </span>`;
   }
-
-  const legendButton = () => `<button type="button" class="chip chip--s pl-legend-btn" data-legend>${icon("swatch", "icon--xs")}Couleurs</button>`;
 
   function viewHTML(now = new Date()) {
     const m = model();
@@ -82,65 +81,94 @@ export function mountPlanning(el) {
   function linksHTML() {
     const next = model().upcomingDeadlines(state.today, 1)[0];
     const nextText = next ? `Prochaine : ${next.title.replace(/ à rendre$/, "").replace(/^Dossier/, "dossier")}, ${dayMonth(parseISO(next.date)).replace(".", "")}` : "Épreuves, dossiers, vacances";
-    return `<div class="list pl-links">
-        <button type="button" class="row tone-bougainvillier" data-dates-cles>
+    return `<div class="list pl-links rise" style="--i:4">
+        <button type="button" class="row tap tone-bougainvillier" data-dates-cles>
           <span class="tile-icon">${icon("flag", "icon--s")}</span>
           <span class="row__main"><span class="row__title">Dates clés</span><span class="row__sub">${esc(nextText)}</span></span>
           ${icon("right", "chev")}</button>
-        <button type="button" class="row tone-azur" data-export>
+        <button type="button" class="row tap tone-azur" data-export>
           <span class="tile-icon">${icon("cal-add", "icon--s")}</span>
           <span class="row__main"><span class="row__title">Ajouter à ton agenda</span><span class="row__sub">Google Agenda ou Calendrier d’Apple</span></span>
           ${icon("right", "chev")}</button>
       </div>`;
   }
 
-  function draw() {
-    setHTML(el, `
-      <div class="page__body pl">
-        <div class="page-head">
-          <h1 class="page-title">Planning</h1>
-          <span class="page-head__end">
-            <button type="button" class="chip chip--text tone-azur" data-today>Aujourd’hui</button>
-            <button type="button" class="icon-btn icon-btn--tone tone-azur" data-add-event aria-label="Ajouter un événement perso">${icon("plus")}</button>
-          </span>
-        </div>
-        <div class="seg" role="radiogroup" aria-label="Affichage du planning">
-          <span class="seg__thumb" aria-hidden="true"></span>
-          ${VIEWS.map((v) => `<button type="button" class="seg__btn" role="radio" aria-checked="${v.id === state.view}" data-view="${v.id}">${v.label}</button>`).join("")}
-        </div>
-        <div class="pl-head">${headHTML()}</div>
-        <div class="pl-view">${viewHTML()}</div>
-        ${linksHTML()}
-        <p class="footer-note">${esc(FOOTER)}</p>
-      </div>`);
-    placeThumb();
+  /** Everything under the header: the view, then the two links and the footer. */
+  const bodyHTML = (now = new Date()) => `${viewHTML(now)}${linksHTML()}<p class="footer-note">${esc(FOOTER)}</p>`;
+
+  /**
+   * Puts the body in place. In Semaine and Mois something straddles the header (the day
+   * cards, the calendar), so the header is taller (hd--lift). In Semaine the chosen day
+   * card is brought to the middle of the strip (gently when the strip was already there).
+   */
+  function renderBody(now = new Date()) {
+    const body = $(".body", el);
+    const before = $(".days", el);
+    const keep = before ? { week: before.dataset.week, left: before.scrollLeft } : null;
+    $(".hd", el).classList.toggle("hd--lift", state.view !== "annee");
+    body.classList.toggle("body--lift", state.view === "mois");
+    setHTML(body, bodyHTML(now));
     bindSwipes();
+    const strip = $(".days", el);
+    if (!strip) return;
+    strip.dataset.week = toISO(startOfWeek(parseISO(state.selected)));
+    if (keep && keep.week === strip.dataset.week) {
+      strip.scrollLeft = keep.left;
+      centerDay(true);
+    } else {
+      centerDay(false);
+    }
   }
 
-  /** Draws the title and the view again, with a slide (1: from the right, -1: from the left). */
+  /** Brings the chosen day card to the middle of the strip. */
+  function centerDay(smooth) {
+    const strip = $(".days", el);
+    const on = strip && $(".dcard.on", strip);
+    if (!on || !strip.clientWidth) return;       // not on screen yet: onShow does it
+    const left = on.offsetLeft - strip.offsetLeft - (strip.clientWidth - on.offsetWidth) / 2;
+    if (smooth) strip.scrollTo({ left, behavior: "smooth" });
+    else strip.scrollLeft = left;
+  }
+
+  function draw() {
+    setHTML(el, `
+      <div class="topbar">Planning</div>
+      <header class="hd hd--lift">
+        <div class="hd__row">
+          <h1 class="hd__title">Planning</h1>
+          <span class="hd__end pl-actions">
+            <button type="button" class="gchip gchip--text tap" data-today>Aujourd’hui</button>
+            <button type="button" class="gbtn tap" data-add-event aria-label="Ajouter un événement perso">${icon("plus", "icon--s")}</button>
+          </span>
+        </div>
+        <div class="gseg" role="radiogroup" aria-label="Affichage du planning">
+          ${VIEWS.map((v) => `<button type="button" class="gseg__btn tap" role="radio" aria-checked="${v.id === state.view}" data-view="${v.id}">${v.label}</button>`).join("")}
+        </div>
+        <div class="weekhead">${headHTML()}</div>
+      </header>
+      <div class="body pl pl-view"></div>`);
+    renderBody();
+  }
+
+  /** Draws the label and the view again, with a slide (1: from the right, -1: from the left). */
   function redraw(direction = 0, { strip = true } = {}) {
-    setHTML($(".pl-head", el), headHTML());
-    const view = $(".pl-view", el);
-    setHTML(view, viewHTML());
-    bindSwipes();
+    setHTML($(".weekhead", el), headHTML());
+    renderBody();
     if (direction) {
       const targets = state.view === "semaine"
-        ? (strip ? [$(".wk-strip", el), $(".pl-daylist", el)] : [$(".pl-daylist", el)])
-        : [view];
+        ? (strip ? [$(".days", el), $(".pl-daylist", el)] : [$(".pl-daylist", el)])
+        : state.view === "mois" ? [$(".pl-daylist", el)] : [];
       targets.filter(Boolean).forEach((node) => {
-        node.classList.remove("anim-from-right", "anim-from-left");
+        node.classList.remove("anim-from-right", "anim-from-left", "rise");
         void node.offsetWidth;            // restarts the animation
         node.classList.add(direction > 0 ? "anim-from-right" : "anim-from-left");
       });
     }
   }
 
+  /** The segmented control shows the view chosen. */
   function placeThumb() {
-    const index = VIEWS.findIndex((v) => v.id === state.view);
-    const thumb = $(".seg__thumb", el);
-    thumb.style.width = `calc((100% - 6px) / ${VIEWS.length})`;
-    thumb.style.transform = `translateX(${index * 100}%)`;
-    $$(".seg__btn", el).forEach((b) => b.setAttribute("aria-checked", String(b.dataset.view === state.view)));
+    $$(".gseg__btn", el).forEach((b) => b.setAttribute("aria-checked", String(b.dataset.view === state.view)));
   }
 
   // ---------------------------------------------------------------------------------
@@ -274,6 +302,7 @@ export function mountPlanning(el) {
   const stop = onPersonalChange(() => redraw(0));
 
   draw();
+  requestAnimationFrame(() => centerDay(false));   // once the page is in place
   controller = {
     showDay(iso) {
       if (state.view === "annee") state.view = "semaine";
@@ -287,6 +316,7 @@ export function mountPlanning(el) {
   return {
     title: "Planning",
     refresh: draw,
+    onShow: () => centerDay(false),
     destroy() { stop(); document.removeEventListener("keydown", onKey); controller = null; },
     /** Called every 30 seconds by app.js: a new day, or « En cours » that moves on. */
     tick(now = new Date()) {
@@ -297,8 +327,7 @@ export function mountPlanning(el) {
         if (wasToday) state.selected = toISO(model().clamp(parseISO(todayIso)));
         redraw(0);
       } else if (state.selected === todayIso && state.view !== "annee") {
-        setHTML($(".pl-view", el), viewHTML(now));
-        bindSwipes();
+        renderBody(now);
       }
     },
   };
@@ -306,8 +335,9 @@ export function mountPlanning(el) {
 
 /** The planning could not load (first visit without internet...). */
 function mountLoadError(el) {
-  setHTML(el, `<div class="page__body">
-      <div class="page-head"><h1 class="page-title">Planning</h1></div>
+  setHTML(el, `<div class="topbar">Planning</div>
+      <header class="hd"><div class="hd__row"><h1 class="hd__title">Planning</h1></div></header>
+      <div class="body">
       <div class="card empty">${icon("alert")}
         <b>Le planning n’a pas pu se charger.</b>
         <p>Vérifie ta connexion internet, puis réessaie. Après une première visite, l’appli marche aussi sans internet.</p>

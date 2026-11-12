@@ -28,6 +28,7 @@
 import { esc, icon, setHTML } from "../core/dom.js";
 import { openSheet, hasOpenSheet } from "../core/sheet.js";
 import { openModal, closeModal, forgetModal } from "../core/nav.js";
+import { paintStatusBar } from "../core/statusbar.js";
 import { checkTyped } from "./answer.js";
 import { recordAnswer, XP } from "./progress.js";
 import { verdictHTML, handleVerdictTap } from "./verdict.js";
@@ -79,14 +80,16 @@ export function openPlayer({ title, heading = "", questions, address = ["lecon",
   root.setAttribute("aria-modal", "true");
   root.setAttribute("aria-label", review ? "Révision de tes erreurs" : `Leçon : ${heading || title}`);
   setHTML(root, `
-    <div class="player__top">
-      <button type="button" class="icon-btn player__close" data-close aria-label="Quitter">${icon("x")}</button>
-      <div class="player__bar" role="progressbar" aria-label="Avancement" aria-valuemin="0"><i></i></div>
-      ${review
-        ? `<span class="player__tag">${icon("repeat", "icon--xs")}Mes erreurs</span>`
-        : `<span class="player__lives" aria-live="polite">${icon("heart", "icon--fill")}<b></b></span>`}
+    <div class="player__head">
+      <div class="player__top">
+        <button type="button" class="icon-btn player__close" data-close aria-label="Quitter">${icon("x")}</button>
+        <div class="player__bar" role="progressbar" aria-label="Avancement" aria-valuemin="0"><i></i></div>
+        ${review
+          ? `<span class="player__tag">${icon("repeat", "icon--xs")}Mes erreurs</span>`
+          : `<span class="player__lives" aria-live="polite">${icon("heart", "icon--fill")}<b></b></span>`}
+      </div>
+      ${heading ? `<p class="player__heading">${esc(heading)}</p>` : ""}
     </div>
-    ${heading ? `<p class="player__heading">${esc(heading)}</p>` : ""}
     <div class="player__stage"><div class="player__inner"></div></div>
     <div class="player__bottom">
       <div class="player__feedback" aria-live="assertive"></div>
@@ -632,6 +635,7 @@ export function openPlayer({ title, heading = "", questions, address = ["lecon",
     closing = true;
     document.removeEventListener("keydown", onKey);
     document.documentElement.classList.remove("has-player");
+    paintStatusBar();
     const app = document.getElementById("app");
     if (app) app.inert = false;
     root.classList.remove("is-open");
@@ -641,6 +645,7 @@ export function openPlayer({ title, heading = "", questions, address = ["lecon",
 
   // ---- Go ----------------------------------------------------------------------------
   document.documentElement.classList.add("has-player");
+  paintStatusBar();      // Android's status bar takes the colour of the lesson's top row
   current = { root, destroy };
   start(run);
   requestAnimationFrame(() => {

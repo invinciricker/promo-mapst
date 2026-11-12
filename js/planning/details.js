@@ -1,8 +1,9 @@
 /* =====================================================================================
    details.js: the sheet that opens when you tap a half-day (Planning or Accueil).
    Its category, title, date, hours, place, trainers, the « à vérifier » note, and
-   « Réviser ce thème » when its topic matches a theme (content/planning-themes.json).
-   (« Étudier ce thème » comes back in Phase 5, with the Étudier tab.)
+   « Réviser ce thème » when its topic matches a theme (content/planning-themes.json),
+   and « Voir le chapitre » under it when a chapter of Cours has that theme.
+   (« Étudier ce thème » stays hidden until the study pages, Phase 6.)
    ===================================================================================== */
 
 import { esc, icon } from "../core/dom.js";
@@ -40,12 +41,14 @@ export function openSlotDetails(model, slot) {
     const theme = data.reviser && data.reviser.theme(t.id);
     const tone = theme ? theme.tone : "turquoise";
     const iconName = theme ? theme.icon : "bolt";
+    const chapter = data.cours ? data.cours.chapterOfTheme(t.id) : null;      // its chapter in Cours
     body += `<div class="linked">
         <div class="linked__head tone-${tone}">
           <span class="tile-icon">${icon(iconName, "icon--s")}</span>
           <div class="row__main"><div class="small faint linked__label">Thème lié</div><div class="row__title">${esc(t.title)}</div></div>
         </div>
         <button type="button" class="btn btn--primary btn--block btn--medium" data-theme-id="${esc(t.id)}">Réviser ce thème</button>
+        ${chapter ? `<button type="button" class="btn btn--block btn--medium linked__chapter" data-chapter-id="${esc(chapter.id)}">Voir le chapitre</button>` : ""}
       </div>`;
   }
   body += `<p class="footer-note details__source">D’après le planning CAPA du ${esc(model.source.planningDateLabel || "")}. En cas de doute, vérifie dans tes cours.</p>`;
@@ -54,8 +57,13 @@ export function openSlotDetails(model, slot) {
   sheet.el.setAttribute("aria-label", slot.title);
   sheet.body.addEventListener("click", (event) => {
     const button = event.target.closest("[data-theme-id]");
-    if (!button) return;
-    const id = button.dataset.themeId;
-    sheet.close().then(() => switchTab("reviser", { push: `reviser/${id}` }));
+    const chapter = event.target.closest("[data-chapter-id]");
+    if (button) {
+      const id = button.dataset.themeId;
+      sheet.close().then(() => switchTab("reviser", { push: `reviser/${id}` }));
+    } else if (chapter) {
+      const id = chapter.dataset.chapterId;
+      sheet.close().then(() => switchTab("cours", { push: `cours/${id}` }));
+    }
   });
 }

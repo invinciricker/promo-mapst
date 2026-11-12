@@ -9,7 +9,7 @@
   "scope": "./",
   "display": "standalone",
   "background_color": "#F3F7FA",
-  "theme_color": "#F3F7FA",
+  "theme_color": "#0A5489",
   "categories": [
     "education",
     "productivity"
