@@ -47,7 +47,9 @@ Claude Code never needs the course files: everything it needs is in this reposit
 3. Claude Code merges `chat/phase-N` into its own branch, builds, tests, updates « État » and opens one pull request.
 4. The owner tests on their phone and merges. GitHub Pages publishes within a minute or two.
 
-### New questions or study pages (no code)
+### New lessons or questions (no code)
+The exact steps are in `docs/AJOUTER-UNE-LECON.md`; any Claude conversation with access to this repository can follow them.
+
 1. The owner adds the course file, or a photo of their notes, to the claude.ai Project and tells Claude chat what it is.
 2. Claude chat writes the content, updates `docs/CONTENT.md`, pushes a branch `chat/contenu-…` and opens a pull request that only touches `content/` and `docs/`.
 3. The automatic checks run (from Phase 2). The owner merges. No Claude Code session needed.
@@ -98,6 +100,9 @@ Claude chat and Claude Code use the same Pro allowance.
 - **12 Nov 2026 (evening)** · Cours is not a shelf of documents: it is the programme as a path of chapters in the order of the year, tagged by bloc de compétences. Documents are a button inside a chapter. The fun lessons come in Phase 6.
 - **12 Nov 2026 (evening)** · Planning, Semaine: bigger day cards (day, date, what's on, morning and afternoon), then « Aujourd'hui », then Dates clés.
 - **12 Nov 2026 (evening)** · Questions from classmates stay in Phase 5 (they need accounts to know who asks). Free version: the owner answers. Entry points: a button at the top of Cours and in each chapter, not on Accueil.
+- **13 Nov 2026** · Design is frozen for now; content comes first. Phase 5 becomes « Les leçons » (short lessons as decks of cards inside Cours); accounts and questions move to Phase 6. Small fixes wait for a clean-up at the end.
+- **13 Nov 2026** · Cours shows the whole programme: 19 chapters and the four blocs, even where nothing is written yet. The course documents stay closed (« Bientôt ») until the school gives permission.
+- **13 Nov 2026** · Adding a lesson must never need a code session: `docs/AJOUTER-UNE-LECON.md` is the guide any Claude follows (the text, one entry in the index, a pull request).
 
 ## Decisions waiting for the owner
 
