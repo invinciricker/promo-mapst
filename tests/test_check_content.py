@@ -1,5 +1,5 @@
 """
-Tests of scripts/check_content.py: it is run on small made-up content folders, and on
+Tests of scripts/check_content.py (the questions, the Phase 4 files and, since Phase 5, the lessons): it is run on small made-up content folders, and on
 the real content/. No browser needed.
 Usage: python3 tests/test_check_content.py
 """
@@ -14,14 +14,19 @@ SCRIPT = ROOT / "scripts" / "check_content.py"
 results = []
 
 
-def run(themes, questions, extra=None):
+def run(themes, questions, extra=None, texts=None):
     """Writes a content folder, runs the checker on it, returns (exit code, output).
-    extra: other files of the folder, { "parcours.json": {...}, ... }."""
+    extra: other files of the folder, { "parcours.json": {...}, ... }.
+    texts: files written as they are, { "lecons/une-lecon.md": "## ...", ... }."""
     with tempfile.TemporaryDirectory() as folder:
         Path(folder, "themes.json").write_text(json.dumps(themes, ensure_ascii=False), encoding="utf-8")
         Path(folder, "questions.json").write_text(json.dumps(questions, ensure_ascii=False), encoding="utf-8")
         for name, value in (extra or {}).items():
+            Path(folder, name).parent.mkdir(parents=True, exist_ok=True)
             Path(folder, name).write_text(json.dumps(value, ensure_ascii=False), encoding="utf-8")
+        for name, value in (texts or {}).items():
+            Path(folder, name).parent.mkdir(parents=True, exist_ok=True)
+            Path(folder, name).write_text(value, encoding="utf-8")
         done = subprocess.run([sys.executable, str(SCRIPT), folder], capture_output=True, text=True)
         return done.returncode, done.stdout + done.stderr
 
@@ -127,6 +132,64 @@ bad("savais-tu.json", [dict(FACTS[0], text="x" * 101)], "100 at most", "savais-t
 bad("savais-tu.json", [FACTS[0], FACTS[0]], "this id is used twice", "savais-tu: an id used twice is a problem")
 bad("savais-tu.json", [dict(FACTS[0], theme="nope")], "unknown theme", "savais-tu: an unknown theme is a problem")
 bad("savais-tu.json", [dict(FACTS[0], question="zz-9")], "unknown question", "savais-tu: an unknown question is a problem")
+
+# ---- Phase 5: the lessons of Cours (content/lecons/).
+LESSON = {"id": "c1-les-bases", "chapitre": "c1", "title": "Les bases", "minutes": 5, "source": "Cours du 15 septembre",
+          "status": "brouillon", "added": "2026-11-13"}
+INDEX = {"about": "", "lecons": [LESSON]}
+CARD = "## Une carte\n\nUn paragraphe court avec du **gras**.\n\n- un\n- deux\n\n> [!retenir] À garder.\n"
+QUESTION = "\n? Une question ?\n- [x] Juste\n- [ ] Faux\n= Parce que.\n"
+GOOD_MD = CARD + "\n" + CARD.replace("Une carte", "Deux") + QUESTION + "\n" + CARD.replace("Une carte", "Trois")
+
+
+def lesson(md=GOOD_MD, index=INDEX, more=None):
+    texts = {"lecons/c1-les-bases.md": md}
+    texts.update(more or {})
+    return run(THEMES, [qcm("a-1")], dict(GOOD, **{"lecons/index.json": index}), texts)
+
+
+code, out = lesson()
+check("lessons: a clean lesson passes, with its summary", code == 0 and "1 lesson(s) (lecons/index.json)" in out
+      and "c1-les-bases: 3 cards, 1 question(s), brouillon" in out, out)
+code, out = run(THEMES, [qcm("a-1")], GOOD)
+check("lessons: no content/lecons/ folder is fine", code == 0 and "lesson(s)" not in out, out)
+
+
+def bad_lesson(label, expect, warning=False, **kwargs):
+    code, out = lesson(**kwargs)
+    check(label, (code == 0 if warning else code == 1) and expect in out, out)
+
+
+bad_lesson("lessons: an id used twice is a problem", "this id is used twice", index=dict(INDEX, lecons=[LESSON, LESSON]))
+bad_lesson("lessons: an unknown chapter is a problem", '"chapitre" must be a chapter id', index=dict(INDEX, lecons=[dict(LESSON, chapitre="c9")]))
+bad_lesson("lessons: no title is a problem", 'needs a "title"', index=dict(INDEX, lecons=[{k: v for k, v in LESSON.items() if k != "title"}]))
+bad_lesson("lessons: minutes that are not a number is a problem", '"minutes" must be a number', index=dict(INDEX, lecons=[dict(LESSON, minutes="5 min")]))
+bad_lesson("lessons: an unknown status is a problem", '"status" must be "brouillon" or "verifie"', index=dict(INDEX, lecons=[dict(LESSON, status="exemple")]))
+bad_lesson("lessons: a wrong date is a problem", '"added" must be a date', index=dict(INDEX, lecons=[dict(LESSON, added="13/11/2026")]))
+bad_lesson("lessons: an id with capitals or spaces is a problem", "small letters, digits and hyphens", index=dict(INDEX, lecons=[dict(LESSON, id="Les Bases")]),
+           more={"lecons/Les Bases.md": GOOD_MD})
+bad_lesson("lessons: a missing .md file is a problem", "content/lecons/c1-autre.md does not exist",
+           index=dict(INDEX, lecons=[LESSON, dict(LESSON, id="c1-autre")]))
+bad_lesson("lessons: a broken index is a problem", 'must be { "about": ..., "lecons": [ ... ] }', index=[LESSON])
+bad_lesson("lessons: fewer than 3 cards is a problem", "2 card(s)", md=CARD + CARD)
+bad_lesson("lessons: more than 12 cards is a problem", "13 card(s)", md=CARD * 13)
+bad_lesson("lessons: a question with one choice is a problem", "has 1 choice(s)", md=GOOD_MD.replace("- [ ] Faux\n", ""))
+bad_lesson("lessons: a question with five choices is a problem", "has 5 choice(s)", md=GOOD_MD.replace("- [ ] Faux\n", "- [ ] A\n- [ ] B\n- [ ] C\n- [ ] D\n"))
+bad_lesson("lessons: a question with two right choices is a problem", "2 right choice(s)", md=GOOD_MD.replace("- [ ] Faux", "- [x] Faux"))
+bad_lesson("lessons: a question without a right choice is a problem", "0 right choice(s)", md=GOOD_MD.replace("- [x] Juste", "- [ ] Juste"))
+bad_lesson("lessons: a question without « = » is a problem", 'needs an explanation line starting with "= "', md=GOOD_MD.replace("= Parce que.\n", ""))
+bad_lesson("lessons: an unknown box is a problem", "unknown box « [!astuce] »", md=GOOD_MD.replace("[!retenir]", "[!astuce]", 1))
+bad_lesson("lessons: a missing picture is a problem", "the picture « img/absent.svg » does not exist", md=GOOD_MD + "\n![Un schéma](img/absent.svg)\n")
+bad_lesson("lessons: a picture outside img/ is a problem", "must be in content/lecons/img/", md=GOOD_MD + "\n![Un schéma](https://exemple.fr/a.png)\n")
+code, out = lesson(md=GOOD_MD + "\n![Un schéma](img/schema.svg)\n", more={"lecons/img/schema.svg": "<svg xmlns='http://www.w3.org/2000/svg'/>"})
+check("lessons: a picture that exists passes", code == 0, out)
+bad_lesson("lessons: a card over 90 words is a warning", "words, 90 at most", warning=True, md=GOOD_MD + "\n## Longue\n\n" + "mot " * 95 + "\n")
+bad_lesson("lessons: a .md file not in the index is a warning", "lecons/oubliee.md: this lesson is not in lecons/index.json", warning=True,
+           more={"lecons/oubliee.md": GOOD_MD})
+bad_lesson("lessons: no source is a warning", 'no "source"', warning=True, index=dict(INDEX, lecons=[{k: v for k, v in LESSON.items() if k != "source"}]))
+bad_lesson("lessons: a quote without a box name is a warning", "shown as plain text", warning=True, md=GOOD_MD + "\n> Une citation.\n")
+code, out = lesson(md=GOOD_MD.replace("- [x] Juste\n- [ ] Faux\n", "\n- [x] Juste\n\n- [ ] Faux\n\n"))
+check("lessons: empty lines inside a question are allowed (like the app)", code == 0, out)
 
 print("\n".join(f"{'PASS' if ok else 'FAIL'}  {name}" for name, ok in results))
 passed = sum(ok for _, ok in results)

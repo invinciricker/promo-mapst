@@ -4,8 +4,10 @@
    card of Réviser (#reviser/relecture).
 
    It shows how many unchecked questions ("brouillon") have a verdict, the « À corriger »
-   list with the notes (tap one to change it), the progress lesson by lesson, and the
-   text that « Copier le rapport » puts in the clipboard, to paste into Claude chat.
+   list with the notes (tap one to change it), the progress lesson by lesson, the lessons
+   of Cours not checked yet (since Phase 5, « Leçons »: each is checked as a whole, on its
+   last card), and the text that « Copier le rapport » puts in the clipboard, to paste
+   into Claude chat.
    « Effacer le rapport » (two taps) forgets every verdict.
    The verdicts themselves are saved by js/reviser/relecture.js.
    ===================================================================================== */
@@ -16,6 +18,7 @@ import { showToast } from "../core/toast.js";
 import { data } from "../core/data.js";
 import { isRelectureOn, relectureSummary, reportText, clearVerdicts, verdictFor } from "../reviser/relecture.js";
 import { openNoteSheet, shortText } from "../reviser/verdict.js";
+import { prefetchLessons, relectureItem } from "../cours/lecons.js";
 
 const plural = (n, one, many) => `${n} ${n > 1 ? many : one}`;
 
@@ -39,6 +42,11 @@ function lessonsToCheck(content) {
   return groups;
 }
 
+/** The lessons of Cours not checked yet ("brouillon"), as the Relecture sees them. */
+function draftLessons() {
+  return data.cours ? data.cours.lessons.filter((l) => l.draft).map(relectureItem) : [];
+}
+
 /**
  * @param el         the page element
  * @param backLabel  « Profil » or « Réviser »: the page it was opened from
@@ -50,21 +58,46 @@ export function mountRelecture(el, { backLabel = "Profil" } = {}) {
     const content = data.reviser;
     const s = relectureSummary(content);
     const share = s.total ? Math.round((100 * s.checked) / s.total) : 0;
-    text = reportText(content);
+    const lessons = draftLessons();
+    const ls = relectureSummary(content, lessons);
+    const checked = s.checked + ls.checked;
+    text = reportText(content, lessons);
     const groups = lessonsToCheck(content);
 
-    const toFix = s.corriger.length
-      ? `<div class="list">${s.corriger.map(({ q, note }) => `
-          <button type="button" class="row row--top rl-item" data-edit="${esc(q.id)}">
+    // « À corriger »: the questions, then the lessons of Cours (tap one to change the note).
+    const fixRow = ({ q, note }, lesson) => `
+          <button type="button" class="row row--top rl-item" ${lesson ? `data-edit-lecon="${esc(q.id)}"` : `data-edit="${esc(q.id)}"`}>
             <span class="row__main">
-              <span class="tag tone-lavande">${esc(q.id)}</span>
+              <span class="tag tone-lavande">${lesson ? "Leçon · " : ""}${esc(q.id)}</span>
               <span class="row__title rl-item__text">${esc(shortText(q.text, 110))}</span>
               <span class="row__sub rl-item__note">${note ? `Ta note : « ${esc(note)} »` : "Sans note"}</span>
             </span>
             ${icon("edit", "chev")}
-          </button>`).join("")}
-        </div>`
+          </button>`;
+    const toFix = s.corriger.length || ls.corriger.length
+      ? `<div class="list">${s.corriger.map((x) => fixRow(x, false)).join("")}${ls.corriger.map((x) => fixRow(x, true)).join("")}</div>`
       : `<div class="card empty rl-empty">${icon("check")}<p>Rien à corriger pour l’instant.</p></div>`;
+
+    // « Leçons »: each lesson of Cours not checked yet, and where it stands.
+    const lessonState = (item) => {
+      const v = verdictFor(item);
+      if (!v) return `<span class="tag tone-galet">À relire</span>`;
+      return v.v === "juste" ? `<span class="tag tone-turquoise">Juste</span>` : `<span class="tag tone-citron">À corriger</span>`;
+    };
+    const perCoursLesson = lessons.length
+      ? `<h2 class="section-title">Leçons <span class="small faint">${ls.checked} sur ${ls.total} relues</span></h2>
+        <div class="list">${lessons.map((item) => `
+          <button type="button" class="row" data-lecon-link="${esc(item.lesson.chapitre)}">
+            <span class="row__main">
+              <span class="row__title">${esc(item.lesson.title)}</span>
+              <span class="row__sub">${esc(item.lesson.chapter.title)}</span>
+            </span>
+            ${lessonState(item)}
+            ${icon("right", "chev")}
+          </button>`).join("")}
+        </div>
+        <p class="rl-help rl-help--left">Lis la leçon dans Cours : ton avis se donne sur sa dernière carte.</p>`
+      : "";
 
     const perLesson = groups.length
       ? `<div class="list">${groups.map((g) => `
@@ -93,8 +126,8 @@ export function mountRelecture(el, { backLabel = "Profil" } = {}) {
               <span class="chip chip--s tone-galet">${icon("clock", "icon--xs")}${plural(s.todo.length, "pas encore relue", "pas encore relues")}</span>
             </div>`
           : `<p class="sheet-text">Aucune question à vérifier pour l’instant : elles sont toutes vérifiées.</p>`}
-          <button type="button" class="btn btn--primary btn--block" data-copy${s.checked ? "" : " disabled"}>${icon("copy")}Copier le rapport</button>
-          <p class="rl-help">${s.checked ? "Colle-le ensuite dans ta conversation avec Claude chat." : "Joue des leçons dans Réviser et donne ton avis sur chaque question : le rapport se remplit tout seul."}</p>
+          <button type="button" class="btn btn--primary btn--block" data-copy${checked ? "" : " disabled"}>${icon("copy")}Copier le rapport</button>
+          <p class="rl-help">${checked ? "Colle-le ensuite dans ta conversation avec Claude chat." : "Joue des leçons dans Réviser et donne ton avis sur chaque question : le rapport se remplit tout seul."}</p>
         </section>
 
         ${isRelectureOn() ? "" : `<div class="note rl-off">${icon("info")}<span><b>Le mode relecture est désactivé.</b> Active-le dans Profil pour voir les badges « À vérifier » dans Réviser.</span></div>`}
@@ -104,7 +137,9 @@ export function mountRelecture(el, { backLabel = "Profil" } = {}) {
 
         ${perLesson ? `<h2 class="section-title">Leçon par leçon <span class="small faint">questions relues</span></h2>${perLesson}` : ""}
 
-        ${s.checked ? `<h2 class="section-title">Le texte copié</h2>
+        ${perCoursLesson}
+
+        ${checked ? `<h2 class="section-title">Le texte copié</h2>
           <pre class="rl-preview" data-preview tabindex="0"></pre>
           <button type="button" class="btn btn--danger btn--block rl-clear" data-clear><span>Effacer le rapport</span></button>
           <p class="rl-help">Efface tous tes avis « Juste » et « À corriger ». À faire une fois le rapport envoyé à Claude chat.</p>` : ""}
@@ -138,6 +173,11 @@ export function mountRelecture(el, { backLabel = "Profil" } = {}) {
     } else if (target.closest("[data-edit]")) {
       const q = data.reviser.drafts.find((x) => x.id === target.closest("[data-edit]").dataset.edit);
       if (q) openNoteSheet(q, draw);
+    } else if (target.closest("[data-edit-lecon]")) {
+      const item = draftLessons().find((x) => x.id === target.closest("[data-edit-lecon]").dataset.editLecon);
+      if (item) openNoteSheet(item, draw);
+    } else if (target.closest("[data-lecon-link]")) {
+      switchTab("cours", { push: `cours/${target.closest("[data-lecon-link]").dataset.leconLink}` });
     } else if (target.closest("[data-theme-link]")) {
       switchTab("reviser", { push: `reviser/${target.closest("[data-theme-link]").dataset.themeLink}` });
     } else if (target.closest("[data-clear]")) {
@@ -161,5 +201,8 @@ export function mountRelecture(el, { backLabel = "Profil" } = {}) {
   });
 
   draw();
+  // A lesson's verdict counts only if the lesson did not change since: its text is needed.
+  const lessons = draftLessons().map((item) => item.lesson);
+  if (lessons.length) prefetchLessons(lessons).then(() => { if (el.isConnected) draw(); });
   return { title: "Rapport de relecture", refresh: draw, onShow: draw };
 }

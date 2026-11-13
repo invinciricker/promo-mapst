@@ -1,0 +1,107 @@
+/* =====================================================================================
+   10-lecons.css: a lesson of Cours (Phase 5), a deck of cards full screen
+   (js/cours/lecon.js). It reuses the frame of the Réviser lesson (.player, .player__head,
+   .player__top, .player__close in 07-reviser.css) and its choices (.choice).
+
+     .player--lecon   the screen; its top row is on the gradient of Cours
+     .lecon__segs     one thin segment per card, white, filled up to the card on screen
+     .lcard           one card (it scrolls inside when it is long); .is-moving while it slides
+     .lc-…            what a card can hold: paragraphs, lists, a table, the four boxes,
+                      a question, a picture; .lc-end the last card « Leçon terminée »
+   The colour of the chapter (var(--c), var(--c-ink), var(--c-tint)) colours the markers
+   of the lists and the header of the tables.
+   ===================================================================================== */
+
+.player--lecon .player__head { background: var(--grad-cours); }
+.lecon__segs { flex: 1; display: flex; gap: 4px; height: 5px; margin-right: 30px; }
+.lecon__segs i { flex: 1; min-width: 0; border-radius: 3px; background: rgba(255, 255, 255, .3); transition: background-color var(--t-base) var(--ease-out); }
+.lecon__segs i.is-on { background: #fff; }
+
+/* ---- The cards ---------------------------------------------------------------------- */
+.lecon__stage { position: relative; flex: 1; overflow: hidden; }
+.lcard {
+  position: absolute;
+  inset: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  background: var(--bg);
+}
+.lcard::-webkit-scrollbar { display: none; }
+.lcard.is-moving { z-index: 1; box-shadow: -18px 0 40px -24px rgba(16, 53, 80, .5); will-change: transform; }
+.lcard__inner {
+  width: 100%;
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 24px max(var(--gutter), env(safe-area-inset-right, 0px)) calc(36px + var(--safe-bottom)) max(var(--gutter), env(safe-area-inset-left, 0px));
+  -webkit-user-select: text;          /* the text of a lesson can be selected, like explanations */
+  user-select: text;
+}
+.lcard button, .lc-hint { -webkit-user-select: none; user-select: none; }
+.lcard__title { margin-bottom: 4px; font: 800 24px/1.2 var(--font); letter-spacing: -.02em; text-wrap: balance; }
+.lc-p { margin-top: 12px; font: 500 17px/1.55 var(--font); text-wrap: pretty; }
+.lc-p b, .lc-list b, .lc-box b { font-weight: 750; }
+
+/* Lists: a round marker (or a number) in the colour of the chapter. */
+.lc-list { display: flex; flex-direction: column; gap: 8px; margin-top: 12px; font: 500 17px/1.5 var(--font); }
+.lc-list li { position: relative; padding-left: 24px; }
+.lc-list li::before { content: ""; position: absolute; left: 5px; top: .6em; width: 8px; height: 8px; border-radius: 50%; background: var(--c); }
+.lc-list--num li { counter-increment: lc; padding-left: 32px; }
+.lc-list--num li::before { content: counter(lc); left: 0; top: .14em; width: 23px; height: 23px; display: grid; place-items: center; background: var(--c-tint); color: var(--c-ink); font: 800 12px/1 var(--font); }
+
+/* A table: rounded, the first column bold; it scrolls sideways when it is too wide. */
+.lc-table { margin-top: 16px; overflow-x: auto; border-radius: 16px; background: var(--surface); box-shadow: var(--shadow); scrollbar-width: none; overscroll-behavior-x: contain; }
+.lc-table::-webkit-scrollbar { display: none; }
+.lc-table table { min-width: 100%; border-collapse: collapse; font: 500 15px/1.4 var(--font); }
+.lc-table th { padding: 10px 12px; background: var(--c-tint); color: var(--c-ink); font: 750 13px/1.3 var(--font); text-align: left; vertical-align: bottom; }
+.lc-table td { min-width: 6em; padding: 10px 12px; border-top: 1px solid var(--line); vertical-align: top; }
+.lc-table td:first-child { font-weight: 700; }
+
+/* The four boxes: À retenir (turquoise), Exemple (azur), Attention (bougainvillier),
+   Le savais-tu ? (soleil). Their colour comes from a tone- class. */
+.lc-box { margin-top: 16px; padding: 12px 14px 13px; border-radius: 16px; background: var(--c-tint); }
+.lc-box__label { display: flex; align-items: center; gap: 6px; color: var(--c-ink); font: 750 13px/1.2 var(--font); }
+.lc-box__text { margin-top: 6px; font: 600 16px/1.5 var(--font); }
+
+/* A picture of content/lecons/img/, full width. */
+.lc-img { margin-top: 16px; }
+.lc-img img { width: 100%; height: auto; border-radius: 16px; background: var(--surface); }
+
+/* A question inside the card: the choices of Réviser (.choice), answered with one tap. */
+.lc-q { margin-top: 18px; padding: 14px 14px 16px; border-radius: var(--r-card); background: var(--surface); box-shadow: var(--shadow); }
+.lc-q.is-shaking { animation: shake .45s ease; }
+.lc-q__label { display: flex; align-items: center; gap: 6px; color: var(--lavande-ink); font: 750 12px/1.2 var(--font); }
+.lc-q__text { margin: 6px 2px 12px; font: 750 17px/1.4 var(--font); text-wrap: pretty; }
+.lc-q .choice { min-height: 50px; }
+.lc-q .choices .choice:last-child { margin-bottom: 0; }
+/* Once answered, a tap on a choice is a tap on the card (it moves on, like anywhere else). */
+.lc-q .choice:disabled { pointer-events: none; }
+.lc-q__after { margin-top: 14px; }
+.lc-q__result { display: flex; align-items: center; gap: 8px; font: 800 16px/1.2 var(--font); }
+.lc-q__result.is-right { color: var(--turquoise-ink); }
+.lc-q__result.is-wrong { color: var(--bougainvillier-ink); }
+.lc-q__icon { width: 26px; height: 26px; flex: none; border-radius: 50%; display: grid; place-items: center; }
+.lc-q__icon .icon { width: 14px; height: 14px; stroke-width: 3; }
+.is-right > .lc-q__icon { background: var(--turquoise-tint); }
+.is-wrong > .lc-q__icon { background: var(--bougainvillier-tint); }
+.lc-q__expl { margin-top: 8px; font: 500 16px/1.5 var(--font); }
+
+/* On the first card only: how to move on. */
+.lc-hint { display: flex; align-items: center; justify-content: center; gap: 4px; margin-top: 28px; color: var(--ink-3); font: var(--t-small); }
+.lc-wait { padding-top: 14vh; text-align: center; }
+.lc-wait .empty .btn { margin-top: 10px; }
+
+/* ---- The last card: « Leçon terminée » ------------------------------------------------ */
+.lc-end { display: flex; flex-direction: column; align-items: center; gap: 10px; padding-top: 9vh; text-align: center; }
+.lc-end__check { width: 112px; height: 112px; border-radius: 50%; display: grid; place-items: center; background: var(--turquoise-tint); color: var(--turquoise-ink); animation: pop-big .7s var(--ease-spring) both; }
+.lc-end__check .icon { width: 56px; height: 56px; stroke-width: 2.6; }
+.lc-end__title { margin-top: 8px; font: 800 26px/1.15 var(--font); letter-spacing: -.03em; }
+.lc-end__name { max-width: 34ch; color: var(--ink-2); font: var(--t-body); }
+.lc-end__verdict { align-self: stretch; text-align: left; }
+.lc-end__actions { display: flex; flex-direction: column; gap: 10px; width: 100%; max-width: 420px; margin-top: 18px; }
+
+@media (min-width: 1024px) {
+  .lcard__inner { padding-top: 40px; }
+}

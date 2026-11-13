@@ -3,10 +3,15 @@
    programme as a path »). One card per chapter, in the order of the year, on a line.
 
      .filters      the chips at the top: « Tout », BC1, BC2...
-     .path--chap   the path; .chap one chapter (its number .chap__n, its card .chap__card)
-     .pill         « Quiz 7/10 », « 3 documents », « Fiche bientôt » (.pill--soon)
+     .gcard__icon  the book on the glass card « Commencer / Continuer » (Phase 5)
+     .path--chap   the path; .chap one chapter (its number .chap__n, its card .chap__card);
+                   .chap.is-empty a chapter with nothing yet (washed out)
+     .pill         « 2 leçons » (.pill--done when all are read), « Quiz 7/10 »,
+                   « Bientôt » (.pill--soon)
      .doc-kind     the kind of a document in a small coloured square
-     .chapter      the page of one chapter; .docs__…  the page « Tous les documents »
+     .chapter      the page of one chapter: .lesson-row its lessons, .docs-locked the
+                   documents while they are closed; .docs__…  the page « Tous les documents »
+   The lesson itself (the deck of cards) is in 10-lecons.css.
    Each chapter has the colour of its theme (var(--c), var(--c-ink), var(--c-tint)).
    ===================================================================================== */
 
@@ -14,6 +19,8 @@
 .filters::-webkit-scrollbar { display: none; }
 .filters__chip { flex: none; height: 34px; padding: 0 14px; border-radius: 17px; display: grid; place-items: center; font: 700 13px/1 var(--font); color: #fff; background: var(--glass-on-color); box-shadow: inset 0 0 0 1px var(--glass-on-color-line); }
 .filters__chip[aria-checked="true"] { background: #fff; color: var(--mode-deep); box-shadow: 0 2px 8px rgba(0, 0, 0, .14); }
+.gcard__icon { width: 46px; height: 46px; border-radius: 15px; display: grid; place-items: center; flex: none; background: var(--glass-on-color); box-shadow: inset 0 0 0 1px var(--glass-on-color-line); color: #fff; }
+.gcard .row__main { text-align: left; }
 
 /* (.path alone is the lesson path of Réviser, in 07-reviser.css.) */
 .path--chap { position: relative; display: grid; gap: 12px; margin-top: 0; }
@@ -27,6 +34,9 @@
 .chap__acts { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
 .pill { display: inline-flex; align-items: center; gap: 5px; height: 28px; padding: 0 10px; border-radius: 14px; font: 700 12px/1 var(--font); background: var(--c-tint); color: var(--c-ink); white-space: nowrap; }
 .pill--soon { background: var(--surface-2); color: var(--ink-3); }
+.pill--done { background: var(--c-ink); color: var(--on-accent); }
+/* A chapter with no lesson and no quiz yet: washed out, but it still opens. */
+.chap.is-empty .chap__n, .chap.is-empty .chap__when, .chap.is-empty .chap__title, .chap.is-empty .chap__card > .small { opacity: .6; }
 .doc-kind { width: 40px; height: 46px; border-radius: 10px; display: grid; place-items: center; flex: none; font: 800 10px/1 var(--font); letter-spacing: .02em; background: var(--c-tint); color: var(--c-ink); }
 .cours-more { margin-top: 18px; }
 
@@ -36,8 +46,17 @@
 .chapter__when { margin-top: 5px; font: 650 13px/1.3 var(--font); color: var(--c-ink); }
 .chapter__resume { margin-top: 14px; color: var(--ink-2); }
 .chapter__quiz { margin-top: 18px; }
-.chapter__empty { padding: 4px; color: var(--ink-2); }
-.chapter__soon { display: flex; align-items: center; gap: 8px; margin-top: 22px; }
+/* Its lessons: the number in a round tile, « 5 min », a check when read. */
+.lesson-row__n { width: 32px; height: 32px; border-radius: 50%; display: grid; place-items: center; flex: none; background: var(--c-tint); color: var(--c-ink); font: 800 14px/1 var(--font); font-variant-numeric: tabular-nums; }
+.lesson-row .row__title .tag { margin-left: 4px; }
+.lesson-row__check { width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center; flex: none; background: var(--c-ink); color: var(--on-accent); }
+.lesson-row__check .icon { stroke-width: 3; }
+.lesson-row.is-soon .lesson-row__n { background: var(--surface-2); color: var(--ink-3); }
+.lesson-row.is-soon .row__title { color: var(--ink-2); font-weight: 550; }
+/* The documents, while the school has not said yes: a grey row with a lock. */
+.docs-locked { cursor: default; }
+.docs-locked .tile-icon { background: var(--surface-2); color: var(--ink-3); }
+.docs-locked .row__title { color: var(--ink-3); }
 
 /* ---- Tous les documents ---------------------------------------------------------------- */
 .docs__lead { margin: 6px 0 0; }

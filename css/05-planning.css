@@ -107,8 +107,10 @@
 .mday--blank { pointer-events: none; }
 
 /* ---- Année -------------------------------------------------------------------------- */
-.year { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
-@media (min-width: 560px) { .year { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+/* Each day is a round dot with its date number. The months take the width they need for
+   dots of 22 px at least (7 × 22 px + the gaps + the padding): one month per row on most
+   phones, two or three side by side on a big phone, a tablet or a laptop. */
+.year { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 198px), 1fr)); gap: 12px; }
 .ymonth { padding: 12px 12px 14px; }
 .ymonth.is-current { box-shadow: var(--shadow), inset 0 0 0 2px var(--azur-tint); }
 .ymonth__head {
@@ -124,10 +126,12 @@
 }
 .ymonth__name { font: 700 15px/1.2 var(--font); }
 .ymonth__count { font: var(--t-small); color: var(--ink-3); }
-.ymonth__grid { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 3px; }
-.yday { aspect-ratio: 1; padding: 0; border: 0; border-radius: 5px; background: var(--c); }
-.yday.is-empty { background: var(--surface-2); }
-.yday.cat-libre { background: var(--galet-tint); box-shadow: inset 0 0 0 1px var(--galet); }
+.ymonth__grid { display: grid; grid-template-columns: repeat(7, minmax(22px, 1fr)); gap: 3px; }
+.yday { aspect-ratio: 1; min-width: 22px; padding: 0; border: 0; border-radius: 50%; display: grid; place-items: center;
+        background: var(--c); color: var(--on-accent); font: 700 10px/1 var(--font); font-variant-numeric: tabular-nums; }
+.yday.is-empty { background: var(--surface-2); color: var(--ink-2); }
+.yday.cat-libre { background: var(--galet-tint); box-shadow: inset 0 0 0 1px var(--galet); color: var(--ink-2); }
+.yday.cat-perso { color: var(--on-btn); }       /* navy on citron: white would not read */
 .yday.is-past { opacity: .4; }
 .yday.is-today { box-shadow: 0 0 0 2px var(--surface), 0 0 0 3.5px var(--azur-ink); opacity: 1; }
 .yday--blank { background: none; pointer-events: none; }

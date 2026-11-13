@@ -1,7 +1,8 @@
 /* =====================================================================================
    verdict.js: the « Juste / À corriger » buttons of the Relecture, and the sheet that
-   asks for the note. Used after the feedback of an unchecked question (player.js) and
-   in the « Rapport de relecture » (js/screens/relecture.js).
+   asks for the note. Used after the feedback of an unchecked question (player.js), on the
+   last card of a lesson of Cours not checked yet (js/cours/lecon.js), and in the
+   « Rapport de relecture » (js/screens/relecture.js).
    What is saved, and how, is in relecture.js.
    ===================================================================================== */
 
@@ -15,12 +16,12 @@ export function shortText(text, max = 90) {
   return t.length > max ? `${t.slice(0, max - 1).trimEnd()}…` : t;
 }
 
-/** The box with the two buttons (and the note, if any). */
-export function verdictHTML(q) {
+/** The box with the two buttons (and the note, if any). label: the question it asks. */
+export function verdictHTML(q, label = "Relecture : cette question est-elle juste ?") {
   const v = verdictFor(q);
   const pressed = (name) => String(Boolean(v && v.v === name));
-  return `<div class="verdict" data-verdict-box role="group" aria-label="Relecture de la question ${esc(q.id)}">
-      <p class="verdict__label">${icon("eye", "icon--s")}<span>Relecture : cette question est-elle juste ?</span></p>
+  return `<div class="verdict" data-verdict-box role="group" aria-label="Relecture de ${esc(q.id)}">
+      <p class="verdict__label">${icon("eye", "icon--s")}<span>${esc(label)}</span></p>
       <div class="verdict__btns">
         <button type="button" class="verdict__btn verdict__btn--ok" data-verdict="juste" aria-pressed="${pressed("juste")}">${icon("check", "icon--s")}Juste</button>
         <button type="button" class="verdict__btn verdict__btn--fix" data-verdict="corriger" aria-pressed="${pressed("corriger")}">${icon("edit", "icon--s")}À corriger</button>

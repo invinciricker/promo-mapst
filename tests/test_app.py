@@ -1,11 +1,14 @@
 """
-End-to-end test of Promo MAPST (Phase 4, « Une vraie appli »), in a phone-sized Chromium:
+End-to-end test of Promo MAPST (Phase 5, « Les leçons »), in a phone-sized Chromium:
 the welcome, Accueil (the living home at different moments of the day, its four skies,
 « le mot » with and without the owner's lines), getting around (the four tabs and how they
 move, pages, back button, swipe from the edge, tabs that remember, addresses), Cours (the
-path, a filter, a chapter with and without documents, the search), the Planning (Semaine,
-Mois, Année, details, Dates clés, personal events), Profil and its pages, and the help to
-install the app (iPhone Safari, another browser, an in-app browser, Android).
+whole path of 19 chapters, the four filters, an empty chapter, a chapter with a lesson, the
+glass card to the next lesson, a chapter with and without documents, the search), the
+Planning (Semaine, Mois, Année with its date numbers, details, Dates clés, personal
+events), Profil and its pages, and the help to install the app (iPhone Safari, another
+browser, an in-app browser, Android). The lessons themselves have their own test:
+tests/test_lecons.py.
 
     python3 tests/test_app.py [<repo folder>] [<screenshots folder>]
 
@@ -636,6 +639,24 @@ try:
         check("Année: « 2026 – 2027 », nothing straddles, « Couleurs » above the grid", "2026 – 2027" in norm(page.locator(".weekhead").inner_text())
               and page.locator(".hd.hd--lift").count() == 0 and page.locator(".year__top [data-legend]").count() == 1)
         check("Année: the stages of the year", page.locator(".stage").count() == len(PLANNING["stages"]))
+        days = page.evaluate("""[...document.querySelectorAll('.yday:not(.yday--blank)')].map(b => {
+            const cs = getComputedStyle(b); const r = b.getBoundingClientRect();
+            return { iso: b.dataset.gotoWeek, text: b.textContent.trim(), w: r.width, h: r.height, size: cs.fontSize, weight: cs.fontWeight,
+                     num: cs.fontVariantNumeric, color: cs.color, cls: b.className, shadow: cs.boxShadow }; })""")
+        check("Année: every day shows its date number inside its dot",
+              len(days) == 303 and all(d["text"] == str(int(d["iso"][8:])) for d in days))
+        check("Année: the numbers are 10 px, weight 700, tabular figures",
+              all(d["size"] == "10px" and d["weight"] == "700" and "tabular-nums" in d["num"] for d in days))
+        check("Année: round dots of 22 px at least, as large as the month allows",
+              min(d["w"] for d in days) >= 22 and all(abs(d["w"] - d["h"]) < .5 for d in days)
+              and page.evaluate("getComputedStyle(document.querySelector('.yday')).borderRadius") == "50%")
+        filled = [d for d in days if "cat-cours" in d["cls"]]
+        pale = [d for d in days if "is-empty" in d["cls"] or "cat-libre" in d["cls"]]
+        check("Année: white numbers (--on-accent) on filled colours, --ink-2 on pale or empty days",
+              filled and pale and all(d["color"] == "rgb(255, 255, 255)" for d in filled) and all(d["color"] == "rgb(79, 102, 128)" for d in pale))
+        check("Année: today keeps its ring", [d["iso"] for d in days if "is-today" in d["cls"]] == ["2026-11-07"]
+              and "rgb(16, 112, 176)" in next(d["shadow"] for d in days if "is-today" in d["cls"]))
+        check("Année: no sideways scrolling", no_overflow(page))
         page.locator(".ymonth").nth(4).locator(".ymonth__head").click()      # January
         page.wait_for_timeout(500)
         check("Année: a month opens Mois", page.locator(".gseg__btn[aria-checked=true]").inner_text().strip() == "Mois" and "Janvier 2027" in page.locator(".weekhead").inner_text())
@@ -768,48 +789,95 @@ try:
         # ================================================================ 6. Cours
         PARCOURS = json.loads((REPO / "content/parcours.json").read_text(encoding="utf-8"))
         CHAPTERS = PARCOURS["chapitres"]
-        ctx, page = phone("cours", when="2026-11-12T13:45:00+01:00")
+        LECONS = json.loads((REPO / "content/lecons/index.json").read_text(encoding="utf-8"))["lecons"]
+        with_lessons = {l["chapitre"] for l in LECONS}
+        ctx, page = phone("cours", when="2026-11-16T13:45:00+01:00")
         open_(page, "#cours")
         shot(page, "21-cours-light")
         text = norm(page.locator(f"{VISIBLE} .hd").inner_text())
         check("Cours: the header with « Cours » and its sentence",
-              "Cours" in text and "Le programme dans l’ordre de l’année. Chaque étape a son quiz et ses documents." in text)
-        used = [b["short"] for b in PARCOURS["blocs"] if any(c["bloc"] == b["id"] for c in CHAPTERS)]
-        check("Cours: the chips « Tout », then one per bloc that has a chapter",
-              [norm(t) for t in page.locator(".filters__chip").all_inner_texts()] == ["Tout"] + used
-              and page.locator(".filters__chip[aria-checked=true]").inner_text().strip() == "Tout")
+              "Cours" in text and "Le programme dans l’ordre de l’année. Chaque étape a ses leçons et son quiz." in text)
+        check("Cours: a glass card opens the first lesson to read, « Commencer · 5 min »",
+              norm(page.locator(f"{VISIBLE} .hd .gcard").inner_text()) == f"{LECONS[0]['title']} Commencer · 5 min"
+              and page.locator(f"{VISIBLE} .hd .gcard").get_attribute("data-lecon") == LECONS[0]["id"])
+        check("Cours: the chips « Tout », then every bloc of parcours.json (4)",
+              [norm(t) for t in page.locator(".filters__chip").all_inner_texts()] == ["Tout"] + [b["short"] for b in PARCOURS["blocs"]]
+              and len(PARCOURS["blocs"]) == 4 and page.locator(".filters__chip[aria-checked=true]").inner_text().strip() == "Tout")
         chaps = page.locator(f"{VISIBLE} .chap")
-        first = norm(chaps.nth(0).inner_text())
-        check("Cours: one card per chapter, in the order of the year, numbered", chaps.count() == len(CHAPTERS)
+        check("Cours: every chapter of parcours.json (19), in the order of the year, numbered", chaps.count() == len(CHAPTERS) == 19
               and [norm(t) for t in page.locator(".chap__n").all_inner_texts()] == [str(i + 1) for i in range(len(CHAPTERS))])
-        check("a chapter: « Septembre · BC3 », title, résumé, « Quiz » and « Fiche bientôt »",
-              first.startswith("1 Septembre · BC3 La fiche de séance Construire une séance, de l’objectif au bilan.")
-              and first.endswith("Quiz Fiche bientôt") and chaps.nth(0).locator(".pill--soon").count() == 1)
-        check("no document yet: no « documents » pill, no « Tous les documents », no Drive row",
-              "document" not in norm(page.locator(f"{VISIBLE} .body").inner_text()) and page.locator("[data-all-docs], [data-folder]").count() == 0)
+        first = norm(chaps.nth(0).inner_text())
+        check("a chapter with a lesson and a quiz: « Septembre · BC3 », title, résumé, « 1 leçon », then « Quiz »",
+              first == "1 Septembre · BC3 La fiche de séance Construire une séance, de l’objectif au bilan. 1 leçon Quiz"
+              and chaps.nth(0).locator(".pill").first.inner_text().strip() == "1 leçon")
+        check("a chapter with nothing yet: washed out (.6) with one grey pill « Bientôt »",
+              "is-empty" in chaps.nth(1).get_attribute("class") and norm(chaps.nth(1).locator(".chap__acts").inner_text()) == "Bientôt"
+              and page.evaluate(f"getComputedStyle(document.querySelectorAll('{VISIBLE} .chap')[1].querySelector('.chap__n')).opacity") == "0.6"
+              and page.evaluate(f"getComputedStyle(document.querySelectorAll('{VISIBLE} .chap')[1].querySelector('.chap__title')).opacity") == "0.6")
+        check("a chapter with a quiz only: « Quiz », not washed out", norm(chaps.nth(2).locator(".chap__acts").inner_text()) == "Quiz"
+              and "is-empty" not in chaps.nth(2).get_attribute("class"))
+        empties = [i for i, c in enumerate(CHAPTERS) if not c.get("theme") and c["id"] not in with_lessons]
+        check("every chapter without lesson or quiz says « Bientôt », and only those",
+              [i for i in range(chaps.count()) if "is-empty" in chaps.nth(i).get_attribute("class")] == empties
+              and page.locator(f"{VISIBLE} .pill--soon").count() == len(empties))
+        check("no « Fiche bientôt », no document pill, no « Tous les documents », no Drive row",
+              "Fiche" not in norm(page.locator(f"{VISIBLE} .body").inner_text()) and "document" not in norm(page.locator(f"{VISIBLE} .body").inner_text())
+              and page.locator("[data-all-docs], [data-folder]").count() == 0)
         check("a chapter takes the colour of its theme in Réviser (fiche de séance: olivier, anatomie: bougainvillier)",
-              "tone-olivier" in chaps.nth(0).get_attribute("class") and "tone-bougainvillier" in chaps.nth(1).get_attribute("class"))
-        page.locator(".filters__chip", has_text="Transversal").click()
-        page.wait_for_timeout(300)
-        check("a filter hides the other chapters; the numbers stay those of the full path",
-              page.locator(f"{VISIBLE} .chap").count() == sum(c["bloc"] == "transversal" for c in CHAPTERS)
-              and norm(page.locator(".chap__n").first.inner_text()) == str(next(i + 1 for i, c in enumerate(CHAPTERS) if c["bloc"] == "transversal")))
-        shot(page, "22-cours-filtre-light")
+              "tone-olivier" in chaps.nth(0).get_attribute("class") and "tone-bougainvillier" in chaps.nth(2).get_attribute("class"))
+        for bloc in PARCOURS["blocs"]:
+            page.locator(".filters__chip", has_text=bloc["short"]).click()
+            page.wait_for_timeout(300)
+            wanted = [str(i + 1) for i, c in enumerate(CHAPTERS) if c["bloc"] == bloc["id"]]
+            check(f"the filter {bloc['short']} keeps its chapters ({len(wanted)}), with the numbers of the full path",
+                  [norm(t) for t in page.locator(f"{VISIBLE} .chap__n").all_inner_texts()] == wanted)
+            if bloc["id"] == "transversal":
+                shot(page, "22-cours-filtre-light")
         page.locator(".filters__chip", has_text="Tout").click()
         page.wait_for_timeout(300)
-        page.locator(f"{VISIBLE} .chap__card").nth(1).click()
+        page.locator(f"{VISIBLE}").evaluate("e => e.scrollTo(0, 1200)")
+        page.wait_for_timeout(300)
+        shot(page, "21b-cours-chapitres-light")
+        page.locator(f"{VISIBLE}").evaluate("e => e.scrollTo(0, 0)")
+
+        # A chapter with nothing yet: it still opens.
+        chaps.nth(1).locator(".chap__card").click()
         page.wait_for_timeout(800)
         text = norm(page.locator(f"{VISIBLE}").inner_text())
-        check("a chapter opens its page (#cours/anatomie-mouvement) with « ‹ Cours »", visible_path(page) == "cours/anatomie-mouvement"
-              and page.url.endswith("#cours/anatomie-mouvement") and norm(page.locator(f"{VISIBLE} .back").inner_text()) == "Cours")
-        check("the chapter's page: title, « when · bloc title », résumé, « Réviser ce chapitre »",
-              "Anatomie et mouvement" in text and "Septembre · Séances et cycles pédagogiques" in text
-              and "Os, articulations, muscles : comment le corps bouge." in text and "Réviser ce chapitre" in text)
-        check("a chapter without documents says they arrive soon", "Les documents de ce chapitre arrivent bientôt." in text)
-        shot(page, "23-chapitre-sans-document-light")
+        check("an empty chapter opens its page (#cours/seance-et-cycle) with « ‹ Cours »", visible_path(page) == "cours/seance-et-cycle"
+              and page.url.endswith("#cours/seance-et-cycle") and norm(page.locator(f"{VISIBLE} .back").inner_text()) == "Cours")
+        check("an empty chapter: title, « when · bloc title », résumé, then « Leçons » with one grey row",
+              "De la séance au cycle" in text and "Septembre · Séances et cycles pédagogiques" in text
+              and "Enchaîner les séances pour faire progresser un groupe." in text
+              and page.locator(f"{VISIBLE} .lesson-row.is-soon").count() == 1 and "Les leçons de ce chapitre arrivent." in text)
+        check("an empty chapter: no « Réviser ce chapitre »", page.locator(f"{VISIBLE} [data-quiz]").count() == 0)
+        locked = page.locator(f"{VISIBLE} .docs-locked")
+        check("« Documents »: a disabled grey row with a lock, « Documents du cours » and « Bientôt »", locked.count() == 1
+              and norm(locked.inner_text()) == "Documents du cours Bientôt" and locked.locator("use[href='#i-lock']").count() == 1
+              and locked.get_attribute("aria-disabled") == "true")
+        check("the page of a chapter has no « Fiche bientôt » any more", "Fiche" not in text)
+        shot(page, "23-chapitre-vide-light")
+        page.locator(f"{VISIBLE} .back").click()
+        page.wait_for_timeout(700)
+
+        # A chapter with a lesson.
+        chaps.nth(3).locator(".chap__card").click()
+        page.wait_for_timeout(800)
+        text = norm(page.locator(f"{VISIBLE}").inner_text())
+        rows = page.locator(f"{VISIBLE} .lesson-row")
+        check("a chapter with a lesson: « Leçons », one row: number, title, « Nouveau » (7 days), « 5 min »",
+              visible_path(page) == "cours/filieres-energetiques" and rows.count() == 1
+              and norm(rows.first.inner_text()) == "1 Les trois filières en cinq minutes Nouveau 5 min"
+              and rows.first.locator(".lesson-row__check").count() == 0)
+        order = [norm(t) for t in page.locator(f"{VISIBLE} .section-title").all_inner_texts()]
+        quiz_box = page.locator(f"{VISIBLE} [data-quiz]").bounding_box()
+        check("the order of the page: Leçons, « Réviser ce chapitre », Documents", order == ["Leçons", "Documents"]
+              and rows.first.bounding_box()["y"] < quiz_box["y"] < page.locator(f"{VISIBLE} .docs-locked").bounding_box()["y"])
+        check("no « À vérifier » badge outside the Relecture", page.locator(f"{VISIBLE} .lesson-row .tone-citron").count() == 0)
+        shot(page, "23-chapitre-light")
         page.locator(f"{VISIBLE} [data-quiz]").click()
         page.wait_for_timeout(1200)
-        check("« Réviser ce chapitre » opens its theme in Réviser", visible_path(page) == "reviser/anatomie-mouvement")
+        check("« Réviser ce chapitre » opens its theme in Réviser", visible_path(page) == "reviser/filieres-energetiques")
         page.locator(".tab[data-tab=cours]").click()
         page.wait_for_timeout(600)
         page.locator(".tab[data-tab=cours]").click()
@@ -817,6 +885,41 @@ try:
         page.locator(f"{VISIBLE} .chap [data-quiz]").first.click()
         page.wait_for_timeout(1200)
         check("the « Quiz » pill opens the theme in Réviser", visible_path(page) == "reviser/fiche-de-seance")
+        page.locator(".tab[data-tab=cours]").click()
+        page.wait_for_timeout(600)
+
+        # The glass card opens the lesson over its chapter; × goes back to the chapter.
+        page.locator(f"{VISIBLE} .hd .gcard").click()
+        page.wait_for_selector(".player--lecon.is-open .lcard__title")
+        page.wait_for_timeout(600)
+        check("the glass card opens the lesson over the page of its chapter (#cours/fiche-de-seance?lecon=…)",
+              page.url.endswith("#cours/fiche-de-seance?lecon=fiche-de-seance-les-bases") and visible_path(page) == "cours/fiche-de-seance"
+              and page.locator(".tabbar").evaluate("e => getComputedStyle(e).visibility") == "hidden")
+        check("theme-color takes the top of Cours during a lesson", page.locator("meta[name=theme-color]").get_attribute("content").upper() == "#5140CC")
+        page.locator(".player__close").click()
+        page.wait_for_timeout(900)
+        check("× closes the lesson: back on its chapter", page.locator(".player").count() == 0 and visible_path(page) == "cours/fiche-de-seance"
+              and page.url.endswith("#cours/fiche-de-seance"))
+        ctx.close()
+
+        # Lessons read or started (saved on the phone): the pill, the glass card.
+        def lecons_state(**items):
+            return {"promo-mapst:lecons": json.dumps(items)}
+        ctx, page = phone("cours lus", when="2026-11-16T13:45:00+01:00",
+                          storage=lecons_state(**{LECONS[0]["id"]: {"at": 0, "read": "2026-11-15"}, LECONS[1]["id"]: {"at": 3}}))
+        open_(page, "#cours")
+        pill = page.locator(f"{VISIBLE} .chap").nth(0).locator(".pill").first
+        check("all the lessons of a chapter read: the pill is filled, with a check", "pill--done" in pill.get_attribute("class")
+              and pill.locator("use[href='#i-check']").count() == 1)
+        check("the glass card: the next lesson not read yet, « Continuer » once started",
+              norm(page.locator(f"{VISIBLE} .hd .gcard").inner_text()) == f"{LECONS[1]['title']} Continuer · 5 min")
+        page.locator(f"{VISIBLE} .chap").nth(0).locator(".chap__card").click()
+        page.wait_for_timeout(800)
+        check("a lesson read: a check on its row", page.locator(f"{VISIBLE} .lesson-row .lesson-row__check").count() == 1)
+        ctx.close()
+        ctx, page = phone("cours tout lu", storage=lecons_state(**{l["id"]: {"at": 0, "read": "2026-11-15"} for l in LECONS}))
+        open_(page, "#cours")
+        check("every lesson read: no glass card", page.locator(f"{VISIBLE} .hd .gcard").count() == 0)
         ctx.close()
 
         # « Quiz 7/10 »: questions answered right in the theme, over its total.
@@ -855,8 +958,8 @@ try:
                 shot(page, "21-cours-dark")
                 ctx.close()
                 continue
-            check("with documents: « 3 documents » on the chapter, « 1 document » in the singular",
-                  "3 documents" in norm(page.locator(f"{VISIBLE} .chap").nth(1).inner_text()) and "1 document Fiche" in norm(page.locator(f"{VISIBLE} .chap").nth(2).inner_text()))
+            check("with documents: no document pill on the path (Phase 5)",
+                  "document" not in norm(page.locator(f"{VISIBLE} .path--chap").inner_text()))
             page.locator(f"{VISIBLE}").evaluate("e => e.scrollTo(0, e.scrollHeight)")
             page.wait_for_timeout(300)
             check("at the end of the path: « Tous les documents » (9: the broken ones are skipped) and « Ouvrir le dossier Drive »",
@@ -866,9 +969,10 @@ try:
                   page.locator("a[data-folder]").bounding_box()["y"] + page.locator("a[data-folder]").bounding_box()["height"] <= page.locator(".tabbar").bounding_box()["y"])
             shot(page, "24-cours-fin-light")
             page.locator(f"{VISIBLE}").evaluate("e => e.scrollTo(0, 0)")
-            page.locator(f"{VISIBLE} .chap__card").nth(1).click()
+            page.locator(f"{VISIBLE} .chap__card").nth(2).click()
             page.wait_for_timeout(800)
             rows = page.locator(f"{VISIBLE} .doc")
+            check("a chapter with documents: the list as in Phase 4, no locked row", page.locator(f"{VISIBLE} .docs-locked").count() == 0)
             check("a chapter with documents: the list, the kind in a small square", rows.count() == 3
                   and [norm(t) for t in page.locator(f"{VISIBLE} .doc-kind").all_inner_texts()] == ["PDF", "DIAPO", "VIDÉO"])
             check("a document: its title, its note, « Nouveau » for 7 days after it was added",
@@ -975,7 +1079,8 @@ try:
         # ================================================================ 8. Dark mode, small phone, laptop
         for hash_, name in (("#reviser", "reviser"), ("#reviser/anatomie-mouvement", "theme"),
                             ("#planning", "planning"), ("#planning/dates-cles", "dates-cles"), ("#accueil/profil", "profil"),
-                            ("#planning?seance=2026-11-09-am", "details")):
+                            ("#planning?seance=2026-11-09-am", "details"), ("#cours/filieres-energetiques", "chapitre"),
+                            ("#cours/seance-et-cycle", "chapitre-vide")):
             ctx, page = phone(f"dark {name}", scheme="dark", when="2026-11-09T10:40:00+01:00")
             open_(page, hash_)
             page.wait_for_timeout(300)
@@ -987,6 +1092,11 @@ try:
                 page.locator(".gseg__btn[data-view=mois]").click()
                 page.wait_for_timeout(500)
                 shot(page, "12-planning-mois-dark")
+                page.locator(".gseg__btn[data-view=annee]").click()
+                page.wait_for_timeout(600)
+                shot(page, "13-planning-annee-dark")
+                color = page.evaluate("getComputedStyle(document.querySelector('.yday.cat-cours')).color")
+                check("dark mode: Année numbers on filled colours are dark (--on-accent)", color == "rgb(11, 26, 40)")
             ctx.close()
         for hash_, name in (("#reviser", "reviser"), ("#reviser/anatomie-mouvement", "theme"), ("#accueil/profil", "profil"), ("#planning/dates-cles", "dates-cles")):
             ctx, page = phone(f"light {name}", when="2026-11-09T10:40:00+01:00")
@@ -1029,7 +1139,8 @@ try:
         ctx.close()
 
         ctx, page = phone("small phone", width=320, height=640)
-        for hash_ in ("#accueil", "#cours", "#cours/role-educateur", "#reviser", "#reviser/role-educateur", "#planning", "#planning/dates-cles", "#accueil/profil"):
+        for hash_ in ("#accueil", "#cours", "#cours/role-educateur", "#cours/filieres-energetiques", "#reviser", "#reviser/role-educateur",
+                      "#planning", "#planning/dates-cles", "#accueil/profil"):
             open_(page, hash_)
             check(f"small phone: no sideways scrolling ({hash_})", no_overflow(page))
             if hash_ == "#accueil":

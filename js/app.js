@@ -3,9 +3,11 @@
 
    1. Registers the offline mode (core/offline.js and sw.js).
    2. Loads the content: content/planning.json, content/themes.json,
-      content/planning-themes.json, content/questions.json, and since Phase 4
+      content/planning-themes.json, content/questions.json, since Phase 4
       content/parcours.json, content/documents.json, content/mots.json and
-      content/savais-tu.json (shared in core/data.js).
+      content/savais-tu.json, and since Phase 5 content/lecons/index.json (shared in
+      core/data.js). The text of each lesson is then fetched in the background, so that
+      it works offline too (js/cours/lecons.js).
    3. Starts the navigation (core/nav.js) on the address of the page (#accueil by
       default): pageFor() below says which page each address shows.
    4. Shows the welcome on the first launch (screens/welcome.js).
@@ -23,6 +25,8 @@ import { isInstalled } from "./core/dom.js";
 import { welcomeDone } from "./core/user.js";
 import { createCours } from "./cours/content.js";
 import { mountCours, mountChapter, mountAllDocuments } from "./cours/cours.js";
+import { prefetchLessons } from "./cours/lecons.js";
+import "./cours/lecon.js";                  // the lesson screen and its address (?lecon=…)
 import { createPlanning } from "./planning/model.js";
 import { mountPlanning } from "./planning/planning.js";
 import { mountKeyDates } from "./planning/dates-cles.js";
@@ -43,9 +47,11 @@ const raw = {
   planningText: "",     // raw text of planning.json, to notice when it changes
   parcours: null,       // content/parcours.json
   documents: null,      // content/documents.json
-  extraText: "",        // raw text of the four Phase 4 files, to notice when one changes
+  lecons: null,         // content/lecons/index.json
+  extraText: "",        // raw text of the Phase 4 and 5 files, to notice when one changes
 };
-const EXTRA_FILES = ["content/parcours.json", "content/documents.json", "content/mots.json", "content/savais-tu.json"];
+const EXTRA_FILES = ["content/parcours.json", "content/documents.json", "content/mots.json", "content/savais-tu.json",
+  "content/lecons/index.json"];
 const live = new Set();  // the pages drawn now that follow the clock (Accueil, Planning)
 let hiddenAt = 0;
 let day = toISO(new Date());
@@ -96,12 +102,15 @@ function parseJSON(text, name, fallback) {
   }
 }
 
-/** Cours (the path of chapters) is built from parcours.json, documents.json and Réviser. */
+/** Cours (the path of chapters) is built from parcours.json, documents.json, the lessons and Réviser. */
 function buildCours() {
-  data.cours = createCours(raw.parcours, raw.documents, data.reviser);
+  data.cours = createCours(raw.parcours, raw.documents, data.reviser, raw.lecons);
 }
 
-/** The four files of Phase 4: the path, the documents, the lines and the facts of Accueil. */
+/**
+ * The files of Phase 4 and 5: the path, the documents, the lines and the facts of Accueil,
+ * the list of the lessons.
+ */
 async function loadExtras() {
   const texts = await Promise.all(EXTRA_FILES.map((path) => fetchText(path).catch(() => "")));
   const joined = texts.join("\u0000");
@@ -109,9 +118,10 @@ async function loadExtras() {
   // Offline with nothing saved: keep what we have rather than emptying the screens.
   if (raw.extraText && texts.every((t) => !t)) return false;
   raw.extraText = joined;
-  const [parcours, documents, mots, facts] = texts.map((t, i) => (t ? parseJSON(t, EXTRA_FILES[i], null) : null));
+  const [parcours, documents, mots, facts, lecons] = texts.map((t, i) => (t ? parseJSON(t, EXTRA_FILES[i], null) : null));
   raw.parcours = parcours;
   raw.documents = documents;
+  raw.lecons = lecons;
   data.mots = mots && Array.isArray(mots.mots) ? mots.mots.filter((m) => m && typeof m.text === "string" && m.text.trim()) : [];
   data.facts = Array.isArray(facts) ? facts.filter((f) => f && typeof f.text === "string" && f.text.trim()) : [];
   buildCours();
@@ -173,6 +183,17 @@ async function refreshContent() {
     /* offline: keep what we have */
   }
   if (changed) refreshPages();
+  fetchLessonTexts();                             // a lesson may have been rewritten
+}
+
+/**
+ * The texts of the lessons, fetched quietly a moment after the start (sw.js saves them,
+ * so a lesson works offline even before it is opened). The pages are drawn again after,
+ * for the Relecture report, which compares each lesson with the verdict given on it.
+ */
+function fetchLessonTexts() {
+  if (!data.cours || !data.cours.lessons.length) return;
+  prefetchLessons(data.cours.lessons).then(() => { if (isRelectureOn()) refreshPages(); });
 }
 
 // -------------------------------------------------------------------------------------
@@ -255,6 +276,7 @@ async function boot() {
   else showWelcome({ onDone: () => { refreshPages(); playOpening(); } });
   setInterval(tick, 30 * 1000);
   document.documentElement.classList.add("is-ready");
+  setTimeout(fetchLessonTexts, 1500);
 }
 
 boot();

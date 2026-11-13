@@ -1,7 +1,7 @@
 /* =====================================================================================
-   view-year.js: the « Année » view (September to June, each day a small pebble coloured
-   by its main activity), then the stages of the year. Tapping a day opens its week;
-   tapping a month opens the month.
+   view-year.js: the « Année » view (September to June, each day a round dot with its
+   date number, coloured by its main activity), then the stages of the year. Tapping a
+   day opens its week; tapping a month opens the month.
    ===================================================================================== */
 
 import { esc, icon } from "../core/dom.js";
@@ -27,7 +27,7 @@ export function yearViewHTML(model, now) {
       const cls = ["yday", cat ? `cat-${cat}` : "is-empty", iso === todayIso ? "is-today" : "", iso < todayIso ? "is-past" : ""]
         .filter(Boolean).join(" ");
       const label = capitalize(longDate(date)) + (cat ? ", " + model.category(cat).label : "");
-      grid += `<button type="button" class="${cls}" data-goto-week="${iso}" aria-label="${esc(label)}"></button>`;
+      grid += `<button type="button" class="${cls}" data-goto-week="${iso}" aria-label="${esc(label)}"><span aria-hidden="true">${date.getDate()}</span></button>`;
     }
 
     const monthIso = toISO(month);

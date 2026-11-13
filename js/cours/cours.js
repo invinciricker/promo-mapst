@@ -1,17 +1,20 @@
 /* =====================================================================================
    cours.js: the pages of the Cours tab (docs/design/prototype.html, block 6).
 
-     #cours              the programme as a path of chapters, in the order of the year.
-                         The chips at the top keep one bloc de compétences (BC1, BC2...).
-                         Each chapter shows its quiz (its theme in Réviser), how many
-                         documents it has, and « Fiche bientôt » (the study pages arrive
-                         in Phase 6).
-     #cours/<chapter>    one chapter: « Réviser ce chapitre », then its documents
+     #cours              the whole programme as a path of chapters, in the order of the
+                         year. The chips at the top keep one bloc de compétences (« Tout »,
+                         BC1, BC2...). Each chapter shows its lessons (« 2 leçons ») and its
+                         quiz (its theme in Réviser); a chapter with neither is washed out,
+                         with « Bientôt ». Since Phase 5, a glass card at the top opens the
+                         next lesson to read (« Commencer » or « Continuer »).
+     #cours/<chapter>    one chapter: its lessons, « Réviser ce chapitre », then its
+                         documents (« Bientôt » while there are none)
+     #cours/<chapter>?lecon=<id>   a lesson, over its chapter (js/cours/lecon.js)
      #cours/documents    every document, by chapter, with a search field from 8 documents
 
    The documents themselves stay on the class's Google Drive: a tap opens the link in the
-   browser. What exists is written in content/parcours.json and content/documents.json
-   (read by js/cours/content.js).
+   browser. What exists is written in content/parcours.json, content/documents.json and
+   content/lecons/index.json (read by js/cours/content.js and js/cours/lecons.js).
    ===================================================================================== */
 
 import { esc, icon, setHTML, plain } from "../core/dom.js";
@@ -19,7 +22,10 @@ import { todayISO } from "../core/dates.js";
 import { push, switchTab, navbarHTML } from "../core/nav.js";
 import { data } from "../core/data.js";
 import { themeProgress } from "../reviser/progress.js";
+import { isRelectureOn } from "../reviser/relecture.js";
 import { KINDS, isNew } from "./content.js";
+import { isRead, isStarted, nextLesson } from "./lecons.js";
+import { startLecon } from "./lecon.js";
 
 const SEARCH_FROM = 8;       // the search field appears from this many documents
 const plural = (n, one, many) => `${n} ${n > 1 ? many : one}`;
@@ -52,23 +58,33 @@ export function mountCours(el) {
     return p.answered && p.questions ? `Quiz ${p.answered}/${p.questions}` : "Quiz";
   }
 
+  /** « 2 leçons », filled with a check when they are all read. */
+  function lessonsPill(c) {
+    if (!c.lessons.length) return "";
+    const allRead = c.lessons.every((l) => isRead(l.id));
+    return `<span class="pill${allRead ? " pill--done" : ""}">${icon(allRead ? "check" : "book", "icon--xs")}${plural(c.lessons.length, "leçon", "leçons")}</span>`;
+  }
+
   function pathHTML() {
     const cours = data.cours;
     const list = cours.chapters.filter((c) => !filter || c.bloc.id === filter);
-    const chapters = list.map((c, i) => `
-        <div class="chap tone-${c.tone}${i < 6 ? " rise" : ""}" style="--i:${i}">
+    const chapters = list.map((c, i) => {
+      const empty = !c.lessons.length && !c.theme;      // nothing yet: washed out, « Bientôt »
+      return `
+        <div class="chap tone-${c.tone}${empty ? " is-empty" : ""}${i < 6 ? " rise" : ""}" style="--i:${i}">
           <span class="chap__n" aria-hidden="true">${c.n}</span>
           <div class="chap__card tap" role="link" tabindex="0" data-chapter="${esc(c.id)}">
             <div class="chap__when">${esc([c.when, c.bloc.short].filter(Boolean).join(" · "))}</div>
             <div class="chap__title">${esc(c.title)}</div>
             ${c.resume ? `<div class="small muted">${esc(c.resume)}</div>` : ""}
             <div class="chap__acts">
+              ${lessonsPill(c)}
               ${c.theme ? `<button type="button" class="pill tap" data-quiz="${esc(c.theme)}">${icon("bolt", "icon--xs")}${esc(quizLabel(c.theme))}</button>` : ""}
-              ${c.documents.length ? `<span class="pill">${icon("book", "icon--xs")}${plural(c.documents.length, "document", "documents")}</span>` : ""}
-              <span class="pill pill--soon">Fiche bientôt</span>
+              ${empty ? `<span class="pill pill--soon">Bientôt</span>` : ""}
             </div>
           </div>
-        </div>`).join("");
+        </div>`;
+    }).join("");
     const more = [
       cours.documents.length ? `<button type="button" class="row tap tone-lavande" data-all-docs>
           <span class="tile-icon">${icon("book", "icon--s")}</span>
@@ -81,8 +97,9 @@ export function mountCours(el) {
             <span class="row__sub">Le dossier partagé de la promo</span></span>
           ${icon("right", "chev")}</a>` : "",
     ].join("");
+    const none = cours.chapters.length ? "Rien dans ce bloc pour l’instant" : "Le programme arrive bientôt";
     return `${chapters ? `<div class="path path--chap">${chapters}</div>`
-      : `<div class="card empty">${icon("clock")}<b>Le programme arrive bientôt</b><p>Les chapitres s’ajoutent au fil des cours.</p></div>`}
+      : `<div class="card empty">${icon("clock")}<b>${none}</b><p>Les chapitres s’ajoutent au fil des cours.</p></div>`}
       ${more ? `<div class="list cours-more">${more}</div>` : ""}`;
   }
 
@@ -96,11 +113,20 @@ export function mountCours(el) {
     }
     if (filter && !cours.blocs.some((b) => b.id === filter)) filter = "";
     const chip = (id, label) => `<button type="button" class="filters__chip tap" role="radio" aria-checked="${filter === id}" data-bloc="${esc(id)}">${esc(label)}</button>`;
+    // The glass card: the next lesson to read, in the order of the path.
+    const next = nextLesson(cours);
+    const card = next ? `<button type="button" class="gcard tap" data-lecon="${esc(next.id)}">
+          <span class="gcard__icon" aria-hidden="true">${icon("book")}</span>
+          <div class="row__main"><div class="gcard__title">${esc(next.title)}</div>
+          <div class="gcard__sub">${isStarted(next.id) ? "Continuer" : "Commencer"} · ${next.minutes} min</div></div>
+          <span class="play" aria-hidden="true">${icon("play")}</span>
+        </button>` : "";
     setHTML(el, `
       <div class="topbar">Cours</div>
       <header class="hd">
         <div class="hd__row"><h1 class="hd__title">Cours</h1></div>
-        <p class="hd__sub">Le programme dans l’ordre de l’année. Chaque étape a son quiz et ses documents.</p>
+        <p class="hd__sub">Le programme dans l’ordre de l’année. Chaque étape a ses leçons et son quiz.</p>
+        ${card}
         ${cours.blocs.length ? `<div class="filters" role="radiogroup" aria-label="Bloc de compétences">${chip("", "Tout")}${cours.blocs.map((b) => chip(b.id, b.short)).join("")}</div>` : ""}
       </header>
       <div class="body">${pathHTML()}</div>`);
@@ -111,7 +137,9 @@ export function mountCours(el) {
     const bloc = t.closest("[data-bloc]");
     const quiz = t.closest("[data-quiz]");
     const chapter = t.closest("[data-chapter]");
-    if (bloc) {
+    const lecon = t.closest("[data-lecon]");
+    if (lecon) startLecon(data.cours.lesson(lecon.dataset.lecon));
+    else if (bloc) {
       if (bloc.dataset.bloc === filter) return;
       filter = bloc.dataset.bloc;
       // A filter hides the other chapters; the numbers stay those of the full path.
@@ -144,6 +172,17 @@ export function mountChapter(el, chapterId) {
       return;
     }
     const today = todayISO();
+    const relecture = isRelectureOn();
+    // « Leçons »: number, title, « 5 min », a check when read, « Nouveau » for 7 days.
+    const lessonRows = c.lessons.map((l) => {
+      const read = isRead(l.id);
+      return `<button type="button" class="row tap lesson-row${read ? " is-read" : ""}" data-lecon="${esc(l.id)}">
+          <span class="lesson-row__n" aria-hidden="true">${l.n}</span>
+          <span class="row__main"><span class="row__title">${esc(l.title)}${isNew(l, today) ? ` <span class="tag tone-turquoise">Nouveau</span>` : ""}${relecture && l.draft ? ` <span class="tag tone-citron">À vérifier</span>` : ""}</span>
+            <span class="row__sub">${l.minutes} min</span></span>
+          ${read ? `<span class="lesson-row__check" aria-label="Lue">${icon("check", "icon--xs")}</span>` : icon("right", "chev")}
+        </button>`;
+    }).join("");
     setHTML(el, `
       ${navbarHTML("Cours", c.title)}
       <div class="page__body chapter tone-${c.tone}">
@@ -153,18 +192,26 @@ export function mountChapter(el, chapterId) {
           <p class="chapter__when">${esc([c.when, c.bloc.title].filter(Boolean).join(" · "))}</p></div>
         </div>
         ${c.resume ? `<p class="chapter__resume">${esc(c.resume)}</p>` : ""}
+        <h2 class="section-title">Leçons</h2>
+        ${c.lessons.length ? `<div class="list">${lessonRows}</div>`
+          : `<div class="list"><div class="row lesson-row is-soon"><span class="lesson-row__n" aria-hidden="true">${icon("clock", "icon--xs")}</span>
+              <span class="row__main row__title">Les leçons de ce chapitre arrivent.</span></div></div>`}
         ${c.theme ? `<button type="button" class="btn btn--primary btn--block chapter__quiz" data-quiz="${esc(c.theme)}">${icon("bolt", "icon--fill")}Réviser ce chapitre</button>` : ""}
         <h2 class="section-title">Documents</h2>
         ${c.documents.length
           ? `<div class="list">${c.documents.map((d) => docRowHTML(d, today)).join("")}</div>`
-          : `<p class="chapter__empty">Les documents de ce chapitre arrivent bientôt.</p>`}
-        <p class="small faint chapter__soon"><span class="pill pill--soon">Fiche bientôt</span> La fiche de révision de ce chapitre arrive plus tard.</p>
+          : `<div class="list"><div class="row docs-locked" aria-disabled="true">
+              <span class="tile-icon">${icon("lock", "icon--s")}</span>
+              <span class="row__main row__title">Documents du cours</span>
+              <span class="tag">Bientôt</span></div></div>`}
       </div>`);
   }
 
   el.addEventListener("click", (event) => {
     const quiz = event.target.closest("[data-quiz]");
+    const lecon = event.target.closest("[data-lecon]");
     if (quiz) openQuiz(quiz.dataset.quiz);
+    else if (lecon) startLecon(data.cours.lesson(lecon.dataset.lecon));
   });
 
   draw();

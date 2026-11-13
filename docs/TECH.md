@@ -28,7 +28,9 @@ css/                    How it looks. Loaded in this order:
   07-reviser.css          the Réviser tab and the lesson screen
   08-accueil.css          Accueil: the sky, the glass, « le mot », « En ce moment », and
                           the rules that make the picture move
-  09-cours.css            the Cours tab: the path of chapters, a chapter, the documents
+  09-cours.css            the Cours tab: the path of chapters, a chapter (its lessons, its
+                          documents), the documents
+  10-lecons.css           a lesson of Cours: the deck of cards, full screen (Phase 5)
 
 js/                     How it works.
   app.js                  starts everything: loads the content, says which page each
@@ -60,13 +62,22 @@ js/                     How it works.
     install.js              help to add the app to the home screen (iPhone Safari,
                             another browser, inside another app, Android)
   cours/                  the Cours tab
-    cours.js                its pages: the path, a chapter, « Tous les documents »
-    content.js              turns parcours.json + documents.json into chapters with
-                            their bloc, their colour and their documents
+    cours.js                its pages: the path (and the glass card to the next lesson),
+                            a chapter, « Tous les documents »
+    content.js              turns parcours.json + documents.json + lecons/index.json into
+                            chapters with their bloc, their colour, their lessons and
+                            their documents
+    lecons.js               the lessons: their list, fetching their text, and what is
+                            saved on the phone (lessons read, the card where one was left)
+    markdown.js             reads the text of a lesson (a few Markdown blocks) into cards
+    lecon.js                the lesson screen: one card at a time, the questions, the last
+                            card, the Relecture of a lesson
   planning/               the Planning tab
     planning.js             its first page: Semaine / Mois / Année, arrows, swipes
     view-week.js            the strip of day cards and the chosen day
-    view-month.js, view-year.js   the Mois and Année views
+    view-month.js, view-year.js   the Mois and Année views (Année: one round dot per
+                            day with its date number, 22 px at least, so one month per
+                            row on most phones)
     dates-cles.js           the « Dates clés » page
     details.js              the sheet that opens when you tap a half-day
     today.js                what Accueil says about today (on now, next, done, day off)
@@ -99,6 +110,8 @@ content/                What the app says (written by Claude chat). Never the co
   planning-themes.json    which planning topics belong to which theme
   parcours.json           Cours: the blocs and the chapters, in the order of the year
   documents.json          Cours: titles and links of the documents on the class's Drive
+  lecons/                 Cours: the lessons (Phase 5): index.json (the list), one .md
+                          file per lesson, img/ for their pictures
   mots.json               Accueil: the owner's short lines
   savais-tu.json          Accueil: the « Le savais-tu ? » facts
 
@@ -112,9 +125,9 @@ vendor/fonts/           The font (Plus Jakarta Sans, free licence), stored in th
 scripts/                Tools (run them on a computer):
   export_planning.py      private planning + planning-fixes.json -> content/planning.json
                           and planning.ics
-  check_content.py        checks the questions, the themes, the planning corrections and
-                          the Phase 4 files: parcours, documents, mots, savais-tu
-                          (also run by GitHub)
+  check_content.py        checks the questions, the themes, the planning corrections, the
+                          Phase 4 files (parcours, documents, mots, savais-tu) and the
+                          lessons of content/lecons/ (also run by GitHub)
   check_offline_list.py   checks that sw.js lists every file of the app (also run by GitHub)
   make_launch_images.cjs  makes the iPhone launch images from the welcome screen
   fetch_fonts.sh          downloads the font into vendor/fonts/
@@ -213,6 +226,7 @@ Every page and sheet has its own address (useful to test in a browser):
 | `#accueil/profil` | Profil (old `#infos` addresses open it) |
 | `#accueil/profil/relecture` | the Rapport de relecture |
 | `#cours`, `#cours/anatomie-mouvement` | Cours (the path of chapters), a chapter (old `#etudier` addresses open Cours) |
+| `#cours/fiche-de-seance?lecon=fiche-de-seance-les-bases` | a lesson of Cours, over its chapter (it resumes where it was left) |
 | `#cours/documents` | every document, by chapter |
 | `#accueil?installer` | the help to install the app |
 | `#reviser`, `#reviser/fiche-de-seance` | Réviser, a theme |
@@ -246,7 +260,9 @@ never needs a change to the code or to `sw.js`**: phones fetch the new files by 
   contains one of the keywords (capitals and accents don't matter), its details offer
   « Réviser ce thème ».
 - **A correction to the planning** for the whole class: see « How to update the planning ».
-- **Study pages** (Phase 5) will go in `content/study/`.
+- **A lesson of Cours** (Phase 5): its text in `content/lecons/<id>.md` and one line in
+  `content/lecons/index.json`. `docs/AJOUTER-UNE-LECON.md` is the guide any Claude follows;
+  see also « The lessons of Cours » below.
 
 Typography is the app's job: write normal spaces in the data (`Quelle loi ?`); the app
 adds the no-break spaces before `? ! : ; »` and after `«` when it shows the text.
@@ -267,6 +283,47 @@ request), then publish (see below). Phones get it by themselves.
 
 ---
 
+## The lessons of Cours (Phase 5)
+
+A lesson is a deck of cards, read on the phone in about five minutes.
+
+- **The files.** `content/lecons/index.json` lists the lessons (`id`, `chapitre`, `title`,
+  `minutes`, `source`, `status`, `added`), in order inside each chapter. Each lesson's text
+  is `content/lecons/<id>.md`; its pictures are in `content/lecons/img/`. A lesson whose
+  chapter is not in `parcours.json`, or whose id is not small letters, digits and hyphens,
+  is skipped.
+- **How the text is read** (`js/cours/markdown.js`, and the same rules in Python in
+  `scripts/check_content.py`): each `## ` title starts a card. Inside a card: paragraphs
+  (lines next to each other), `**bold**`, `- ` and `1. ` lists, a simple table (`| a | b |`
+  then `|---|---|`), the four boxes `> [!retenir]`, `> [!exemple]`, `> [!piege]`,
+  `> [!savais-tu]`, a picture alone on its line `![description](img/name.svg)`, and a
+  question: `? …`, then 2 to 4 lines `- [x]` (right) / `- [ ]`, then `= explanation`
+  (empty lines between them are allowed). Anything else is shown as plain text. The app
+  adds the no-break spaces, as for the questions.
+- **On screen** (`js/cours/lecon.js`, `css/10-lecons.css`): full screen over the chapter
+  (address `#cours/<chapitre>?lecon=<id>`), the top row on the Cours gradient with × and one
+  segment per card. A tap on the right two thirds, a swipe left or → : next card; the left
+  third, a swipe right or ← : previous one. Cards slide like the pages (420 ms,
+  `--ease-page`). A question is answered with one tap (its choices are shuffled, like in
+  Réviser); until then, going forward is blocked on that card (cards already passed in an
+  earlier visit never block). The last card is the app's: « Leçon terminée », « Teste-toi »
+  (opens the chapter's theme in Réviser) and « Retour au chapitre ».
+- **Saved on the phone** (`promo-mapst:lecons`): `{ "<id>": { "at": 3, "read": "2026-11-13" } }`,
+  the card where the lesson was left (it resumes there) and the day it was read (reaching
+  the last card; it then starts again from the first card).
+- **In Cours**: every bloc and every chapter of `parcours.json`. A chapter with neither a
+  lesson nor a theme is washed out with « Bientôt » (it still opens). Pills: « 2 leçons »
+  (filled with a check once all are read), « Quiz 7/10 », « Bientôt ». A glass card at the
+  top opens the next lesson not read yet, in the order of the path (« Commencer », or
+  « Continuer » once started). The chapter's page: its lessons (number, title, minutes, a
+  check when read, « Nouveau » for 7 days after `added`), « Réviser ce chapitre », then
+  « Documents » (a locked row « Bientôt » while the chapter has none).
+- **Offline**: `sw.js` saves `content/lecons/index.json` and every lesson it lists when it
+  installs, and the app fetches every lesson and its pictures in the background a moment
+  after each start. Nothing is listed by hand, so a new lesson needs no code.
+
+---
+
 ## Relecture: checking the questions on your phone
 
 1. On Accueil, tap the round initial (top right) to open **Profil**, and switch on
@@ -284,13 +341,20 @@ request), then publish (see below). Phones get it by themselves.
 Your verdicts stay on your phone. If Claude chat rewrites a question, your old verdict on
 it disappears by itself, so you check the new version.
 
+**The lessons of Cours** (Phase 5) are checked as a whole: with « Mode relecture » on, a
+lesson still `brouillon` has the « À vérifier » badge on its row, and its last card has
+« Juste » / « À corriger » (with the same note sheet). The verdict is saved under
+`lecon:<id>` with a fingerprint of the lesson's title and text. The report lists them
+under a heading « Leçons », after the questions (only when at least one lesson has a
+verdict), and the « Rapport de relecture » page has a « Leçons » list.
+
 ---
 
 ## The automatic checks (the green tick or the red cross)
 
 On every pull request, GitHub runs `scripts/check_content.py` (are the questions, the
 themes, the planning corrections, the path of Cours, the documents, the lines and the facts
-of Accueil well written?) and `scripts/check_offline_list.py`
+of Accueil, and the lessons well written?) and `scripts/check_offline_list.py`
 (does `sw.js` list every file of the app?). The result is shown on the pull request page,
 above the « Merge » button:
 
@@ -389,29 +453,37 @@ python3 scripts/check_offline_list.py
 python3 tests/test_check_content.py
 python3 tests/test_planning_fixes.py
 python3 tests/test_app.py
+python3 tests/test_lecons.py
 python3 tests/test_reviser.py
 python3 tests/test_offline.py
 ```
-The last three need Python Playwright (`pip install playwright`, then
+The last four need Python Playwright (`pip install playwright`, then
 `python3 -m playwright install chromium`, or set `CHROME_PATH` to a Chromium).
 `test_app.py` goes through the welcome, Accueil at different moments of the day and its
 four skies (with and without lines of the owner), the four tabs and how they move, the
-pages and the « back » gestures, Cours (the path, a filter, a chapter with and without
-documents, and a made-up list of documents to see the search), the Planning, Profil, and
-the install help as an iPhone in Safari, in another browser, inside Instagram, and as an
-Android phone. It saves screenshots at 390 × 844 in light and dark mode (their folder is
+pages and the « back » gestures, Cours (the 19 chapters and the four filters, an empty
+chapter, a chapter with a lesson, the glass card, a chapter with and without documents,
+and a made-up list of documents to see the search), the Planning (Année with its date
+numbers), Profil, and the install help as an iPhone in Safari, in another browser, inside
+Instagram, and as an Android phone. It saves screenshots at 390 × 844 in light and dark mode (their folder is
 printed at the end), to compare with the prototype and the mockups. It takes a few
-minutes, because it waits for « le mot » to change. `test_reviser.py` plays lessons like a person would.
-`test_offline.py` checks the offline mode and that new content is picked up without any
-code change. `test_planning_fixes.py` checks the planning corrections.
+minutes, because it waits for « le mot » to change. `test_lecons.py` reads lessons of Cours like a person would: forward and
+back (taps, swipes, arrows), a question right and wrong, × in the middle and back to the
+same card, the last card, « Teste-toi », a made-up lesson with every block, a lesson that
+can't load, the Relecture of a lesson and its report (screenshots: a text card, a table,
+a question answered, the last card, light and dark).
+`test_reviser.py` plays lessons like a person would.
+`test_offline.py` checks the offline mode (lessons included, even one never opened) and
+that new content (a theme, a lesson) is picked up without any code change. `test_planning_fixes.py` checks the planning corrections.
 
 ---
 
 ## Privacy
 
 - No account (yet), no cookies, no analytics, no ads, nothing loaded from other websites.
-- Your first name, personal events (« + »), your progress in Réviser and your Relecture
-  verdicts are saved on the phone only (accounts and sync come in Phase 4).
+- Your first name, personal events (« + »), your progress in Réviser, the lessons read in
+  Cours and your Relecture verdicts are saved on the phone only (accounts and sync come in
+  Phase 6).
   Profil › « Ce que l'appli garde » lists them, and erases the progress if you want.
 - This repository is public: never commit personal data, course PDFs, slides or photos.
   The private planning repository must never be copied here (`.gitignore` blocks the

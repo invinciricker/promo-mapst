@@ -11,6 +11,10 @@
       questions or a new planning show up straight away. Each content file is saved when
       it is fetched; without internet, the saved copy is used. So a NEW content file
       (a study page...) needs no change here: it works offline once it has been opened.
+   4. The lessons of Cours (content/lecons/, Phase 5) are content too: at installation
+      their list (content/lecons/index.json) is read and every lesson saved, and the app
+      fetches them all in the background at each start (js/cours/lecons.js), pictures
+      included. So a new lesson works offline without being listed anywhere.
 
    IMPORTANT: when you add a file to the app itself (a new .js or .css...), add it to
    APP_FILES below, otherwise it won't work offline. scripts/check_offline_list.py checks it.
@@ -32,6 +36,7 @@ const APP_FILES = [
   "css/07-reviser.css",
   "css/08-accueil.css",
   "css/09-cours.css",
+  "css/10-lecons.css",
   "js/app.js",
   "js/core/data.js",
   "js/core/dates.js",
@@ -47,6 +52,9 @@ const APP_FILES = [
   "js/core/user.js",
   "js/cours/content.js",
   "js/cours/cours.js",
+  "js/cours/lecon.js",
+  "js/cours/lecons.js",
+  "js/cours/markdown.js",
   "js/planning/dates-cles.js",
   "js/planning/details.js",
   "js/planning/event-form.js",
@@ -108,6 +116,7 @@ self.addEventListener("install", (event) => {
     await cache.addAll(APP_FILES.map((url) => new Request(url, { cache: "reload" })));
     // The content one by one: a missing or renamed content file must not stop the app.
     await Promise.all(CONTENT_FILES.map((url) => cache.add(new Request(url, { cache: "reload" })).catch(() => null)));
+    await saveLessons(cache).catch(() => null);
     await self.skipWaiting();     // the new version starts straight away
   })());
 });
@@ -153,6 +162,18 @@ self.addEventListener("message", (event) => {
 });
 
 // ---------------------------------------------------------------------------------------
+/** The lessons of Cours: their list, then each lesson's text (read from the list, not written here). */
+async function saveLessons(cache) {
+  const response = await fetch("content/lecons/index.json", { cache: "reload" });
+  if (!response.ok) return;
+  await cache.put("content/lecons/index.json", response.clone());
+  const index = await response.json();
+  const ids = (index && Array.isArray(index.lecons) ? index.lecons : [])
+    .map((lesson) => lesson && lesson.id)
+    .filter((id) => typeof id === "string" && /^[a-z0-9]+(-[a-z0-9]+)*$/.test(id));
+  await Promise.all(ids.map((id) => cache.add(new Request(`content/lecons/${id}.md`, { cache: "reload" })).catch(() => null)));
+}
+
 async function fromCache(key, request) {
   const cache = await caches.open(CACHE);
   const saved = await cache.match(key, { ignoreSearch: true });
