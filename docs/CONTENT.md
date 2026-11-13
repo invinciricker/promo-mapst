@@ -79,3 +79,14 @@ Six chapters on 12 Nov 2026, one per Réviser theme, ordered by the first date t
 
 Empty on 12 Nov 2026: the owner sends his lines (motivation, things heard in class) to Claude chat, which adds them. Trainers are named by initials only.
 
+## Lessons (`content/lecons/`)
+
+| Lesson | Chapter | Source | Written | Status |
+|---|---|---|---|---|
+| fiche-de-seance-les-bases | La fiche de séance | « Lsn 1, Fiche de séance » (transcript of the class of 15 Sept; a rough transcript, so only what is said clearly was kept) | 13 Nov 2026 | brouillon |
+| filieres-les-trois | Filières énergétiques | « les filières énergétiques » (slides) | 13 Nov 2026 | brouillon |
+
+Next, one content pull request each, no code: anatomie (2 lessons), entretien corporel, rôle et obligations, publics, then the second lessons of filières (entraîner chaque filière) and fiche de séance (the cycle). The 13 chapters without a source yet wait for the owner's files.
+
+The path now has 19 chapters, from the topics of the planning. Their blocs are Claude chat's reading of the livret d'accueil, to be confirmed.
+

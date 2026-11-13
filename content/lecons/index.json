@@ -1,0 +1,23 @@
+{
+ "about": "The lessons of the Cours tab, in order inside each chapter. Each lesson's text is content/lecons/<id>.md. How to write one: docs/AJOUTER-UNE-LECON.md.",
+ "lecons": [
+  {
+   "id": "fiche-de-seance-les-bases",
+   "chapitre": "fiche-de-seance",
+   "title": "Les bases de la fiche de séance",
+   "minutes": 5,
+   "source": "Cours du 15 septembre 2026 (notes orales)",
+   "status": "brouillon",
+   "added": "2026-11-13"
+  },
+  {
+   "id": "filieres-les-trois",
+   "chapitre": "filieres-energetiques",
+   "title": "Les trois filières en cinq minutes",
+   "minutes": 5,
+   "source": "Les filières énergétiques (diaporama CAPA)",
+   "status": "brouillon",
+   "added": "2026-11-13"
+  }
+ ]
+}

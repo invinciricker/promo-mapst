@@ -32,6 +32,13 @@
    "resume": "Construire une séance, de l’objectif au bilan."
   },
   {
+   "id": "seance-et-cycle",
+   "title": "De la séance au cycle",
+   "bloc": "bc3",
+   "when": "Septembre",
+   "resume": "Enchaîner les séances pour faire progresser un groupe."
+  },
+  {
    "id": "anatomie-mouvement",
    "title": "Anatomie et mouvement",
    "bloc": "bc3",
@@ -56,12 +63,54 @@
    "resume": "Ce que la loi attend de toi."
   },
   {
+   "id": "citoyennete",
+   "title": "Citoyenneté et posture de l’éducateur",
+   "bloc": "transversal",
+   "when": "Septembre – octobre",
+   "resume": "Exemplarité, laïcité, incivilités, situations sensibles."
+  },
+  {
+   "id": "techniques-securite",
+   "title": "Techniques et sécurité",
+   "bloc": "bc3",
+   "when": "Septembre",
+   "resume": "Maîtriser les gestes et faire pratiquer en sécurité."
+  },
+  {
    "id": "entretien-corporel",
    "title": "Activités d’entretien corporel",
    "bloc": "bc3",
-   "when": "Octobre",
+   "when": "Octobre – décembre",
    "theme": "entretien-corporel",
    "resume": "Forme, santé, bien-être : les pratiques et leurs publics."
+  },
+  {
+   "id": "analyse-de-seance",
+   "title": "Analyser une séance",
+   "bloc": "bc3",
+   "when": "Octobre",
+   "resume": "Regarder une séance et dire ce qui a marché, et pourquoi."
+  },
+  {
+   "id": "environnement",
+   "title": "Environnement et développement durable",
+   "bloc": "transversal",
+   "when": "Novembre",
+   "resume": "Pratiquer et faire pratiquer en respectant le milieu."
+  },
+  {
+   "id": "espaces-naturels",
+   "title": "Activités en espace naturel",
+   "bloc": "bc3",
+   "when": "Novembre – janvier",
+   "resume": "Encadrer dehors : les activités de pleine nature."
+  },
+  {
+   "id": "jeux-sportifs",
+   "title": "Activités et jeux sportifs",
+   "bloc": "bc3",
+   "when": "Décembre",
+   "resume": "Concevoir des séances de jeux sportifs."
   },
   {
    "id": "publics",
@@ -70,6 +119,48 @@
    "when": "Janvier",
    "theme": "publics",
    "resume": "À chaque âge et à chaque public, ses besoins."
+  },
+  {
+   "id": "conduite-animation",
+   "title": "Conduire et animer une séance",
+   "bloc": "bc3",
+   "when": "Janvier",
+   "resume": "Tenir son groupe, sa voix et son rythme."
+  },
+  {
+   "id": "projet-animation",
+   "title": "Le projet d’animation",
+   "bloc": "bc1",
+   "when": "Mars",
+   "resume": "Monter, conduire et évaluer un projet sur son territoire."
+  },
+  {
+   "id": "structure",
+   "title": "Connaître et créer sa structure",
+   "bloc": "bc1",
+   "when": "Mars",
+   "resume": "Statuts, démarches, accueil collectif de mineurs."
+  },
+  {
+   "id": "communication",
+   "title": "Communiquer et promouvoir",
+   "bloc": "bc2",
+   "when": "Mars",
+   "resume": "Choisir ses outils et créer ses supports."
+  },
+  {
+   "id": "certifications",
+   "title": "Réussir les certifications",
+   "bloc": "transversal",
+   "when": "Mars – juin",
+   "resume": "EPMSP, BC3, BC1 et BC2 : ce qu’on attend de toi le jour J."
+  },
+  {
+   "id": "emploi",
+   "title": "Trouver un emploi",
+   "bloc": "transversal",
+   "when": "Mai",
+   "resume": "CV, candidatures, premiers pas d’éducateur."
   }
  ]
 }

@@ -5,7 +5,7 @@ A free web app called « Promo MAPST », for the trainees of my BPJEPS MAPST cou
 
 Four tabs in a floating bar at the bottom:
 1. Accueil: the home. The Baie des Anges full screen and moving, one short line, and what's on now. Nothing else.
-2. Cours: the programme as a path of chapters in the order of the year, by bloc de compétences; each chapter leads to its quiz and to its documents on the class's Google Drive (since Phase 4). The fun lessons (« fiches ») join it in Phase 6.
+2. Cours: the whole programme as a path of chapters in the order of the year, by bloc de compétences. Each chapter has short lessons (decks of cards, Phase 5) and leads to its quiz. The course documents stay closed (« Bientôt ») until my school agrees.
 3. Réviser: Duolingo-style quizzes on the course.
 4. Planning: the course timetable by week, month and year.
 
@@ -19,7 +19,7 @@ I'm a beginner. Explain things in plain English, keep it short, and tell me exac
 - How the work flows, and every decision so far: docs/PLAN.md. What content exists and where it comes from: docs/CONTENT.md.
 
 ## The phase to build now
-**Phase 4, « Une vraie appli »: docs/phases/phase-4.md.** Read it whole, then open docs/design/prototype.html.
+**Phase 5, « Les leçons »: docs/phases/phase-5.md.** Read it whole. The look is the app as it is (Phase 4): nothing to redesign.
 
 ## Rules for the whole app
 - Everything the user sees is in French, short, with « tu ». No-break space before ? ! : ; » and after « (the app adds them when it shows content; the data keeps plain spaces).
@@ -53,15 +53,16 @@ Claude chat writes the content in these exact formats, so keep them. If you need
 - content/savais-tu.json (Phase 4): a list of { "id", "theme", "text", "question" }: the short facts shown on Accueil. text is 100 characters at most; question is the id of the question it comes from (optional).
 - content/planning.json and content/planning.ics: built by scripts/export_planning.py from my private repository; content/planning-themes.json maps the planning's topics to the themes.
 - content/planning-fixes.json: { "about", "fixes": [ … ] }: corrections to the official planning, applied by the export script on every run. Each fix has id, added, from and to (dates), match (the fields a half-day must have), set (the fields that replace them), and optional stage, check, category and why.
-- content/study/index.json and content/study/<id>.md (Phase 6): the study pages; see docs/phases/phase-6.md.
+- content/lecons/index.json (Phase 5): { "about", "lecons": [{ id, chapitre, title, minutes, source, status ("brouillon" or "verifie"), added }] }, in order inside each chapter. Each lesson's text is content/lecons/<id>.md: a deck of cards in Markdown (each « ## » starts a card), with the few blocks listed in docs/AJOUTER-UNE-LECON.md. Pictures in content/lecons/img/.
+- **Adding lessons, questions, chapters, facts or mots never needs a code session**: docs/AJOUTER-UNE-LECON.md is the guide any Claude follows.
 
 ## Phases
 1. App shell, Planning, publishing on GitHub Pages. Done.
 2. Réviser. Done.
 3. Nouveau look: Accueil, the welcome, the new design. Done.
-4. Une vraie appli: four tabs with Cours (the path of chapters), the full-screen living home, glass, motion, installing. **Now: docs/phases/phase-4.md.**
-5. Comptes, classement et questions de la promo. Draft: docs/phases/phase-5.md.
-6. Les fiches (study pages, inside Cours). Draft: docs/phases/phase-6.md.
+4. Une vraie appli: four tabs with Cours (the path of chapters), the full-screen living home, glass, motion, installing. Done.
+5. Les leçons: lessons as decks of cards inside Cours, the whole programme shown, content added without code. **Now: docs/phases/phase-5.md.**
+6. Comptes, classement et questions de la promo. Draft: docs/phases/phase-6.md.
 
 The original briefs of phases 1 to 3 are in docs/phases/phases-1-3.md, for the record.
 
