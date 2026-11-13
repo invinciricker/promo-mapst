@@ -176,7 +176,7 @@
   cursor: pointer;
 }
 .kd-past summary::-webkit-details-marker { display: none; }
-.kd-past summary .icon { transition: transform .2s; }
+.kd-past summary .icon { transition: transform var(--t-fast); }
 .kd-past[open] summary .icon { transform: rotate(90deg); }
 
 /* ---- Colour legend, personal event, calendar export ------------------------------------- */

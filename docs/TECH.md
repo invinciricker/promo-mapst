@@ -14,20 +14,31 @@ sw.js                   Keeps a copy on the phone, so the app works offline,
 
 css/                    How it looks. Loaded in this order:
   01-tokens.css           the design tokens: colours, font, sizes, light AND dark mode
-                          (the values of docs/design/mockups.html)
-  02-base.css             basics: background, text, icons
+                          (the values of docs/design/mockups.html), and since Phase 4
+                          the gradients of the tabs, glass, motion and safe areas
+                          (docs/design/prototype.html, block 1)
+  02-base.css             basics: background, text, icons, and the « app feel » rules
+                          (nothing selectable, no grey flash, .tap)
   03-components.css       reusable pieces: buttons, chips, cards, lists, switches, sheets
-  04-layout.css           the frame: the pages, the « ‹ Back » bar, the tab bar / side rail
-  05-planning.css         the Planning tab
-  06-screens.css          the welcome, Accueil, Profil and the Relecture report
+  04-layout.css           the frame: the panels and how they change, the pages, the
+                          coloured header (.hd) and sheet (.body) of a tab, the small
+                          coloured bar (.topbar), the floating tab bar / side rail
+  05-planning.css         the Planning tab (the day cards, the half-day cards, Mois, Année)
+  06-screens.css          the welcome, Profil, the Relecture report, the install help
   07-reviser.css          the Réviser tab and the lesson screen
+  08-accueil.css          Accueil: the sky, the glass, « le mot », « En ce moment », and
+                          the rules that make the picture move
+  09-cours.css            the Cours tab: the path of chapters, a chapter, the documents
 
 js/                     How it works.
   app.js                  starts everything: loads the content, says which page each
                           address shows, follows the clock
   core/                   small tools used everywhere
-    nav.js                  getting around: tabs, pages that slide in, « back », the swipe
-                            from the left edge, the address of every page and sheet
+    nav.js                  getting around: the four tabs and how they change, pages
+                            that slide in, « back », the swipe from the left edge, the
+                            address of every page and sheet
+    statusbar.js            the colour of Android's status bar (theme-color), which
+                            follows the top of the screen shown
     sheet.js                the panels that slide up from the bottom
     data.js                 the content loaded from content/, shared by every screen
     user.js                 the first name and « welcome seen », saved on the phone
@@ -41,14 +52,20 @@ js/                     How it works.
   screens/
     welcome.js              the welcome, on the first launch (Bienvenue, ton prénom,
                             install help)
-    accueil.js              Accueil: the window onto the bay, « Aujourd'hui », « Réviser »
+    accueil.js              Accueil: the bay full screen and moving, the greeting,
+                            « le mot », « En ce moment »
     profil.js               Profil (it replaced Infos), « À propos du planning »,
                             « Ce que l'appli garde »
     relecture.js            the « Rapport de relecture »
-    install.js              help to add the app to the home screen
+    install.js              help to add the app to the home screen (iPhone Safari,
+                            another browser, inside another app, Android)
+  cours/                  the Cours tab
+    cours.js                its pages: the path, a chapter, « Tous les documents »
+    content.js              turns parcours.json + documents.json into chapters with
+                            their bloc, their colour and their documents
   planning/               the Planning tab
     planning.js             its first page: Semaine / Mois / Année, arrows, swipes
-    view-week.js            the 7-day strip and the chosen day
+    view-week.js            the strip of day cards and the chosen day
     view-month.js, view-year.js   the Mois and Année views
     dates-cles.js           the « Dates clés » page
     details.js              the sheet that opens when you tap a half-day
@@ -80,6 +97,10 @@ content/                What the app says (written by Claude chat). Never the co
   themes.json             the themes of Réviser, and the lesson titles
   questions.json          the questions of Réviser
   planning-themes.json    which planning topics belong to which theme
+  parcours.json           Cours: the blocs and the chapters, in the order of the year
+  documents.json          Cours: titles and links of the documents on the class's Drive
+  mots.json               Accueil: the owner's short lines
+  savais-tu.json          Accueil: the « Le savais-tu ? » facts
 
 docs/                   How the work is organised (PLAN.md), the content log
                         (CONTENT.md) and the design (design/). Written by Claude chat.
@@ -91,7 +112,8 @@ vendor/fonts/           The font (Plus Jakarta Sans, free licence), stored in th
 scripts/                Tools (run them on a computer):
   export_planning.py      private planning + planning-fixes.json -> content/planning.json
                           and planning.ics
-  check_content.py        checks the questions, the themes and the planning corrections
+  check_content.py        checks the questions, the themes, the planning corrections and
+                          the Phase 4 files: parcours, documents, mots, savais-tu
                           (also run by GitHub)
   check_offline_list.py   checks that sw.js lists every file of the app (also run by GitHub)
   make_launch_images.cjs  makes the iPhone launch images from the welcome screen
@@ -110,12 +132,16 @@ There is no framework and no build step: GitHub Pages serves these files as they
 
 ## The design in short
 
-The target is `docs/design/mockups.html` (explained in `docs/design/README.md`).
+The target is `docs/design/prototype.html` for the frame of the app (the tab bar, Accueil,
+the coloured headers, glass, motion, the install sheet) and `docs/design/mockups.html` for
+the inside of the other screens (both explained in `docs/design/README.md`).
 
 - Bright: light background, white cards, CAPA navy `#103550` for the text. Turquoise
   `#00E6BF` main buttons with navy text, in both modes.
-- One colour per tab: Accueil **soleil** (orange), Réviser **turquoise**, Planning **azur**
-  (blue), Étudier **lavande** from Phase 5. It colours the active tab and the « ‹ » buttons.
+- One colour per tab: Accueil **soleil** (orange), Cours **lavande**, Réviser **turquoise**,
+  Planning **azur** (blue). Each has a gradient (`--grad-cours`…) for the header of the
+  tab and the small bar of its pages; classes `m-accueil`, `m-cours`, `m-reviser`,
+  `m-planning` give it to a panel.
 - Planning colours, named after Nice: **Azur** cours, **Lavande** préparation des épreuves,
   **Olivier** Ville de Nice (centre de loisirs, stage APEC), **Bougainvillier** épreuves et
   dossiers, **Galet** férié / vacances / libre, **Citron** your personal events and the
@@ -126,14 +152,51 @@ The target is `docs/design/mockups.html` (explained in `docs/design/README.md`).
 - Light or dark: the app follows the setting of the phone. All colours live in
   `css/01-tokens.css`.
 - Font: Plus Jakarta Sans. Icons are drawn in `index.html` (no icon library).
-- iPhone: the status bar is « default » (a dark clock on the light app); a launch image
-  (the welcome screen) shows while the app opens. Make them again with
-  `node scripts/make_launch_images.cjs` if the welcome screen or `img/baie-aube.svg`
-  changes.
+- iPhone: the status bar is « black-translucent »: the app draws under the clock, which
+  is white, so **the top of every screen is coloured**: the sky on Accueil and the welcome
+  (with a soft shade), the header `.hd` of Cours, Réviser and Planning (then the small
+  `.topbar` once it has scrolled away), `.topbar.topbar--page` on every page opened from a
+  tab, the top row of the lesson. Android's status bar (`theme-color`) follows the same
+  colours (`js/core/statusbar.js`).
+- A launch image (the welcome screen, with the sky up to the very top) shows while the app
+  opens on iPhone. Make them again with `node scripts/make_launch_images.cjs` if the
+  welcome screen or `img/baie-aube.svg` changes.
+- Motion: three durations and two curves (`--t-fast`, `--t-base`, `--t-slow`,
+  `--ease-out`, `--ease-spring`). Phones set to « reduce motion » get none.
+
+### Accueil, the living home
+
+- The picture goes **inside** the page (`fetch("img/baie-<ciel>.svg")`, then inserted), so
+  its parts can move: the classes `b-cloud`, `b-boat`, `b-swell`, `b-wave`, `b-glit`,
+  `b-glow`, `b-fronds`, `b-star` come from `docs/design/baie.py`, and the rules are in
+  `css/08-accueil.css`. It only moves while Accueil is the screen shown (class `is-on`).
+  The four pictures in `img/` are copies of `docs/design/baie-*.svg`: copy them again when
+  Claude chat redraws them.
+- Opening the app: class `is-opening` for 2.2 s, once per launch.
+- « Le mot »: `content/mots.json` and `content/savais-tu.json`. With lines of the owner:
+  one mot, one fact, and so on; without: facts only. It starts at a line that depends on
+  the date and changes every 9 s. A fact opens its theme in Réviser.
+- « En ce moment »: `js/planning/today.js` decides (on now, next today, done for today,
+  no class today); the card opens the details of that half-day. Under it, at most one
+  extra line: an épreuve or a dossier within 14 days, else today's personal event.
+
+### Installing
+
+`js/screens/install.js` looks at the phone and the browser (`installContext()`): iPhone in
+Safari (three steps; « en haut » on iPad), iPhone in Chrome, Firefox or Edge (step 1
+changes), the small browser inside another app (first « Ouvre ce lien dans Safari » with
+« Copier le lien »), Android (the browser's own window when it offers one, otherwise one
+line). The pill on Accueil, Profil › « Installer l'appli » and the last step of the welcome
+show the same help. Once installed, none of it is shown.
 
 ---
 
 ## Getting around (and the addresses)
+
+Four tabs in a floating glass bar: Accueil, Cours, Réviser, Planning. Changing tab, the
+new one comes from the side of its place in the bar, a « lens » slides under its icon, and
+the first blocks of its first screen come up one after the other (class `rise`, `--i`).
+Nothing scrolls except the inside of a page, so each tab and page keeps its place.
 
 Pages opened from another one slide in from the right, with « ‹ » at the top left; a swipe
 from the left edge of the screen goes back too (on an installed iPhone app; elsewhere the
@@ -149,6 +212,9 @@ Every page and sheet has its own address (useful to test in a browser):
 | `#accueil?ciel=aube` (or `jour`, `couchant`, `nuit`) | Accueil with that sky, to check the four pictures |
 | `#accueil/profil` | Profil (old `#infos` addresses open it) |
 | `#accueil/profil/relecture` | the Rapport de relecture |
+| `#cours`, `#cours/anatomie-mouvement` | Cours (the path of chapters), a chapter (old `#etudier` addresses open Cours) |
+| `#cours/documents` | every document, by chapter |
+| `#accueil?installer` | the help to install the app |
 | `#reviser`, `#reviser/fiche-de-seance` | Réviser, a theme |
 | `#reviser?lecon=anatomie-mouvement-1` | a lesson (it continues where it was left) |
 | `#planning`, `#planning/dates-cles` | the Planning, Dates clés |
@@ -223,7 +289,8 @@ it disappears by itself, so you check the new version.
 ## The automatic checks (the green tick or the red cross)
 
 On every pull request, GitHub runs `scripts/check_content.py` (are the questions, the
-themes and the planning corrections well written?) and `scripts/check_offline_list.py`
+themes, the planning corrections, the path of Cours, the documents, the lines and the facts
+of Accueil well written?) and `scripts/check_offline_list.py`
 (does `sw.js` list every file of the app?). The result is shown on the pull request page,
 above the « Merge » button:
 
@@ -308,8 +375,8 @@ In the folder of the repository:
 python3 -m http.server 8000
 ```
 Then open `http://localhost:8000` in Chrome or Safari. To see it like on a phone: right
-click › Inspect › the phone icon. The mockups are at
-`http://localhost:8000/docs/design/mockups.html`.
+click › Inspect › the phone icon. The designs are at
+`http://localhost:8000/docs/design/prototype.html` and `…/docs/design/mockups.html`.
 
 ---
 
@@ -328,9 +395,13 @@ python3 tests/test_offline.py
 The last three need Python Playwright (`pip install playwright`, then
 `python3 -m playwright install chromium`, or set `CHROME_PATH` to a Chromium).
 `test_app.py` goes through the welcome, Accueil at different moments of the day and its
-four skies, the pages and the « back » gestures, the Planning and Profil, and saves
-screenshots at 390 × 844 in light and dark mode (their folder is printed at the end), to
-compare with the mockups. `test_reviser.py` plays lessons like a person would.
+four skies (with and without lines of the owner), the four tabs and how they move, the
+pages and the « back » gestures, Cours (the path, a filter, a chapter with and without
+documents, and a made-up list of documents to see the search), the Planning, Profil, and
+the install help as an iPhone in Safari, in another browser, inside Instagram, and as an
+Android phone. It saves screenshots at 390 × 844 in light and dark mode (their folder is
+printed at the end), to compare with the prototype and the mockups. It takes a few
+minutes, because it waits for « le mot » to change. `test_reviser.py` plays lessons like a person would.
 `test_offline.py` checks the offline mode and that new content is picked up without any
 code change. `test_planning_fixes.py` checks the planning corrections.
 

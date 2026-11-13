@@ -9,8 +9,8 @@ Made by a trainee, for the class. It is not made or checked by CAPA Sports.
 
 | Tab | What you find there | Status |
 |---|---|---|
-| Accueil | The home: the Baie des Anges, what's on now, and shortcuts | Being rebuilt (Phase 4) |
-| Cours | The course documents, by theme | Phase 4 |
+| Accueil | The home: the Baie des Anges full screen and moving, one short line, and what's on now | Done (Phase 4) |
+| Cours | The programme as a path of chapters, each with its quiz and its documents | Done (Phase 4); the study pages come in Phase 6 |
 | Réviser | Five-minute quizzes on the course, with XP and a daily série | Done |
 | Planning | The timetable by week, month and year, and the key dates | Done |
 
