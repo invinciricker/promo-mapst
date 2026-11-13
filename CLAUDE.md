@@ -62,7 +62,7 @@ Claude chat writes the content in these exact formats, so keep them. If you need
 3. Nouveau look: Accueil, the welcome, the new design. Done.
 4. Une vraie appli: four tabs with Cours (the path of chapters), the full-screen living home, glass, motion, installing. Done.
 5. Les leçons: lessons as decks of cards inside Cours, the whole programme shown, content added without code. **Now: docs/phases/phase-5.md.**
-6. Comptes, classement et questions de la promo. Draft: docs/phases/phase-6.md.
+6. Comptes, classement et questions de la promo. Next, after Phase 5: docs/phases/phase-6.md (ready). The database rules and the owner's Firebase steps are in docs/firebase/ (Claude chat's).
 
 The original briefs of phases 1 to 3 are in docs/phases/phases-1-3.md, for the record.
 
