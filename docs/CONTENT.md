@@ -85,8 +85,12 @@ Empty on 12 Nov 2026: the owner sends his lines (motivation, things heard in cla
 |---|---|---|---|---|
 | fiche-de-seance-les-bases | La fiche de séance | « Lsn 1, Fiche de séance » (transcript of the class of 15 Sept; a rough transcript, so only what is said clearly was kept) | 13 Nov 2026 | brouillon |
 | filieres-les-trois | Filières énergétiques | « les filières énergétiques » (slides) | 13 Nov 2026 | brouillon |
+| anatomie-os-et-articulations, anatomie-muscles-et-contractions | Anatomie du mouvement | « Anatomie du mouvement » (slides): chapters 1 to 3, then 4 and 6. Chapter 5 (biomécanique) and the muscle-by-muscle slides are not covered yet | 13 Nov 2026 | brouillon |
+| role-educateur-cinq-missions | Rôle de l'éducateur | « Les rôles de l'éducateur sportif » (fiche descriptive d'activités). The lines about navigation were left out | 13 Nov 2026 | brouillon |
+| role-educateur-obligations | Rôle de l'éducateur | « Obligations des éducateurs et établissements sportifs ». Left out: the licenciement part and the list of documents to ask from participants | 13 Nov 2026 | brouillon |
+| entretien-corporel-les-bases | Entretien corporel | « Les activités d'entretien corporel ». The four families of activities (cardio, renforcement, douceur, dehors) are Claude chat's grouping, not the document's | 13 Nov 2026 | brouillon |
+| publics-les-besoins, publics-selon-l-age | Publics | « Les différents publics et leurs caractéristiques » (slides) | 13 Nov 2026 | brouillon |
 
-Next, one content pull request each, no code: anatomie (2 lessons), entretien corporel, rôle et obligations, publics, then the second lessons of filières (entraîner chaque filière) and fiche de séance (the cycle). The 13 chapters without a source yet wait for the owner's files.
+Left out on purpose, because the source looks wrong or unproven (to check with the trainer before they go in): in « entretien corporel », « la sédentarité est la première cause de mortalité », « le HIIT brûle neuf fois plus de masse grasse », « aucune contre-indication » for the gym douce, and the description of Step (it is a copy of the Renfo-baguettes one); in « obligations », the SDJES is called « direction départementale de la cohésion sociale », its former name.
 
-The path now has 19 chapters, from the topics of the planning. Their blocs are Claude chat's reading of the livret d'accueil, to be confirmed.
-
+Next, as content pull requests, no code: anatomie 3 (biomécanique: centre de gravité, leviers, puissance), the second lessons of filières (entraîner chaque filière) and fiche de séance (the cycle). The 13 chapters without a source yet wait for the owner's files.

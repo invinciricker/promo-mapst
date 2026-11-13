@@ -11,11 +11,74 @@
    "added": "2026-11-13"
   },
   {
+   "id": "anatomie-os-et-articulations",
+   "chapitre": "anatomie-mouvement",
+   "title": "Os et articulations",
+   "minutes": 6,
+   "source": "L'anatomie du mouvement (diaporama CAPA)",
+   "status": "brouillon",
+   "added": "2026-11-13"
+  },
+  {
+   "id": "anatomie-muscles-et-contractions",
+   "chapitre": "anatomie-mouvement",
+   "title": "Muscles et contractions",
+   "minutes": 6,
+   "source": "L'anatomie du mouvement (diaporama CAPA)",
+   "status": "brouillon",
+   "added": "2026-11-13"
+  },
+  {
    "id": "filieres-les-trois",
    "chapitre": "filieres-energetiques",
    "title": "Les trois filières en cinq minutes",
    "minutes": 5,
    "source": "Les filières énergétiques (diaporama CAPA)",
+   "status": "brouillon",
+   "added": "2026-11-13"
+  },
+  {
+   "id": "role-educateur-cinq-missions",
+   "chapitre": "role-educateur",
+   "title": "Les cinq missions de l'éducateur",
+   "minutes": 4,
+   "source": "Les rôles de l'éducateur sportif (fiche descriptive d'activités)",
+   "status": "brouillon",
+   "added": "2026-11-13"
+  },
+  {
+   "id": "role-educateur-obligations",
+   "chapitre": "role-educateur",
+   "title": "Tes obligations : diplôme, déclaration, carte pro",
+   "minutes": 6,
+   "source": "Obligations des éducateurs et établissements sportifs (support de cours)",
+   "status": "brouillon",
+   "added": "2026-11-13"
+  },
+  {
+   "id": "entretien-corporel-les-bases",
+   "chapitre": "entretien-corporel",
+   "title": "L'entretien corporel, c'est quoi ?",
+   "minutes": 6,
+   "source": "Les activités d'entretien corporel (support de cours CAPA)",
+   "status": "brouillon",
+   "added": "2026-11-13"
+  },
+  {
+   "id": "publics-les-besoins",
+   "chapitre": "publics",
+   "title": "Les besoins du public et Maslow",
+   "minutes": 6,
+   "source": "Les caractéristiques des publics et les besoins fondamentaux (diaporama CAPA)",
+   "status": "brouillon",
+   "added": "2026-11-13"
+  },
+  {
+   "id": "publics-selon-l-age",
+   "chapitre": "publics",
+   "title": "Adapter selon l'âge",
+   "minutes": 6,
+   "source": "Les caractéristiques des publics et les besoins fondamentaux (diaporama CAPA)",
    "status": "brouillon",
    "added": "2026-11-13"
   }
