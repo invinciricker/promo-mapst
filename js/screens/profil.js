@@ -23,7 +23,7 @@ import { skyAt } from "../core/sun.js";
 import { countEvents } from "../planning/personal.js";
 import { hasProgress, resetProgress } from "../reviser/progress.js";
 import { isRelectureOn, setRelectureOn, relectureSummary } from "../reviser/relecture.js";
-import { openInstallSheet } from "./install.js";
+import { requestInstall } from "./install.js";
 import { showWelcome } from "./welcome.js";
 
 /** « 1er octobre 2026 » */
@@ -50,8 +50,8 @@ export function mountProfil(el) {
       ? `Version du ${shortFR(source.planningDate)}${source.corrections ? `, corrigée le ${shortFR(source.corrections)}` : ""}`
       : "Le planning n’a pas pu se charger";
     setHTML(el, `
-      <div class="page__body profil">
-        ${navbarHTML("Accueil", "Profil")}
+      ${navbarHTML("Accueil", "Profil")}
+        <div class="page__body profil">
         <div class="me-big">
           <div class="me-big__avatar me-big__avatar--${sky}"><img src="img/baie-${sky}.svg" alt="">${letter ? `<b>${esc(letter)}</b>` : `<b>${icon("person")}</b>`}</div>
           <h1>${esc(name || "Ton profil")}</h1>
@@ -106,7 +106,7 @@ export function mountProfil(el) {
     const t = event.target;
     if (t.closest("[data-name]")) openNameSheet();
     else if (t.closest("[data-report]")) push("accueil/profil/relecture");
-    else if (t.closest("[data-install]")) openInstallSheet();
+    else if (t.closest("[data-install]")) requestInstall();
     else if (t.closest("[data-about]")) push("accueil/profil/planning");
     else if (t.closest("[data-stored]")) push("accueil/profil/donnees");
     else if (t.closest("[data-welcome]")) showWelcome({ onDone: () => refreshPages() });
@@ -155,7 +155,7 @@ export function mountAboutPlanning(el) {
   function draw() {
     const model = data.model;
     if (!model) {
-      setHTML(el, `<div class="page__body">${navbarHTML("Profil")}
+      setHTML(el, `${navbarHTML("Profil")}<div class="page__body">
           <div class="card empty">${icon("alert")}<b>Le planning n’a pas pu se charger.</b></div></div>`);
       return;
     }
@@ -166,8 +166,8 @@ export function mountAboutPlanning(el) {
         <span class="tile-icon">${icon("info", "icon--s")}</span>
         <span class="row__main"><span class="row__title">${esc(c.title)}</span><span class="row__sub">${esc(c.text)}</span></span></div>`).join("");
     setHTML(el, `
-      <div class="page__body">
-        ${navbarHTML("Profil", "À propos du planning")}
+      ${navbarHTML("Profil", "À propos du planning")}
+        <div class="page__body">
         <h1 class="page-title page-title--pushed">À propos du planning</h1>
         <div class="list">
           <div class="row tone-azur"><span class="tile-icon">${icon("cal", "icon--s")}</span>
@@ -204,8 +204,8 @@ export function mountStoredData(el) {
       ["download", "Une copie de l’appli", "Avec le planning et les questions, pour qu’elle marche sans internet"],
     ];
     setHTML(el, `
-      <div class="page__body">
-        ${navbarHTML("Profil", "Ce que l’appli garde")}
+      ${navbarHTML("Profil", "Ce que l’appli garde")}
+        <div class="page__body">
         <h1 class="page-title page-title--pushed">Ce que l’appli garde</h1>
         <p class="muted stored__lead">Uniquement sur ce téléphone, dans l’appli :</p>
         <div class="list">${items.map(([name2, title, text]) => `<div class="row row--top tone-galet">

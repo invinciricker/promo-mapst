@@ -4,7 +4,7 @@
    The sounds are made by the phone itself (Web Audio), so there is no sound file to
    download. On iPhone they follow the silent switch (when the phone allows it). They can
    be switched off in Réviser (button with the speaker); the choice is saved on the phone.
-   Vibrations only exist on Android phones.
+   Vibrations only exist on Android phones, and stop with the sounds.
    ===================================================================================== */
 
 import { load, save } from "../core/storage.js";
@@ -57,7 +57,7 @@ export function playRight() {
     note(ctx, 880, 0, 0.16);        // A5
     note(ctx, 1318.5, 0.09, 0.26);  // E6
   }
-  vibrate(12);
+  vibrate(10);
 }
 
 /** Wrong answer: two low notes going down. */
@@ -67,7 +67,7 @@ export function playWrong() {
     note(ctx, 311, 0, 0.18, "triangle", 0.09);
     note(ctx, 233, 0.12, 0.3, "triangle", 0.09);
   }
-  vibrate([30, 40, 30]);
+  vibrate([20, 40, 20]);
 }
 
 /** A pair matched in « Associer »: one short note. */

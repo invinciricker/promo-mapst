@@ -35,7 +35,7 @@ REAL = json.loads((REPO / "content/questions.json").read_text(encoding="utf-8"))
 BY_ID = {q["id"]: q for q in REAL}
 NBSP = " "
 MONTHS_SHORT = ["janv.", "févr.", "mars", "avr.", "mai", "juin", "juil.", "août", "sept.", "oct.", "nov.", "déc."]
-VISIBLE = ".panel:not([hidden]) .page:not([hidden])"     # the page shown now
+VISIBLE = ".panel.is-on .page:not([hidden])"     # the page shown now
 
 results = []
 errors = []
@@ -173,7 +173,7 @@ try:
         def open_reviser(page, hash_="#reviser"):
             page.goto(BASE + hash_)
             page.reload()
-            page.wait_for_selector(f"{VISIBLE} .rv-next" if hash_ == "#reviser" else f"{VISIBLE} .theme-head")
+            page.wait_for_selector(f"{VISIBLE} .gcard" if hash_ == "#reviser" else f"{VISIBLE} .theme-head")
             page.wait_for_timeout(450)
 
         def start(page, selector):
@@ -188,16 +188,22 @@ try:
         ctx, page = phone("today")
         open_reviser(page)
         page.screenshot(path=SHOTS / "01-home.png")
-        tiles = page.locator(f"{VISIBLE} .rv-tile")
+        tiles = page.locator(f"{VISIBLE} .tile")
         check("the 6 themes have lessons (brouillon questions are shown to everyone)",
-              tiles.count() == 6 and "Questions en préparation" not in page.locator(f"{VISIBLE} .rv-grid").inner_text())
-        check("« Continuer » proposes lesson 1 of the first theme", "Os et articulations" in page.locator(f"{VISIBLE} .rv-next").inner_text()
-              and "Nouvelle leçon, 10 questions" in norm(page.locator(f"{VISIBLE} .rv-next").inner_text()))
+              tiles.count() == 6 and "Questions en préparation" not in page.locator(f"{VISIBLE} .grid").inner_text())
+        card = norm(page.locator(f"{VISIBLE} .gcard").inner_text())
+        check("the glass card proposes lesson 1 of the first theme, « Commencer »", "Os et articulations" in card and "Commencer" in card
+              and "0/10" in page.locator(f"{VISIBLE} .gcard .ring").text_content())
+        check("the header: série and XP as glass chips", page.locator(f"{VISIBLE} .hd .gchip").count() == 2
+              and "0 XP" in page.locator(f"{VISIBLE} .hd").inner_text())
+        check("« Mes erreurs » is not shown when there are none", page.locator(f"{VISIBLE} .rv-next").count() == 0
+              and "Mes erreurs" not in page.locator(f"{VISIBLE}").inner_text())
+        check("the theme tiles are washed with their colour, with a big faint icon", page.locator(f"{VISIBLE} .tile .tile__ghost").count() == 6)
         check("no Relecture card for the class", page.locator(f"{VISIBLE} .rv-relecture").count() == 0)
         check("theme tiles in the colours of the mockups (1st bougainvillier, 2nd soleil)",
               "tone-bougainvillier" in tiles.nth(0).get_attribute("class") and "tone-soleil" in tiles.nth(1).get_attribute("class"))
 
-        page.locator(f"{VISIBLE} .rv-tile[data-theme=anatomie-mouvement]").click()
+        page.locator(f"{VISIBLE} .tile[data-theme=anatomie-mouvement]").click()
         page.wait_for_timeout(700)
         check("a theme is a page with « ‹ Réviser » (#reviser/anatomie-mouvement)",
               page.url.endswith("#reviser/anatomie-mouvement") and norm(page.locator(f"{VISIBLE} .back").inner_text()) == "Réviser")
@@ -277,7 +283,7 @@ try:
         page.screenshot(path=SHOTS / "07-review-done.png")
         page.locator(".player__actions [data-close]").click()
         page.wait_for_timeout(700)
-        check("nothing left to review today", "Rien à revoir aujourd’hui" in norm(page.locator(f"{VISIBLE} .rv-next").inner_text()))
+        check("nothing left to review today: the row is gone", page.locator(f"{VISIBLE} .rv-next").count() == 0)
 
         # Lose all the lives (filières), restart, then the hint.
         open_reviser(page, "#reviser/filieres-energetiques")
@@ -314,15 +320,15 @@ try:
         page.wait_for_timeout(800)
         check("leaving a lesson in the middle closes it at once", page.locator(".player").count() == 0 and page.locator(".sheet-layer").count() == 0)
         open_reviser(page)
-        home = norm(page.locator(f"{VISIBLE} .rv-next").inner_text())
-        check("the home proposes to continue it, « Continuer, N sur 10 »", f"Continuer, {right_before} sur 10" in home and "L’ATP et les trois filières" in home)
+        home = norm(page.locator(f"{VISIBLE} .gcard").inner_text())
+        check("the home proposes to continue it, « Continuer la leçon » with N/10 in the ring", "Continuer la leçon" in home
+              and "L’ATP et les trois filières" in home and f"{right_before}/10" in page.locator(f"{VISIBLE} .gcard .ring").text_content())
         page.screenshot(path=SHOTS / "10-home-continue.png")
-        start(page, f"{VISIBLE} .rv-next [data-start]")
+        start(page, f"{VISIBLE} .gcard[data-start]")
         width = page.evaluate("parseFloat(document.querySelector('.player__bar i').style.width)")
         check("« Continuer » starts again where it stopped (bar and lives)", abs(width - right_before * 10) < 0.6
               and page.locator(".player__lives b").inner_text() == lives_before)
-        page.goto(page.url)
-        page.reload()
+        page.reload()                                   # (a goto in the same instant would race with it)
         page.wait_for_selector(".player.is-open")
         page.wait_for_timeout(500)
         check("opened on the lesson's address (reload): the lesson continues", "?lecon=filieres-energetiques-1" in page.url
@@ -417,11 +423,11 @@ try:
         check("lesson 2 stays open (lesson 1 was finished)", "is-locked" not in classes[1])
         open_reviser(page)
         left = len([i for i in due[1:] if i not in small])
-        row = norm(page.locator(f"{VISIBLE} .rv-next").inner_text())
+        row = norm(" ".join(page.locator(f"{VISIBLE} .rv-next").all_inner_texts()))
         check("a removed question leaves « Mes erreurs »",
-              (f"{left} question{'s' if left > 1 else ''} à revoir" in row) if left else "Rien à revoir aujourd’hui" in row)
+              (f"{left} question{'s' if left > 1 else ''} à revoir" in row) if left else row == "")
         check("a lesson with fewer than 5 questions is hidden: « Questions en préparation »",
-              "Questions en préparation" in norm(page.locator(f"{VISIBLE} .rv-tile[data-theme=publics]").inner_text()))
+              "Questions en préparation" in norm(page.locator(f"{VISIBLE} .tile[data-theme=publics]").inner_text()))
         open_reviser(page, "#reviser/publics")
         check("… and its theme page says so", "Questions en préparation" in page.locator(f"{VISIBLE} .rv-soon").inner_text())
         ctx.close()
@@ -578,7 +584,7 @@ try:
         ctx, page = phone("dark", scheme="dark")
         open_reviser(page)
         page.screenshot(path=SHOTS / "22-home-dark.png")
-        start(page, f"{VISIBLE} .rv-next [data-start]")
+        start(page, f"{VISIBLE} .gcard[data-start]")
         answer(page, right=False)
         page.wait_for_timeout(500)
         page.screenshot(path=SHOTS / "23-wrong-dark.png")

@@ -1,0 +1,120 @@
+/* =====================================================================================
+   08-accueil.css: Accueil (docs/design/prototype.html, block 5, copied as it is).
+   The bay fills the screen; everything else is glass floating on it.
+
+     .home            the page (it never scrolls)
+     .home__sky       the picture, put inside the page by js/screens/accueil.js
+     .home__shade     a soft shade at the top, for the white clock of the iPhone
+     .home__top       « Bonjour Sam », the date, « Installer l'appli », the way to Profil
+     .home__dock      just above the tab bar: « le mot » (.mot) and « En ce moment » (.now)
+     .glass           a translucent surface that blurs what is behind it
+     .b-…             the moving parts of the picture (the classes come from
+                      docs/design/baie.py)
+   Text on the sky is navy at aube and jour, white at couchant and nuit, whatever the
+   mode of the phone: it sits on the picture, not on the page.
+   ===================================================================================== */
+
+.home { overflow: hidden; color: var(--on-sky); --on-sky: #103550; --on-sky-2: #24506F; }
+/* The picture: anchored at the bottom, 23 % taller than the screen, so the horizon sits above the cards. */
+.home__sky { position: absolute; inset: 0; overflow: hidden; background: #BFE1F7; }
+.home__sky svg { position: absolute; left: 0; bottom: 0; width: 100%; height: 123%; display: block; }
+@media (max-height: 720px) { .home__sky svg { height: 140%; } }   /* small phones: lift the horizon above the cards */
+.home__sky .old { transition: opacity 900ms ease; }        /* cross-fade when the sky changes */
+/* A soft shade at the top so the white clock of the iPhone stays readable on a pale sky. */
+.home__shade { position: absolute; inset: 0 0 auto 0; height: 150px; pointer-events: none;
+               background: linear-gradient(rgba(16, 53, 80, .34), rgba(16, 53, 80, 0)); }
+.home[data-ciel="couchant"], .home[data-ciel="nuit"] { --on-sky: #FFFFFF; --on-sky-2: rgba(255, 255, 255, .86); }
+.home[data-ciel="couchant"] .home__shade { height: 260px; background: linear-gradient(rgba(34, 22, 70, .5), rgba(34, 22, 70, 0)); }
+.home[data-ciel="nuit"] .home__shade { background: none; }
+/* The sky colour behind the picture while it loads. */
+.home[data-ciel="aube"] .home__sky { background: #C9D3EA; }
+.home[data-ciel="couchant"] .home__sky { background: #7A5A9A; }
+.home[data-ciel="nuit"] .home__sky { background: #0A1C30; }
+/* Glass is light whatever the mode of the phone (it floats on the picture), and dark at night. */
+.home { --glass: rgba(255, 255, 255, .62); --glass-line: rgba(255, 255, 255, .72); --on-glass: #103550; --on-glass-2: #3D566E; --glass-shadow: 0 12px 34px -14px rgba(16, 53, 80, .42); }
+.home[data-ciel="nuit"] { --glass: rgba(9, 26, 44, .52); --glass-line: rgba(255, 255, 255, .14); --on-glass: #FFFFFF; --on-glass-2: rgba(255, 255, 255, .78); }
+
+.home__top { position: absolute; left: 22px; right: 18px; top: calc(var(--safe-top) + 18px); display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
+.home__who { min-width: 0; }
+.home__hello { font: 800 34px/1.08 var(--font); letter-spacing: -.035em; margin: 0; overflow-wrap: anywhere; }
+.home__hello span { display: inline-block; }
+.home__date { font: 650 15px/1.3 var(--font); color: var(--on-sky-2); margin: 6px 0 0; }
+.home__me { width: 40px; height: 40px; flex: none; border-radius: 50%; display: grid; place-items: center; font: 800 16px/1 var(--font); color: var(--on-glass); }
+/* « Le mot »: one short line above the card (a sentence the owner added, or a course fact).
+   Barely-there glass, so it never fights the picture. Its words arrive one by one. */
+.mot { margin: 0; padding: 12px 15px 13px; border-radius: 20px; font: 600 14.5px/1.42 var(--font); color: var(--on-glass); min-height: 74px;
+       background: color-mix(in srgb, var(--glass) 42%, transparent); -webkit-backdrop-filter: blur(10px) saturate(150%); backdrop-filter: blur(10px) saturate(150%);
+       box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--glass-line) 55%, transparent); transition: opacity 400ms; }
+.mot small { display: block; font: 700 11.5px/1.2 var(--font); color: var(--on-glass-2); margin-bottom: 4px; }
+.mot .w { display: inline-block; opacity: 0; transform: translateY(8px); filter: blur(4px); animation: word 520ms var(--ease-out) forwards; animation-delay: calc(var(--n) * 38ms); }
+.mot.is-out { opacity: 0; }
+@keyframes word { to { opacity: 1; transform: none; filter: none; } }
+
+.glass { background: var(--glass); -webkit-backdrop-filter: var(--glass-blur); backdrop-filter: var(--glass-blur);
+         box-shadow: var(--glass-shadow), inset 0 0 0 1px var(--glass-line); color: var(--on-glass); }
+/* The dock: the word of the moment, then what's on now. Nothing else. It sits just above the tab bar. */
+.home__dock { position: absolute; left: var(--gutter); right: var(--gutter); bottom: calc(var(--tabbar-space) - 2px); display: grid; gap: 10px; }
+/* Not installed yet: a pill under the date. Installed: it is never shown. */
+.install { display: inline-flex; align-items: center; gap: 8px; height: 40px; margin-top: 16px; padding: 0 10px 0 13px; border-radius: 20px; font: 700 13.5px/1 var(--font); }
+.app.is-installed .install { display: none; }
+.now { display: block; width: 100%; padding: 15px 16px 14px; border-radius: 24px; }
+.now__label { display: flex; align-items: center; gap: 7px; font: 700 12.5px/1 var(--font); color: var(--on-glass-2); }
+.now__label b { margin-left: auto; font: 750 13px/1 var(--font); color: var(--on-glass); }
+/* The dot and the bar take the colour of the half-day's category (olivier by default). */
+.pulse { width: 8px; height: 8px; border-radius: 50%; background: var(--c, var(--olivier)); box-shadow: 0 0 0 0 color-mix(in srgb, var(--c, var(--olivier)) 60%, transparent); animation: pulse 2.2s infinite; }
+@keyframes pulse { 70% { box-shadow: 0 0 0 8px transparent; } 100% { box-shadow: 0 0 0 0 transparent; } }
+.now__title { font: 750 18px/1.25 var(--font); letter-spacing: -.01em; margin: 9px 0 1px; }
+.now__place { font: 500 13.5px/1.3 var(--font); color: var(--on-glass-2); }
+.now__bar { height: 5px; border-radius: 3px; background: color-mix(in srgb, var(--on-glass) 14%, transparent); margin-top: 12px; overflow: hidden; }
+.now__bar i { display: block; height: 100%; width: 24%; border-radius: 3px; background: var(--c, var(--olivier)); }
+.now__times { display: flex; justify-content: space-between; margin-top: 6px; font: 600 12px/1 var(--font); color: var(--on-glass-2); font-variant-numeric: tabular-nums; }
+/* At most one extra line: a dossier that is close, or today's personal event. */
+.now__extra { display: flex; align-items: center; gap: 7px; margin-top: 11px; padding-top: 10px; font: 650 12.5px/1.3 var(--font); color: var(--on-glass-2);
+              box-shadow: inset 0 1px 0 color-mix(in srgb, var(--on-glass) 12%, transparent); }
+.now__extra span { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.now__extra b { color: var(--on-glass); font-weight: 750; }
+
+/* The living scene (classes come from docs/design/baie.py). Only while Accueil is on screen.
+   Three speeds, as outside: the clouds drift slowly, the boat sails a little faster, the sea is the
+   fastest (and its near rows faster than its far ones). Everything loops without a jump:
+   a cloud or the boat leaves on one side and comes back on the other; a row of crests slides by
+   exactly one crest. The negative delays start each thing where it is drawn. */
+.home.is-on .b-cloud  { animation: drift 150s linear infinite; animation-delay: -75s; }
+.home.is-on .b-cloud:nth-of-type(2n) { animation-duration: 210s; animation-delay: -105s; }
+.home.is-on .b-cloud:nth-of-type(3n) { animation-duration: 120s; animation-delay: -60s; }
+.home.is-on .b-boat   { animation: sail 110s linear infinite; animation-delay: -44s; }
+.home.is-on .b-swell  { animation: swell var(--t) linear infinite; }
+.home.is-on .b-wave   { animation: wave 2.8s ease-in-out infinite alternate; }
+.home.is-on .b-glit   { animation: glit 2.2s ease-in-out infinite alternate; }
+.home.is-on .b-glit:nth-of-type(3n)   { animation-delay: -.8s; animation-duration: 1.7s; }
+.home.is-on .b-glit:nth-of-type(3n+1) { animation-delay: -1.5s; animation-duration: 2.9s; }
+.home.is-on .b-glow   { animation: glow 7s ease-in-out infinite alternate; }
+.home.is-on .b-fronds { animation: fronds 5s ease-in-out infinite alternate; }
+.home.is-on .b-star:nth-of-type(4n) { animation: glit 2.8s ease-in-out infinite alternate; }
+@keyframes drift  { from { transform: translateX(-430px); } to { transform: translateX(430px); } }
+@keyframes sail   { from { transform: translateX(-200px); } to { transform: translateX(300px); } }
+@keyframes swell  { to { transform: translateX(calc(var(--s) * -1)); } }
+@keyframes wave   { from { transform: translateX(-9px); } to { transform: translateX(9px); } }
+@keyframes glit   { from { opacity: .1; } }
+@keyframes glow   { from { transform: scale(1); opacity: .86; } to { transform: scale(1.09); opacity: 1; } }
+@keyframes fronds { from { transform: rotate(-1.6deg); } to { transform: rotate(2.2deg); } }
+
+/* Opening the app: the picture settles, the sun comes up, the words and the glass follow. Once. */
+.home.is-opening .home__sky svg { animation: sky-in 1300ms var(--ease-out) both; }
+.home.is-opening .b-sun, .home.is-opening .b-glow { animation: sun-up 1500ms var(--ease-out) both; }
+.home.is-opening .home__hello span { animation: rise 700ms var(--ease-out) both; animation-delay: calc(250ms + var(--i) * 90ms); }
+.home.is-opening .home__date, .home.is-opening .home__me, .home.is-opening .install { animation: rise 600ms var(--ease-out) 480ms both; }
+.home.is-opening .home__dock > * { animation: land 760ms var(--ease-spring) both; animation-delay: calc(520ms + var(--i) * 90ms); }
+.app.is-opening .tabbar { animation: land 760ms var(--ease-spring) 380ms both; }
+@keyframes sky-in { from { transform: scale(1.07); opacity: .4; } }
+@keyframes sun-up { from { transform: translateY(34px); } }
+@keyframes land   { from { opacity: 0; transform: translateY(34px) scale(.97); } }
+
+/* Laptop: the sky fills the content column, full height. */
+@media (min-width: 1024px) {
+  .page.home { left: calc(50% - (var(--column) + 2 * var(--gutter)) / 2); right: auto; width: calc(var(--column) + 2 * var(--gutter)); }
+  .app.is-opening .tabbar { animation: none; }
+}
+
+/* Calm phones: the words of « le mot » are simply there. */
+@media (prefers-reduced-motion: reduce) { .mot .w { opacity: 1; transform: none; filter: none; } }

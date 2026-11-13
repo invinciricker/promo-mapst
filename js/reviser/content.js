@@ -29,7 +29,7 @@ export const MIN_QUESTIONS = 5;
  * The colour of each theme follows its place in themes.json (docs/design/README.md):
  * a new theme gets the next colour and the default icon, with no change to the code.
  */
-const THEME_TONES = ["bougainvillier", "soleil", "lavande", "turquoise", "azur", "olivier"];
+export const THEME_TONES = ["bougainvillier", "soleil", "lavande", "turquoise", "azur", "olivier"];
 const THEME_ICONS = {
   "anatomie-mouvement": "figure",
   "filieres-energetiques": "battery",

@@ -1,8 +1,9 @@
 /* =====================================================================================
    reviser.js: the pages of the Réviser tab.
 
-     #reviser            the home of Réviser: série and XP, one card with « Continuer » and
-                         « Mes erreurs », then the theme tiles
+     #reviser            the home of Réviser: a coloured header with the série, the XP
+                         and the lesson to continue on a glass card; then « Mes
+                         erreurs » (only when there are some) and the theme tiles
      #reviser/<theme>    one theme: its lessons on a vertical path (they unlock in order)
 
    The lesson itself opens over the app (player.js), from here or from Accueil.
@@ -11,7 +12,7 @@
    ===================================================================================== */
 
 import { esc, icon, ring, setHTML } from "../core/dom.js";
-import { push, navbarHTML, registerModal, refreshPages } from "../core/nav.js";
+import { push, switchTab, navbarHTML, registerModal, refreshPages } from "../core/nav.js";
 import { openSheet } from "../core/sheet.js";
 import { showToast } from "../core/toast.js";
 import { FOOTER } from "../core/texts.js";
@@ -44,12 +45,11 @@ function checkedCount(questions) {
 // Pieces shared with Accueil
 // -------------------------------------------------------------------------------------
 
-/** The chips « 🔥 3 jours » and « ⚡ 120 XP » (short: « 3 » for the page head). */
-export function statsChips({ short = false, nudge = "" } = {}) {
+/** The glass chips of the header: « 3 jours » (the série) and « 120 XP ». */
+export function statsChips() {
   const s = streak();
-  const days = short ? String(s.count) : `${s.count} ${s.count > 1 ? "jours" : "jour"}`;
-  return `${s.count || short ? `<span class="chip tone-soleil" aria-label="${esc(plural(s.count, "jour", "jours"))} de série">${icon("flame", "icon--fill")}${days}</span>` : ""}
-    ${nudge ? `<span class="small muted rv-nudge">${esc(nudge)}</span>` : `<span class="chip tone-soleil">${icon("bolt", "icon--fill")}${xpTotal()} XP</span>`}`;
+  return `<span class="gchip" aria-label="${esc(plural(s.count, "jour", "jours"))} de série">${icon("flame", "icon--xs icon--fill")}${plural(s.count, "jour", "jours")}</span>
+    <span class="gchip">${icon("bolt", "icon--xs icon--fill")}${xpTotal()} XP</span>`;
 }
 
 /**
@@ -76,79 +76,67 @@ export function mountReviserHome(el) {
     const next = lessonToContinue();
     const errors = mistakes(content);
 
-    // « Continuer » (or what to say when there is nothing to continue)
-    let continueRow;
+    // The glass card of the header: the lesson to continue (or what to say without one).
+    let card;
     if (!content.total) {
-      continueRow = `<div class="row">
-          <span class="tile-icon tile-icon--m tone-azur">${icon("clock", "icon--s")}</span>
-          <div class="row__main"><div class="row__title">Questions en préparation</div>
-          <div class="row__sub">Les leçons arrivent bientôt.</div></div></div>`;
+      card = `<div class="gcard">
+          <span class="play" aria-hidden="true">${icon("clock")}</span>
+          <div class="row__main"><div class="gcard__title">Questions en préparation</div>
+          <div class="gcard__sub">Les leçons arrivent bientôt.</div></div></div>`;
     } else if (next) {
       const r = next.ring;
-      const sub = r.run ? `Continuer, ${r.answered} sur ${r.total}`
-        : r.answered ? `${plural(r.total - r.answered, "nouvelle question", "nouvelles questions")}`
-          : `Nouvelle leçon, ${plural(r.total, "question", "questions")}`;
-      continueRow = `<button type="button" class="row tone-${next.theme.tone}" data-start="${esc(next.lesson.key)}">
-          ${ring(r.total ? r.answered / r.total : 0, { size: 40 })}
-          <div class="row__main"><div class="row__title">${esc(lessonName(next.lesson))}</div>
-          <div class="row__sub">${esc(sub)}</div></div>
-          <span class="play" aria-hidden="true">${icon("play", "icon--s")}</span>
-          <span class="visually-hidden">${esc(r.verb)}</span>
+      card = `<button type="button" class="gcard tap" data-start="${esc(next.lesson.key)}">
+          ${ring(r.total ? r.answered / r.total : 0, { size: 46, text: `${r.answered}/${r.total}`, track: "rgba(255,255,255,.28)", label: `${r.answered} questions sur ${r.total}` })}
+          <div class="row__main"><div class="gcard__title">${esc(lessonName(next.lesson))}</div>
+          <div class="gcard__sub">${r.verb === "Commencer" ? "Commencer" : "Continuer la leçon"}</div></div>
+          <span class="play" aria-hidden="true">${icon("play")}</span>
         </button>`;
     } else {
-      continueRow = `<div class="row">
-          <span class="tile-icon tile-icon--m tone-turquoise">${icon("check", "icon--s")}</span>
-          <div class="row__main"><div class="row__title">Tout est à jour</div>
-          <div class="row__sub">Toutes les leçons sont faites. Refais-en une pour gagner des XP.</div></div></div>`;
+      card = `<div class="gcard">
+          <div class="row__main"><div class="gcard__title">Tout est à jour</div>
+          <div class="gcard__sub">Toutes les leçons sont faites. Refais-en une pour gagner des XP.</div></div>
+          <span class="play" aria-hidden="true">${icon("check")}</span></div>`;
     }
 
-    // « Mes erreurs »
-    let errorsRow;
-    if (errors.due.length) {
-      errorsRow = `<div class="row tone-bougainvillier">
+    // « Mes erreurs »: only when there are some to review today.
+    const errorsRow = errors.due.length ? `<div class="list rv-next rise" style="--i:0">
+        <button type="button" class="row tap tone-bougainvillier" data-review>
           <span class="tile-icon tile-icon--m">${icon("repeat", "icon--s")}</span>
           <div class="row__main"><div class="row__title">Mes erreurs</div>
           <div class="row__sub">${plural(errors.due.length, "question à revoir", "questions à revoir")}</div></div>
-          <button type="button" class="btn btn--small btn--soft" data-review>Revoir</button></div>`;
-    } else {
-      const wait = errors.nextDue ? daysUntil(errors.nextDue) : 1;
-      errorsRow = `<div class="row tone-bougainvillier">
-          <span class="tile-icon tile-icon--m">${icon("repeat", "icon--s")}</span>
-          <div class="row__main"><div class="row__title">Mes erreurs</div>
-          <div class="row__sub">${errors.all
-            ? `Rien à revoir aujourd’hui. ${plural(errors.all, "question revient", "questions reviennent")} ${wait <= 1 ? "demain" : `dans ${wait} jours`}.`
-            : "Aucune erreur pour l’instant. Les questions ratées viendront ici."}</div></div></div>`;
-    }
+          ${icon("right", "chev")}</button></div>` : "";
 
-    // The theme tiles
-    const tiles = content.themes.map((theme) => {
+    // The theme tiles: a wash of the theme colour, a big faint icon in the corner.
+    const tiles = content.themes.map((theme, i) => {
       const p = themeProgress(theme);
       let foot;
       if (!p.total) foot = `<small>Questions en préparation</small>`;
-      else if (p.done === p.total) foot = `<small class="is-done">${icon("check", "icon--xs")}Terminé</small>`;
+      else if (p.done === p.total) foot = `<small class="is-done">Terminé</small>`;
       else if (p.started) {
         const lesson = currentLesson(theme, content.relecture) || theme.lessons[0];
         foot = `<small>Leçon ${lesson.number} sur ${p.total}</small>`;
       } else foot = `<small>${plural(p.total, "leçon", "leçons")}</small>`;
       const percent = Math.round((p.done === p.total && p.total ? 1 : p.share) * 100);
-      return `<button type="button" class="rv-tile tone-${theme.tone}" data-theme="${esc(theme.id)}">
+      return `<button type="button" class="tile tap tone-${theme.tone}${i < 4 ? " rise" : ""}" style="--i:${i + 2}" data-theme="${esc(theme.id)}">
+          ${icon(theme.icon, "tile__ghost")}
           <span class="tile-icon">${icon(theme.icon, "icon--s")}</span>
-          <span class="rv-tile__title">${esc(theme.title)}</span>
-          <span class="rv-tile__foot"><span class="bar">${percent ? `<i style="width:${percent}%"></i>` : ""}</span>${foot}</span>
+          <span class="tile__title">${esc(theme.title)}</span>
+          <span class="tile__foot"><span class="bar">${percent ? `<i style="width:${percent}%"></i>` : ""}</span>${foot}</span>
         </button>`;
     }).join("");
 
     setHTML(el, `
-      <div class="page__body">
-        <div class="page-head">
-          <h1 class="page-title">Réviser</h1>
-          <span class="page-head__end">${statsChips({ short: true })}</span>
-        </div>
+      <div class="topbar">Réviser</div>
+      <header class="hd">
+        <div class="hd__row"><h1 class="hd__title">Réviser</h1><span class="hd__end">${statsChips()}</span></div>
+        ${card}
+      </header>
+      <div class="body">
         ${relectureCard(content)}
-        ${content.hasExamples ? `<div class="note">${icon("info")}<p><b>Questions d’exemple.</b> Elles portent le badge « Exemple ».</p></div>` : ""}
-        <div class="list rv-next">${continueRow}${errorsRow}</div>
-        <h2 class="section-title">Thèmes</h2>
-        <div class="rv-grid">${tiles}</div>
+        ${content.hasExamples ? `<div class="note rv-note">${icon("info")}<p><b>Questions d’exemple.</b> Elles portent le badge « Exemple ».</p></div>` : ""}
+        ${errorsRow}
+        <h2 class="section-title rise" style="--i:1">Thèmes</h2>
+        <div class="grid">${tiles}</div>
         <div class="rv-tools">
           <button type="button" class="btn btn--small btn--plain" data-how>${icon("info", "icon--s")}Comment ça marche</button>
           <button type="button" class="btn btn--small btn--plain" data-sound aria-pressed="${soundOn()}">${icon(soundOn() ? "volume" : "mute", "icon--s")}Sons ${soundOn() ? "activés" : "coupés"}</button>
@@ -205,11 +193,12 @@ export function mountTheme(el, themeId) {
     const content = data.reviser;
     const theme = content.theme(themeId);
     if (!theme) {
-      setHTML(el, `<div class="page__body">${navbarHTML("Réviser")}
+      setHTML(el, `${navbarHTML("Réviser")}<div class="page__body">
           <div class="card empty">${icon("clock")}<b>Ce thème n’existe plus</b></div></div>`);
       return;
     }
     const relecture = content.relecture;
+    const chapter = data.cours ? data.cours.chapterOfTheme(theme.id) : null;   // its chapter in Cours
     const current = currentLesson(theme, relecture);
     const done = theme.lessons.filter((l) => lessonInfo(l).complete);
     const freshKey = justDone && current && done.some((l) => l.key === justDone) ? current.key : null;
@@ -253,8 +242,8 @@ export function mountTheme(el, themeId) {
     }).join("");
 
     setHTML(el, `
-      <div class="page__body">
-        ${navbarHTML("Réviser", theme.title)}
+      ${navbarHTML("Réviser", theme.title)}
+        <div class="page__body">
         <div class="theme-head tone-${theme.tone}">
           <span class="tile-icon tile-icon--l">${icon(theme.icon)}</span>
           <div><h1 class="page-title theme-head__title">${esc(theme.title)}</h1>
@@ -268,6 +257,11 @@ export function mountTheme(el, themeId) {
              <p class="small faint path__more">D’autres leçons arrivent au fil des cours.</p>`
           : `<div class="card empty rv-soon">${icon("clock")}<b>Questions en préparation</b>
              <p>Les leçons de ce thème arrivent au fil des cours. Reviens bientôt !</p></div>`}
+        ${chapter ? `<div class="list theme-docs"><button type="button" class="row tap tone-lavande" data-chapter="${esc(chapter.id)}">
+            <span class="tile-icon">${icon("book", "icon--s")}</span>
+            <span class="row__main"><span class="row__title">Documents du chapitre</span>
+              <span class="row__sub">${chapter.documents.length ? plural(chapter.documents.length, "document", "documents") : "Dans l’onglet Cours"}</span></span>
+            ${icon("right", "chev")}</button></div>` : ""}
       </div>`);
     const fresh = el.querySelector(".lesson.is-new");
     if (fresh) fresh.scrollIntoView({ block: "center", behavior: "smooth" });
@@ -276,7 +270,9 @@ export function mountTheme(el, themeId) {
 
   el.addEventListener("click", (event) => {
     const start = event.target.closest("[data-start]");
+    const chapter = event.target.closest("[data-chapter]");
     if (start) startLesson(data.reviser.lesson(start.dataset.start));
+    else if (chapter) switchTab("cours", { push: `cours/${chapter.dataset.chapter}` });
     else if (event.target.closest("[data-report]")) push("reviser/relecture");
     else if (event.target.closest(".node--locked")) {
       const lesson = event.target.closest(".lesson");

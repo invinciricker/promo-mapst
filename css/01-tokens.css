@@ -1,8 +1,9 @@
 /* =====================================================================================
    01-tokens.css: the design choices of the app, in one place ("design tokens").
 
-   The values come from docs/design/mockups.html (Phase 3, « nouveau look »): change a
-   value here and it changes everywhere. Light mode comes first; the block
+   The values come from docs/design/mockups.html (Phase 3, « nouveau look ») and, for the
+   block « new in Phase 4 », from docs/design/prototype.html: change a value here and it
+   changes everywhere. Light mode comes first; the block
    "prefers-color-scheme: dark" below is used when the phone is in dark mode.
 
    Each colour comes in three:
@@ -51,8 +52,8 @@
 
   /* One colour per mode: the active tab, the back buttons and the links inside it. */
   --accueil: var(--soleil-ink);      --accueil-tint: var(--soleil-tint);
+  --cours: var(--lavande-ink);       --cours-tint: var(--lavande-tint);
   --reviser: var(--turquoise-ink);   --reviser-tint: var(--turquoise-tint);
-  --etudier: var(--lavande-ink);     --etudier-tint: var(--lavande-tint);   /* Phase 5 */
   --planning: var(--azur-ink);       --planning-tint: var(--azur-tint);
 
   /* ---- Type: one family, a small scale, weights 500 to 800 ------------------------ */
@@ -75,11 +76,39 @@
   --shadow: 0 1px 2px rgba(16, 53, 80, .05), 0 10px 28px -14px rgba(16, 53, 80, .28);
   --shadow-up: 0 -12px 30px -18px rgba(16, 53, 80, .35);   /* sheets and the lesson feedback */
   --gutter: 16px;                    /* space on the left and right of the screen */
-  --tabbar: 54px;                    /* height of the tab bar, without the iPhone home bar */
   --rail: 96px;                      /* width of the side rail on a laptop */
   --column: 640px;                   /* width of the content column on a laptop */
-  --ease: cubic-bezier(.2, .8, .2, 1);       /* soft, "springy" curve for most movements */
-  --ease-page: cubic-bezier(.32, .72, 0, 1); /* the iPhone curve for pages and sheets */
+  --ease: cubic-bezier(.2, .8, .2, 1);       /* the same curve as --ease-out below (older name) */
+  --ease-page: cubic-bezier(.32, .72, 0, 1); /* the iPhone curve for the pages that slide */
+
+  /* ---------- new in Phase 4 (docs/design/prototype.html, block 1) ---------- */
+  /* One gradient per tab: the header of the tab, the bar of its pages, the status bar behind the clock.
+     The top of each gradient is dark enough for the white clock of the iPhone (3:1 or more). */
+  --grad-accueil:  linear-gradient(168deg, #8A4B00 0%, #C97A00 55%, #F0A93A 100%);   /* Profil and its pages */
+  --grad-cours:    linear-gradient(168deg, #5140CC 0%, #7362EC 52%, #A898FF 100%);
+  --grad-reviser:  linear-gradient(168deg, #006553 0%, #00977C 52%, #25CDAE 100%);
+  --grad-planning: linear-gradient(168deg, #0A5489 0%, #1070B0 50%, #49A4E2 100%);
+  --top-accueil: #8A4B00; --top-cours: #5140CC; --top-reviser: #006553; --top-planning: #0A5489;   /* theme-color on Android */
+  /* Glass: translucent surfaces that blur what is behind them. */
+  --glass: rgba(255, 255, 255, .62);
+  --glass-strong: rgba(255, 255, 255, .78);
+  --glass-line: rgba(255, 255, 255, .72);
+  --glass-blur: blur(22px) saturate(170%);
+  --glass-shadow: 0 12px 34px -14px rgba(16, 53, 80, .42);
+  --on-glass: #103550; --on-glass-2: #3D566E;
+  /* Glass on a coloured header (white text). */
+  --glass-on-color: rgba(255, 255, 255, .2);
+  --glass-on-color-line: rgba(255, 255, 255, .28);
+  /* Motion: three durations, two curves. Nothing else. */
+  --t-fast: 160ms; --t-base: 260ms; --t-slow: 520ms;
+  --ease-out: cubic-bezier(.2, .8, .2, 1);          /* things arriving */
+  --ease-spring: cubic-bezier(.3, 1.45, .45, 1);    /* things that land with a little bounce */
+  /* Safe areas of the phone: the room taken by the clock (top) and the home bar (bottom). */
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --tabbar-h: 62px;
+  --tabbar-gap: max(10px, calc(var(--safe-bottom) - 8px));     /* space under the floating bar */
+  --tabbar-space: calc(var(--tabbar-h) + var(--tabbar-gap) + 14px);  /* room to leave at the end of every page */
 }
 
 /* ---- Dark mode: used automatically when the phone is in dark mode ------------------- */
@@ -104,6 +133,11 @@
     --citron: #F5CF4A;         --citron-ink: #F8DA74;         --citron-tint: rgba(245, 207, 74, .15);
     --shadow: 0 1px 2px rgba(0, 0, 0, .3), 0 12px 28px -16px rgba(0, 0, 0, .7);
     --shadow-up: 0 -12px 30px -16px rgba(0, 0, 0, .7);
+    --grad-accueil:  linear-gradient(168deg, #4F2B00 0%, #7A4A00 55%, #A86A12 100%);
+    --grad-cours:    linear-gradient(168deg, #2E2385 0%, #4A3BB8 55%, #6A5AD8 100%);
+    --grad-reviser:  linear-gradient(168deg, #00382E 0%, #005E4E 55%, #008A72 100%);
+    --grad-planning: linear-gradient(168deg, #06304F 0%, #0B4C7C 55%, #1670AE 100%);
+    --top-accueil: #4F2B00; --top-cours: #2E2385; --top-reviser: #00382E; --top-planning: #06304F;
   }
 }
 
@@ -128,8 +162,10 @@
 .cat-libre   { --c: var(--galet);          --c-ink: var(--galet-ink);          --c-tint: var(--galet-tint); }
 .cat-perso   { --c: var(--citron);         --c-ink: var(--citron-ink);         --c-tint: var(--citron-tint); }
 
-/* The colour of each mode (active tab, back buttons). */
-.mode-accueil  { --mode: var(--accueil);  --mode-tint: var(--accueil-tint); }
-.mode-reviser  { --mode: var(--reviser);  --mode-tint: var(--reviser-tint); }
-.mode-etudier  { --mode: var(--etudier);  --mode-tint: var(--etudier-tint); }
-.mode-planning { --mode: var(--planning); --mode-tint: var(--planning-tint); }
+/* The colour of each tab ("mode"): its gradient (headers, the bar of its pages), its ink
+   and tint. --mode-deep is the colour of text and icons on the white controls of a header
+   (same in light and dark). --mode is the older name of --mode-ink, still used by links. */
+.m-accueil  { --grad: var(--grad-accueil);  --mode-ink: var(--soleil-ink);    --mode-tint: var(--soleil-tint);    --mode-deep: #8A4B00; --mode: var(--soleil-ink); }
+.m-cours    { --grad: var(--grad-cours);    --mode-ink: var(--lavande-ink);   --mode-tint: var(--lavande-tint);   --mode-deep: #5140CC; --mode: var(--lavande-ink); }
+.m-reviser  { --grad: var(--grad-reviser);  --mode-ink: var(--turquoise-ink); --mode-tint: var(--turquoise-tint); --mode-deep: #006553; --mode: var(--turquoise-ink); }
+.m-planning { --grad: var(--grad-planning); --mode-ink: var(--azur-ink);      --mode-tint: var(--azur-tint);      --mode-deep: #0A5489; --mode: var(--azur-ink); }

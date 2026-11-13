@@ -14,11 +14,14 @@ SCRIPT = ROOT / "scripts" / "check_content.py"
 results = []
 
 
-def run(themes, questions):
-    """Writes a content folder, runs the checker on it, returns (exit code, output)."""
+def run(themes, questions, extra=None):
+    """Writes a content folder, runs the checker on it, returns (exit code, output).
+    extra: other files of the folder, { "parcours.json": {...}, ... }."""
     with tempfile.TemporaryDirectory() as folder:
         Path(folder, "themes.json").write_text(json.dumps(themes, ensure_ascii=False), encoding="utf-8")
         Path(folder, "questions.json").write_text(json.dumps(questions, ensure_ascii=False), encoding="utf-8")
+        for name, value in (extra or {}).items():
+            Path(folder, name).write_text(json.dumps(value, ensure_ascii=False), encoding="utf-8")
         done = subprocess.run([sys.executable, str(SCRIPT), folder], capture_output=True, text=True)
         return done.returncode, done.stdout + done.stderr
 
@@ -87,6 +90,43 @@ code, out = run(THEMES, [qcm("a-1", status="publie")])
 check("unknown status is a problem", code == 1 and "\"status\" must be" in out, out)
 code, out = run(THEMES, [qcm("a-1", status="brouillon")] * 1 + [qcm("a-2", status="verifie")])
 check("summary says hidden until a lesson has 5 questions", code == 0 and "hidden from the class until it has 5 questions" in out, out)
+
+# ---- Phase 4: the path of Cours, the documents, the lines and the facts of Accueil.
+PARCOURS = {"about": "", "blocs": [{"id": "bc3", "short": "BC3", "title": "Séances"}],
+            "chapitres": [{"id": "c1", "title": "Un chapitre", "bloc": "bc3", "when": "Septembre", "theme": "t", "resume": "Un résumé."}]}
+DOC = {"id": "d1", "chapitre": "c1", "title": "Un document", "kind": "pdf", "url": "https://drive.google.com/file/d/x", "added": "2026-11-12"}
+DOCS = {"about": "", "folder": "", "documents": [DOC, dict(DOC, id="d2", chapitre="general", note="Une note.")]}
+MOTS = {"about": "", "mots": [{"text": "Une phrase courte.", "label": "Entendu en cours", "by": "Y.S."}]}
+FACTS = [{"id": "st-1", "theme": "t", "text": "Un fait court.", "question": "a-1"}]
+GOOD = {"parcours.json": PARCOURS, "documents.json": DOCS, "mots.json": MOTS, "savais-tu.json": FACTS}
+code, out = run(THEMES, [qcm("a-1")], GOOD)
+check("Phase 4 files: a clean folder passes", code == 0 and "1 chapter(s) in 1 bloc(s)" in out and "2 document(s)" in out
+      and "1 line(s) for Accueil" in out and "1 fact(s) for Accueil" in out, out)
+
+
+def bad(name, value, expect, label):
+    code, out = run(THEMES, [qcm("a-1")], dict(GOOD, **{name: value}))
+    check(label, code == 1 and expect in out, out)
+
+
+chapter = PARCOURS["chapitres"][0]
+bad("parcours.json", dict(PARCOURS, chapitres=[chapter, chapter]), "this id is used twice", "parcours: a chapter id used twice is a problem")
+bad("parcours.json", dict(PARCOURS, chapitres=[dict(chapter, bloc="bc9")]), "unknown bloc", "parcours: an unknown bloc is a problem")
+bad("parcours.json", dict(PARCOURS, chapitres=[dict(chapter, theme="nope")]), "unknown theme", "parcours: an unknown theme is a problem")
+bad("parcours.json", dict(PARCOURS, chapitres=[{k: v for k, v in chapter.items() if k != "resume"}]), 'needs a "resume"', "parcours: a chapter without resume is a problem")
+code, out = run(THEMES, [qcm("a-1")], dict(GOOD, **{"parcours.json": dict(PARCOURS, chapitres=[{k: v for k, v in chapter.items() if k != "theme"}])}))
+check("parcours: a chapter without theme passes", code == 0, out)
+bad("documents.json", dict(DOCS, documents=[DOC, DOC]), "this id is used twice", "documents: an id used twice is a problem")
+bad("documents.json", dict(DOCS, documents=[dict(DOC, chapitre="c9")]), '"chapitre" must be', "documents: an unknown chapter is a problem")
+bad("documents.json", dict(DOCS, documents=[dict(DOC, kind="zip")]), '"kind" must be one of', "documents: an unknown kind is a problem")
+bad("documents.json", dict(DOCS, documents=[dict(DOC, url="http://exemple.fr/a.pdf")]), '"url" must start with https://', "documents: a link that is not https is a problem")
+bad("documents.json", dict(DOCS, documents=[dict(DOC, added="12/11/2026")]), '"added" must be a date', "documents: a wrong date is a problem")
+bad("documents.json", dict(DOCS, folder="drive.google.com/x"), '"folder" must be empty or', "documents: a folder that is not https is a problem")
+bad("mots.json", {"about": "", "mots": [{"text": "x" * 111}]}, "110 at most", "mots: more than 110 characters is a problem")
+bad("savais-tu.json", [dict(FACTS[0], text="x" * 101)], "100 at most", "savais-tu: more than 100 characters is a problem")
+bad("savais-tu.json", [FACTS[0], FACTS[0]], "this id is used twice", "savais-tu: an id used twice is a problem")
+bad("savais-tu.json", [dict(FACTS[0], theme="nope")], "unknown theme", "savais-tu: an unknown theme is a problem")
+bad("savais-tu.json", [dict(FACTS[0], question="zz-9")], "unknown question", "savais-tu: an unknown question is a problem")
 
 print("\n".join(f"{'PASS' if ok else 'FAIL'}  {name}" for name, ok in results))
 passed = sum(ok for _, ok in results)

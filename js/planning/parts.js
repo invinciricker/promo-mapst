@@ -4,7 +4,7 @@
    ===================================================================================== */
 
 import { esc, icon } from "../core/dom.js";
-import { at, clock, minutes, parseISO, toISO, addDays, daysBetween, countdown, capitalize,
+import { at, clock, duration, minutes, parseISO, toISO, addDays, daysBetween, countdown, capitalize,
   longDate, MONTHS_SHORT, dayMonth } from "../core/dates.js";
 import { openSheet } from "../core/sheet.js";
 import { personalOn } from "./personal.js";
@@ -52,9 +52,13 @@ export function actionAttr(item) {
 
 export const checkTag = () => `<span class="tag tone-citron">À vérifier</span>`;
 
+/** The small « Couleurs » chip (Mois and Année) that opens the colour legend. */
+export const legendButton = () => `<button type="button" class="chip chip--s pl-legend-btn tap" data-legend>${icon("swatch", "icon--xs")}Couleurs</button>`;
+
 /**
- * A half-day as a row of a list (Planning): hours on the left, the colour bar,
- * the title and where, and › when it opens.
+ * A half-day as a card (Planning): hours on the left, the colour bar, the title and
+ * where, and › when it opens. The one that is on now says « En cours », how long is
+ * left, and shows a thin progress bar.
  */
 export function slotRowHTML(model, item, now) {
   const st = itemState(item, now);
@@ -62,32 +66,26 @@ export function slotRowHTML(model, item, now) {
   const time = item.start
     ? `${clock(item.start)}${end ? `<span>${clock(end)}</span>` : ""}`
     : `Jour<span>entier</span>`;
-  const sub = item.free ? (item.note || "") : placeWho(item);
+  let sub = item.free ? (item.note || "") : placeWho(item);
+  let bar = "";
+  if (st.now && end) {
+    const start = at(item.iso, item.start);
+    const stop = at(item.iso, end);
+    const pct = Math.max(2, Math.min(100, ((now - start) / (stop - start)) * 100));
+    sub = [item.place || sub, `encore ${duration((stop - now) / 60000)}`].filter(Boolean).join(", ");
+    bar = `<span class="slot__bar"><i style="width:${pct.toFixed(1)}%"></i></span>`;
+  }
   const inner = `
-      <span class="row__time">${time}</span>
+      <span class="slot__when">${time}</span>
       <span class="slot-bar" aria-hidden="true"></span>
       <span class="row__main">
-        <span class="row__title">${esc(item.title)}${st.now ? ` <span class="tag tone-turquoise">En cours</span>` : ""}${item.check ? " " + checkTag() : ""}</span>
+        <span class="row__title">${esc(item.title)}${st.now ? ` <span class="tag">En cours</span>` : ""}${item.check ? " " + checkTag() : ""}</span>
         ${sub ? `<span class="row__sub">${esc(sub)}</span>` : ""}
+        ${bar}
       </span>`;
-  const cls = `row pl-row cat-${esc(item.cat)}${st.past ? " is-past" : ""}${item.free ? " is-free" : ""}`;
+  const cls = `slot pl-row cat-${esc(item.cat)}${st.now ? " is-now" : ""}${st.past ? " is-past" : ""}${item.free ? " is-free" : ""}`;
   if (item.free) return `<div class="${cls}">${inner}</div>`;
-  return `<button type="button" class="${cls}" ${actionAttr(item)}>${inner}${icon("right", "chev")}</button>`;
-}
-
-/**
- * A half-day as a line of the « Aujourd'hui » card (Accueil): the colour bar, the title
- * and where, then the hour and ›.
- */
-export function slotLineHTML(item, { time = "" } = {}) {
-  const shown = time || (item.start ? clock(item.start) : "");
-  return `<button type="button" class="slot cat-${esc(item.cat)}" ${actionAttr(item)}>
-      <span class="slot-bar" aria-hidden="true"></span>
-      <span class="row__main"><span class="row__title">${esc(item.title)}${item.check ? " " + checkTag() : ""}</span>
-        ${item.place ? `<span class="row__sub">${esc(item.place)}</span>` : ""}</span>
-      ${shown ? `<span class="slot__time">${esc(shown)}</span>` : ""}
-      ${icon("right", "chev")}
-    </button>`;
+  return `<button type="button" class="${cls} tap" ${actionAttr(item)}>${inner}${icon("right", "chev")}</button>`;
 }
 
 /** Days off and important dates of a day, as lines above its half-days. */
@@ -119,17 +117,19 @@ function noteLine(cat, iconName, title, text, end = "") {
 }
 
 /**
- * The list of a day (Semaine and Mois): its notes, its half-days and personal events.
- * A day without class says so in one line, with a link to the next class day.
+ * The list of a day (Semaine and Mois): its notes, then its half-days and personal events
+ * as cards. A day without class says so in one card, with a link to the next class day.
  */
 export function dayListHTML(model, iso, now) {
   const todayIso = toISO(now);
   const notes = dayNotesHTML(model, iso, todayIso);
   const rows = itemsOfDay(model, iso).map((item) => slotRowHTML(model, item, now)).join("");
-  if (rows || notes) return `<div class="list pl-day">${notes}${rows}</div>`;
+  if (rows || notes) {
+    return `<div class="pl-day">${notes ? `<div class="list pl-notes">${notes}</div>` : ""}${rows ? `<div class="slots">${rows}</div>` : ""}</div>`;
+  }
   const next = nextClassDay(model, iso);
-  return `<p class="pl-empty">${[0, 6].includes(parseISO(iso).getDay()) ? "Week-end, pas de formation." : "Pas de formation ce jour-là."}
-      ${next ? `<button type="button" class="pl-empty__link" data-select-day="${next}">Prochain cours : ${esc(longDate(parseISO(next)))}${icon("right", "icon--xs")}</button>` : ""}</p>`;
+  return `<div class="card pl-empty"><p>${[0, 6].includes(parseISO(iso).getDay()) ? "Week-end, pas de formation." : "Pas de formation ce jour-là."}</p>
+      ${next ? `<button type="button" class="pl-empty__link tap" data-select-day="${next}">Prochain cours : ${esc(longDate(parseISO(next)))}${icon("right", "icon--xs")}</button>` : ""}</div>`;
 }
 
 /** The next day (after iso) with a class half-day, or null. */
@@ -181,7 +181,7 @@ export function openLegendSheet(model) {
     address: "couleurs",
     body: `<p class="sheet-text">Chaque demi-journée a la couleur de son activité. Les noms viennent de Nice.</p>
       <div class="list">${rows}</div>
-      <p class="sheet-hint" style="margin-top:0">Dans la semaine, un point par demi-journée sous chaque jour. Dans le mois, un petit point rose : une épreuve ou un dossier.</p>`,
+      <p class="sheet-hint" style="margin-top:0">Dans la semaine, deux petites barres sous chaque jour : le matin et l’après-midi. Dans le mois, un petit point rose : une épreuve ou un dossier.</p>`,
   });
 }
 

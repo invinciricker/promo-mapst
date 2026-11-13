@@ -61,14 +61,14 @@ try:
         page = ctx.new_page()
         errors = []
         page.on("pageerror", lambda e: errors.append(str(e)))
-        VISIBLE = ".panel:not([hidden]) .page:not([hidden])"
+        VISIBLE = ".panel.is-on .page:not([hidden])"
 
         # First visit: sw.js installs and saves the app.
         page.goto(BASE + "#reviser")
-        page.wait_for_selector(f"{VISIBLE} .rv-next")
+        page.wait_for_selector(f"{VISIBLE} .gcard")
         page.evaluate("navigator.serviceWorker.ready")
         page.reload()                                     # now the page goes through sw.js
-        page.wait_for_selector(f"{VISIBLE} .rv-next")
+        page.wait_for_selector(f"{VISIBLE} .gcard")
         check("sw.js controls the page", page.evaluate("Boolean(navigator.serviceWorker.controller)"))
         body = page.evaluate("fetch('content/extra-test.json').then(r => r.text())")
         check("a content file not listed anywhere loads", "sans toucher au code" in body)
@@ -77,18 +77,23 @@ try:
         # Without internet.
         ctx.set_offline(True)
         page.reload()
-        page.wait_for_selector(f"{VISIBLE} .rv-next", timeout=15000)
-        check("offline: the app opens on Réviser", page.locator(f"{VISIBLE} .rv-tile").count() == 6)
+        page.wait_for_selector(f"{VISIBLE} .gcard", timeout=15000)
+        check("offline: the app opens on Réviser", page.locator(f"{VISIBLE} .tile").count() == 6)
         page.goto(BASE + "#planning")
         page.reload()
-        page.wait_for_selector(f"{VISIBLE} .wk-strip", timeout=15000)
-        check("offline: the planning works", page.locator(f"{VISIBLE} .wk-day").count() == 7)
+        page.wait_for_selector(f"{VISIBLE} .days", timeout=15000)
+        check("offline: the planning works", page.locator(f"{VISIBLE} .dcard").count() == 7)
         page.goto(BASE + "#accueil")
         page.reload()
-        page.wait_for_selector(f"{VISIBLE} .hero__img", timeout=15000)
+        page.wait_for_selector(f"{VISIBLE} .home__sky svg", timeout=15000)
         page.wait_for_timeout(500)
-        check("offline: Accueil and its picture of the bay", page.evaluate(
-            f"document.querySelector('{VISIBLE} .hero__img').naturalWidth > 0"))
+        check("offline: Accueil and its picture of the bay, « le mot » and « En ce moment »",
+              page.locator(f"{VISIBLE} .home__sky svg .b-swell").count() >= 3
+              and page.locator(f"{VISIBLE} .mot .w").count() > 2 and page.locator(f"{VISIBLE} .now__title").count() == 1)
+        page.goto(BASE + "#cours")
+        page.reload()
+        page.wait_for_selector(f"{VISIBLE} .chap", timeout=15000)
+        check("offline: Cours and its path of chapters", page.locator(f"{VISIBLE} .chap").count() >= 6)
         body = page.evaluate("fetch('content/extra-test.json').then(r => r.ok ? r.text() : 'erreur ' + r.status).catch(e => 'erreur ' + e)")
         check("offline: the unlisted content file comes from the saved copy", "sans toucher au code" in body)
 
@@ -99,12 +104,12 @@ try:
         (site / "content" / "themes.json").write_text(json.dumps(themes, ensure_ascii=False), encoding="utf-8")
         page.goto(BASE + "#reviser")
         page.reload()
-        page.wait_for_selector(f"{VISIBLE} .rv-next")
+        page.wait_for_selector(f"{VISIBLE} .gcard")
         page.wait_for_timeout(300)
         check("online again: new content is used straight away",
-              page.locator(f"{VISIBLE} .rv-tile").count() == 7 and "Un thème ajouté sans toucher au code" in page.locator(f"{VISIBLE} .rv-grid").inner_text())
+              page.locator(f"{VISIBLE} .tile").count() == 7 and "Un thème ajouté sans toucher au code" in page.locator(f"{VISIBLE} .grid").inner_text())
         check("a new theme gets the next colour, with no change to the code",
-              "tone-bougainvillier" in page.locator(f"{VISIBLE} .rv-tile").nth(6).get_attribute("class"))
+              "tone-bougainvillier" in page.locator(f"{VISIBLE} .tile").nth(6).get_attribute("class"))
         check("no page errors", not errors)
         browser.close()
 finally:

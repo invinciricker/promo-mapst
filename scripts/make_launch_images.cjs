@@ -22,7 +22,8 @@ const ROOT = path.resolve(__dirname, "..");
 const OUT = path.join(ROOT, "icons", "launch");
 
 // iPhone screens in points (CSS pixels), their pixel ratio, and the height of their
-// status bar (the app starts below it, so the picture does too).
+// status bar (since Phase 4 the app draws under it: the sky goes to the very top, and the
+// title sits below the bar, as on the real Bienvenue screen).
 const DEVICES = [
   { w: 440, h: 956, r: 3, bar: 62, name: "iPhone 16 Pro Max, 17 Pro Max" },
   { w: 430, h: 932, r: 3, bar: 54, name: "iPhone 14 Pro Max, 15 Plus, 15 Pro Max, 16 Plus" },
@@ -66,7 +67,7 @@ function serve() {
     await page.addStyleTag({ content: `
       html, body { background: #F3F7FA !important; }
       .app { visibility: hidden !important; }
-      .welcome { inset: ${d.bar}px 0 0 0 !important; padding-top: 0 !important; }
+      :root { --safe-top: ${d.bar}px !important; }
       .wl-cta .btn { visibility: hidden !important; }` });
     await page.waitForTimeout(400);
     const file = `launch-${d.w * d.r}x${d.h * d.r}.png`;

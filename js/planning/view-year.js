@@ -7,6 +7,7 @@
 import { esc, icon } from "../core/dom.js";
 import { toISO, addDays, addMonths, MONTHS, capitalize, longDate, parseISO, dayMonth } from "../core/dates.js";
 import { personalOn } from "./personal.js";
+import { legendButton } from "./parts.js";
 
 export function yearViewHTML(model, now) {
   const todayIso = toISO(now);
@@ -39,7 +40,7 @@ export function yearViewHTML(model, now) {
         <div class="ymonth__grid">${grid}</div>
       </section>`;
   }
-  return `<div class="year">${html}</div>${stagesHTML(model, todayIso)}`;
+  return `<div class="year__top">${legendButton()}</div><div class="year">${html}</div>${stagesHTML(model, todayIso)}`;
 }
 
 /** « Les étapes de l'année »: the big periods (cours au CAL, MSP, certifications...). */

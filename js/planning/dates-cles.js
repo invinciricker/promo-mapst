@@ -45,8 +45,8 @@ export function mountKeyDates(el) {
     const upcoming = all.filter((k) => (k.end || k.date) >= todayIso);
     const past = all.filter((k) => (k.end || k.date) < todayIso);
     setHTML(el, `
-      <div class="page__body">
-        ${navbarHTML("Planning", "Dates clés")}
+      ${navbarHTML("Planning", "Dates clés")}
+        <div class="page__body">
         <h1 class="page-title kd-title">Dates clés</h1>
         <div class="seg" role="radiogroup" aria-label="Quelles dates">
           <span class="seg__thumb" aria-hidden="true" style="width:calc((100% - 6px) / 2);transform:translateX(${filter === "tout" ? 0 : 100}%)"></span>

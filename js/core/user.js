@@ -3,7 +3,7 @@
 
      "promo-mapst:prenom"      the first name, 20 characters at most (or nothing)
      "promo-mapst:bienvenue"   true once the welcome screen has been seen
-   In Phase 4 the account will take the place of the « Ton prénom » step of the welcome;
+   In Phase 5 the account will take the place of the « Ton prénom » step of the welcome;
    the greeting keeps the first name, which stays on the phone.
    ===================================================================================== */
 

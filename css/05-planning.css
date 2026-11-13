@@ -1,8 +1,10 @@
 /* =====================================================================================
-   05-planning.css: the Planning tab (mockups 9, 10 and 11).
-     .weekhead      the title of the week (or month) with the arrows
-     .wk-strip      the 7 days of the week, with a dot per half-day
-     .pl-row        a half-day in a list (hours, colour bar, title, place)
+   05-planning.css: the Planning tab (docs/design/prototype.html, block 6; the sheets and
+   Dates clés follow mockups 10 and 11).
+     .weekhead      the label of the period with the two arrows, in the header
+     .days, .dcard  Semaine: one card per day, half on the header; two small bars show
+                    the morning and the afternoon. The strip slides sideways.
+     .slots, .slot  a day's half-days as cards (hours, colour bar, title, place)
      .month, .year  the Mois and Année views
      .facts, .linked   the details of a half-day (a sheet)
      .kd-row        a line of « Dates clés »
@@ -10,89 +12,67 @@
    (classes cat-cours, cat-centre... in 01-tokens.css).
    ===================================================================================== */
 
-/* ---- Title of the week / month, arrows, « Couleurs » -------------------------------- */
-.weekhead { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin: 16px 4px 10px; }
-.weekhead b { font: var(--t-title); }
-.weekhead p { margin-top: 2px; }
-.weekhead__end { display: flex; align-items: center; gap: 10px; flex: none; }
-.arrows { display: flex; gap: 6px; }
-.arrow {
-  width: 30px;
-  height: 30px;
-  padding: 0;
-  border: 0;
-  border-radius: 50%;
-  display: grid;
-  place-items: center;
-  background: var(--surface);
-  color: var(--ink);
-  box-shadow: 0 1px 3px rgba(16, 53, 80, .12);
-  transition: transform .15s var(--ease), opacity .2s;
-}
-.arrow:active { transform: scale(.9); }
-.arrow:disabled { opacity: .35; pointer-events: none; }
+/* ---- In the header: the label of the period, the arrows -------------------------------- */
+.pl-actions { gap: 8px; }
+.weekhead { display: flex; align-items: center; justify-content: space-between; min-height: 30px; margin-top: 12px; font: 700 16px/1 var(--font); }
+.arrows { display: flex; gap: 2px; margin-right: -6px; }
+.arrow { width: 32px; height: 30px; display: grid; place-items: center; color: #fff; }
+.arrow:disabled { opacity: .4; pointer-events: none; }
 .pl-legend-btn { background: var(--surface-2); color: var(--ink-2); }
 
-/* ---- The strip of the week ---------------------------------------------------------- */
-.wk-strip { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 4px; padding: 10px 6px 8px; touch-action: pan-y; }
-.wk-day {
-  appearance: none;
-  -webkit-appearance: none;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 5px;
-  padding: 0;
-  border: 0;
-  background: none;
-  color: var(--ink);
-}
-.wk-day small { font: var(--t-micro); color: var(--ink-3); }
-.wk-day b {
-  width: 40px;
-  height: 40px;
-  border-radius: 13px;
-  display: grid;
-  place-items: center;
-  font: 750 16px/1 var(--font);
-  font-variant-numeric: tabular-nums;
-  transition: background-color .2s, color .2s;
-}
-.wk-day.is-off b { color: var(--ink-3); font-weight: 600; }
-.wk-day.is-today b { color: var(--azur-ink); box-shadow: inset 0 0 0 1.5px var(--azur-tint); }
-.wk-day.is-on b { background: var(--azur-ink); color: var(--on-accent); box-shadow: none; }
-.wk-day:active b { transform: scale(.94); }
-.dots { display: flex; gap: 3px; height: 6px; }
-.dots i { width: 6px; height: 6px; border-radius: 50%; background: var(--c); }
+/* ---- Semaine: one card per day, half on the header ---------------------------------------
+   Each says the day, the date and what's on; two small bars show the morning and the
+   afternoon. The strip slides sideways; the chosen day is brought to the middle. */
+.days { display: flex; gap: 8px; overflow-x: auto; overscroll-behavior-x: contain; scroll-snap-type: x mandatory; scrollbar-width: none; margin: -78px calc(var(--side) * -1) 6px; padding: 8px var(--side) 16px; }
+.days::-webkit-scrollbar { display: none; }
+.dcard { flex: 0 0 70px; height: 112px; padding: 11px 6px 10px; border-radius: 22px; display: flex; flex-direction: column; align-items: center; text-align: center; scroll-snap-align: center;
+         background: var(--surface); box-shadow: var(--shadow); transition: transform 380ms var(--ease-spring), background var(--t-base), box-shadow var(--t-base); }
+.dcard small { font: 650 11.5px/1 var(--font); color: var(--ink-3); }
+.dcard b { font: 800 23px/1.1 var(--font); letter-spacing: -.02em; margin-top: 4px; font-variant-numeric: tabular-nums; }
+.dcard__label { font: 650 10.5px/1.2 var(--font); color: var(--ink-2); margin-top: 4px; max-width: 100%; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; overflow-wrap: anywhere; }
+.halves { margin-top: auto; display: flex; gap: 3px; height: 4px; } .halves i { width: 19px; height: 4px; border-radius: 2px; background: var(--c, var(--line)); }
+.halves i.is-none { visibility: hidden; }
+.dcard.is-today:not(.on) { box-shadow: var(--shadow), inset 0 0 0 1.5px var(--azur); }
+.dcard.on { color: #fff; background: linear-gradient(160deg, #2B95DA, #0A5489); transform: translateY(-6px) scale(1.05); box-shadow: 0 16px 26px -12px rgba(10, 84, 137, .75); }
+.dcard.on small, .dcard.on .dcard__label { color: rgba(255, 255, 255, .88); } .dcard.on .halves i { background: #fff; }
+.dcard.off { background: color-mix(in srgb, var(--surface) 72%, transparent); box-shadow: none; } .dcard.off b, .dcard.off .dcard__label { color: var(--ink-3); }
+.dcard.on.off b, .dcard.on.off .dcard__label { color: #fff; }
+.dcard.on.off { background: linear-gradient(160deg, #2B95DA, #0A5489); box-shadow: 0 16px 26px -12px rgba(10, 84, 137, .75); }
+@media (min-width: 720px) { .days { justify-content: center; } }
 
-.pl-banner { margin-top: 12px; }
-.pl-banner + .pl-banner { margin-top: 8px; }
-.dayhead { display: flex; align-items: center; gap: 8px; font: var(--t-title); margin: 18px 4px 10px; }
+/* The title of the chosen day: « Aujourd'hui » with the date small on the right. */
+.section-title { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; }
+.section-title small { font: 600 13px/1 var(--font); color: var(--ink-3); }
+.days + .dayhead { margin-top: 0; }
 .pl-daylist { touch-action: pan-y; }
 
-/* ---- A half-day in a list ----------------------------------------------------------- */
-.pl-row .row__time { width: 46px; flex: none; font: 700 14px/1.25 var(--font); font-variant-numeric: tabular-nums; }
-.pl-row .row__time span { display: block; font: 500 13px/1.3 var(--font); color: var(--ink-3); }
-.pl-row .row__title .tag { margin-left: 4px; }
-.pl-row.is-past .row__main, .pl-row.is-past .row__time { opacity: .6; }
-.pl-row.is-free .row__title { color: var(--ink-2); font-weight: 600; }
+/* ---- The day's half-days, as cards ------------------------------------------------------ */
+.slots { position: relative; display: grid; gap: 10px; }
+.slot { display: flex; gap: 12px; align-items: stretch; width: 100%; padding: 14px 14px 14px 12px; border-radius: 20px; background: var(--surface); box-shadow: var(--shadow); }
+.slot .chev { align-self: center; }
+.slot__when { width: 46px; flex: none; font: 750 14px/1.25 var(--font); font-variant-numeric: tabular-nums; text-align: right; }
+.slot__when span { display: block; font: 500 12.5px/1.3 var(--font); color: var(--ink-3); }
+.slot .tag { margin-left: 4px; }
+.slot.is-now { background: linear-gradient(150deg, color-mix(in srgb, var(--c) 15%, var(--surface)), var(--surface) 75%); box-shadow: var(--shadow), inset 0 0 0 1.5px color-mix(in srgb, var(--c) 45%, transparent); }
+.slot__bar { display: block; height: 4px; border-radius: 2px; margin-top: 9px; background: color-mix(in srgb, var(--c) 18%, var(--surface-2)); overflow: hidden; } .slot__bar i { display: block; height: 100%; width: 24%; background: var(--c); border-radius: 2px; }
+.slot.is-past .row__main, .slot.is-past .slot__when { opacity: .6; }
+.slot.is-free .row__title { color: var(--ink-2); font-weight: 600; }
+.pl-notes { margin-bottom: 10px; }
 .pl-note .row__title { font-weight: 700; }
-.pl-empty { padding: 12px 4px 4px; color: var(--ink-2); font: var(--t-body); }
-.pl-empty__link {
-  display: inline-flex;
-  align-items: center;
-  gap: 2px;
-  padding: 4px 0;
-  border: 0;
-  background: none;
-  color: var(--azur-ink);
-  font: 650 15px/1.4 var(--font);
-  text-align: left;
-}
-.pl-links { margin-top: 18px; }
+.pl-empty { padding: 16px; color: var(--ink-2); font: var(--t-body); }
+.pl-empty__link { display: inline-flex; align-items: center; gap: 2px; margin-top: 4px; padding: 4px 0; color: var(--azur-ink); font: 650 15px/1.4 var(--font); }
+.pl-banners:not(:empty) { margin-top: 14px; }
+.pl-banner { border-radius: 16px; }
+.pl-banner + .pl-banner { margin-top: 8px; }
+.pl-links { margin-top: 14px; }
 
 /* ---- Mois --------------------------------------------------------------------------- */
-.month { padding: 12px 8px 8px; touch-action: pan-y; }
+/* The calendar is a white card that straddles the header (.body--lift, 04-layout.css). */
+.month { padding: 10px 8px 8px; touch-action: pan-y; }
+.month__top, .year__top { display: flex; justify-content: flex-end; }
+.month__top { padding: 0 4px 6px; }
+.year__top { margin-bottom: 10px; }
+.month + .dayhead { margin-top: 0; }
 .month__dow { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); margin-bottom: 4px; text-align: center; font: var(--t-micro); color: var(--ink-3); }
 .month__grid { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 2px; }
 .mday {
@@ -196,7 +176,7 @@
   cursor: pointer;
 }
 .kd-past summary::-webkit-details-marker { display: none; }
-.kd-past summary .icon { transition: transform .2s; }
+.kd-past summary .icon { transition: transform var(--t-fast); }
 .kd-past[open] summary .icon { transform: rotate(90deg); }
 
 /* ---- Colour legend, personal event, calendar export ------------------------------------- */

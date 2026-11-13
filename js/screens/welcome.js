@@ -6,9 +6,12 @@
         (under a second; nothing for people who asked their phone for less motion).
      2. « On t'appelle comment ? »: a first name or a nickname (20 characters at most),
         saved on this phone only. « Continuer » or « Passer ».
-        In Phase 4 this step becomes the account.
-     3. Only when the app is open in a browser (not installed): how to install it,
-        with « Plus tard ».
+        In Phase 5 this step becomes the account.
+     3. Only when the app is open in a browser (not installed): how to install it (the
+        same help as the « Installer l'appli » sheet, js/screens/install.js), with
+        « Plus tard ».
+   Like the rest of the app it draws under the clock of the iPhone: the first step has the
+   sky and a soft shade, the next ones a small amber bar.
    Then Accueil. Phones that used the app before Phase 3 also see it once.
    « Back » (Android) goes back one step; the app stays on the welcome until the end.
    ===================================================================================== */
@@ -16,7 +19,7 @@
 import { $, esc, icon, setHTML, isInstalled } from "../core/dom.js";
 import { pauseNav } from "../core/nav.js";
 import { NAME_MAX, firstName, setFirstName, setWelcomeDone } from "../core/user.js";
-import { canPromptInstall, promptInstall, installStepsHTML } from "./install.js";
+import { installHelpHTML, bindInstallHelp } from "./install.js";
 
 /** Shows the welcome over the app. onDone() is called when it is closed. */
 export function showWelcome({ onDone = () => {} } = {}) {
@@ -35,7 +38,7 @@ export function showWelcome({ onDone = () => {} } = {}) {
   setHTML(root, `
     <section class="wl-step wl-intro is-on" data-step="0">
       <div class="wl-scene" aria-hidden="true"></div>
-      <div class="wl-fade" aria-hidden="true"></div>
+      <div class="wl-shade" aria-hidden="true"></div>
       <div class="wl-brand">
         <h1 class="wl-title">Promo MAPST</h1>
         <p class="wl-sub">Des leçons de 5 minutes sur tes cours, et le planning de la promo toujours sur toi.</p>
@@ -72,8 +75,7 @@ export function showWelcome({ onDone = () => {} } = {}) {
       <div class="mini-sky mini-sky--icon" aria-hidden="true"><img src="icons/icon-192.png" alt=""></div>
       <h1 class="page-title">Installe l’appli</h1>
       <p class="muted wl-lead">Sur ton écran d’accueil, elle s’ouvre en un geste, même sans internet, et se met à jour toute seule.</p>
-      <div class="wl-install-now"></div>
-      <div class="steps-box">${installStepsHTML()}</div>
+      <div class="wl-install"></div>
       <div class="wl-bottom"><button type="button" class="btn btn--block" data-done>Plus tard</button></div>
     </section>` : ""}`);
 
@@ -140,7 +142,7 @@ export function showWelcome({ onDone = () => {} } = {}) {
   }
   window.addEventListener("popstate", onPop);
 
-  root.addEventListener("click", async (event) => {
+  root.addEventListener("click", (event) => {
     const t = event.target;
     if (t.closest("[data-next]")) {
       show(1);
@@ -154,10 +156,6 @@ export function showWelcome({ onDone = () => {} } = {}) {
       if (withInstall) show(2); else finish();
     } else if (t.closest("[data-done]")) {
       finish();
-    } else if (t.closest("[data-install-now]")) {
-      const installed = await promptInstall();
-      if (installed) finish();
-      else renderInstallButton();
     }
   });
 
@@ -168,16 +166,15 @@ export function showWelcome({ onDone = () => {} } = {}) {
     if (withInstall) show(2); else finish();
   });
 
-  // Android: the browser's own « Installer » window, when it is available.
-  function renderInstallButton() {
-    const box = $(".wl-install-now", root);
-    if (!box) return;
-    setHTML(box, canPromptInstall()
-      ? `<button type="button" class="btn btn--primary btn--block" data-install-now>${icon("download")}Installer l’appli</button>`
-      : "");
+  // The help to install, for this phone. On Android the browser's own « Installer »
+  // window may only become available a moment later: the help is then drawn again.
+  const installBox = $(".wl-install", root);
+  if (installBox) {
+    const renderInstall = () => { if (installBox.isConnected) setHTML(installBox, installHelpHTML()); };
+    renderInstall();
+    bindInstallHelp(installBox, { onInstalled: () => finish() });
+    window.addEventListener("install-ready", renderInstall);
   }
-  renderInstallButton();
-  window.addEventListener("install-ready", renderInstallButton);
 
   requestAnimationFrame(() => root.classList.add("is-open"));
 }
@@ -193,7 +190,7 @@ async function drawScene(box) {
     svg.removeAttribute("width");
     svg.removeAttribute("height");
     svg.setAttribute("aria-hidden", "true");
-    svg.querySelectorAll('circle[fill="url(#aube-sun)"], circle[fill="url(#aube-glow)"]').forEach((c) => c.classList.add("wl-sun"));
+    svg.querySelectorAll(".b-sun, .b-glow").forEach((c) => c.classList.add("wl-sun"));
   } catch (error) {
     box.innerHTML = `<img src="img/baie-aube.svg" alt="">`;     // no rising sun, but the picture
   }

@@ -80,8 +80,8 @@ export function mountRelecture(el, { backLabel = "Profil" } = {}) {
       : "";
 
     setHTML(el, `
-      <div class="page__body">
-        ${navbarHTML(backLabel, "Rapport de relecture")}
+      ${navbarHTML(backLabel, "Rapport de relecture")}
+        <div class="page__body">
         <h1 class="page-title page-title--pushed">Rapport de relecture</h1>
         <section class="card rl-head tone-lavande">
           ${s.total ? `

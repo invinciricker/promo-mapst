@@ -4,12 +4,19 @@
    The app is one fixed frame: the window itself never scrolls. Each page scrolls on its
    own (see 04-layout.css), like in the apps of the App Store, so every tab and every page
    keeps its place when you come back to it.
+
+   « App feel » (docs/design/prototype.html, block 2): the few rules that stop it feeling
+   like a web page. Nothing can be selected or long-pressed (except the text of a question,
+   its explanation and the fields), no grey flash on a tap, no double-tap zoom, no
+   pull-to-refresh, and everything you can tap answers the finger at once (.tap).
    ===================================================================================== */
 
-*, *::before, *::after { box-sizing: border-box; }
+*, *::before, *::after { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
 html {
   height: 100%;
+  overflow: hidden;
+  overscroll-behavior: none;
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
   background: var(--bg);
@@ -25,19 +32,30 @@ body {
   font: var(--t-body);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  -webkit-tap-highlight-color: transparent;   /* no grey flash when tapping on iPhone */
+  -webkit-user-select: none;
+  user-select: none;                 /* nothing in the interface can be selected... */
+  -webkit-touch-callout: none;       /* ...or long-pressed */
+  touch-action: manipulation;        /* no double-tap zoom */
+}
+/* ...except what people may want to copy or type. */
+input, textarea, select, .q-text, .feedback__note, .feedback__text, .feedback__extra, .hint-box, .rl-preview {
+  -webkit-user-select: text;
+  user-select: text;
 }
 
 h1, h2, h3, h4, p, ul, ol, figure { margin: 0; }
 ul, ol { padding: 0; list-style: none; }
 button, input, select, textarea { font: inherit; color: inherit; }
-button { cursor: pointer; touch-action: manipulation; }
-a { color: inherit; text-decoration: none; }
+button, a { font: inherit; color: inherit; text-decoration: none; border: 0; background: none; padding: 0; text-align: inherit; cursor: pointer; }
+/* Everything you can tap answers the finger at once. */
+.tap { transition: transform var(--t-fast) var(--ease-out), opacity var(--t-fast); }
+.tap:active { transform: scale(.965); opacity: .9; }
 img, svg { display: block; }
 [hidden] { display: none !important; }
 b, strong { font-weight: 700; }
 
-/* Keyboard users see where they are. */
+/* Keyboard users see where they are (a finger never shows the ring). */
+:focus { outline: none; }
 :focus-visible {
   outline: 3px solid var(--azur);
   outline-offset: 2px;
@@ -78,12 +96,11 @@ b, strong { font-weight: 700; }
 .small { font: var(--t-small); }
 .num { font-variant-numeric: tabular-nums; }
 
-/* People who asked their phone for less motion get (almost) no animation. */
+/* Calm phones: no movement, everything is simply there. */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
+    animation: none !important;
+    transition-duration: 1ms !important;
     scroll-behavior: auto !important;
   }
 }

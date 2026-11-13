@@ -3,7 +3,9 @@
 
    1. Registers the offline mode (core/offline.js and sw.js).
    2. Loads the content: content/planning.json, content/themes.json,
-      content/planning-themes.json and content/questions.json (shared in core/data.js).
+      content/planning-themes.json, content/questions.json, and since Phase 4
+      content/parcours.json, content/documents.json, content/mots.json and
+      content/savais-tu.json (shared in core/data.js).
    3. Starts the navigation (core/nav.js) on the address of the page (#accueil by
       default): pageFor() below says which page each address shows.
    4. Shows the welcome on the first launch (screens/welcome.js).
@@ -17,7 +19,10 @@ import { startOffline } from "./core/offline.js";
 import { showToast } from "./core/toast.js";
 import { toISO } from "./core/dates.js";
 import { data } from "./core/data.js";
+import { isInstalled } from "./core/dom.js";
 import { welcomeDone } from "./core/user.js";
+import { createCours } from "./cours/content.js";
+import { mountCours, mountChapter, mountAllDocuments } from "./cours/cours.js";
 import { createPlanning } from "./planning/model.js";
 import { mountPlanning } from "./planning/planning.js";
 import { mountKeyDates } from "./planning/dates-cles.js";
@@ -25,7 +30,7 @@ import { createReviserContent } from "./reviser/content.js";
 import { mountReviserHome, mountTheme } from "./reviser/reviser.js";
 import { isPlaying } from "./reviser/player.js";
 import { isRelectureOn } from "./reviser/relecture.js";
-import { mountAccueil } from "./screens/accueil.js";
+import { mountAccueil, playOpening } from "./screens/accueil.js";
 import { mountProfil, mountAboutPlanning, mountStoredData } from "./screens/profil.js";
 import { mountRelecture } from "./screens/relecture.js";
 import { showWelcome } from "./screens/welcome.js";
@@ -36,7 +41,11 @@ const raw = {
   questionsText: "",
   links: [],            // content/planning-themes.json
   planningText: "",     // raw text of planning.json, to notice when it changes
+  parcours: null,       // content/parcours.json
+  documents: null,      // content/documents.json
+  extraText: "",        // raw text of the four Phase 4 files, to notice when one changes
 };
+const EXTRA_FILES = ["content/parcours.json", "content/documents.json", "content/mots.json", "content/savais-tu.json"];
 const live = new Set();  // the pages drawn now that follow the clock (Accueil, Planning)
 let hiddenAt = 0;
 let day = toISO(new Date());
@@ -77,6 +86,38 @@ function buildPlanning(text) {
   }
 }
 
+/** Reads a JSON file's text; a broken file gives `fallback` (and a message in the console). */
+function parseJSON(text, name, fallback) {
+  try {
+    return JSON.parse(text);
+  } catch (error) {
+    console.error(`${name} n’est pas un JSON valide :`, error);
+    return fallback;
+  }
+}
+
+/** Cours (the path of chapters) is built from parcours.json, documents.json and Réviser. */
+function buildCours() {
+  data.cours = createCours(raw.parcours, raw.documents, data.reviser);
+}
+
+/** The four files of Phase 4: the path, the documents, the lines and the facts of Accueil. */
+async function loadExtras() {
+  const texts = await Promise.all(EXTRA_FILES.map((path) => fetchText(path).catch(() => "")));
+  const joined = texts.join("\u0000");
+  if (joined === raw.extraText) return false;
+  // Offline with nothing saved: keep what we have rather than emptying the screens.
+  if (raw.extraText && texts.every((t) => !t)) return false;
+  raw.extraText = joined;
+  const [parcours, documents, mots, facts] = texts.map((t, i) => (t ? parseJSON(t, EXTRA_FILES[i], null) : null));
+  raw.parcours = parcours;
+  raw.documents = documents;
+  data.mots = mots && Array.isArray(mots.mots) ? mots.mots.filter((m) => m && typeof m.text === "string" && m.text.trim()) : [];
+  data.facts = Array.isArray(facts) ? facts.filter((f) => f && typeof f.text === "string" && f.text.trim()) : [];
+  buildCours();
+  return true;
+}
+
 async function loadContent() {
   const [themesText, links, questionsText, planningText] = await Promise.all([
     fetchText("content/themes.json").catch(() => "[]"),
@@ -92,6 +133,7 @@ async function loadContent() {
   buildReviser();
   // If the planning can't load, Accueil and the Planning tab say so, and Réviser still works.
   if (planningText) buildPlanning(planningText);
+  await loadExtras();
 }
 
 /** Back on screen after a long time: new questions or lesson titles, or a newer planning? */
@@ -108,6 +150,7 @@ async function refreshContent() {
       raw.questionsText = questionsText;
       raw.questions = parseList(questionsText, "content/questions.json");
       buildReviser();
+      buildCours();
       changed = true;
       if (data.reviser.all.some((q) => !before.has(q.id))) showToast("Nouvelles questions disponibles");
     }
@@ -121,6 +164,11 @@ async function refreshContent() {
       changed = true;
       showToast("Planning mis à jour");
     }
+  } catch (error) {
+    /* offline: keep what we have */
+  }
+  try {
+    if (await loadExtras()) changed = true;      // new documents, a new line for Accueil...
   } catch (error) {
     /* offline: keep what we have */
   }
@@ -139,6 +187,10 @@ function pageFor(path, el, { query }) {
     else if (sub === "profil" && more === "relecture") page = mountRelecture(el, { backLabel: "Profil" });
     else if (sub === "profil" && more === "planning") page = mountAboutPlanning(el);
     else if (sub === "profil" && more === "donnees") page = mountStoredData(el);
+  } else if (tab === "cours") {
+    if (!sub) page = mountCours(el);
+    else if (sub === "documents" && !more) page = mountAllDocuments(el);
+    else if (!more) page = mountChapter(el, sub);
   } else if (tab === "reviser") {
     if (!sub) page = mountReviserHome(el);
     else if (sub === "relecture" && !more) page = mountRelecture(el, { backLabel: "Réviser" });
@@ -158,6 +210,7 @@ function pageFor(path, el, { query }) {
 // « Mode relecture » switched on or off in Profil: Réviser is built again for the new mode.
 window.addEventListener("relecture-change", () => {
   buildReviser();
+  buildCours();
   refreshPages();
 });
 
@@ -193,8 +246,13 @@ async function boot() {
   } catch (error) {
     console.error(error);
   }
+  // Installed (opened from the home screen): the « Installer l'appli » buttons are never shown.
+  document.getElementById("app").classList.toggle("is-installed", isInstalled());
   startNav({ pageFor });
-  if (!welcomeDone()) showWelcome({ onDone: () => refreshPages() });
+  // Opening the app: the picture of Accueil settles and its pieces land, once. With the
+  // welcome on top (first launch), it plays when the welcome closes.
+  if (welcomeDone()) playOpening();
+  else showWelcome({ onDone: () => { refreshPages(); playOpening(); } });
   setInterval(tick, 30 * 1000);
   document.documentElement.classList.add("is-ready");
 }

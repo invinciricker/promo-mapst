@@ -9,32 +9,25 @@
    Each theme has its colour (var(--c), var(--c-ink), var(--c-tint): see tone-… classes).
    ===================================================================================== */
 
-/* ---- Home of Réviser ------------------------------------------------------------------ */
-.play { width: 38px; height: 38px; flex: none; border-radius: 50%; display: grid; place-items: center; background: var(--btn); color: var(--on-btn); }
+/* ---- Home of Réviser (docs/design/prototype.html, block 6) --------------------------------- */
+/* On the coloured header: the lesson to continue, with a white ring and a white play button. */
+.play { width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; background: #fff; color: var(--mode-deep); flex: none; box-shadow: 0 6px 16px -6px rgba(0, 0, 0, .35); }
+.gcard .ring { width: 46px; height: 46px; flex: none; }
+.gcard .ring__fill { stroke: #fff; }
+.gcard .ring__text { fill: #fff; }
 .rv-next { margin-top: 2px; }
-.rv-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
-@media (min-width: 600px) { .rv-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
-.rv-tile {
-  appearance: none;
-  -webkit-appearance: none;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  min-height: 138px;
-  padding: 14px;
-  border: 0;
-  border-radius: var(--r-tile);
-  background: var(--surface);
-  box-shadow: var(--shadow);
-  color: inherit;
-  text-align: left;
-  transition: transform .15s var(--ease);
-}
-.rv-tile:active { transform: scale(.97); }
-.rv-tile__title { margin-top: 10px; font: 700 15px/1.3 var(--font); }
-.rv-tile__foot { width: 100%; margin-top: auto; padding-top: 12px; }
-.rv-tile__foot small { display: flex; align-items: center; gap: 4px; margin-top: 7px; font: 600 12px/1.2 var(--font); color: var(--ink-3); }
-.rv-tile__foot small.is-done { color: var(--c-ink); }
+.rv-note { margin-bottom: 14px; }
+/* Theme tiles washed with their colour, a big faint icon in the corner. */
+.grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+@media (min-width: 600px) { .grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+.tile { position: relative; overflow: hidden; display: flex; flex-direction: column; align-items: flex-start; min-height: 142px; padding: 14px; border-radius: var(--r-tile); box-shadow: var(--shadow);
+        background: linear-gradient(155deg, color-mix(in srgb, var(--c) 17%, var(--surface)) 0%, var(--surface) 72%); }
+.tile__ghost { position: absolute; right: -14px; bottom: -16px; width: 92px; height: 92px; color: var(--c); opacity: .16; stroke-width: 1.5; }
+.tile__title { font: 700 15px/1.3 var(--font); margin: 10px 0 0; }
+.tile__foot { width: 100%; margin-top: auto; padding-top: 12px; position: relative; }
+.tile__foot .bar { background: color-mix(in srgb, var(--c) 18%, var(--surface-2)); }
+.tile__foot small { display: block; margin-top: 7px; font: 600 12px/1 var(--font); color: var(--ink-3); }
+.tile__foot small.is-done { color: var(--c-ink); }
 .rv-tools { display: flex; flex-wrap: wrap; justify-content: center; gap: 4px; margin-top: 18px; }
 .rv-tools .btn--plain { color: var(--ink-2); }
 .rv-relecture {
@@ -83,7 +76,7 @@
   border-radius: 50%;
   display: grid;
   place-items: center;
-  transition: transform .15s var(--ease);
+  transition: transform var(--t-fast) var(--ease);
 }
 button.node:active { transform: scale(.94); }
 .node > .icon { position: relative; width: 26px; height: 26px; }
@@ -102,6 +95,7 @@ button.node:active { transform: scale(.94); }
 .path__more { margin: 0 0 0 78px; }
 .lesson.is-new .node { animation: unlock .7s var(--ease) both; }
 .rv-soon { margin-top: 22px; }
+.theme-docs { margin-top: 22px; }
 
 /* =====================================================================================
    The lesson
@@ -113,14 +107,15 @@ html.has-player, html.has-welcome { overflow: hidden; }
   z-index: 55;            /* over the tab bar, under the sheets */
   display: flex;
   flex-direction: column;
-  padding-top: env(safe-area-inset-top, 0px);
   background: var(--bg);
   transform: translateY(100%);
-  transition: transform .45s var(--ease-page);
+  transition: transform 420ms var(--ease-page);
 }
 .player.is-open { transform: none; }
 
-/* Top: ×, the progress bar, the lives */
+/* Top: ×, the progress bar, the lives, in white on the gradient of Réviser (it also
+   colours the status bar, under the clock of the iPhone). */
+.player__head { flex: none; padding-top: var(--safe-top); background: var(--grad-reviser); color: #fff; }
 .player__top {
   display: flex;
   align-items: center;
@@ -131,26 +126,27 @@ html.has-player, html.has-welcome { overflow: hidden; }
   margin: 0 auto;
   padding: 0 max(var(--gutter), env(safe-area-inset-right, 0px)) 0 max(calc(var(--gutter) - 6px), env(safe-area-inset-left, 0px));
 }
-.player__close { width: 34px; height: 34px; color: var(--ink-2); }
-.player__bar { flex: 1; height: 8px; border-radius: 4px; background: var(--surface-2); overflow: hidden; }
-.player__bar i { display: block; height: 100%; border-radius: 4px; background: var(--turquoise); transition: width .55s var(--ease); }
-.player__lives { display: inline-flex; align-items: center; gap: 4px; min-width: 34px; justify-content: flex-end; font: 750 15px/1 var(--font); color: var(--bougainvillier-ink); font-variant-numeric: tabular-nums; }
+.player__close { width: 34px; height: 34px; color: #fff; }
+.player__bar { flex: 1; height: 8px; border-radius: 4px; background: rgba(255, 255, 255, .28); overflow: hidden; }
+.player__bar i { display: block; height: 100%; border-radius: 4px; background: #fff; transition: width var(--t-slow) var(--ease-out); }
+.player__lives { display: inline-flex; align-items: center; gap: 4px; min-width: 34px; justify-content: flex-end; font: 750 15px/1 var(--font); color: #fff; font-variant-numeric: tabular-nums; }
 .player__lives .icon { width: 18px; height: 18px; }
 .player__lives.is-hit { animation: heart-hit .6s var(--ease); }
-.player__lives.is-empty { color: var(--ink-3); }
-.player__tag { display: inline-flex; align-items: center; gap: 5px; height: 26px; padding: 0 10px; border-radius: var(--r-pill); background: var(--bougainvillier-tint); color: var(--bougainvillier-ink); font: 700 12px/1 var(--font); white-space: nowrap; }
+.player__lives.is-empty { opacity: .6; }
+.player__tag { display: inline-flex; align-items: center; gap: 5px; height: 26px; padding: 0 10px; border-radius: var(--r-pill); background: var(--glass-on-color); box-shadow: inset 0 0 0 1px var(--glass-on-color-line); color: #fff; font: 700 12px/1 var(--font); white-space: nowrap; }
 .player__heading {
   width: 100%;
   max-width: 680px;
   margin: -6px auto 0;
-  padding: 0 var(--gutter);
+  padding: 0 var(--gutter) 10px;
   overflow: hidden;
-  color: var(--ink-3);
+  color: rgba(255, 255, 255, .88);
   font: 650 12px/1.3 var(--font);
   text-align: center;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+.player__stage { padding-top: 8px; }
 
 /* Middle: the question (it scrolls if it is long) */
 .player__stage { flex: 1; overflow-y: auto; overscroll-behavior: contain; -webkit-overflow-scrolling: touch; }
@@ -177,7 +173,7 @@ html.has-player, html.has-welcome { overflow: hidden; }
   color: var(--ink);
   font: 600 15px/1.35 var(--font);
   text-align: left;
-  transition: border-color .15s, background-color .15s, opacity .2s, transform .12s ease;
+  transition: border-color var(--t-fast), background-color var(--t-fast), opacity var(--t-fast), transform var(--t-fast) ease;
 }
 .choice:active:not(:disabled) { transform: scale(.985); }
 .choice__text { flex: 1; min-width: 0; }
@@ -191,7 +187,7 @@ html.has-player, html.has-welcome { overflow: hidden; }
   place-items: center;
   box-shadow: inset 0 0 0 1.5px var(--line);
   font: 800 12px/1 var(--font);
-  transition: background-color .15s, box-shadow .15s;
+  transition: background-color var(--t-fast), box-shadow var(--t-fast);
 }
 .choices.is-multi .choice__mark { border-radius: 8px; }
 .choice__mark .icon { width: 14px; height: 14px; stroke-width: 3; }
@@ -240,14 +236,14 @@ html.has-player, html.has-welcome { overflow: hidden; }
   color: var(--ink);
   font: 600 14px/1.25 var(--font);
   text-align: center;
-  transition: border-color .15s, background-color .15s, opacity .25s, transform .12s ease;
+  transition: border-color var(--t-fast), background-color var(--t-fast), opacity var(--t-base), transform var(--t-fast) ease;
 }
 .pair--left { font-weight: 700; }
 .pair:active:not(:disabled) { transform: scale(.97); }
 .pair[aria-pressed="true"] { border-color: var(--ink); background: var(--surface-2); }
 .pair.is-matched { border-color: transparent; background: var(--turquoise-tint); color: var(--turquoise-ink); cursor: default; animation: pop .35s var(--ease); }
 .pair.is-miss { border-color: var(--bougainvillier-ink); background: var(--bougainvillier-tint); animation: shake .45s ease; }
-.pairs.is-solved .pair { animation: none; transition: transform .5s var(--ease), background-color .15s, border-color .15s; }
+.pairs.is-solved .pair { animation: none; transition: transform var(--t-slow) var(--ease), background-color var(--t-fast), border-color var(--t-fast); }
 
 /* Bottom: « Vérifier », then the result rising from the bottom, and « Continuer » */
 .player__bottom { padding: 12px max(var(--gutter), env(safe-area-inset-right, 0px)) calc(16px + env(safe-area-inset-bottom, 0px)) max(var(--gutter), env(safe-area-inset-left, 0px)); }
@@ -340,7 +336,7 @@ html.has-player, html.has-welcome { overflow: hidden; }
   background: var(--surface);
   color: var(--ink);
   font: 700 14px/1 var(--font);
-  transition: border-color .15s, background-color .15s, color .15s, transform .12s ease;
+  transition: border-color var(--t-fast), background-color var(--t-fast), color var(--t-fast), transform var(--t-fast) ease;
 }
 .verdict__btn:active { transform: scale(.97); }
 .verdict__btn--ok[aria-pressed="true"] { border-color: var(--turquoise-ink); background: var(--turquoise-tint); color: var(--turquoise-ink); }
