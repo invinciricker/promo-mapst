@@ -6,8 +6,8 @@
    slide in from the right with « ‹ Previous screen » at the top left:
 
        Accueil  ›  Profil  ›  Rapport de relecture
-       Cours    ›  Un chapitre, Tous les documents
-       Réviser  ›  Un thème
+       Cours    ›  Un chapitre, Tous les documents, Questions de la promo
+       Réviser  ›  Un thème, Classement
        Planning ›  Dates clés
 
    Changing tab (Phase 4): the new tab comes from the side of its place in the bar (from
@@ -712,13 +712,13 @@ export function setPageQuery(query) {
 /**
  * HTML of the bar of a page opened from a tab: « ‹ Réviser » on the colour of its tab,
  * and the page's title once it is scrolled. Put it first in the page, before its
- * <div class="page__body">.
+ * <div class="page__body">. `end`: HTML of a button at the right end (« Actualiser »).
  */
-export function navbarHTML(backLabel, title = "") {
+export function navbarHTML(backLabel, title = "", end = "") {
   const esc = (t) => String(t).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
   return `<div class="topbar topbar--page">
       <button type="button" class="back tap" data-nav-back aria-label="Retour : ${esc(backLabel)}">
         <svg class="icon" aria-hidden="true"><use href="#i-left"/></svg><span>${esc(backLabel)}</span></button>
-      <span class="topbar__title" aria-hidden="true">${esc(title)}</span>
+      <span class="topbar__title" aria-hidden="true">${esc(title)}</span>${end}
     </div>`;
 }

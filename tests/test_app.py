@@ -173,6 +173,17 @@ try:
             shot(page, f"02-prenom-{scheme}")
             page.locator(".wl-form [type=submit]").click()
             page.wait_for_timeout(500)
+            # Phase 6: « Garde ta progression » (the account), then « Plus tard ».
+            step = norm(page.locator(".wl-step:not([hidden])").inner_text())
+            check(f"welcome ({scheme}): « Garde ta progression », with the two account buttons and « Plus tard »",
+                  "Garde ta progression" in step
+                  and "Avec un compte, tu retrouves tes XP sur un nouveau téléphone et tu peux poser tes questions à la promo." in step
+                  and page.locator(".wl-step:not([hidden]) [data-account='creer']").inner_text().strip() == "Créer mon compte"
+                  and page.locator(".wl-step:not([hidden]) [data-account='connecter']").inner_text().strip() == "J’ai déjà un compte"
+                  and page.locator(".wl-step:not([hidden]) [data-later]").inner_text().strip() == "Plus tard")
+            shot(page, f"02b-compte-{scheme}")
+            page.locator("[data-later]").click()
+            page.wait_for_timeout(500)
             check(f"welcome ({scheme}): install help in a browser (the same steps as the sheet), with « Plus tard »",
                   "Installe l’appli" in norm(page.locator(".wl-step:not([hidden])").inner_text())
                   and page.locator(".wl-step:not([hidden]) .steps li").count() >= 3
@@ -201,6 +212,8 @@ try:
         page.locator("[data-next]").click()
         page.wait_for_timeout(400)
         page.locator("[data-skip]").click()
+        page.wait_for_timeout(400)
+        page.locator("[data-later]").click()
         page.wait_for_timeout(400)
         page.locator("[data-done]").click()
         page.wait_for_timeout(800)
@@ -755,7 +768,8 @@ try:
         page.locator("[data-stored]").click()
         page.wait_for_timeout(700)
         text = norm(page.locator(f"{VISIBLE}").inner_text())
-        check("Ce que l’appli garde: the list, and nothing sent elsewhere", "Ton prénom" in text and "« Alex »" in text and "Rien n’est envoyé ailleurs" in text)
+        check("Ce que l’appli garde: the list, and nothing sent elsewhere without an account", "Ton prénom" in text and "« Alex »" in text
+              and "Sans compte, rien n’est envoyé ailleurs" in text and "Google Firebase" in text)
         reset = page.locator("[data-reset]")
         reset.click()
         armed = "Touche encore" in reset.inner_text()
@@ -778,6 +792,8 @@ try:
         page.wait_for_timeout(400)
         check("… with the saved name in the field", page.locator(".wl-name").input_value() == "Alex")
         page.locator("[data-skip]").click()
+        page.wait_for_timeout(400)
+        page.locator("[data-later]").click()
         page.wait_for_timeout(400)
         page.locator("[data-done]").click()
         page.wait_for_timeout(800)
@@ -814,8 +830,13 @@ try:
               "is-empty" in chaps.nth(1).get_attribute("class") and norm(chaps.nth(1).locator(".chap__acts").inner_text()) == "Bientôt"
               and page.evaluate(f"getComputedStyle(document.querySelectorAll('{VISIBLE} .chap')[1].querySelector('.chap__n')).opacity") == "0.6"
               and page.evaluate(f"getComputedStyle(document.querySelectorAll('{VISIBLE} .chap')[1].querySelector('.chap__title')).opacity") == "0.6")
-        check("a chapter with a quiz only: « Quiz », not washed out", norm(chaps.nth(2).locator(".chap__acts").inner_text()) == "Quiz"
-              and "is-empty" not in chaps.nth(2).get_attribute("class"))
+        # (Since 13 Nov 2026 every chapter with a quiz also has a lesson: the third one is checked
+        # for its « Quiz » pill, after its lessons when it has some.)
+        third = CHAPTERS[2]
+        n3 = len([l for l in LECONS if l["chapitre"] == third["id"]])
+        expected = (f"{n3} leçon{'s' if n3 > 1 else ''} Quiz" if n3 else "Quiz")
+        check("a chapter with a quiz: its lessons, then « Quiz », not washed out",
+              norm(chaps.nth(2).locator(".chap__acts").inner_text()) == expected and "is-empty" not in chaps.nth(2).get_attribute("class"))
         empties = [i for i, c in enumerate(CHAPTERS) if not c.get("theme") and c["id"] not in with_lessons]
         check("every chapter without lesson or quiz says « Bientôt », and only those",
               [i for i in range(chaps.count()) if "is-empty" in chaps.nth(i).get_attribute("class")] == empties
@@ -912,7 +933,7 @@ try:
         check("all the lessons of a chapter read: the pill is filled, with a check", "pill--done" in pill.get_attribute("class")
               and pill.locator("use[href='#i-check']").count() == 1)
         check("the glass card: the next lesson not read yet, « Continuer » once started",
-              norm(page.locator(f"{VISIBLE} .hd .gcard").inner_text()) == f"{LECONS[1]['title']} Continuer · 5 min")
+              norm(page.locator(f"{VISIBLE} .hd .gcard").inner_text()) == f"{LECONS[1]['title']} Continuer · {LECONS[1].get('minutes', 5)} min")
         page.locator(f"{VISIBLE} .chap").nth(0).locator(".chap__card").click()
         page.wait_for_timeout(800)
         check("a lesson read: a check on its row", page.locator(f"{VISIBLE} .lesson-row .lesson-row__check").count() == 1)

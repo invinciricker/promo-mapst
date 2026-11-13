@@ -5,6 +5,8 @@
                          and the lesson to continue on a glass card; then « Mes
                          erreurs » (only when there are some) and the theme tiles
      #reviser/<theme>    one theme: its lessons on a vertical path (they unlock in order)
+     #reviser/classement the classement of the week (Phase 6, js/reviser/classement.js),
+                         opened by a tap on the XP chip of the header
 
    The lesson itself opens over the app (player.js), from here or from Accueil.
    What is remembered (XP, série, questions done, mistakes, lessons left in the middle) is
@@ -17,6 +19,7 @@ import { openSheet } from "../core/sheet.js";
 import { showToast } from "../core/toast.js";
 import { FOOTER } from "../core/texts.js";
 import { data } from "../core/data.js";
+import { comptesActifs } from "../compte/compte.js";
 import { openPlayer, isPlaying } from "./player.js";
 import { soundOn, setSoundOn } from "./sound.js";
 import { verdictFor, relectureSummary } from "./relecture.js";
@@ -45,11 +48,17 @@ function checkedCount(questions) {
 // Pieces shared with Accueil
 // -------------------------------------------------------------------------------------
 
-/** The glass chips of the header: « 3 jours » (the série) and « 120 XP ». */
+/**
+ * The glass chips of the header: « 3 jours » (the série) and « 120 XP ». With accounts
+ * (Phase 6), the XP chip is a button that opens the classement.
+ */
 export function statsChips() {
   const s = streak();
+  const xp = `${icon("bolt", "icon--xs icon--fill")}${xpTotal()} XP`;
   return `<span class="gchip" aria-label="${esc(plural(s.count, "jour", "jours"))} de série">${icon("flame", "icon--xs icon--fill")}${plural(s.count, "jour", "jours")}</span>
-    <span class="gchip">${icon("bolt", "icon--xs icon--fill")}${xpTotal()} XP</span>`;
+    ${comptesActifs()
+      ? `<button type="button" class="gchip tap" data-classement aria-label="${xpTotal()} XP : voir le classement">${xp}</button>`
+      : `<span class="gchip">${xp}</span>`}`;
 }
 
 /**
@@ -151,6 +160,7 @@ export function mountReviserHome(el) {
     const start = t.closest("[data-start]");
     if (start) startLesson(data.reviser.lesson(start.dataset.start));
     else if (theme) push(`reviser/${theme.dataset.theme}`);
+    else if (t.closest("[data-classement]")) push("reviser/classement");
     else if (t.closest("[data-review]")) startReview();
     else if (t.closest("[data-report]")) push("reviser/relecture");
     else if (t.closest("[data-how]")) openHowSheet();
@@ -347,7 +357,8 @@ registerModal("lecon", (value) => {
 registerModal("revision", () => (data.reviser ? startReview() : false));
 registerModal("aide", () => { openHowSheet(); return true; });
 
-function openHowSheet() {
+/** « Comment ça marche » (Réviser, and Profil since Phase 6). */
+export function openHowSheet() {
   const rows = [
     ["bolt", "Des leçons courtes", "8 à 10 questions par leçon. Après chaque réponse, tu sais tout de suite si c’est juste, avec une explication."],
     ["heart", "3 vies par leçon", "Une erreur coûte une vie, et la question revient à la fin. Plus de vies : la leçon recommence."],
@@ -356,7 +367,14 @@ function openHowSheet() {
     ["sun", "Les XP", `${XP.firstTry} par bonne réponse du premier coup, ${XP.corrected} si tu la corriges, ${XP.perfect} de bonus sans faute, ${XP.review} en révision.`],
     ["repeat", "Mes erreurs", "Une question ratée revient le jour même, puis le lendemain, 3 jours et 7 jours plus tard, jusqu’à ce qu’elle soit acquise."],
     ["edit", "Réponses à taper", "Les majuscules et les accents ne comptent pas, et une faute de frappe est pardonnée dans les mots de 8 lettres ou plus."],
-    ["lock", "Sur ce téléphone", "Ta progression reste sur ce téléphone. Les comptes, pour la retrouver ailleurs, arrivent bientôt."],
+    ...(comptesActifs() ? [
+      ["person", "Ton compte", "Un pseudo et un code à 6 chiffres. Ta progression est sauvegardée en ligne et te suit sur un nouveau téléphone."],
+      ["award", "Le classement", "Si tu le choisis, la promo voit ton pseudo et tes XP de la semaine. Remis à zéro chaque lundi."],
+      ["chat", "Questions de la promo", "Dans Cours, pose une question sur le cours : l’admin de la promo répond, et toute la promo voit la réponse."],
+      ["lock", "Sans compte", "Ta progression reste sur ce téléphone, et l’appli marche aussi bien."],
+    ] : [
+      ["lock", "Sur ce téléphone", "Ta progression reste sur ce téléphone."],
+    ]),
   ];
   openSheet({
     title: "Comment ça marche",

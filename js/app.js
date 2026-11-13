@@ -14,6 +14,9 @@
    5. Every 30 seconds, and when the app comes back on screen, Accueil and the Planning
       follow the time (what is on now, the sky...). After a long while away, the content
       is fetched again, so new questions or a new planning show up by themselves.
+   6. Since Phase 6, with an account: a moment after the first screen is shown, the
+      progress is synced with the account (js/compte/compte.js). Firebase is only loaded
+      then, so the app starts as fast as without an account.
    ===================================================================================== */
 
 import { startNav, refreshPages } from "./core/nav.js";
@@ -25,6 +28,7 @@ import { isInstalled } from "./core/dom.js";
 import { welcomeDone } from "./core/user.js";
 import { createCours } from "./cours/content.js";
 import { mountCours, mountChapter, mountAllDocuments } from "./cours/cours.js";
+import { mountQuestions } from "./cours/questions.js";
 import { prefetchLessons } from "./cours/lecons.js";
 import "./cours/lecon.js";                  // the lesson screen and its address (?lecon=…)
 import { createPlanning } from "./planning/model.js";
@@ -32,12 +36,14 @@ import { mountPlanning } from "./planning/planning.js";
 import { mountKeyDates } from "./planning/dates-cles.js";
 import { createReviserContent } from "./reviser/content.js";
 import { mountReviserHome, mountTheme } from "./reviser/reviser.js";
+import { mountClassement } from "./reviser/classement.js";
 import { isPlaying } from "./reviser/player.js";
 import { isRelectureOn } from "./reviser/relecture.js";
 import { mountAccueil, playOpening } from "./screens/accueil.js";
 import { mountProfil, mountAboutPlanning, mountStoredData } from "./screens/profil.js";
 import { mountRelecture } from "./screens/relecture.js";
 import { showWelcome } from "./screens/welcome.js";
+import { comptesActifs, demarrerCompte } from "./compte/compte.js";
 
 const raw = {
   themesText: "",       // raw text of themes.json, to notice when it changes
@@ -211,10 +217,12 @@ function pageFor(path, el, { query }) {
   } else if (tab === "cours") {
     if (!sub) page = mountCours(el);
     else if (sub === "documents" && !more) page = mountAllDocuments(el);
+    else if (sub === "questions" && !more && comptesActifs()) page = mountQuestions(el);
     else if (!more) page = mountChapter(el, sub);
   } else if (tab === "reviser") {
     if (!sub) page = mountReviserHome(el);
     else if (sub === "relecture" && !more) page = mountRelecture(el, { backLabel: "Réviser" });
+    else if (sub === "classement" && !more && comptesActifs()) page = mountClassement(el);
     else if (!more) page = mountTheme(el, sub);
   } else if (tab === "planning") {
     if (!sub) page = mountPlanning(el);
@@ -277,6 +285,7 @@ async function boot() {
   setInterval(tick, 30 * 1000);
   document.documentElement.classList.add("is-ready");
   setTimeout(fetchLessonTexts, 1500);
+  setTimeout(demarrerCompte, 1200);        // signed in: sync the progress (Firebase loads now)
 }
 
 boot();

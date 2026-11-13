@@ -313,7 +313,7 @@ try:
         page.wait_for_timeout(900)
         check("the path: the pill « 1 leçon » is filled, the glass card moves to the next lesson",
               "pill--done" in page.locator(f"{VISIBLE} .chap").nth(0).locator(".pill").first.get_attribute("class")
-              and "Les trois filières" in page.locator(f"{VISIBLE} .hd .gcard").inner_text())
+              and INDEX["lecons"][1]["title"] in page.locator(f"{VISIBLE} .hd .gcard").inner_text())
 
         # « Teste-toi »: the theme of the chapter in Réviser.
         page.goto(BASE + f"#cours/fiche-de-seance?lecon={FICHE}")

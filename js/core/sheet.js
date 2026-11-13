@@ -20,7 +20,9 @@ let counter = 0;
  *   head       HTML for the head instead of the title (a coloured chip, for example)
  *   body       HTML text (or an element) for the content
  *   className  extra class for the sheet (a colour: "cat-cours"...)
- *   address    [key, value] or key: the address of the sheet (?key=value)
+ *   address    [key, value] or key: the address of the sheet (?key=value). null: no
+ *              address and no step in the history (a sheet over the welcome, which
+ *              handles « back » itself)
  *   replace    a sheet already open that this one replaces (details -> edit form):
  *              no new step in the history
  *   onClose    function called once the sheet is closed
@@ -28,6 +30,7 @@ let counter = 0;
 export function openSheet({ title = "", head = "", body = "", className = "", address = "feuille",
   replace = null, onClose = null } = {}) {
   const [key, value = ""] = Array.isArray(address) ? address : [address, ""];
+  const withAddress = address !== null;
   const id = `sheet-${++counter}`;
   const layer = document.createElement("div");
   layer.className = "sheet-layer";
@@ -58,7 +61,7 @@ export function openSheet({ title = "", head = "", body = "", className = "", ad
     replaceModal(entry.modal, { key, value });
     replace.entry.modal = null;
     finishClose(replace.entry, { instant: true });
-  } else {
+  } else if (withAddress) {
     entry.modal = openModal({ key, value, close: () => finishClose(entry) });
   }
 

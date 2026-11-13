@@ -16,12 +16,15 @@
       fetches them all in the background at each start (js/cours/lecons.js), pictures
       included. So a new lesson works offline without being listed anywhere.
 
+   5. The account (Phase 6) talks to Firebase, on Google's servers: those requests are not
+      the app's files, so they are never touched here (see "other websites" below).
+
    IMPORTANT: when you add a file to the app itself (a new .js or .css...), add it to
    APP_FILES below, otherwise it won't work offline. scripts/check_offline_list.py checks it.
    ===================================================================================== */
 
 // Change this name only to force every phone to throw away its copy and start fresh.
-const CACHE = "promo-mapst-v3";
+const CACHE = "promo-mapst-v4";
 
 // The files of the app itself.
 const APP_FILES = [
@@ -37,7 +40,13 @@ const APP_FILES = [
   "css/08-accueil.css",
   "css/09-cours.css",
   "css/10-lecons.css",
+  "css/11-compte.css",
   "js/app.js",
+  "js/compte/backend.js",
+  "js/compte/backend-faux.js",
+  "js/compte/compte.js",
+  "js/compte/config.js",
+  "js/compte/regles.js",
   "js/core/data.js",
   "js/core/dates.js",
   "js/core/dom.js",
@@ -55,6 +64,7 @@ const APP_FILES = [
   "js/cours/lecon.js",
   "js/cours/lecons.js",
   "js/cours/markdown.js",
+  "js/cours/questions.js",
   "js/planning/dates-cles.js",
   "js/planning/details.js",
   "js/planning/event-form.js",
@@ -68,6 +78,7 @@ const APP_FILES = [
   "js/planning/view-week.js",
   "js/planning/view-year.js",
   "js/reviser/answer.js",
+  "js/reviser/classement.js",
   "js/reviser/confetti.js",
   "js/reviser/content.js",
   "js/reviser/player.js",
@@ -77,6 +88,7 @@ const APP_FILES = [
   "js/reviser/sound.js",
   "js/reviser/verdict.js",
   "js/screens/accueil.js",
+  "js/screens/compte.js",
   "js/screens/install.js",
   "js/screens/profil.js",
   "js/screens/relecture.js",
@@ -89,6 +101,11 @@ const APP_FILES = [
   "icons/icon-192.png",
   "icons/apple-touch-icon.png",
   "vendor/fonts/plus-jakarta-sans.woff2",
+  // Firebase (Phase 6): loaded by the app only when an account feature is used, but kept
+  // here so that it works offline too (scripts/fetch_firebase.sh)
+  "vendor/firebase/firebase-app.js",
+  "vendor/firebase/firebase-auth.js",
+  "vendor/firebase/firebase-firestore-lite.js",
 ];
 
 // The main content, saved at installation so the app works offline straight away.

@@ -11,6 +11,11 @@
                          documents (« Bientôt » while there are none)
      #cours/<chapter>?lecon=<id>   a lesson, over its chapter (js/cours/lecon.js)
      #cours/documents    every document, by chapter, with a search field from 8 documents
+     #cours/questions    « Questions de la promo » (Phase 6, js/cours/questions.js). Ways
+                         in: the glass button « Poser une question » in the header, the row
+                         « Questions de la promo » at the top of the path, and « Une question
+                         sur ce chapitre ? » at the bottom of each chapter (only when
+                         accounts are on: js/compte/config.js)
 
    The documents themselves stay on the class's Google Drive: a tap opens the link in the
    browser. What exists is written in content/parcours.json, content/documents.json and
@@ -26,6 +31,8 @@ import { isRelectureOn } from "../reviser/relecture.js";
 import { KINDS, isNew } from "./content.js";
 import { isRead, isStarted, nextLesson } from "./lecons.js";
 import { startLecon } from "./lecon.js";
+import { comptesActifs } from "../compte/compte.js";
+import { openAskSheet } from "./questions.js";
 
 const SEARCH_FROM = 8;       // the search field appears from this many documents
 const plural = (n, one, many) => `${n} ${n > 1 ? many : one}`;
@@ -98,7 +105,13 @@ export function mountCours(el) {
           ${icon("right", "chev")}</a>` : "",
     ].join("");
     const none = cours.chapters.length ? "Rien dans ce bloc pour l’instant" : "Le programme arrive bientôt";
-    return `${chapters ? `<div class="path path--chap">${chapters}</div>`
+    const questions = comptesActifs() ? `<div class="list cours-questions rise" style="--i:0">
+        <button type="button" class="row tap tone-lavande" data-questions>
+          <span class="tile-icon">${icon("chat", "icon--s")}</span>
+          <span class="row__main"><span class="row__title">Questions de la promo</span>
+            <span class="row__sub">Les questions de la classe et leurs réponses</span></span>
+          ${icon("right", "chev")}</button></div>` : "";
+    return `${questions}${chapters ? `<div class="path path--chap">${chapters}</div>`
       : `<div class="card empty">${icon("clock")}<b>${none}</b><p>Les chapitres s’ajoutent au fil des cours.</p></div>`}
       ${more ? `<div class="list cours-more">${more}</div>` : ""}`;
   }
@@ -124,7 +137,8 @@ export function mountCours(el) {
     setHTML(el, `
       <div class="topbar">Cours</div>
       <header class="hd">
-        <div class="hd__row"><h1 class="hd__title">Cours</h1></div>
+        <div class="hd__row"><h1 class="hd__title">Cours</h1>${comptesActifs()
+          ? `<span class="hd__end"><button type="button" class="gchip gchip--text tap" data-poser>${icon("chat", "icon--xs")}Poser une question</button></span>` : ""}</div>
         <p class="hd__sub">Le programme dans l’ordre de l’année. Chaque étape a ses leçons et son quiz.</p>
         ${card}
         ${cours.blocs.length ? `<div class="filters" role="radiogroup" aria-label="Bloc de compétences">${chip("", "Tout")}${cours.blocs.map((b) => chip(b.id, b.short)).join("")}</div>` : ""}
@@ -139,6 +153,8 @@ export function mountCours(el) {
     const chapter = t.closest("[data-chapter]");
     const lecon = t.closest("[data-lecon]");
     if (lecon) startLecon(data.cours.lesson(lecon.dataset.lecon));
+    else if (t.closest("[data-poser]")) openAskSheet();
+    else if (t.closest("[data-questions]")) push("cours/questions");
     else if (bloc) {
       if (bloc.dataset.bloc === filter) return;
       filter = bloc.dataset.bloc;
@@ -204,6 +220,9 @@ export function mountChapter(el, chapterId) {
               <span class="tile-icon">${icon("lock", "icon--s")}</span>
               <span class="row__main row__title">Documents du cours</span>
               <span class="tag">Bientôt</span></div></div>`}
+        ${comptesActifs() ? `<div class="list chapter__ask"><button type="button" class="row tap tone-lavande" data-poser>
+            <span class="tile-icon">${icon("chat", "icon--s")}</span>
+            <span class="row__main row__title">Une question sur ce chapitre ?</span>${icon("right", "chev")}</button></div>` : ""}
       </div>`);
   }
 
@@ -212,6 +231,7 @@ export function mountChapter(el, chapterId) {
     const lecon = event.target.closest("[data-lecon]");
     if (quiz) openQuiz(quiz.dataset.quiz);
     else if (lecon) startLecon(data.cours.lesson(lecon.dataset.lecon));
+    else if (event.target.closest("[data-poser]")) openAskSheet({ chapitre: chapterId });
   });
 
   draw();

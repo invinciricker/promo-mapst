@@ -1,7 +1,8 @@
 /* =====================================================================================
    progress.js: what Réviser remembers, saved on the phone only (localStorage key
-   "promo-mapst:reviser"). Nothing is sent anywhere. From Phase 4 it will also be synced
-   with the account.
+   "promo-mapst:reviser"). With an account (Phase 6) it is also saved online and merged
+   with the copy of the account (js/compte/compte.js, which calls reloadProgress() after
+   a merge). finishSession() tells the account with the event "progres-fini".
 
    Everything is saved by question id (« anat-1-04 »), never by lesson number or by
    position: ids never change, so the progress survives when questions are added,
@@ -302,7 +303,13 @@ export function finishSession(result) {
   write();
 
   const after = streak();
+  window.dispatchEvent(new CustomEvent("progres-fini"));     // the account saves it online
   return { xp: result.xp, xpTotal: s.xp, streak: after.count, streakGrew: !before.doneToday };
+}
+
+/** The saved progress changed under our feet (merged with the account): read it again. */
+export function reloadProgress() {
+  state = null;
 }
 
 /** Erases everything Réviser saved on this phone (Profil › Ce que l’appli garde). */
