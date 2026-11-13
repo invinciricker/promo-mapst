@@ -62,6 +62,7 @@ const nav = {
   modals: [],             // open modals, bottom to top: { key, value, url, level, close, beforePop }
   level: 0,               // the level of the current step of the history
   openers: {},            // modal key -> function(value) that opens it from an address
+  openerList: {},         // modal key -> [{ tab, opener }] (see registerModal)
   unwinding: null,        // set while rewinding the history (tab change)
   skipAnimation: false,   // the swipe already moved the page: don't animate it again
   busy: false,
@@ -483,9 +484,16 @@ function rebuild(target) {
 /**
  * Registers how to open a modal from its address (when the app is opened on
  * #planning?seance=…, for example). opener(value) returns false if it can't.
+ * With { tab }, the opener is only used in that tab: ?lecon=… is a lesson of cards in
+ * Cours (js/cours/lecon.js) and a quiz lesson everywhere else (js/reviser/reviser.js).
  */
-export function registerModal(key, opener) {
-  nav.openers[key] = opener;
+export function registerModal(key, opener, { tab = null } = {}) {
+  (nav.openerList[key] = nav.openerList[key] || []).push({ tab, opener });
+  nav.openers[key] = (value) => {
+    const list = nav.openerList[key];
+    const mine = list.find((o) => o.tab === nav.tab) || list.find((o) => !o.tab);
+    return mine ? mine.opener(value) : false;
+  };
 }
 
 /**

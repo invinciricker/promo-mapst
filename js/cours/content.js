@@ -1,7 +1,8 @@
 /* =====================================================================================
-   content.js (Cours): turns content/parcours.json and content/documents.json into what
-   the Cours tab shows: the programme as a path of chapters, in the order of the year,
-   each with its bloc de compétences, its Réviser theme (optional) and its documents.
+   content.js (Cours): turns content/parcours.json, content/documents.json and (Phase 5)
+   content/lecons/index.json into what the Cours tab shows: the whole programme as a path
+   of chapters, in the order of the year, each with its bloc de compétences, its lessons,
+   its Réviser theme (optional) and its documents.
 
    A chapter or a document that is broken (a missing title, a link that is not https...)
    is skipped, so one mistake in a file never breaks the app; scripts/check_content.py
@@ -9,6 +10,7 @@
    ===================================================================================== */
 
 import { THEME_TONES } from "../reviser/content.js";
+import { cleanLessons } from "./lecons.js";
 
 /** What the small coloured square of a document says, and its colour. */
 export const KINDS = {
@@ -20,7 +22,7 @@ export const KINDS = {
   lien: { label: "LIEN", tone: "galet" },
 };
 
-const NEW_DAYS = 7;          // a document is « Nouveau » for 7 days after it was added
+const NEW_DAYS = 7;          // a document or a lesson is « Nouveau » for 7 days after it was added
 const isText = (value) => typeof value === "string" && value.trim() !== "";
 const isHttps = (value) => isText(value) && /^https:\/\/\S+$/.test(value.trim());
 
@@ -28,17 +30,21 @@ const isHttps = (value) => isText(value) && /^https:\/\/\S+$/.test(value.trim())
  * @param parcours   content of content/parcours.json (or null)
  * @param documents  content of content/documents.json (or null)
  * @param reviser    the content of Réviser (js/reviser/content.js), for the colours
+ * @param lecons     content of content/lecons/index.json (or null)
  * Returns {
- *   blocs       the blocs that have at least one chapter: [{ id, short, title }]
- *   chapters    in the order of the year: [{ id, n, title, when, resume, bloc, theme, tone, documents }]
+ *   blocs       every bloc of parcours.json, even without chapters: [{ id, short, title }]
+ *   chapters    in the order of the year: [{ id, n, title, when, resume, bloc, theme, tone,
+ *               documents, lessons }]
  *               n: its number in the path; bloc: { id, short, title }; theme: a Réviser
- *               theme id or ""; tone: its colour
+ *               theme id or ""; tone: its colour; lessons: in the order of index.json,
+ *               each with n (1, 2, 3 in the chapter) and chapter
  *   chapter(id), chapterOfTheme(themeId)
+ *   lessons     every lesson, in the order of the path; lesson(id)
  *   documents   every valid document; general: the ones of "chapitre": "general"
  *   folder      the address of the class's Drive folder, or ""
  * }
  */
-export function createCours(parcours, documents, reviser) {
+export function createCours(parcours, documents, reviser, lecons = null) {
   const blocList = (parcours && Array.isArray(parcours.blocs) ? parcours.blocs : [])
     .filter((b) => b && isText(b.id) && isText(b.short));
   const blocById = new Map(blocList.map((b) => [b.id, { id: b.id, short: b.short.trim(), title: isText(b.title) ? b.title.trim() : b.short.trim() }]));
@@ -76,25 +82,34 @@ export function createCours(parcours, documents, reviser) {
       theme: theme ? theme.id : "",
       tone: THEME_TONES[toneIndex] || THEME_TONES[0],
       documents: docs.filter((d) => d.chapitre === c.id),
+      lessons: [],
     });
   }
 
-  const used = new Set(chapters.map((c) => c.bloc.id));
+  // The lessons, each in its chapter (in the order of index.json inside the chapter).
+  for (const lesson of cleanLessons(lecons, seen)) {
+    const chapter = chapters.find((c) => c.id === lesson.chapitre);
+    chapter.lessons.push({ ...lesson, n: chapter.lessons.length + 1, chapter });
+  }
+  const lessons = chapters.flatMap((c) => c.lessons);
+
   const shown = docs.filter((d) => d.chapitre === "general" || seen.has(d.chapitre));
   return {
-    blocs: [...blocById.values()].filter((b) => used.has(b.id)),
+    blocs: [...blocById.values()],
     chapters,
     chapter: (id) => chapters.find((c) => c.id === id) || null,
     chapterOfTheme: (themeId) => chapters.find((c) => c.theme && c.theme === themeId) || null,
+    lessons,
+    lesson: (id) => lessons.find((l) => l.id === id) || null,
     documents: shown,
     general: shown.filter((d) => d.chapitre === "general"),
     folder: documents && isHttps(documents.folder) ? documents.folder.trim() : "",
   };
 }
 
-/** Was the document added less than 7 days ago? */
-export function isNew(doc, todayIso) {
-  if (!/^\d{4}-\d{2}-\d{2}$/.test(doc.added) || doc.added > todayIso) return false;
-  const days = (Date.parse(todayIso) - Date.parse(doc.added)) / 86400000;
+/** Was the document (or the lesson) added less than 7 days ago? */
+export function isNew(item, todayIso) {
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(item.added) || item.added > todayIso) return false;
+  const days = (Date.parse(todayIso) - Date.parse(item.added)) / 86400000;
   return days < NEW_DAYS;
 }

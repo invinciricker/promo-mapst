@@ -199,9 +199,10 @@ export function mountStoredData(el) {
       ["person", "Ton prénom", name ? `« ${name} »` : "Aucun pour l’instant"],
       ["cal", "Tes événements perso (« + »)", events ? `${events} pour l’instant` : "Aucun pour l’instant"],
       ["bolt", "Ta progression dans Réviser", "XP, série, leçons faites ou en cours, questions à revoir"],
+      ["book", "Tes leçons dans Cours", "Celles que tu as lues, et la carte où tu en es"],
       ["eye", "Le mode relecture", "Et tes avis « Juste » ou « À corriger », si tu l’utilises"],
       ["swatch", "Tes réglages", "La vue du planning et les sons"],
-      ["download", "Une copie de l’appli", "Avec le planning et les questions, pour qu’elle marche sans internet"],
+      ["download", "Une copie de l’appli", "Avec le planning, les questions et les leçons, pour qu’elle marche sans internet"],
     ];
     setHTML(el, `
       ${navbarHTML("Profil", "Ce que l’appli garde")}

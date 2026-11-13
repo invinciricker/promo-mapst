@@ -4,7 +4,9 @@ Test of the offline mode and of « content without code » (sw.js), in Chromium:
   - a content file that no code lists (like a future study page) works offline once
     it has been opened;
   - when a content file changes on the website, the app uses it at the next opening
-    (here, a theme added to content/themes.json, which also gets its colour by itself).
+    (here, a theme added to content/themes.json, which also gets its colour by itself);
+  - the lessons of Cours (content/lecons/, Phase 5) work offline, even one never opened,
+    and a new lesson (one line in index.json and its .md file) shows up without code.
 
     python3 tests/test_offline.py [<repo folder>]
 
@@ -96,12 +98,33 @@ try:
         check("offline: Cours and its path of chapters", page.locator(f"{VISIBLE} .chap").count() >= 6)
         body = page.evaluate("fetch('content/extra-test.json').then(r => r.ok ? r.text() : 'erreur ' + r.status).catch(e => 'erreur ' + e)")
         check("offline: the unlisted content file comes from the saved copy", "sans toucher au code" in body)
+        for chapter, lesson in (("filieres-energetiques", "filieres-les-trois"), ("fiche-de-seance", "fiche-de-seance-les-bases")):
+            page.goto(BASE + f"#cours/{chapter}?lecon={lesson}")
+            page.reload()
+            page.wait_for_selector(".player--lecon .lcard__title", timeout=15000)
+            check(f"offline: a lesson never opened before reads ({lesson})", page.locator(".player--lecon .lc-wait").count() == 0
+                  and page.locator(".player--lecon .lecon__segs i").count() > 3)
 
         # Back online, the content changed on the website: used at the next opening.
         ctx.set_offline(False)
         themes = json.loads((site / "content" / "themes.json").read_text(encoding="utf-8"))
         themes.append({"id": "nouveau-theme", "title": "Un thème ajouté sans toucher au code"})
         (site / "content" / "themes.json").write_text(json.dumps(themes, ensure_ascii=False), encoding="utf-8")
+        index = json.loads((site / "content" / "lecons" / "index.json").read_text(encoding="utf-8"))
+        index["lecons"].append({"id": "seance-et-cycle-essai", "chapitre": "seance-et-cycle", "title": "Une leçon ajoutée sans toucher au code",
+                                "minutes": 3, "source": "Test", "status": "brouillon", "added": "2026-11-13"})
+        (site / "content" / "lecons" / "index.json").write_text(json.dumps(index, ensure_ascii=False), encoding="utf-8")
+        (site / "content" / "lecons" / "seance-et-cycle-essai.md").write_text(
+            "## Une\n\nPremière carte.\n\n## Deux\n\nDeuxième carte.\n\n## Trois\n\nTroisième carte.\n", encoding="utf-8")
+        page.goto(BASE + "#cours/seance-et-cycle")
+        page.reload()
+        page.wait_for_selector(f"{VISIBLE} .lesson-row")
+        page.wait_for_timeout(300)
+        check("online again: a new lesson shows up in its chapter, with no change to the code",
+              "Une leçon ajoutée sans toucher au code" in page.locator(f"{VISIBLE} .lesson-row").first.inner_text())
+        page.locator(f"{VISIBLE} [data-lecon='seance-et-cycle-essai']").click()
+        page.wait_for_selector(".player--lecon .lcard__title")
+        check("… and it opens: 3 cards and the last one", page.locator(".player--lecon .lecon__segs i").count() == 4)
         page.goto(BASE + "#reviser")
         page.reload()
         page.wait_for_selector(f"{VISIBLE} .gcard")

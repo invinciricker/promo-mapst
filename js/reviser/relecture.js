@@ -9,10 +9,12 @@
 
    Saved on the phone only:
      "promo-mapst:relecture-mode"  true when the mode is on
-     "promo-mapst:relecture"       the verdicts, by question id:
+     "promo-mapst:relecture"       the verdicts, by question id (and by "lecon:<id>" for
+                                   the lessons of Cours, since Phase 5):
                                    { "anat-1-04": { fp, v: "juste" | "corriger", note, date } }
-   "fp" is the fingerprint of the question (content.js): when Claude chat changes the
-   question, the fingerprint changes and the old verdict is ignored.
+   "fp" is the fingerprint of the question (content.js) or of the lesson (js/cours/
+   lecons.js): when Claude chat changes it, the fingerprint changes and the old verdict is
+   ignored. A lesson is checked as a whole, on its last card (js/cours/lecon.js).
    ===================================================================================== */
 
 import { load, save, remove } from "../core/storage.js";
@@ -53,19 +55,22 @@ export function cleanNote(text) {
   return String(text || "").replace(/\s+/g, " ").trim().slice(0, NOTE_MAX);
 }
 
+/** Where a verdict is saved: the id of a question, "lecon:<id>" for a lesson. */
+const keyOf = (q) => q.verdictKey || q.id;
+
 /** The verdict on a question: { v: "juste" | "corriger", note, date }, or null (none yet, or the question changed). */
 export function verdictFor(q) {
-  const saved = readVerdicts()[q.id];
-  return saved && saved.fp === q.fingerprint && (saved.v === "juste" || saved.v === "corriger") ? saved : null;
+  const saved = readVerdicts()[keyOf(q)];
+  return saved && q.fingerprint && saved.fp === q.fingerprint && (saved.v === "juste" || saved.v === "corriger") ? saved : null;
 }
 
 /** Saves a verdict ("juste" or "corriger", with a note), or removes it (verdict null). */
 export function setVerdict(q, verdict, note = "") {
   const all = readVerdicts();
   if (verdict === "juste" || verdict === "corriger") {
-    all[q.id] = { fp: q.fingerprint, v: verdict, note: verdict === "corriger" ? cleanNote(note) : "", date: todayISO() };
+    all[keyOf(q)] = { fp: q.fingerprint, v: verdict, note: verdict === "corriger" ? cleanNote(note) : "", date: todayISO() };
   } else {
-    delete all[q.id];
+    delete all[keyOf(q)];
   }
   save(VERDICTS_KEY, all);
 }
@@ -79,18 +84,19 @@ export function clearVerdicts() {
 /**
  * Where the Relecture stands, for the questions still "brouillon" (in file order):
  *   { total, checked, juste: [q], corriger: [{ q, note }], todo: [q] }
+ * With a list of lessons instead (js/cours/lecons.js relectureItem), the same for them.
  */
-export function relectureSummary(content) {
+export function relectureSummary(content, items = content.drafts) {
   const juste = [];
   const corriger = [];
   const todo = [];
-  for (const q of content.drafts) {
+  for (const q of items) {
     const verdict = verdictFor(q);
     if (!verdict) todo.push(q);
     else if (verdict.v === "juste") juste.push(q);
     else corriger.push({ q, note: verdict.note || "" });
   }
-  return { total: content.drafts.length, checked: juste.length + corriger.length, juste, corriger, todo };
+  return { total: items.length, checked: juste.length + corriger.length, juste, corriger, todo };
 }
 
 /**
@@ -100,12 +106,23 @@ export function relectureSummary(content) {
  *   - anat-1-04 : la réponse C est aussi juste
  *   - fil-1-07
  *   Juste (18) : anat-1-01, anat-1-02, …
+ * and, when at least one lesson of Cours has a verdict (lessons: a relectureItem list):
+ *
+ *   Leçons
+ *   À corriger (1) :
+ *   - filieres-les-trois : la carte 3 est trop longue
+ *   Juste (0)
  */
-export function reportText(content, date = new Date()) {
-  const s = relectureSummary(content);
-  const lines = [`Relecture Promo MAPST · ${dayNumber(date)} ${MONTHS_SHORT[date.getMonth()]} ${date.getFullYear()}`];
-  lines.push(s.corriger.length ? `À corriger (${s.corriger.length}) :` : "À corriger (0)");
-  for (const { q, note } of s.corriger) lines.push(note ? `- ${q.id} : ${note}` : `- ${q.id}`);
-  lines.push(s.juste.length ? `Juste (${s.juste.length}) : ${s.juste.map((q) => q.id).join(", ")}` : "Juste (0)");
+export function reportText(content, lessons = [], date = new Date()) {
+  const verdictLines = (s) => {
+    const lines = [s.corriger.length ? `À corriger (${s.corriger.length}) :` : "À corriger (0)"];
+    for (const { q, note } of s.corriger) lines.push(note ? `- ${q.id} : ${note}` : `- ${q.id}`);
+    lines.push(s.juste.length ? `Juste (${s.juste.length}) : ${s.juste.map((q) => q.id).join(", ")}` : "Juste (0)");
+    return lines;
+  };
+  const lines = [`Relecture Promo MAPST · ${dayNumber(date)} ${MONTHS_SHORT[date.getMonth()]} ${date.getFullYear()}`,
+    ...verdictLines(relectureSummary(content))];
+  const l = relectureSummary(content, lessons);
+  if (l.checked) lines.push("", "Leçons", ...verdictLines(l));
   return lines.join("\n");
 }

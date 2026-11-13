@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
 """
-Checks the content of Réviser before you publish it:
+Checks the content of the app (Réviser, Cours, Accueil, the planning corrections) before you publish it:
     python3 scripts/check_content.py
     python3 scripts/check_content.py path/to/content     (another folder, used by the tests)
 
 It reads content/themes.json, content/questions.json, content/planning-fixes.json and the
-four files of Phase 4 (parcours.json, documents.json, mots.json, savais-tu.json), and prints:
+four files of Phase 4 (parcours.json, documents.json, mots.json, savais-tu.json) and the
+lessons of Phase 5 (content/lecons/), and prints:
   - every PROBLEM it finds (a missing field, a wrong index, an unknown theme, a gap in the
     lesson numbers, a hint that gives the answer...), with the id of the question;
   - WARNINGS: things to look at, which do not block (a lesson title without questions,
@@ -17,6 +18,10 @@ four files of Phase 4 (parcours.json, documents.json, mots.json, savais-tu.json)
     whether content/planning.json already has them.
   - Cours and Accueil (Phase 4): the path of chapters (parcours.json), the documents
     (documents.json), the owner's lines (mots.json) and the facts (savais-tu.json).
+  - the lessons of Cours (Phase 5): content/lecons/index.json and each lesson's text
+    (content/lecons/<id>.md): 3 to 12 cards, questions with 2 to 4 choices and exactly
+    one right, the four boxes, the pictures; a warning for a card over 90 words and for a
+    .md file that is not in the index. How to write one: docs/AJOUTER-UNE-LECON.md.
 
 If there is at least one problem, it ends with an error: GitHub shows a red cross on the
 pull request (see .github/workflows/checks.yml) and the problems are in its log.
@@ -564,10 +569,166 @@ def check_facts():
     print(f"{len(ids)} fact(s) for Accueil (savais-tu.json)")
 
 
+# ---- Cours (Phase 5): the lessons, content/lecons/ ------------------------------------------
+# The same reading rules as js/cours/markdown.js: change both together.
+LESSON_STATUSES = ("brouillon", "verifie")
+CALLOUTS = ("retenir", "exemple", "piege", "savais-tu")
+MIN_CARDS, MAX_CARDS = 3, 12
+CARD_WORDS = 90            # a card longer than this is hard to read on a phone (60 is the aim)
+LESSON_ID = re.compile(r"^[a-z0-9]+(-[a-z0-9]+)*$")
+CARD_TITLE = re.compile(r"^##\s+(.+?)\s*$")
+PICTURE = re.compile(r"^!\[([^\]]*)\]\(([^)\s]+)\)$")
+SAFE_PICTURE = re.compile(r"^img/(?!.*\.\.)[A-Za-z0-9._/-]+$")
+CHOICE = re.compile(r"^-\s+\[([ xX])\]\s+(.*)$")
+WORD = re.compile(r"[0-9A-Za-zÀ-ÖØ-öø-ÿŒœ]+(?:['’-][0-9A-Za-zÀ-ÖØ-öø-ÿŒœ]+)*")
+
+
+def lesson_cards(source):
+    """The cards of a lesson: [(title, [lines])]. Text before the first « ## » is a card without a title."""
+    cards = []
+    for line in source.replace("\r\n", "\n").replace("\r", "\n").split("\n"):
+        title = CARD_TITLE.match(line)
+        if title:
+            cards.append((title.group(1), []))
+        elif cards or line.strip():
+            if not cards:
+                cards.append(("", []))
+            cards[-1][1].append(line)
+    return cards
+
+
+def check_card(where, lines, pictures_folder):
+    """The blocks of one card: questions, boxes, pictures. Returns its number of words."""
+    reading = []          # the text a person reads (not the questions), to count the words
+    i = 0
+    while i < len(lines):
+        t = lines[i].strip()
+        if not t:
+            i += 1
+            continue
+        if t.startswith("?") and re.match(r"^\?\s+\S", t):
+            question = t[1:].strip()
+            choices = []
+            i += 1
+            while True:
+                k = i
+                while k < len(lines) and not lines[k].strip():
+                    k += 1
+                m = CHOICE.match(lines[k].strip()) if k < len(lines) else None
+                if not m:
+                    break
+                choices.append(m.group(1) != " ")
+                i = k + 1
+            k = i
+            while k < len(lines) and not lines[k].strip():
+                k += 1
+            explained = bool(choices) and k < len(lines) and re.match(r"^=\s+\S", lines[k].strip())
+            if explained:
+                i = k + 1
+            short = question if len(question) <= 60 else question[:59] + "…"
+            if not 2 <= len(choices) <= 4:
+                problems.append(f"{where}: the question « {short} » has {len(choices)} choice(s) (\"- [x]\" / \"- [ ]\" lines), 2 to 4 are needed")
+            if choices and sum(choices) != 1:
+                problems.append(f"{where}: the question « {short} » has {sum(choices)} right choice(s) (\"- [x]\"), exactly 1 is needed")
+            if not explained:
+                problems.append(f"{where}: the question « {short} » needs an explanation line starting with \"= \" right after its choices")
+            continue
+        if t.startswith(">"):
+            box = re.match(r"^>\s?\[!([^\]]+)\]\s*(.*)$", t)
+            if not box:
+                warnings.append(f"{where}: a line starting with « > » but no box name ([!retenir]...): shown as plain text")
+            elif box.group(1).strip().lower() not in CALLOUTS:
+                problems.append(f"{where}: unknown box « [!{box.group(1)}] » (use {', '.join(CALLOUTS)})")
+            reading.append(re.sub(r"^>\s?(\[![^\]]+\])?", "", t))
+            i += 1
+            continue
+        picture = PICTURE.match(t)
+        if picture:
+            src = picture.group(2)
+            if not SAFE_PICTURE.match(src):
+                problems.append(f"{where}: the picture « {src} » must be in content/lecons/img/ (written img/name.svg)")
+            elif not (pictures_folder / src).is_file():
+                problems.append(f"{where}: the picture « {src} » does not exist in content/lecons/")
+            i += 1
+            continue
+        if "![" in t:
+            warnings.append(f"{where}: a picture must be alone on its line, written ![description](img/name.svg): shown as plain text")
+        reading.append(t)
+        i += 1
+    text = " ".join(reading).replace("**", "")
+    return len(WORD.findall(re.sub(r"^\s*(-|\d+[.)])\s+", "", text)))
+
+
+def check_lessons(chapters):
+    """content/lecons/index.json and each lesson's text, content/lecons/<id>.md."""
+    folder = CONTENT / "lecons"
+    if not (folder / "index.json").is_file():
+        return
+    doc = load("lecons/index.json")
+    if doc is None:
+        return
+    if not isinstance(doc, dict) or not isinstance(doc.get("lecons"), list):
+        problems.append('lecons/index.json: must be { "about": ..., "lecons": [ ... ] }')
+        return
+    ids = set()
+    summary = []
+    for i, lesson in enumerate(doc["lecons"]):
+        where = f"lecons/index.json, lesson {i + 1}"
+        if not isinstance(lesson, dict) or not text(lesson.get("id")):
+            problems.append(f"{where}: needs an \"id\"")
+            continue
+        lid = lesson["id"]
+        where = f"lecons/index.json, {lid}"
+        if lid in ids:
+            problems.append(f"{where}: this id is used twice")
+        ids.add(lid)
+        if not LESSON_ID.match(lid):
+            problems.append(f"{where}: the id must be small letters, digits and hyphens (it is also the name of the file)")
+        if chapters is None or lesson.get("chapitre") not in chapters:
+            problems.append(f"{where}: \"chapitre\" must be a chapter id of parcours.json")
+        if not text(lesson.get("title")):
+            problems.append(f"{where}: needs a \"title\"")
+        minutes = lesson.get("minutes")
+        if isinstance(minutes, bool) or not isinstance(minutes, (int, float)) or minutes <= 0:
+            problems.append(f"{where}: \"minutes\" must be a number, like 5")
+        if lesson.get("status") not in LESSON_STATUSES:
+            problems.append(f"{where}: \"status\" must be \"brouillon\" or \"verifie\"")
+        if not DATE.match(str(lesson.get("added", ""))):
+            problems.append(f"{where}: \"added\" must be a date like 2026-11-13")
+        if not text(lesson.get("source")):
+            warnings.append(f"{where}: no \"source\" (the document it comes from, in plain words)")
+        path = folder / f"{lid}.md"
+        if not path.is_file():
+            problems.append(f"{where}: the file content/lecons/{lid}.md does not exist")
+            continue
+        cards = lesson_cards(path.read_text(encoding="utf-8"))
+        name = f"lecons/{lid}.md"
+        if not MIN_CARDS <= len(cards) <= MAX_CARDS:
+            problems.append(f"{name}: {len(cards)} card(s) (each « ## » title starts one): {MIN_CARDS} to {MAX_CARDS} are needed")
+        if cards and not cards[0][0]:
+            warnings.append(f"{name}: text before the first « ## » title (it becomes a card without a title)")
+        questions = 0
+        for n, (title, lines) in enumerate(cards, start=1):
+            where_card = f"{name}, card {n}" + (f" « {title} »" if title else "")
+            questions += sum(1 for line in lines if re.match(r"^\?\s+\S", line.strip()))
+            count = check_card(where_card, lines, folder)
+            if count > CARD_WORDS:
+                warnings.append(f"{where_card}: {count} words, {CARD_WORDS} at most (60 is the aim): cut it in two")
+        summary.append(f"  {lid}: {len(cards)} cards, {questions} question(s), {lesson.get('status')}")
+    for path in sorted(folder.glob("*.md")):
+        if path.stem not in ids:
+            warnings.append(f"lecons/{path.name}: this lesson is not in lecons/index.json, so nobody sees it")
+    print(f"{len(ids)} lesson(s) (lecons/index.json)")
+    for line in summary:
+        print(line)
+
+
 check_planning_fixes()
-check_documents(check_parcours())
+chapter_ids = check_parcours()
+check_documents(chapter_ids)
 check_mots()
 check_facts()
+check_lessons(chapter_ids)
 
 if warnings:
     print(f"\n{len(warnings)} warning(s) (to look at, they do not block):")

@@ -89,6 +89,7 @@
 .rl-head .bar { height: 6px; }
 .rl-chips { display: flex; flex-wrap: wrap; gap: 6px; }
 .rl-help { color: var(--ink-3); font: var(--t-small); text-align: center; text-wrap: balance; }
+.rl-help--left { margin: 8px 4px 0; text-align: left; }
 .rl-off { margin-top: 14px; }
 .rl-item .row__main { display: flex; flex-direction: column; align-items: flex-start; gap: 4px; }
 .rl-item__note { color: var(--citron-ink); font-weight: 650; }

@@ -288,8 +288,9 @@ try:
         # Lose all the lives (filières), restart, then the hint.
         open_reviser(page, "#reviser/filieres-energetiques")
         start(page, f"{VISIBLE} .lesson.is-now .lesson__btn")
+        missed_ids = []
         for _ in range(3):
-            answer(page, right=False)
+            missed_ids.append(answer(page, right=False)["id"])
             cont(page)
         page.wait_for_selector(".player-end--lost")
         page.wait_for_timeout(400)
@@ -337,6 +338,16 @@ try:
         page.wait_for_timeout(700)
 
         # « Mes erreurs » asks before stopping (its XP would be lost).
+        # The restart above may have answered some of the 3 missed questions right (the order
+        # is random), which takes them out of « Mes erreurs » for today: put them back, so the
+        # two reviews below always have questions to show.
+        page.evaluate("""(ids) => {
+            const s = JSON.parse(localStorage.getItem('promo-mapst:reviser'));
+            const d = new Date();
+            const today = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+            for (const id of ids) s.cards[id] = { box: 0, due: today, wrong: 1 };
+            localStorage.setItem('promo-mapst:reviser', JSON.stringify(s));
+        }""", missed_ids)
         open_reviser(page)
         start(page, f"{VISIBLE} [data-review]")
         answer(page, right=True)
@@ -377,7 +388,7 @@ try:
                 page.screenshot(path=SHOTS / "12-qcm-wrong.png")
                 wrong_qcm_done = True
                 cont(page)
-            elif q["type"] == "paires":
+            elif q["type"] == "paires" and not pairs_done:
                 page.locator('[data-side="0"][data-pair="0"]').click()
                 page.locator('[data-side="1"][data-pair="0"]').click()
                 page.locator('[data-side="0"][data-pair="1"]').click()
@@ -397,7 +408,9 @@ try:
                 check("after the answer, each pair sits on one row", aligned)
                 check("no sideways scrolling on a phone", no_overflow(page))
                 pairs_done = True
-                break
+                if wrong_qcm_done:
+                    break
+                cont(page)                    # the pairs came first: go on until a QCM
             else:
                 answer(page, right=True)
                 cont(page)

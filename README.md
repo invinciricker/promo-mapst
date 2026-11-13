@@ -10,7 +10,7 @@ Made by a trainee, for the class. It is not made or checked by CAPA Sports.
 | Tab | What you find there | Status |
 |---|---|---|
 | Accueil | The home: the Baie des Anges full screen and moving, one short line, and what's on now | Done (Phase 4) |
-| Cours | The programme as a path of chapters, each with its quiz and its documents | Done (Phase 4); the study pages come in Phase 6 |
+| Cours | The whole programme as a path of chapters, with short lessons (decks of cards) and a quiz; the course documents open later | Done (Phase 5) |
 | Réviser | Five-minute quizzes on the course, with XP and a daily série | Done |
 | Planning | The timetable by week, month and year, and the key dates | Done |
 
@@ -24,7 +24,7 @@ After that it opens like any other app, and it works without a connection.
 ## Good to know
 
 - No account, no tracking, no ads. What you do in the app stays on your phone.
-- The questions are written from the course, but mistakes are possible: when in doubt, check your course.
+- The lessons and questions are written from the course, but mistakes are possible: when in doubt, check your course.
 - The repository is public, so it never contains course documents or anything personal.
 
 ## How it is made
