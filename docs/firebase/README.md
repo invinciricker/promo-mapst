@@ -18,6 +18,8 @@ Google renames its buttons from time to time: if a name is slightly different, p
 
 ## 3. Create the database in Europe
 
+> **Firestore, not « Realtime Database ».** Both sit in the same menu and look alike. The app uses **Firestore Database** only. If you already created a Realtime Database by mistake, it does no harm, but open its **Règles** tab and make sure both `.read` and `.write` say `false`, then Publier.
+
 1. Left menu: **Créer** > **Firestore Database** > **Créer une base de données**.
 2. Edition: Standard. Location: **eur3 (Europe)**. This choice is final.
 3. Choose **mode production** (everything locked), then **Créer**.
@@ -27,7 +29,8 @@ Google renames its buttons from time to time: if a name is slightly different, p
 
 1. Pick a code that you will give to the class by voice or in your group: 4 to 20 letters, digits or hyphens, for example `mapst-nice-27` (choose your own).
 2. Tab **Données** > **Commencer une collection**. Collection ID: `codes`. Next.
-3. Document ID: **your code, exactly**. Add one field: name `actif`, type boolean, value true. **Enregistrer**.
+3. (The console has no JSON import for Firestore: you type this one document by hand, it takes 30 seconds.)
+4. Document ID: **your code, exactly**. Add one field: name `actif`, type boolean, value true. **Enregistrer**.
 
 To change the code later: add a new document, delete the old one. People who already have an account keep it.
 
