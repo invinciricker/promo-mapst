@@ -24,7 +24,7 @@ listed = set(re.findall(r'^\s*"([^"]+)",?\s*$', sw, re.M))
 
 # Files the app needs offline (the big icons are only used by the phone when installing).
 needed = {"index.html", "manifest.webmanifest"}
-for folder, pattern in (("css", "*.css"), ("js", "**/*.js"), ("vendor", "**/*.woff2")):
+for folder, pattern in (("css", "*.css"), ("js", "**/*.js"), ("vendor", "**/*.woff2"), ("vendor", "**/*.js")):
     for f in (ROOT / folder).glob(pattern):
         if f.is_file():
             needed.add(f.relative_to(ROOT).as_posix())

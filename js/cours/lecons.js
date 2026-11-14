@@ -9,7 +9,8 @@
    index (no title, an unknown chapter...) is skipped, so one mistake never breaks the app;
    scripts/check_content.py finds the same problems.
 
-   Saved on the phone only ("promo-mapst:lecons"), by lesson id:
+   Saved on the phone ("promo-mapst:lecons"), and online with an account (Phase 6,
+   js/compte/compte.js), by lesson id:
      { "filieres-les-trois": { "at": 3, "read": "2026-11-13" } }
      at    the card where the lesson was left (0 = the first): reopening resumes there
      read  the day the last card was reached (the lesson is « lue »)
@@ -132,6 +133,7 @@ export function markRead(id) {
   const all = readAll();
   all[id] = { at: 0, read: todayISO() };
   save(KEY, all);
+  window.dispatchEvent(new CustomEvent("progres-fini"));     // the account saves it online
 }
 
 export const isRead = (id) => lessonProgress(id).read;

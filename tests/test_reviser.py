@@ -452,7 +452,7 @@ try:
         page.wait_for_selector(f"{VISIBLE} [data-relecture]")
         page.wait_for_timeout(400)
         check("Relecture is off by default", not page.locator("[data-relecture]").is_checked())
-        check("the switch explains itself", "Pour vérifier les questions et signaler les erreurs." in norm(page.locator(f"{VISIBLE} .list").first.inner_text()))
+        check("the switch explains itself", "Pour vérifier les questions et signaler les erreurs." in norm(page.locator(f"{VISIBLE} .list:has([data-relecture])").inner_text()))
         check("no report link while off", page.locator("[data-report]").count() == 0)
         page.locator("[data-relecture]").check()
         page.wait_for_timeout(500)

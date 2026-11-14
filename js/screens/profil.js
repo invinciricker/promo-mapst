@@ -2,11 +2,12 @@
    profil.js: Profil (mockup 8), opened from the round initial on Accueil. It replaces
    the Infos screen of Phases 1 and 2 (old #infos addresses open it).
 
-     #accueil/profil            the first name and « Changer mon prénom »; « Mode
+     #accueil/profil            the first name and « Changer mon prénom »; since Phase 6
+                                the card « Mon compte » (js/screens/compte.js); « Mode
                                 relecture » (and « Rapport de relecture » while it is
                                 on); « Installer l'appli » when not installed;
-                                « À propos du planning »; « Ce que l'appli garde »; the
-                                footer text, and « Revoir la bienvenue »
+                                « Comment ça marche »; « À propos du planning »; « Ce que
+                                l'appli garde »; the footer text, and « Revoir la bienvenue »
      #accueil/profil/planning   À propos du planning: source, dates, corrections, notes
      #accueil/profil/donnees    Ce que l'appli garde, and « Effacer ma progression »
    ===================================================================================== */
@@ -15,7 +16,7 @@ import { esc, icon, setHTML, isInstalled } from "../core/dom.js";
 import { parseISO, dayNumber, MONTHS } from "../core/dates.js";
 import { FOOTER, APP_VERSION } from "../core/texts.js";
 import { data } from "../core/data.js";
-import { push, navbarHTML, registerModal, refreshPages } from "../core/nav.js";
+import { push, switchTab, navbarHTML, registerModal, refreshPages } from "../core/nav.js";
 import { openSheet } from "../core/sheet.js";
 import { showToast } from "../core/toast.js";
 import { firstName, setFirstName, initial, NAME_MAX } from "../core/user.js";
@@ -23,6 +24,9 @@ import { skyAt } from "../core/sun.js";
 import { countEvents } from "../planning/personal.js";
 import { hasProgress, resetProgress } from "../reviser/progress.js";
 import { isRelectureOn, setRelectureOn, relectureSummary } from "../reviser/relecture.js";
+import { openHowSheet } from "../reviser/reviser.js";
+import { comptesActifs, compte, remplacerEnLigne } from "../compte/compte.js";
+import { compteCardHTML, handleCompteClick, switchClassement } from "./compte.js";
 import { requestInstall } from "./install.js";
 import { showWelcome } from "./welcome.js";
 
@@ -58,6 +62,9 @@ export function mountProfil(el) {
           <button type="button" class="me-big__link" data-name>${name ? "Changer mon prénom" : "Ajouter mon prénom"}</button>
         </div>
 
+        ${compteCardHTML()}
+
+        ${comptesActifs() ? `<h2 class="group-title">Relecture</h2>` : ""}
         <div class="list">
           <label class="row tone-lavande">
             <span class="tile-icon">${icon("eye", "icon--s")}</span>
@@ -77,6 +84,9 @@ export function mountProfil(el) {
           ${isInstalled() ? "" : `<button type="button" class="row tone-turquoise" data-install>
             <span class="tile-icon">${icon("phone", "icon--s")}</span>
             <span class="row__main row__title">Installer l’appli</span>${icon("right", "chev")}</button>`}
+          <button type="button" class="row tone-turquoise" data-how>
+            <span class="tile-icon">${icon("info", "icon--s")}</span>
+            <span class="row__main row__title">Comment ça marche</span>${icon("right", "chev")}</button>
           <button type="button" class="row tone-azur" data-about>
             <span class="tile-icon">${icon("cal", "icon--s")}</span>
             <span class="row__main"><span class="row__title">À propos du planning</span><span class="row__sub">${esc(about)}</span></span>
@@ -100,22 +110,33 @@ export function mountProfil(el) {
       const fresh = el.querySelector("[data-relecture]");
       if (fresh) fresh.focus({ preventScroll: true });
     });
+    // « Apparaître dans le classement » (signed in): on or off online.
+    const visible = el.querySelector("[data-classement-switch]");
+    if (visible) visible.addEventListener("change", () => switchClassement(visible));
   }
 
   el.addEventListener("click", (event) => {
     const t = event.target;
+    if (handleCompteClick(event, { onClassement: () => switchTab("reviser", { push: "reviser/classement" }) })) return;
     if (t.closest("[data-name]")) openNameSheet();
     else if (t.closest("[data-report]")) push("accueil/profil/relecture");
     else if (t.closest("[data-install]")) requestInstall();
+    else if (t.closest("[data-how]")) openHowSheet();
     else if (t.closest("[data-about]")) push("accueil/profil/planning");
     else if (t.closest("[data-stored]")) push("accueil/profil/donnees");
     else if (t.closest("[data-welcome]")) showWelcome({ onDone: () => refreshPages() });
   });
   const onName = () => draw();
   window.addEventListener("prenom-change", onName);
+  window.addEventListener("compte-change", onName);      // signed in or out, saved online...
 
   draw();
-  return { title: "Profil", refresh: draw, onShow: draw, destroy: () => window.removeEventListener("prenom-change", onName) };
+  return {
+    title: "Profil",
+    refresh: draw,
+    onShow: draw,
+    destroy: () => { window.removeEventListener("prenom-change", onName); window.removeEventListener("compte-change", onName); },
+  };
 }
 
 /** The sheet « Ton prénom » (Profil › Changer mon prénom). */
@@ -195,7 +216,9 @@ export function mountStoredData(el) {
   function draw() {
     const name = firstName();
     const events = countEvents();
+    const c = compte();
     const items = [
+      ...(c ? [["key", "Ton compte", `« ${c.pseudo} » : ta progression est aussi sauvegardée en ligne`]] : []),
       ["person", "Ton prénom", name ? `« ${name} »` : "Aucun pour l’instant"],
       ["cal", "Tes événements perso (« + »)", events ? `${events} pour l’instant` : "Aucun pour l’instant"],
       ["bolt", "Ta progression dans Réviser", "XP, série, leçons faites ou en cours, questions à revoir"],
@@ -208,12 +231,14 @@ export function mountStoredData(el) {
       ${navbarHTML("Profil", "Ce que l’appli garde")}
         <div class="page__body">
         <h1 class="page-title page-title--pushed">Ce que l’appli garde</h1>
-        <p class="muted stored__lead">Uniquement sur ce téléphone, dans l’appli :</p>
+        <p class="muted stored__lead">${comptesActifs() ? "Sur ce téléphone, dans l’appli :" : "Uniquement sur ce téléphone, dans l’appli :"}</p>
         <div class="list">${items.map(([name2, title, text]) => `<div class="row row--top tone-galet">
             <span class="tile-icon">${icon(name2, "icon--s")}</span>
             <span class="row__main"><span class="row__title">${esc(title)}</span><span class="row__sub">${esc(text)}</span></span></div>`).join("")}
         </div>
-        <div class="note stored__note">${icon("lock")}<span><b>Rien n’est envoyé ailleurs.</b> Pas de compte (pour l’instant), pas de cookies, pas de statistiques, pas de publicité. Si tu supprimes l’appli, tout ce qu’elle garde est effacé aussi.</span></div>
+        <div class="note stored__note">${icon("lock")}<span>${comptesActifs()
+          ? "<b>Sans compte, rien n’est envoyé ailleurs.</b> Avec un compte : ton pseudo, ta progression dans Réviser et dans Cours, tes XP de la semaine si tu choisis le classement, et tes questions, stockés en Europe chez Google Firebase (ton prénom, tes événements perso et tes réglages restent sur ce téléphone). Pas de cookies, pas de statistiques, pas de publicité. Si tu supprimes l’appli, ce qu’elle garde sur ce téléphone est effacé aussi."
+          : "<b>Rien n’est envoyé ailleurs.</b> Pas de compte, pas de cookies, pas de statistiques, pas de publicité. Si tu supprimes l’appli, tout ce qu’elle garde est effacé aussi."}</span></div>
         ${hasProgress() ? `<button type="button" class="btn btn--danger btn--block stored__reset" data-reset><span>Effacer ma progression dans Réviser</span></button>` : ""}
       </div>`);
   }
@@ -234,6 +259,7 @@ export function mountStoredData(el) {
       return;
     }
     resetProgress();
+    remplacerEnLigne();          // with an account: erased online too (no merge)
     showToast("Progression de Réviser effacée");
     draw();
   });

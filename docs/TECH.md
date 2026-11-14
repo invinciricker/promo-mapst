@@ -31,6 +31,8 @@ css/                    How it looks. Loaded in this order:
   09-cours.css            the Cours tab: the path of chapters, a chapter (its lessons, its
                           documents), the documents
   10-lecons.css           a lesson of Cours: the deck of cards, full screen (Phase 5)
+  11-compte.css           the account sheets, « Mon compte », the classement and
+                          « Questions de la promo » (Phase 6)
 
 js/                     How it works.
   app.js                  starts everything: loads the content, says which page each
@@ -51,6 +53,14 @@ js/                     How it works.
     toast.js                short messages at the bottom
     offline.js              offline mode and automatic updates (talks to sw.js)
     texts.js                sentences used in several places (the footer, the version)
+  compte/                 the account, the sync, the classement and the questions (Phase 6;
+                          see « Comptes » below)
+    config.js               the Firebase settings of the project (empty = no accounts)
+    backend.js              the only file that talks to Firebase
+    backend-faux.js         a pretend Firebase kept in the browser, for the tests
+    compte.js               who is signed in on this phone, the sync, what the screens ask
+    regles.js               plain rules, tested alone: the codes refused, the merge of the
+                            progress, the week, the caps of the classement
   screens/
     welcome.js              the welcome, on the first launch (Bienvenue, ton prénom,
                             install help)
@@ -59,6 +69,8 @@ js/                     How it works.
     profil.js               Profil (it replaced Infos), « À propos du planning »,
                             « Ce que l'appli garde »
     relecture.js            the « Rapport de relecture »
+    compte.js               the account sheets (créer, se connecter, changer le code, se
+                            déconnecter, supprimer) and the « Mon compte » card of Profil
     install.js              help to add the app to the home screen (iPhone Safari,
                             another browser, inside another app, Android)
   cours/                  the Cours tab
@@ -72,6 +84,8 @@ js/                     How it works.
     markdown.js             reads the text of a lesson (a few Markdown blocks) into cards
     lecon.js                the lesson screen: one card at a time, the questions, the last
                             card, the Relecture of a lesson
+    questions.js            « Questions de la promo »: the list, one question, « Poser une
+                            question » (Phase 6)
   planning/               the Planning tab
     planning.js             its first page: Semaine / Mois / Année, arrows, swipes
     view-week.js            the strip of day cards and the chosen day
@@ -96,6 +110,7 @@ js/                     How it works.
     progress.js             XP, série, questions done, lessons left in the middle,
                             « Mes erreurs » (saved on the phone)
     relecture.js            « Mode relecture »: the verdicts and the report text
+    classement.js           the classement of the week (Phase 6)
     verdict.js              the « Juste / À corriger » buttons and the note sheet
     sound.js, confetti.js   small sounds, vibrations and the end-of-lesson confetti
 
@@ -121,6 +136,8 @@ docs/                   How the work is organised (PLAN.md), the content log
 icons/                  App icons. icon.svg is the drawing; the PNGs are made from it.
   launch/                 the iPhone launch images (the welcome screen)
 vendor/fonts/           The font (Plus Jakarta Sans, free licence), stored in the app.
+vendor/firebase/        Firebase 13.1.0 (Apache 2.0): firebase-app.js, firebase-auth.js,
+                        firebase-firestore-lite.js, copied by scripts/fetch_firebase.sh.
 
 scripts/                Tools (run them on a computer):
   export_planning.py      private planning + planning-fixes.json -> content/planning.json
@@ -131,6 +148,7 @@ scripts/                Tools (run them on a computer):
   check_offline_list.py   checks that sw.js lists every file of the app (also run by GitHub)
   make_launch_images.cjs  makes the iPhone launch images from the welcome screen
   fetch_fonts.sh          downloads the font into vendor/fonts/
+  fetch_firebase.sh       downloads the three Firebase files into vendor/firebase/
   make_icons.cjs          makes the PNG icons from icons/icon.svg
 
 tests/                  Automatic tests, run by Claude Code before each pull request
@@ -233,6 +251,11 @@ Every page and sheet has its own address (useful to test in a browser):
 | `#reviser?lecon=anatomie-mouvement-1` | a lesson (it continues where it was left) |
 | `#planning`, `#planning/dates-cles` | the Planning, Dates clés |
 | `#planning?seance=2026-11-09-am` | the details of a half-day (`am` morning, `pm` afternoon) |
+| `#reviser/classement` | the classement of the week (Phase 6) |
+| `#cours/questions` | « Questions de la promo » (Phase 6) |
+| `#accueil/profil?compte=creer` (or `connecter`) | the account sheet |
+| `#cours/questions?question=<id>`, `#cours?poser=<chapter id>` | one question; « Poser une question » |
+| `?code`, `?deconnexion`, `?suppression` | « Changer mon code », « Me déconnecter », « Supprimer mon compte » |
 
 To see the welcome again: Profil › « Revoir la bienvenue » (at the bottom).
 
@@ -321,6 +344,89 @@ A lesson is a deck of cards, read on the phone in about five minutes.
 - **Offline**: `sw.js` saves `content/lecons/index.json` and every lesson it lists when it
   installs, and the app fetches every lesson and its pictures in the background a moment
   after each start. Nothing is listed by hand, so a new lesson needs no code.
+
+---
+
+## Comptes (Phase 6): the account, the classement, the questions
+
+An account is optional. The app works exactly as before without one, and offline.
+
+**Identity.** A pseudo (3 to 15 of `a-z A-Z 0-9 - _`) and a 6-digit code. Firebase Auth needs
+an e-mail address: the app builds a hidden one, `<cle>@promo-mapst.example.com`, where `cle`
+is the pseudo in lowercase (example.com can never receive mail). The code is the Firebase
+password; obvious codes are refused before sending (`codeTropFacile` in `js/compte/regles.js`).
+The phone stays signed in (Firebase's own storage). On the phone, `promo-mapst:compte` =
+`{ pseudo, cle, classement, sync }` (sync: when the progress was last saved online).
+
+**The files.**
+- `js/compte/config.js`: the `firebaseConfig` block of the project and `DOMAINE`. Empty values
+  switch every account feature off (`comptesActifs()` in `compte.js`): no card in Profil, no
+  account step in the welcome, no classement, no questions.
+- `js/compte/backend.js`: the only file that talks to Firebase. Firestore **Lite** (plain reads
+  and writes, no live listeners). The three files of `vendor/firebase/` are loaded with
+  `import()` only when needed: at launch when someone is signed in (1.2 s after the first
+  screen), or at the first tap on an account feature. A phone without an account never loads
+  them. Auth is started with `initializeAuth` and no popup helper, so nothing is ever loaded
+  from another website. Errors come back as codes (`pseudo-pris`, `identifiants`,
+  `trop-essais`, `code-promo`, `hors-ligne`…), turned into sentences by `js/screens/compte.js`.
+- `js/compte/backend-faux.js`: the same functions, kept in the browser. Used with
+  `?backend=faux` on the computer only (see below).
+- `js/compte/compte.js`: the account on the phone, the actions of the sheets, the sync, the
+  classement line, the reading of the classement and the questions (saved for offline in
+  `promo-mapst:cache-classement` and `promo-mapst:cache-questions`), the admin check.
+- `js/compte/regles.js`: the pure functions (tested by `tests/test_sync.mjs`).
+
+**The data** (Firestore, Europe; the rules are `docs/firebase/firestore.rules`, Claude chat's):
+
+| Document | Fields |
+|---|---|
+| `membres/<cle>` | `pseudo`, `code` (the class code), `creeLe`, `progres` (one JSON text), `majLe` |
+| `classement/<cle>` | `pseudo`, `xp` (of the week), `semaine` (« 2026-W46 »), `majLe` |
+| `questions/<id>` | `texte`, `auteur` (cle), `pseudo`, `chapitre`, `creeLe`, `reponse`, `aussi` (list of cle), `reponduLe` |
+| `admins/<cle>`, `codes/<code>` | made by hand by the owner (`docs/firebase/README.md`) |
+
+Every date is `serverTimestamp()`: the rules require it.
+
+**The sync rule.** What is synced: `promo-mapst:reviser` and `promo-mapst:lecons`, as
+`progres` = `{ "v": 1, "reviser": …, "lecons": … }`. Not synced: the first name, the welcome,
+Relecture, the personal events, the settings. When: at launch (signed in and online), 5 s
+after a finished lesson, quiz or review (several grouped in one write), when the app goes to
+the background with something unsent, when the connection comes back. Each time: read
+`membres/<cle>`, merge, save on the phone if it changed (the screens are drawn again), write
+online if it changed. Never more than one write every 15 s; a failure is silent and retried at
+the next occasion. The merge, item by item, so nothing is lost (`fusionnerProgres`):
+`reviser.xp` the larger; `reviser.days` for each day the entry with the larger XP;
+`reviser.done` for each question the larger value; `reviser.cards`, `runs`, `lastTheme` from the
+side saved last (the phone's last change, `promo-mapst:modifie`, against `majLe`); each lesson
+the further progress, « lue » wins. Profil › « Effacer ma progression dans Réviser » also
+replaces the online copy (without merging), otherwise the next sync would bring it back.
+
+**The classement.** XP of the week = the sum of `reviser.days[day].xp` for the days of the
+current ISO week (Monday first, Europe/Paris). Written after each sync for those who appear,
+within the rules: never less than the last value of the week, +400 at most per write, 400 at
+most on the first write of a new week, 3 000 on the very first line, at least 10 s between two
+writes (the rest goes at the next sync, 15 s later). Read with `limit(100)`, the lines of this
+week kept, sorted by XP then pseudo. Switching « Apparaître » off deletes the line.
+
+**The questions.** Read with `orderBy("creeLe", "desc")` and `limit(100)`. « Moi aussi » adds or
+removes my cle with `arrayUnion` / `arrayRemove`. The admin (`admins/<my cle>` exists, checked
+once per launch) answers, changes the answer and deletes; the author deletes their own.
+
+**Deleting an account**, in this order: reauthenticate, my questions (`where("auteur", "==", cle)`),
+`classement/<cle>`, `membres/<cle>`, then the sign-in account. The progress stays on the phone.
+
+**Running with the pretend backend** (no Firebase at all): start the local server (« Try it on
+a computer » below), then open `http://localhost:8000/?backend=faux#accueil/profil`. Its class
+code is `mapst-test`. Its « server » lives in the browser under `faux-backend` (erase it in the
+developer tools to start again); `window.fauxBackend.serveur()` shows it. On GitHub Pages the
+parameter is ignored. `?backend=emulateur` (also on the computer only) uses Firebase's own
+emulators, for `tests/test_rules.py`.
+
+**Firebase files.** Version 13.1.0 of the npm package `firebase` (pinned in
+`scripts/fetch_firebase.sh` and `vendor/firebase/VERSION`). The script rewrites the one line of
+`firebase-auth.js` and `firebase-firestore-lite.js` that imported `firebase-app.js` from
+www.gstatic.com, so they import the copy next to them. To update: change `VERSION` in the
+script, run `bash scripts/fetch_firebase.sh`, run the tests (`test_rules.py` above all).
 
 ---
 
@@ -456,8 +562,11 @@ python3 tests/test_app.py
 python3 tests/test_lecons.py
 python3 tests/test_reviser.py
 python3 tests/test_offline.py
+python3 tests/test_compte.py
+node tests/test_sync.mjs
+python3 tests/test_rules.py
 ```
-The last four need Python Playwright (`pip install playwright`, then
+The Python tests from `test_app.py` on need Python Playwright (`pip install playwright`, then
 `python3 -m playwright install chromium`, or set `CHROME_PATH` to a Chromium).
 `test_app.py` goes through the welcome, Accueil at different moments of the day and its
 four skies (with and without lines of the owner), the four tabs and how they move, the
@@ -475,16 +584,30 @@ a question answered, the last card, light and dark).
 `test_reviser.py` plays lessons like a person would.
 `test_offline.py` checks the offline mode (lessons included, even one never opened) and
 that new content (a theme, a lesson) is picked up without any code change. `test_planning_fixes.py` checks the planning corrections.
+`test_compte.py` (Phase 6) goes through the accounts on the pretend backend: everything hidden
+with an empty config, nothing loaded without an account, the welcome step, creating an account
+(every error), signing in and out, changing the code, deleting, the sync, the classement (order,
+own row, hidden banner, the caps on what is sent), the questions (asking, « Moi aussi », the
+admin's answer, deleting), offline; screenshots light and dark of the create sheet, Profil
+signed in, the classement, the list of questions and a question with its answer.
+`node tests/test_sync.mjs` tests the plain rules of `js/compte/regles.js` (the merge, the week,
+the caps, the codes refused). `test_rules.py` runs the real `backend.js` against the real rules
+on Firebase's emulators (it needs Java and `firebase-tools`: `npm install -g firebase-tools`, or
+`FIREBASE_CLI` set to its path; without them it says SKIP).
 
 ---
 
 ## Privacy
 
-- No account (yet), no cookies, no analytics, no ads, nothing loaded from other websites.
+- No cookies, no analytics, no ads, nothing loaded from other websites.
 - Your first name, personal events (« + »), your progress in Réviser, the lessons read in
-  Cours and your Relecture verdicts are saved on the phone only (accounts and sync come in
-  Phase 6).
-  Profil › « Ce que l'appli garde » lists them, and erases the progress if you want.
+  Cours and your Relecture verdicts are saved on the phone. Profil › « Ce que l'appli garde »
+  lists them, and erases the progress if you want.
+- With an account (optional, Phase 6): the pseudo, the code (scrambled by Firebase), the
+  progress of Réviser and of the lessons, the XP of the week for those who appear in the
+  classement, and the questions are stored by Google Firebase in Europe. No e-mail, no name.
+  « Supprimer mon compte » erases all of it. The first name, the personal events and the
+  settings never leave the phone.
 - This repository is public: never commit personal data, course PDFs, slides or photos.
   The private planning repository must never be copied here (`.gitignore` blocks the
   usual folder names).

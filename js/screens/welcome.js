@@ -6,8 +6,10 @@
         (under a second; nothing for people who asked their phone for less motion).
      2. « On t'appelle comment ? »: a first name or a nickname (20 characters at most),
         saved on this phone only. « Continuer » or « Passer ».
-        In Phase 5 this step becomes the account.
-     3. Only when the app is open in a browser (not installed): how to install it (the
+     3. Since Phase 6, when accounts are on and nobody is signed in: « Garde ta
+        progression », with « Créer mon compte » and « J'ai déjà un compte » (the account
+        sheet, js/screens/compte.js, opens over the welcome) or « Plus tard ».
+     4. Only when the app is open in a browser (not installed): how to install it (the
         same help as the « Installer l'appli » sheet, js/screens/install.js), with
         « Plus tard ».
    Like the rest of the app it draws under the clock of the iPhone: the first step has the
@@ -18,13 +20,17 @@
 
 import { $, esc, icon, setHTML, isInstalled } from "../core/dom.js";
 import { pauseNav } from "../core/nav.js";
+import { hasOpenSheet, closeSheet } from "../core/sheet.js";
+import { comptesActifs, compte } from "../compte/compte.js";
+import { openCompteSheet } from "./compte.js";
 import { NAME_MAX, firstName, setFirstName, setWelcomeDone } from "../core/user.js";
 import { installHelpHTML, bindInstallHelp } from "./install.js";
 
 /** Shows the welcome over the app. onDone() is called when it is closed. */
 export function showWelcome({ onDone = () => {} } = {}) {
   const withInstall = !isInstalled();
-  const total = withInstall ? 2 : 1;           // steps after Bienvenue
+  const withAccount = comptesActifs() && !compte();
+  const total = 1 + (withAccount ? 1 : 0) + (withInstall ? 1 : 0);   // steps after Bienvenue
   const root = document.createElement("div");
   root.className = "welcome";
   root.setAttribute("role", "dialog");
@@ -61,15 +67,30 @@ export function showWelcome({ onDone = () => {} } = {}) {
       <form class="wl-form" novalidate>
         <input class="input input--big wl-name" name="prenom" type="text" maxlength="${NAME_MAX}" value="${esc(firstName())}"
           autocomplete="given-name" autocapitalize="words" enterkeyhint="next" placeholder="Ton prénom" aria-label="Ton prénom ou un surnom">
-        <div class="note">${icon("lock")}<span>Bientôt, un compte avec un code à 6 chiffres pour retrouver ta progression sur un autre téléphone.</span></div>
         <div class="wl-bottom"><button type="submit" class="btn btn--primary btn--block">Continuer</button></div>
       </form>
     </section>
 
-    ${withInstall ? `<section class="wl-step wl-page" data-step="2" hidden>
+    ${withAccount ? `<section class="wl-step wl-page" data-step="compte" hidden>
       <div class="wl-head">
         <button type="button" class="icon-btn icon-btn--surface" data-prev aria-label="Retour">${icon("left")}</button>
         ${dots(2)}
+        <span></span>
+      </div>
+      <div class="mini-sky mini-sky--account" aria-hidden="true"><img src="img/baie-aube.svg" alt="">${icon("award")}</div>
+      <h1 class="page-title">Garde ta progression</h1>
+      <p class="muted wl-lead">Avec un compte, tu retrouves tes XP sur un nouveau téléphone et tu peux poser tes questions à la promo.</p>
+      <div class="wl-bottom wl-account">
+        <button type="button" class="btn btn--primary btn--block" data-account="creer">Créer mon compte</button>
+        <button type="button" class="btn btn--block wl-glass" data-account="connecter">J’ai déjà un compte</button>
+        <button type="button" class="wl-later" data-later>Plus tard</button>
+      </div>
+    </section>` : ""}
+
+    ${withInstall ? `<section class="wl-step wl-page" data-step="installer" hidden>
+      <div class="wl-head">
+        <button type="button" class="icon-btn icon-btn--surface" data-prev aria-label="Retour">${icon("left")}</button>
+        ${dots(total)}
         <span></span>
       </div>
       <div class="mini-sky mini-sky--icon" aria-hidden="true"><img src="icons/icon-192.png" alt=""></div>
@@ -113,6 +134,12 @@ export function showWelcome({ onDone = () => {} } = {}) {
     setFirstName(input.value);
   }
 
+  /** The next step, or the end of the welcome. */
+  function next() {
+    if (step + 1 < steps.length) show(step + 1);
+    else finish();
+  }
+
   function finish() {
     setWelcomeDone(true);
     // Remove the welcome's own steps from the history, then give « back » to the app.
@@ -136,8 +163,13 @@ export function showWelcome({ onDone = () => {} } = {}) {
     window.removeEventListener("popstate", onPop);
   }
 
-  // « Back » of the phone: the step before.
+  // « Back » of the phone: the step before (or, with the account sheet open, it closes).
   function onPop() {
+    if (hasOpenSheet()) {
+      closeSheet();
+      history.pushState({ welcome: step }, "", location.hash);
+      return;
+    }
     if (step > 0) show(step - 1, { history: false });
   }
   window.addEventListener("popstate", onPop);
@@ -153,7 +185,12 @@ export function showWelcome({ onDone = () => {} } = {}) {
     } else if (t.closest("[data-skip]")) {
       // « Passer »: nothing is saved (a name saved before stays as it is).
       input.blur();
-      if (withInstall) show(2); else finish();
+      next();
+    } else if (t.closest("[data-account]")) {
+      // The account sheet, over the welcome; once done, the next step.
+      openCompteSheet({ mode: t.closest("[data-account]").dataset.account, overWelcome: true, onDone: next });
+    } else if (t.closest("[data-later]")) {
+      next();
     } else if (t.closest("[data-done]")) {
       finish();
     }
@@ -163,7 +200,7 @@ export function showWelcome({ onDone = () => {} } = {}) {
     event.preventDefault();
     input.blur();
     saveName();
-    if (withInstall) show(2); else finish();
+    next();
   });
 
   // The help to install, for this phone. On Android the browser's own « Installer »

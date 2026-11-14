@@ -10,9 +10,10 @@ Made by a trainee, for the class. It is not made or checked by CAPA Sports.
 | Tab | What you find there | Status |
 |---|---|---|
 | Accueil | The home: the Baie des Anges full screen and moving, one short line, and what's on now | Done (Phase 4) |
-| Cours | The whole programme as a path of chapters, with short lessons (decks of cards) and a quiz; the course documents open later | Done (Phase 5) |
-| Réviser | Five-minute quizzes on the course, with XP and a daily série | Done |
+| Cours | The whole programme as a path of chapters, with short lessons (decks of cards) and a quiz, and « Questions de la promo » (ask, the admin answers); the course documents open later | Done (Phase 6) |
+| Réviser | Five-minute quizzes on the course, with XP, a daily série and a weekly classement | Done (Phase 6) |
 | Planning | The timetable by week, month and year, and the key dates | Done |
+| Compte (in Profil) | Optional: a pseudo and a 6-digit code, so your progress follows you to a new phone | Done (Phase 6) |
 
 ## Put it on your phone
 
@@ -23,7 +24,7 @@ After that it opens like any other app, and it works without a connection.
 
 ## Good to know
 
-- No account, no tracking, no ads. What you do in the app stays on your phone.
+- No tracking, no ads. Without an account, what you do in the app stays on your phone. With one (optional), your pseudo, your progress, your XP of the week if you join the classement, and your questions are kept in Europe on Google Firebase; Profil › « Supprimer mon compte » erases them.
 - The lessons and questions are written from the course, but mistakes are possible: when in doubt, check your course.
 - The repository is public, so it never contains course documents or anything personal.
 
